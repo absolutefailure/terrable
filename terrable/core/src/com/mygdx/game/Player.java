@@ -108,11 +108,20 @@ public class Player {
 
         // LEFT AND RIGHT MOVEMENT
         if (Gdx.input.isKeyPressed(Input.Keys.A) && acceleration > -3) {
-            acceleration -= 1;
+            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
+                acceleration -= 2;
+            }else {
+                acceleration -= 1;
+            }
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.D) && acceleration < 3) {
-            acceleration += 1;
+            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
+                acceleration += 2;
+            }else {
+                acceleration += 1;
+            }
+
         }
 
         playerPosX += acceleration;
