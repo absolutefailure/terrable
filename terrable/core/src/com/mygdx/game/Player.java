@@ -95,14 +95,14 @@ public class Player {
                         if (mapArray[i][j].isCollision()) {
                             if (gravity > 0) {
                                 onGround = true;
-                                onGroundTimer = 10;
+                                onGroundTimer = 5;
                             }
                             playerPosY = oldY;
                             gravity = -gravity * PLAYER_BOUNCINESS;
                         } else if (mapArray[i][j].getElement() == LADDER) {
                             gravity *= 0.9;
                             onGround = true;
-                            onGroundTimer = 10;
+                            onGroundTimer = 5;
                         }
 
                     }
@@ -177,9 +177,9 @@ public class Player {
                                 && mouseInWorld2D.x > mapArray[i][j].getPosX()
                                 && mouseInWorld2D.x < mapArray[i][j].getPosX() + mapArray[i][j].getBLOCKSIZE()) {
                             if (j > 3 && j < map.getMapSizeY() - 3 && i > 3 && i < map.getMapSizeX() - 3) {
-                                if (mapArray[i - 1][j].getElement() == EMPTY || mapArray[i + 1][j].getElement() == EMPTY
-                                        || mapArray[i][j - 1].getElement() == EMPTY
-                                        || mapArray[i][j + 1].getElement() == EMPTY) {
+                                if (!mapArray[i - 1][j].isCollision()|| !mapArray[i + 1][j].isCollision()
+                                        || !mapArray[i][j - 1].isCollision()
+                                        || !mapArray[i][j + 1].isCollision()) {
                                     float distance = (float) Math
                                             .sqrt((mouseInWorld2D.y - playerPosY) * (mouseInWorld2D.y - playerPosY)
                                                     + (mouseInWorld2D.x - playerPosX)

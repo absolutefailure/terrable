@@ -64,7 +64,7 @@ public class Map {
             }
             for (int j = 0; j < mapSizeY; j++ ){
                 if ( j == height){
-                    if (rand.nextInt(20) == 1 && i > 5 && i < mapSizeX-5){ // GENERATE TREE
+                    if (rand.nextInt(15) == 1 && i > 5 && i < mapSizeX-5){ // GENERATE TREE
                         mapArray[i][j-1] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - (j-1) * 25, WOOD, false);
                         mapArray[i][j-2] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - (j-2) * 25, WOOD, false);
                         mapArray[i][j-3] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - (j-3) * 25, LEAVES, false);
