@@ -63,17 +63,14 @@ public class Player {
         // JUMP
         if (onGround) {
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-                playerPosY += 1;
                 gravity = -4;
                 onGroundTimer = 0;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-                playerPosY -= 1;
                 gravity = +4;
                 onGroundTimer = 0;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-                playerPosY += 1;
                 gravity = -5;
                 onGroundTimer = 0;
             }
@@ -100,7 +97,7 @@ public class Player {
                             playerPosY = oldY;
                             gravity = -gravity * PLAYER_BOUNCINESS;
                         } else if (mapArray[i][j].getElement() == LADDER) {
-                            gravity *= 0.9;
+                            gravity *= 0.8;
                             onGround = true;
                             onGroundTimer = 5;
                         }

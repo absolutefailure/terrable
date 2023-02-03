@@ -145,21 +145,56 @@ public class Map {
     }
 
     public void UpdateLighting(Player player){
-                
-        for (int i = 0; i < mapArray.length; i++){
-            if (mapArray[i][0].getPosX() > player.getX() - 1300 && mapArray[i][0].getPosX() < player.getX() + 1300 && i > 5 && i < mapSizeX - 5) {
+
+             for (int i = 0; i < mapArray.length; i++){
+            if (mapArray[i][0].getPosX() > player.getX() - 1200 && mapArray[i][0].getPosX() < player.getX() + 1200 && i > 5 && i < mapSizeX - 5) {
                 for (int j = 0; j < mapArray[i].length; j++){
-                    if (mapArray[i][j].isCollision() && mapArray[i][j].getPosY() > player.getY() - 1300 && mapArray[i][j].getPosY() < player.getY() + 1300 && j > 5 && j < mapSizeY - 5) {
+                    if (mapArray[i][j].isCollision() && mapArray[i][j].getPosY() > player.getY() - 1200 && mapArray[i][j].getPosY() < player.getY() + 1200 && j > 5 && j < mapSizeY - 5) {
 
                         if(!mapArray[i-1][j].isCollision() || !mapArray[i+1][j].isCollision() || !mapArray[i][j-1].isCollision() || !mapArray[i][j+1].isCollision() ){
-                            mapArray[i][j-1].setBrightness(0.5f);
-                            mapArray[i+1][j-1].setBrightness(0.5f);
-                            mapArray[i-1][j-1].setBrightness(0.5f);
-                            mapArray[i+1][j].setBrightness(0.5f);
-                            mapArray[i-1][j].setBrightness(0.5f);
-                            mapArray[i-1][j+1].setBrightness(0.5f);
-                            mapArray[i][j+1].setBrightness(0.5f);
-                            mapArray[i+1][j+1].setBrightness(0.5f);
+
+                            mapArray[i][j-2].setBrightness(0.1f);
+                            mapArray[i-1][j-2].setBrightness(0.1f);
+                            mapArray[i-2][j-2].setBrightness(0.1f);
+                            mapArray[i+1][j-2].setBrightness(0.1f);
+                            mapArray[i+2][j-2].setBrightness(0.1f);
+
+                            mapArray[i-2][j-1].setBrightness(0.1f);
+                            mapArray[i+2][j-1].setBrightness(0.1f);
+
+                            mapArray[i-2][j].setBrightness(0.1f);
+                            mapArray[i+2][j].setBrightness(0.1f);
+
+                            mapArray[i-2][j+1].setBrightness(0.1f);
+                            mapArray[i+2][j+1].setBrightness(0.1f);
+
+                            mapArray[i][j+2].setBrightness(0.1f);
+                            mapArray[i-1][j+2].setBrightness(0.1f);
+                            mapArray[i-2][j+2].setBrightness(0.1f);
+                            mapArray[i+1][j+2].setBrightness(0.1f);
+                            mapArray[i+2][j+2].setBrightness(0.1f);
+
+                        }
+                    
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < mapArray.length; i++){
+            if (mapArray[i][0].getPosX() > player.getX() - 1200 && mapArray[i][0].getPosX() < player.getX() + 1200 && i > 5 && i < mapSizeX - 5) {
+                for (int j = 0; j < mapArray[i].length; j++){
+                    if (mapArray[i][j].isCollision() && mapArray[i][j].getPosY() > player.getY() - 1200 && mapArray[i][j].getPosY() < player.getY() + 1200 && j > 5 && j < mapSizeY - 5) {
+
+                        if(!mapArray[i-1][j].isCollision() || !mapArray[i+1][j].isCollision() || !mapArray[i][j-1].isCollision() || !mapArray[i][j+1].isCollision() ){
+                            mapArray[i][j-1].setBrightness(0.3f);
+                            mapArray[i+1][j-1].setBrightness(0.3f);
+                            mapArray[i-1][j-1].setBrightness(0.3f);
+                            mapArray[i+1][j].setBrightness(0.3f);
+                            mapArray[i-1][j].setBrightness(0.3f);
+                            mapArray[i-1][j+1].setBrightness(0.3f);
+                            mapArray[i][j+1].setBrightness(0.3f);
+                            mapArray[i+1][j+1].setBrightness(0.3f);
 
                         }
                     
