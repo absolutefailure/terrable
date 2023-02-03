@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.map.Block;
+import com.mygdx.game.map.Map;
+
 import static com.mygdx.game.map.elements.*;
 
 public class Player {
@@ -38,7 +40,7 @@ public class Player {
         this.playerPosY = y;
 
         playerSizeX = 20;
-        playerSizeY = 50;
+        playerSizeY = 49;
 
         onGround = false;
         onGroundTimer = 0;
@@ -52,7 +54,7 @@ public class Player {
 
 
     // UPDATE AND DRAW PLAYER
-    public void Update(Block[][] mapArray, Camera cam, Batch batch) {
+    public void Update(Map map, Camera cam, Batch batch) {
         float oldX = playerPosX;
         float oldY = playerPosY;
 
@@ -75,7 +77,7 @@ public class Player {
         }
 
 
-
+        Block[][] mapArray = map.getMapArray();
         
         for (int i = 0; i < mapArray.length; i++) {
             if (mapArray[i][0].getPosX() > playerPosX - 400 && mapArray[i][0].getPosX() < playerPosX + 400) {
@@ -160,32 +162,41 @@ public class Player {
                             && mouseInWorld2D.y < mapArray[i][j].getPosY() + mapArray[i][j].getBLOCKSIZE()
                             && mouseInWorld2D.x > mapArray[i][j].getPosX()
                             && mouseInWorld2D.x < mapArray[i][j].getPosX() + mapArray[i][j].getBLOCKSIZE()) {
-
-                            float distance = (float) Math
-                            .sqrt((mouseInWorld2D.y - playerPosY) * (mouseInWorld2D.y - playerPosY)
-                                    + (mouseInWorld2D.x - playerPosX) * (mouseInWorld2D.x - playerPosX));
-
-                            
-                            // IF DISTANCE IS < 150 PIXELS DRAW BLOCK OUTLINE 
-                            if(distance <= 150){
-                                batch.draw(outlineTexture, mapArray[i][j].getPosX(), mapArray[i][j].getPosY());
-
-                                // IF LEFT MOUSE BUTTON IS DOWN REDUCE BLOCK HEALTH OR DESTROY IT (CHANGE TO EMPTY AND COLLISION OFF)
-                                if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                                    if (mapArray[i][j].getBlockHealth() > 0) {
-                                        mapArray[i][j].setBlockHealth(mapArray[i][j].getBlockHealth() - 1);  
-                                    } else {
-                                        mapArray[i][j].setElement(EMPTY); 
-                                        mapArray[i][j].setCollision(false);
+                            if(j > 3 && j < map.getMapSizeY()-3 && i > 3 && i < map.getMapSizeX()-3){
+                                if(mapArray[i-1][j].getElement() == EMPTY || mapArray[i+1][j].getElement() == EMPTY || mapArray[i][j-1].getElement() == EMPTY || mapArray[i][j+1].getElement() == EMPTY){
+                                    float distance = (float) Math
+                                    .sqrt((mouseInWorld2D.y - playerPosY) * (mouseInWorld2D.y - playerPosY)
+                                            + (mouseInWorld2D.x - playerPosX) * (mouseInWorld2D.x - playerPosX));
+        
+                                    
+                                    // IF DISTANCE IS < 150 PIXELS DRAW BLOCK OUTLINE 
+                                    if(distance <= 150){
+                                        batch.draw(outlineTexture, mapArray[i][j].getPosX(), mapArray[i][j].getPosY());
+        
+                                        // IF LEFT MOUSE BUTTON IS DOWN REDUCE BLOCK HEALTH OR DESTROY IT (CHANGE TO EMPTY AND COLLISION OFF)
+                                        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                                            if (mapArray[i][j].getBlockHealth() > 0) {
+                                                mapArray[i][j].setBlockHealth(mapArray[i][j].getBlockHealth() - 1);  
+                                            } else {
+                                                mapArray[i][j].setElement(EMPTY); 
+                                                mapArray[i][j].setCollision(false);
+                                            }
+                                        }
                                     }
                                 }
                             }
+
+
 
                         }
                     }
                 }
             }
         }
+
+
+
+
 
         if (onGroundTimer <= 0) {
             onGround = false;

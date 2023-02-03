@@ -12,6 +12,8 @@ public class Block {
 
     private float blockHealth;
 
+    private float brightness;
+
     boolean collision;
 
     public Block(int x, int y, int element, boolean collision){
@@ -30,6 +32,7 @@ public class Block {
             this.blockHealth = 25;
         }
         this.collision = collision;
+        brightness = 1.f;
     }
 
     public int getPosX() {
@@ -74,5 +77,13 @@ public class Block {
 
     public void setCollision(boolean collision) {
         this.collision = collision;
+    }
+
+    public float getBrightness() {
+        return brightness;
+    }
+
+    public void setBrightness(float brightness) {
+        this.brightness = brightness;
     }
 }

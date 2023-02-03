@@ -20,6 +20,7 @@ public class Map {
     private int mapSizeX; // map size in blocks
     private int mapSizeY; // map size in blocks
 
+
     public Map(int sizeX, int sizeY) {
         this.mapSizeX = sizeX;
         this.mapSizeY = sizeY;
@@ -29,6 +30,7 @@ public class Map {
         grassTexture = new Texture("grass.png");
         woodTexture = new Texture("wood.png");
         leavesTexture = new Texture("leaves.png");
+
 
     }
 
@@ -102,13 +104,18 @@ public class Map {
    // DRAW MAP
    public void Draw(Batch batch, Player player){
 
+        UpdateLighting(player);
+
+
         for (Block[] row : mapArray){ 
-            if (row[0].getPosX() > player.getX() - 2500 && row[0].getPosX() < player.getX() + 2500){ // LOOP ONLY VERTICAL ROWS THAT ARE INSIDE VISIBLE AREA
+            if (row[0].getPosX() > player.getX() - 1300 && row[0].getPosX() < player.getX() + 1300){ // LOOP ONLY VERTICAL ROWS THAT ARE INSIDE VISIBLE AREA
                 for (Block block: row){ 
 
-                    if (block.getPosY() > player.getY() - 2500 && block.getPosY() < player.getY() + 2500 && block.getElement() != EMPTY){ // DRAW BLOCK ONLY IF INSIDE SCREEN
+                    if (block.getPosY() > player.getY() - 1300 && block.getPosY() < player.getY() + 1300 && block.getElement() != EMPTY){ // DRAW BLOCK ONLY IF INSIDE SCREEN
+                        
                         // DRAW CORRECT TEXTURE BASED ON BLOCKS ELEMENT
-                        switch (block.getElement()){ 
+                        batch.setColor(block.getBrightness(),block.getBrightness(),block.getBrightness(),1f);
+                        switch (block.getElement()){             
                             case(GROUND):
                                 batch.draw(mudTexture, block.getPosX(), block.getPosY(), 25, 25);
                                 break;
@@ -122,13 +129,57 @@ public class Map {
                                 batch.draw(leavesTexture, block.getPosX(), block.getPosY(), 25, 25);  
                                 break;
                         }
+                        batch.setColor(1,1,1,1);
+                        block.setBrightness(0f);
                     }      
-
+                    
                 }
             }
         }
 
     }
+
+    public void UpdateLighting(Player player){
+                
+        for (int i = 0; i < mapArray.length; i++){
+            if (mapArray[i][0].getPosX() > player.getX() - 1300 && mapArray[i][0].getPosX() < player.getX() + 1300 && i > 5 && i < mapSizeX - 5) {
+                for (int j = 0; j < mapArray[i].length; j++){
+                    if (mapArray[i][j].isCollision() && mapArray[i][j].getPosY() > player.getY() - 1300 && mapArray[i][j].getPosY() < player.getY() + 1300 && j > 5 && j < mapSizeY - 5) {
+
+                        if(!mapArray[i-1][j].isCollision() || !mapArray[i+1][j].isCollision() || !mapArray[i][j-1].isCollision() || !mapArray[i][j+1].isCollision() ){
+                            mapArray[i][j-1].setBrightness(0.5f);
+                            mapArray[i+1][j-1].setBrightness(0.5f);
+                            mapArray[i-1][j-1].setBrightness(0.5f);
+                            mapArray[i+1][j].setBrightness(0.5f);
+                            mapArray[i-1][j].setBrightness(0.5f);
+                            mapArray[i-1][j+1].setBrightness(0.5f);
+                            mapArray[i][j+1].setBrightness(0.5f);
+                            mapArray[i+1][j+1].setBrightness(0.5f);
+
+                        }
+                    
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < mapArray.length; i++){
+            if (mapArray[i][0].getPosX() > player.getX() - 1200 && mapArray[i][0].getPosX() < player.getX() + 1200) {
+                for (int j = 0; j < mapArray[i].length; j++){
+                    if (mapArray[i][j].getElement() != EMPTY && mapArray[i][j].getPosY() > player.getY() - 1200 && mapArray[i][j].getPosY() < player.getY() + 1200 && i > 3 && i < mapSizeX-3 && j > 3 && j < mapSizeY-3) {
+
+                        if(!mapArray[i-1][j].isCollision() || !mapArray[i+1][j].isCollision() || !mapArray[i][j-1].isCollision() || !mapArray[i][j+1].isCollision() || !mapArray[i][j].isCollision()){
+                            mapArray[i][j].setBrightness(1f);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
 
     public Block[][] getMapArray() {
         return mapArray;

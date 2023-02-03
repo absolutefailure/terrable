@@ -17,7 +17,7 @@ public class Terrable extends ApplicationAdapter {
 	final int SCREEN_X = 1600;
 	final int SCREEN_Y = 900;
 
-	final int MAP_SIZE_X = 3000; // blocks
+	final int MAP_SIZE_X = 5000; // blocks
 	final int MAP_SIZE_Y = 300; // blocks
 
 
@@ -57,12 +57,12 @@ public class Terrable extends ApplicationAdapter {
 		
 
 
-		// draw stuff inside batch
+		// draw stuff 
 		batch.begin();
 
 		map.Draw(batch, player);
 
-		player.Update(map.getMapArray(), cam, batch);
+		player.Update(map, cam, batch);
 		
 	
 		batch.end();
