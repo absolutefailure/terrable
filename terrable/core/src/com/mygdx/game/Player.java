@@ -52,7 +52,6 @@ public class Player {
         acceleration = 0;
     }
 
-
     // UPDATE AND DRAW PLAYER
     public void Update(Map map, Camera cam, Batch batch) {
         float oldX = playerPosX;
@@ -60,7 +59,6 @@ public class Player {
 
         // APPLY GRAVITY TO PLAYER
         playerPosY -= gravity;
-        gravity += 0.25;
 
         // JUMP
         if (onGround) {
@@ -69,31 +67,44 @@ public class Player {
                 gravity = -4;
                 onGroundTimer = 0;
             }
+            if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+                playerPosY -= 1;
+                gravity = +4;
+                onGroundTimer = 0;
+            }
             if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                 playerPosY += 1;
                 gravity = -5;
                 onGroundTimer = 0;
             }
+        } else {
+            gravity += 0.25;
         }
 
-
         Block[][] mapArray = map.getMapArray();
-        
+
         for (int i = 0; i < mapArray.length; i++) {
             if (mapArray[i][0].getPosX() > playerPosX - 400 && mapArray[i][0].getPosX() < playerPosX + 400) {
                 for (int j = 0; j < mapArray[i].length; j++) {
                     // COLLISION DETECTION AND PHYSICS ON Y-AXIS
                     // IF PLAYER IS INSIDE A BLOCK SET POSITION TO THE OLD POSITION
-                    if (mapArray[i][j].isCollision() && playerPosX + playerSizeX > mapArray[i][j].getPosX()
+                    if (playerPosX + playerSizeX > mapArray[i][j].getPosX()
                             && playerPosX < mapArray[i][j].getPosX() + mapArray[i][j].getBLOCKSIZE()
                             && playerPosY > mapArray[i][j].getPosY() - mapArray[i][j].getBLOCKSIZE()
                             && playerPosY - playerSizeY < mapArray[i][j].getPosY()) {
-                        if (gravity > 0){
+                        if (mapArray[i][j].isCollision()) {
+                            if (gravity > 0) {
+                                onGround = true;
+                                onGroundTimer = 10;
+                            }
+                            playerPosY = oldY;
+                            gravity = -gravity * PLAYER_BOUNCINESS;
+                        } else if (mapArray[i][j].getElement() == LADDER) {
+                            gravity *= 0.9;
                             onGround = true;
                             onGroundTimer = 10;
                         }
-                        playerPosY = oldY;
-                        gravity = -gravity * PLAYER_BOUNCINESS;
+
                     }
                 }
             }
@@ -110,19 +121,21 @@ public class Player {
 
         // LEFT AND RIGHT MOVEMENT
         if (Gdx.input.isKeyPressed(Input.Keys.A) && acceleration > -3) {
-            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
+            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                 acceleration -= 2;
-                if (acceleration < -2) acceleration = -4;
-            }else {
+                if (acceleration < -2)
+                    acceleration = -4;
+            } else {
                 acceleration -= 1;
             }
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.D) && acceleration < 3) {
-            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
+            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                 acceleration += 2;
-                if (acceleration > 2) acceleration = 4;
-            }else {
+                if (acceleration > 2)
+                    acceleration = 4;
+            } else {
                 acceleration += 1;
             }
         }
@@ -131,7 +144,6 @@ public class Player {
         // FRICTION
         acceleration *= PLAYER_FRICTION;
 
-        
         for (int i = 0; i < mapArray.length; i++) {
             if (mapArray[i][0].getPosX() > playerPosX - 400 && mapArray[i][0].getPosX() < playerPosX + 400) {
                 for (int j = 0; j < mapArray[i].length; j++) {
@@ -147,56 +159,61 @@ public class Player {
                         }
                         // SET BLOCK HEALTH TO MAX IF LEFT MOUSE BUTTON IS NOT DOWN
                         if (mapArray[i][j].getElement() != EMPTY && !Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                            if (mapArray[i][j].getElement() == GROUND || mapArray[i][j].getElement() == GRASS){
+                            if (mapArray[i][j].getElement() == GROUND || mapArray[i][j].getElement() == GRASS) {
                                 mapArray[i][j].setBlockHealth(50);
-                            }else if(mapArray[i][j].getElement() == WOOD){
+                            } else if (mapArray[i][j].getElement() == WOOD) {
                                 mapArray[i][j].setBlockHealth(100);
-                            }else if(mapArray[i][j].getElement() == LEAVES){
+                            } else if (mapArray[i][j].getElement() == LEAVES) {
+                                mapArray[i][j].setBlockHealth(25);
+                            } else if (mapArray[i][j].getElement() == LADDER) {
                                 mapArray[i][j].setBlockHealth(25);
                             }
-                            
+
                         }
 
                         // CHECK IF MOUSE IS INSIDE CURRENT BLOCK
                         if (mouseInWorld2D.y > mapArray[i][j].getPosY()
-                            && mouseInWorld2D.y < mapArray[i][j].getPosY() + mapArray[i][j].getBLOCKSIZE()
-                            && mouseInWorld2D.x > mapArray[i][j].getPosX()
-                            && mouseInWorld2D.x < mapArray[i][j].getPosX() + mapArray[i][j].getBLOCKSIZE()) {
-                            if(j > 3 && j < map.getMapSizeY()-3 && i > 3 && i < map.getMapSizeX()-3){
-                                if(mapArray[i-1][j].getElement() == EMPTY || mapArray[i+1][j].getElement() == EMPTY || mapArray[i][j-1].getElement() == EMPTY || mapArray[i][j+1].getElement() == EMPTY){
+                                && mouseInWorld2D.y < mapArray[i][j].getPosY() + mapArray[i][j].getBLOCKSIZE()
+                                && mouseInWorld2D.x > mapArray[i][j].getPosX()
+                                && mouseInWorld2D.x < mapArray[i][j].getPosX() + mapArray[i][j].getBLOCKSIZE()) {
+                            if (j > 3 && j < map.getMapSizeY() - 3 && i > 3 && i < map.getMapSizeX() - 3) {
+                                if (mapArray[i - 1][j].getElement() == EMPTY || mapArray[i + 1][j].getElement() == EMPTY
+                                        || mapArray[i][j - 1].getElement() == EMPTY
+                                        || mapArray[i][j + 1].getElement() == EMPTY) {
                                     float distance = (float) Math
-                                    .sqrt((mouseInWorld2D.y - playerPosY) * (mouseInWorld2D.y - playerPosY)
-                                            + (mouseInWorld2D.x - playerPosX) * (mouseInWorld2D.x - playerPosX));
-        
-                                    
-                                    // IF DISTANCE IS < 150 PIXELS DRAW BLOCK OUTLINE 
-                                    if(distance <= 150){
+                                            .sqrt((mouseInWorld2D.y - playerPosY) * (mouseInWorld2D.y - playerPosY)
+                                                    + (mouseInWorld2D.x - playerPosX)
+                                                            * (mouseInWorld2D.x - playerPosX));
+
+                                    // IF DISTANCE IS < 150 PIXELS DRAW BLOCK OUTLINE
+                                    if (distance <= 150) {
                                         batch.draw(outlineTexture, mapArray[i][j].getPosX(), mapArray[i][j].getPosY());
-        
-                                        // IF LEFT MOUSE BUTTON IS DOWN REDUCE BLOCK HEALTH OR DESTROY IT (CHANGE TO EMPTY AND COLLISION OFF)
+
+                                        // IF LEFT MOUSE BUTTON IS DOWN REDUCE BLOCK HEALTH OR DESTROY IT (CHANGE TO
+                                        // EMPTY AND COLLISION OFF)
                                         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                                             if (mapArray[i][j].getBlockHealth() > 0) {
-                                                mapArray[i][j].setBlockHealth(mapArray[i][j].getBlockHealth() - 1);  
+                                                mapArray[i][j].setBlockHealth(mapArray[i][j].getBlockHealth() - 1);
                                             } else {
-                                                mapArray[i][j].setElement(EMPTY); 
+                                                mapArray[i][j].setElement(EMPTY);
                                                 mapArray[i][j].setCollision(false);
+                                            }
+                                        }
+                                        // IF RIGHT MOUSE BUTTON IS DOWN, PLACE BLOCK IN HAND
+                                        if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+                                            if (mapArray[i][j].getElement() == EMPTY) {
+                                                mapArray[i][j].setElement(LADDER);
                                             }
                                         }
                                     }
                                 }
                             }
 
-
-
                         }
                     }
                 }
             }
         }
-
-
-
-
 
         if (onGroundTimer <= 0) {
             onGround = false;

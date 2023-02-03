@@ -30,6 +30,8 @@ public class Block {
             this.blockHealth = 100;
         }else if(element == LEAVES){
             this.blockHealth = 25;
+        }else if(element == LADDER) {
+            this.blockHealth = 25;
         }
         this.collision = collision;
         brightness = 1.f;
