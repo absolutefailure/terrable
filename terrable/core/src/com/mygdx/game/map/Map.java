@@ -16,6 +16,7 @@ public class Map {
     private Texture grassTexture;
     private Texture woodTexture;
     private Texture leavesTexture;
+    private Texture ladderTexture;
 
     private int mapSizeX; // map size in blocks
     private int mapSizeY; // map size in blocks
@@ -30,6 +31,7 @@ public class Map {
         grassTexture = new Texture("grass.png");
         woodTexture = new Texture("wood.png");
         leavesTexture = new Texture("leaves.png");
+        ladderTexture = new Texture("ladder.png");
 
 
     }
@@ -127,6 +129,9 @@ public class Map {
                                 break;
                             case(LEAVES):
                                 batch.draw(leavesTexture, block.getPosX(), block.getPosY(), 25, 25);  
+                                break;
+                            case(LADDER):
+                                batch.draw(ladderTexture, block.getPosX(), block.getPosY(), 25, 25);
                                 break;
                         }
                         batch.setColor(1,1,1,1);
