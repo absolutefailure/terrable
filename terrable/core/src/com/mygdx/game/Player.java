@@ -42,6 +42,8 @@ public class Player {
         this.playerPosX = x;
         this.playerPosY = y;
 
+        damageSound = Gdx.audio.newSound(Gdx.files.internal("damage.mp3"));
+
         playerSizeX = 20;
         playerSizeY = 49;
 
@@ -80,7 +82,7 @@ public class Player {
         } else {
             gravity += 0.25;
         }
-        damageSound = Gdx.audio.newSound(Gdx.files.internal("damage.mp3"));
+        
         Block[][] mapArray = map.getMapArray();
 
         for (int i = 0; i < mapArray.length; i++) {
@@ -93,21 +95,28 @@ public class Player {
                             && playerPosY > mapArray[i][j].getPosY() - mapArray[i][j].getBLOCKSIZE()
                             && playerPosY - playerSizeY < mapArray[i][j].getPosY()) {
                         if (mapArray[i][j].isCollision()) {
-                            if(gravity > 10) {
-                                Gdx.app.exit();
-                            } else if(gravity >= 9.5) {
-                                playerHealth -= 4;
-                                damageSound.play(1.0f);
-                            } else if(gravity >= 9) {
-                                playerHealth -= 3;
-                                damageSound.play(1.0f);
-                            } else if(gravity >= 8.25) {
-                                playerHealth -= 2;
-                                damageSound.play(1.0f);
-                            } else if(gravity >= 7.25) {
-                                playerHealth -= 1;
-                                damageSound.play(1.0f);
-                            }
+                            
+                            
+            
+                        //   if(gravity > 10) {
+                        //         Gdx.app.exit();
+                        //     } else if(gravity >= 9.5) {
+                        //         playerHealth -= 4;
+                        //         damageSound.play(1.0f);
+                        //     } else if(gravity >= 9) {
+                        //         playerHealth -= 3;
+                        //         damageSound.play(1.0f);
+                        //     } else if(gravity >= 8.25) {
+                        //         playerHealth -= 2;
+                        //         damageSound.play(1.0f);
+                        //     } else if(gravity >= 7.25) {
+                        //         playerHealth -= 1;
+                        //         damageSound.play(1.0f);
+                        //     }
+
+                            
+  
+                            
 
                             if (gravity > 0) {
                                 onGround = true;
