@@ -83,12 +83,11 @@ public class Map {
                     }else{ // GENERATE GRASS BLOCK
                         mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GRASS, true);
                     }
-                    
+                } else if ( j > height + 3){
+                    mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, STONE, true);  
                 } else if ( j > height){
                     mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GROUND, true);
-                } //else if ( j > height - 2){
-                   // mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, STONE, true);
-                //} 
+                }
                 else if(mapArray[i][j] == null){
                     mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, EMPTY, false);
                 }
