@@ -56,7 +56,6 @@ public class Map {
             [1,1,1,1,1,0,0,0,0,0],
         ]
         */
-
         
 
         for (int i = 0; i < mapSizeX; i++){
@@ -117,9 +116,13 @@ public class Map {
         for (Block[] row : mapArray){ 
             if (row[0].getPosX() > player.getX() - 1300 && row[0].getPosX() < player.getX() + 1300){ // LOOP ONLY VERTICAL ROWS THAT ARE INSIDE VISIBLE AREA
                 for (Block block: row){ 
+                    if(block.isPermanent()){
+                        batch.setColor(0.5f, 0.7f, 0.7f, 1);
+                        batch.draw(mudTexture, block.getPosX(), block.getPosY());
+                    }
+                    batch.setColor(1, 1, 1, 1);
 
                     if (block.getPosY() > player.getY() - 1300 && block.getPosY() < player.getY() + 1300 && block.getElement() != EMPTY){ // DRAW BLOCK ONLY IF INSIDE SCREEN
-                        
                         // DRAW CORRECT TEXTURE BASED ON BLOCKS ELEMENT
                         batch.setColor(block.getBrightness(),block.getBrightness(),block.getBrightness(),1f);
                         switch (block.getElement()){             
@@ -224,10 +227,6 @@ public class Map {
             }
         }
     }
-
-
-
-
 
     public Block[][] getMapArray() {
         return mapArray;
