@@ -8,4 +8,5 @@ public final class elements {
     public static final int WOOD = 3;
     public static final int LEAVES = 4;
     public static final int LADDER = 5;
+    public static final int STONE = 6;
 }

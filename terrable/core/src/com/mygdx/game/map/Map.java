@@ -17,6 +17,7 @@ public class Map {
     private Texture woodTexture;
     private Texture leavesTexture;
     private Texture ladderTexture;
+    private Texture stoneTexture;
 
     private int mapSizeX; // map size in blocks
     private int mapSizeY; // map size in blocks
@@ -32,6 +33,7 @@ public class Map {
         woodTexture = new Texture("wood.png");
         leavesTexture = new Texture("leaves.png");
         ladderTexture = new Texture("ladder.png");
+        stoneTexture = new Texture("stone.png");
 
 
     }
@@ -54,7 +56,6 @@ public class Map {
             [1,1,1,1,1,0,0,0,0,0],
         ]
         */
-
         
 
         for (int i = 0; i < mapSizeX; i++){
@@ -79,12 +80,16 @@ public class Map {
                         mapArray[i-1][j-5] = new Block((-mapSizeX  * 25 / 2) + (i-1) * 25,(mapSizeY  * 25/ 2) - (j-5) * 25, LEAVES, false);
                         mapArray[i+1][j-5] = new Block((-mapSizeX  * 25 / 2) + (i+1) * 25,(mapSizeY  * 25/ 2) - (j-5) * 25, LEAVES, false);
                         mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GROUND, true);
-                    } else{ // GENERATE GRASS BLOCK
+                    }else{ // GENERATE GRASS BLOCK
                         mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GRASS, true);
-                    }                   
-                }else if ( j > height){
+                    }
+                    
+                } else if ( j > height){
                     mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GROUND, true);
-                } else if(mapArray[i][j] == null){
+                } //else if ( j > height - 2){
+                   // mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, STONE, true);
+                //} 
+                else if(mapArray[i][j] == null){
                     mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, EMPTY, false);
                 }
             }
@@ -111,16 +116,13 @@ public class Map {
         for (Block[] row : mapArray){ 
             if (row[0].getPosX() > player.getX() - 1300 && row[0].getPosX() < player.getX() + 1300){ // LOOP ONLY VERTICAL ROWS THAT ARE INSIDE VISIBLE AREA
                 for (Block block: row){ 
-
                     if(block.isPermanent()){
                         batch.setColor(0.5f, 0.7f, 0.7f, 1);
                         batch.draw(mudTexture, block.getPosX(), block.getPosY());
-                        // batch.setColor(0.7f, 0.7f, 0.7f, 1);
                     }
                     batch.setColor(1, 1, 1, 1);
 
                     if (block.getPosY() > player.getY() - 1300 && block.getPosY() < player.getY() + 1300 && block.getElement() != EMPTY){ // DRAW BLOCK ONLY IF INSIDE SCREEN
-                        
                         // DRAW CORRECT TEXTURE BASED ON BLOCKS ELEMENT
                         batch.setColor(block.getBrightness(),block.getBrightness(),block.getBrightness(),1f);
                         switch (block.getElement()){             
@@ -138,6 +140,9 @@ public class Map {
                                 break;
                             case(LADDER):
                                 batch.draw(ladderTexture, block.getPosX(), block.getPosY(), 25, 25);
+                                break;
+                            case(STONE):
+                                batch.draw(stoneTexture, block.getPosX(), block.getPosY(), 25, 25);
                                 break;
                         }
                         batch.setColor(1,1,1,1);
@@ -222,10 +227,6 @@ public class Map {
             }
         }
     }
-
-
-
-
 
     public Block[][] getMapArray() {
         return mapArray;
