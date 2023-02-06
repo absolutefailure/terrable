@@ -15,7 +15,7 @@ public class Block {
     private float brightness;
 
     boolean collision;
-    boolean permanent;
+    int permanent;
 
     public Block(int x, int y, int element, boolean collision){
         this.posX = x;
@@ -25,14 +25,15 @@ public class Block {
             this.blockHealth = 0;
         }else if(element == GROUND){
             this.blockHealth = 50;
-            this.permanent = true;
+            this.permanent = GROUND;
         }else if(element == GRASS){
             this.blockHealth = 50;
-            this.permanent = true;
+            this.permanent = GROUND;
         }else if(element == WOOD){
             this.blockHealth = 100;
         }else if(element == STONE){
             this.blockHealth = 200;
+            this.permanent = STONE;
         }else if(element == LEAVES){
             this.blockHealth = 25;
         }else if(element == LADDER) {
@@ -94,11 +95,12 @@ public class Block {
         this.brightness = brightness;
     }
 
-    public boolean isPermanent() {
+    public int getPermanent() {
         return permanent;
     }
 
-    public void setPermanent(boolean permanent) {
+    public void setPermanent(int permanent) {
         this.permanent = permanent;
     }
+
 }
