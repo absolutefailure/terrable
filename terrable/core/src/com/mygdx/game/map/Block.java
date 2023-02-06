@@ -28,6 +28,8 @@ public class Block {
             this.blockHealth = 50;
         }else if(element == WOOD){
             this.blockHealth = 100;
+        }else if(element == STONE){
+            this.blockHealth = 200;
         }else if(element == LEAVES){
             this.blockHealth = 25;
         }else if(element == LADDER) {

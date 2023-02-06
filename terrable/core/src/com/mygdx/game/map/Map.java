@@ -17,6 +17,7 @@ public class Map {
     private Texture woodTexture;
     private Texture leavesTexture;
     private Texture ladderTexture;
+    private Texture stoneTexture;
 
     private int mapSizeX; // map size in blocks
     private int mapSizeY; // map size in blocks
@@ -32,6 +33,7 @@ public class Map {
         woodTexture = new Texture("wood.png");
         leavesTexture = new Texture("leaves.png");
         ladderTexture = new Texture("ladder.png");
+        stoneTexture = new Texture("stone.png");
 
 
     }
@@ -83,9 +85,12 @@ public class Map {
                         mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GRASS, true);
                     }
                     
-                }else if ( j > height){
+                } else if ( j > height){
                     mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GROUND, true);
-                } else if(mapArray[i][j] == null){
+                } //else if ( j > height - 2){
+                   // mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, STONE, true);
+                //} 
+                else if(mapArray[i][j] == null){
                     mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, EMPTY, false);
                 }
             }
@@ -132,6 +137,9 @@ public class Map {
                                 break;
                             case(LADDER):
                                 batch.draw(ladderTexture, block.getPosX(), block.getPosY(), 25, 25);
+                                break;
+                            case(STONE):
+                                batch.draw(stoneTexture, block.getPosX(), block.getPosY(), 25, 25);
                                 break;
                         }
                         batch.setColor(1,1,1,1);
