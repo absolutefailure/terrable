@@ -34,6 +34,8 @@ public class Player {
     private Texture playerTexture;
     private Texture outlineTexture;
 
+    private int playerHealth = 5;
+
     public Player(float x, float y) {
 
         this.playerPosX = x;
@@ -90,6 +92,18 @@ public class Player {
                             && playerPosY > mapArray[i][j].getPosY() - mapArray[i][j].getBLOCKSIZE()
                             && playerPosY - playerSizeY < mapArray[i][j].getPosY()) {
                         if (mapArray[i][j].isCollision()) {
+                            if(gravity > 10) {
+                                Gdx.app.exit();
+                            } else if(gravity >= 9.5) {
+                                playerHealth -= 4;
+                            } else if(gravity >= 9) {
+                                playerHealth -= 3;
+                            } else if(gravity >= 8.25) {
+                                playerHealth -= 2;
+                            } else if(gravity >= 7.25) {
+                                playerHealth -= 1;
+                            }
+
                             if (gravity > 0) {
                                 onGround = true;
                                 onGroundTimer = 5;
