@@ -79,10 +79,9 @@ public class Map {
                         mapArray[i-1][j-5] = new Block((-mapSizeX  * 25 / 2) + (i-1) * 25,(mapSizeY  * 25/ 2) - (j-5) * 25, LEAVES, false);
                         mapArray[i+1][j-5] = new Block((-mapSizeX  * 25 / 2) + (i+1) * 25,(mapSizeY  * 25/ 2) - (j-5) * 25, LEAVES, false);
                         mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GROUND, true);
-                    }else{ // GENERATE GRASS BLOCK
+                    } else{ // GENERATE GRASS BLOCK
                         mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GRASS, true);
-                    }
-                    
+                    }                   
                 }else if ( j > height){
                     mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GROUND, true);
                 } else if(mapArray[i][j] == null){
@@ -112,6 +111,13 @@ public class Map {
         for (Block[] row : mapArray){ 
             if (row[0].getPosX() > player.getX() - 1300 && row[0].getPosX() < player.getX() + 1300){ // LOOP ONLY VERTICAL ROWS THAT ARE INSIDE VISIBLE AREA
                 for (Block block: row){ 
+
+                    if(block.isPermanent()){
+                        batch.setColor(0.5f, 0.7f, 0.7f, 1);
+                        batch.draw(mudTexture, block.getPosX(), block.getPosY());
+                        // batch.setColor(0.7f, 0.7f, 0.7f, 1);
+                    }
+                    batch.setColor(1, 1, 1, 1);
 
                     if (block.getPosY() > player.getY() - 1300 && block.getPosY() < player.getY() + 1300 && block.getElement() != EMPTY){ // DRAW BLOCK ONLY IF INSIDE SCREEN
                         
