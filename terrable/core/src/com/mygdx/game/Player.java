@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -33,11 +34,11 @@ public class Player {
 
     private Texture playerTexture;
     private Texture outlineTexture;
+    private Sound damageSound;
 
     private int playerHealth = 5;
 
     public Player(float x, float y) {
-
         this.playerPosX = x;
         this.playerPosY = y;
 
@@ -79,7 +80,7 @@ public class Player {
         } else {
             gravity += 0.25;
         }
-
+        damageSound = Gdx.audio.newSound(Gdx.files.internal("damage.mp3"));
         Block[][] mapArray = map.getMapArray();
 
         for (int i = 0; i < mapArray.length; i++) {
@@ -96,12 +97,16 @@ public class Player {
                                 Gdx.app.exit();
                             } else if(gravity >= 9.5) {
                                 playerHealth -= 4;
+                                damageSound.play(1.0f);
                             } else if(gravity >= 9) {
                                 playerHealth -= 3;
+                                damageSound.play(1.0f);
                             } else if(gravity >= 8.25) {
                                 playerHealth -= 2;
+                                damageSound.play(1.0f);
                             } else if(gravity >= 7.25) {
                                 playerHealth -= 1;
+                                damageSound.play(1.0f);
                             }
 
                             if (gravity > 0) {
@@ -120,6 +125,9 @@ public class Player {
                 }
             }
 
+        }
+        if(playerHealth <= 0) {
+            Gdx.app.exit();
         }
 
         // GET MOUSE WORLD COORDINATES
