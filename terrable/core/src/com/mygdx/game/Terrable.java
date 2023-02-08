@@ -52,7 +52,7 @@ public class Terrable extends ApplicationAdapter {
 
 		batch.setProjectionMatrix(cam.combined);
 
-		//Gdx.graphics.setTitle(""+Gdx.graphics.getFramesPerSecond());
+		// Gdx.graphics.setTitle(""+Gdx.graphics.getFramesPerSecond());
 		
 		
 
