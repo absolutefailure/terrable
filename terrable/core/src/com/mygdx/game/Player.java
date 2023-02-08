@@ -26,6 +26,8 @@ public class Player {
     private boolean onGround;
     private int onGroundTimer;
 
+    private int soundTimer;
+
     private float gravity;
     private float acceleration;
 
@@ -34,7 +36,8 @@ public class Player {
 
     private Texture playerTexture;
     private Texture outlineTexture;
-    private Sound damageSound;
+    // private Sound damageSound;
+    private Sound stoneHitSound;
 
     private int playerHealth = 5;
 
@@ -42,13 +45,16 @@ public class Player {
         this.playerPosX = x;
         this.playerPosY = y;
 
-        damageSound = Gdx.audio.newSound(Gdx.files.internal("damage.mp3"));
-
+        // damageSound = Gdx.audio.newSound(Gdx.files.internal("damage.mp3"));
+        stoneHitSound = Gdx.audio.newSound(Gdx.files.internal("stoneHitSound.mp3"));
+        
         playerSizeX = 20;
         playerSizeY = 49;
 
         onGround = false;
         onGroundTimer = 0;
+
+        soundTimer = 0;
 
         playerTexture = new Texture("jusju.png");
         outlineTexture = new Texture("outline.png");
@@ -222,6 +228,7 @@ public class Player {
                                         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                                             if (mapArray[i][j].getBlockHealth() > 0) {
                                                 mapArray[i][j].setBlockHealth(mapArray[i][j].getBlockHealth() - 1);
+                                                soundTimer += 1;
                                             } else {
                                                 mapArray[i][j].setElement(EMPTY);
                                                 mapArray[i][j].setCollision(false);
@@ -241,6 +248,10 @@ public class Player {
                     }
                 }
             }
+        }
+        if(soundTimer == 20) {
+            stoneHitSound.play();
+            soundTimer -= 20;
         }
 
         if (onGroundTimer <= 0) {
