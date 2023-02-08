@@ -37,7 +37,7 @@ public class Player {
     private Texture playerTexture;
     private Texture outlineTexture;
     // private Sound damageSound;
-    private Sound klopSound;
+    private Sound stoneHitSound;
 
     private int playerHealth = 5;
 
@@ -46,8 +46,8 @@ public class Player {
         this.playerPosY = y;
 
         // damageSound = Gdx.audio.newSound(Gdx.files.internal("damage.mp3"));
-        klopSound = Gdx.audio.newSound(Gdx.files.internal("klop.mp3"));
-
+        stoneHitSound = Gdx.audio.newSound(Gdx.files.internal("stoneHitSound.mp3"));
+        
         playerSizeX = 20;
         playerSizeY = 49;
 
@@ -250,7 +250,7 @@ public class Player {
             }
         }
         if(soundTimer == 20) {
-            klopSound.play();
+            stoneHitSound.play();
             soundTimer -= 20;
         }
 
