@@ -120,13 +120,15 @@ public class Map {
 
         for (Block[] row : mapArray){ 
             if (row[0].getPosX() > player.getX() - 1300 && row[0].getPosX() < player.getX() + 1300){ // LOOP ONLY VERTICAL ROWS THAT ARE INSIDE VISIBLE AREA
-                for (Block block: row){ 
-                    if(block.getPermanent() == GROUND || block.getPermanent() == GRASS){
-                        batch.setColor(0.5f, 0.7f, 0.7f, 1);
-                        batch.draw(mudTexture, block.getPosX(), block.getPosY());
-                    } else if(block.getPermanent() == STONE) {
-                        batch.setColor(0.5f, 0.7f, 0.7f, 1);
-                        batch.draw(stoneTexture, block.getPosX(), block.getPosY());
+                for (Block block: row){
+                    if (block.getPosY() > player.getY() - 1300 && block.getPosY() < player.getY() + 1300) { 
+                        if(block.getPermanent() == GROUND || block.getPermanent() == GRASS){
+                            batch.setColor(0.5f, 0.7f, 0.7f, 1);
+                            batch.draw(mudTexture, block.getPosX(), block.getPosY());
+                        } else if(block.getPermanent() == STONE) {
+                            batch.setColor(0.6f, 0.6f, 0.6f, 1);
+                            batch.draw(stoneTexture, block.getPosX(), block.getPosY());
+                        }
                     }
                     batch.setColor(1, 1, 1, 1);
 
