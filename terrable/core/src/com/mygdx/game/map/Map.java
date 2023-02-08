@@ -83,8 +83,14 @@ public class Map {
                     }else{ // GENERATE GRASS BLOCK
                         mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GRASS, true);
                     }
+                } else if ( j > height + 15){ //only stone from depth 15
+                        mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, STONE, true);  
                 } else if ( j > height + 3){
-                    mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, STONE, true);  
+                    if (rand.nextInt(100) < 66 ) {//66% chance for stone, else spawning ground from depth 3
+                        mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, STONE, true);  
+                    } else {
+                        mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GROUND, true);
+                    }
                 } else if ( j > height){
                     mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GROUND, true);
                 }
