@@ -41,7 +41,7 @@ public class Map {
     // MAP GENERATION
     public void GenerateNewMap(Player player) {
 
-        
+
         int height = mapSizeY/2;
 
         Random rand = new Random();
@@ -56,7 +56,7 @@ public class Map {
             [1,1,1,1,1,0,0,0,0,0],
         ]
         */
-        
+
 
         for (int i = 0; i < mapSizeX; i++){
             if (i == mapSizeX / 2){ // SET PLAYER POSITION TO THE CENTER OF THE MAP
@@ -84,7 +84,7 @@ public class Map {
                         mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GRASS, true);
                     }
                 } else if ( j > height + 3){
-                    mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, STONE, true);  
+                    mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, STONE, true);
                 } else if ( j > height){
                     mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GROUND, true);
                 }
@@ -112,14 +112,14 @@ public class Map {
         UpdateLighting(player);
 
 
-        for (Block[] row : mapArray){ 
+        for (Block[] row : mapArray){
             if (row[0].getPosX() > player.getX() - 1300 && row[0].getPosX() < player.getX() + 1300){ // LOOP ONLY VERTICAL ROWS THAT ARE INSIDE VISIBLE AREA
-                for (Block block: row){ 
+                for (Block block: row){
                     if(block.getPermanent() == GROUND || block.getPermanent() == GRASS){
                         batch.setColor(0.5f, 0.7f, 0.7f, 1);
                         batch.draw(mudTexture, block.getPosX(), block.getPosY());
                     } else if(block.getPermanent() == STONE) {
-                        batch.setColor(0.5f, 0.7f, 0.7f, 1);
+                        batch.setColor(0.6f, 0.6f, 0.6f, 1);
                         batch.draw(stoneTexture, block.getPosX(), block.getPosY());
                     }
                     batch.setColor(1, 1, 1, 1);
@@ -127,7 +127,7 @@ public class Map {
                     if (block.getPosY() > player.getY() - 1300 && block.getPosY() < player.getY() + 1300 && block.getElement() != EMPTY){ // DRAW BLOCK ONLY IF INSIDE SCREEN
                         // DRAW CORRECT TEXTURE BASED ON BLOCKS ELEMENT
                         batch.setColor(block.getBrightness(),block.getBrightness(),block.getBrightness(),1f);
-                        switch (block.getElement()){             
+                        switch (block.getElement()){
                             case(GROUND):
                                 batch.draw(mudTexture, block.getPosX(), block.getPosY(), 25, 25);
                                 break;
@@ -138,7 +138,7 @@ public class Map {
                                 batch.draw(woodTexture, block.getPosX(), block.getPosY(), 25, 25);
                                 break;
                             case(LEAVES):
-                                batch.draw(leavesTexture, block.getPosX(), block.getPosY(), 25, 25);  
+                                batch.draw(leavesTexture, block.getPosX(), block.getPosY(), 25, 25);
                                 break;
                             case(LADDER):
                                 batch.draw(ladderTexture, block.getPosX(), block.getPosY(), 25, 25);
@@ -149,8 +149,8 @@ public class Map {
                         }
                         batch.setColor(1,1,1,1);
                         block.setBrightness(0f);
-                    }      
-                    
+                    }
+
                 }
             }
         }
@@ -188,7 +188,7 @@ public class Map {
                             mapArray[i+2][j+2].setBrightness(0.1f);
 
                         }
-                    
+
                     }
                 }
             }
@@ -210,7 +210,7 @@ public class Map {
                             mapArray[i+1][j+1].setBrightness(0.3f);
 
                         }
-                    
+
                     }
                 }
             }
