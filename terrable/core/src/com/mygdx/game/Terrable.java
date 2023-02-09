@@ -1,81 +1,55 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
+
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.mygdx.game.map.Map;
+import com.mygdx.game.camera.GameCamera;
+import com.mygdx.game.screens.GameScreen;
+import com.mygdx.game.screens.MainMenuScreen;
 
-public class Terrable extends ApplicationAdapter {
-	SpriteBatch batch;
+public class Terrable extends Game {
+	public SpriteBatch batch;
 	
-	Map map;
+	public GameCamera cam;
 
-	Player player;
+	public final int WIDTH = 1600;
+	public final int HEIGHT = 900;
 
-	final int SCREEN_X = 1600;
-	final int SCREEN_Y = 900;
+	public GameScreen gameScreen;
+	public MainMenuScreen mainMenuScreen;
 
-	final int MAP_SIZE_X = 5000; // blocks
-	final int MAP_SIZE_Y = 300; // blocks
-
-
-    public OrthographicCamera cam; 
+	Terrable game = this;
 
 
-	@Override
-	public void create () {
+
+	
+	public void create (){
 		batch = new SpriteBatch();
 
-		Gdx.graphics.setWindowedMode(SCREEN_X, SCREEN_Y);
-
-		cam = new OrthographicCamera();
 
 
 
-		// Create player and set starting position
-		player = new Player(0,0); 
+		cam = new GameCamera(WIDTH, HEIGHT);
 
-		map = new Map(MAP_SIZE_X, MAP_SIZE_Y);
-		map.GenerateNewMap(player);
+		Gdx.graphics.setWindowedMode(WIDTH, HEIGHT);
 
-		cam.setToOrtho(false, SCREEN_X , SCREEN_Y);
+		mainMenuScreen = new MainMenuScreen(this);
+		gameScreen = new GameScreen(this);
+
+		this.setScreen(mainMenuScreen);
+
 
 	}
-
+	
 	@Override
 	public void render () {
-		// CLEAR SCREEN WITH SKY COLOR
-		ScreenUtils.clear(0.35f, 0.7f, 1f, 1);
 
 
-		batch.setProjectionMatrix(cam.combined);
-
-		// Gdx.graphics.setTitle(""+Gdx.graphics.getFramesPerSecond());
-		
-		
-
-
-		// draw stuff 
-		batch.begin();
-
-		map.Draw(batch, player);
-
-		player.Update(map, cam, batch);
-		
-	
-		batch.end();
-
-
-
-		cam.position.set(player.getX(), player.getY(),0f);
-		cam.update();
+		batch.setProjectionMatrix(cam.combined());
+		super.render();
 
 	}
-	
-	@Override
-	public void dispose () {
-		batch.dispose();
-	}
+
+
 }

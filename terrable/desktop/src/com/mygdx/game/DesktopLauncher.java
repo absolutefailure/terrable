@@ -12,6 +12,7 @@ public class DesktopLauncher {
 		config.useVsync(true);
 		config.setResizable(true);
 		config.setTitle("Terrable");
+		config.setWindowedMode(1600, 900);
 		new Lwjgl3Application(new Terrable(), config);
 	}
 }
