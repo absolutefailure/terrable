@@ -18,6 +18,9 @@ public class Map {
     private Texture leavesTexture;
     private Texture ladderTexture;
     private Texture stoneTexture;
+    private Texture coalTexture;
+    private Texture ironTexture;
+    private Texture diamondTexture;
 
     private int mapSizeX; // map size in blocks
     private int mapSizeY; // map size in blocks
@@ -34,7 +37,9 @@ public class Map {
         leavesTexture = new Texture("leaves.png");
         ladderTexture = new Texture("ladder.png");
         stoneTexture = new Texture("stone.png");
-
+        coalTexture = new Texture("coal.png");
+        ironTexture = new Texture("iron.png");
+        diamondTexture = new Texture("diamond.png");
 
     }
 
@@ -85,8 +90,17 @@ public class Map {
                     }else{ // GENERATE GRASS BLOCK
                         mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GRASS, true);
                     }
-                } else if ( j > height + 15){ //only stone from depth 15
-                        mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, STONE, true);  
+                } else if ( j > height + 15){ //only stone and ores from depth 15
+                    int oreChance = rand.nextInt(1000);
+                    if ( oreChance < 5 ) { // 0.5% chance for diamond
+                        mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, DIAMOND, true);
+                    } else if ( oreChance < 55 ) { // 5% chance for iron
+                        mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, IRON, true);
+                    } else if ( oreChance < 160 ) { // 10% chance for coal
+                        mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, COAL, true);
+                    } else { // 84.5% chance for stone
+                        mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, STONE, true);
+                    }    
                 } else if ( j > height + 3){
                     if (rand.nextInt(100) < 66 ) {//66% chance for stone, else spawning ground from depth 3
                         mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, STONE, true);  
@@ -155,6 +169,15 @@ public class Map {
                                 break;
                             case(STONE):
                                 batch.draw(stoneTexture, block.getPosX(), block.getPosY(), 25, 25);
+                                break;
+                            case(COAL):
+                                batch.draw(coalTexture, block.getPosX(), block.getPosY(), 25, 25);
+                                break;
+                            case(IRON):
+                                batch.draw(ironTexture, block.getPosX(), block.getPosY(), 25, 25);
+                                break;
+                            case(DIAMOND):
+                                batch.draw(diamondTexture, block.getPosX(), block.getPosY(), 25, 25);
                                 break;
                         }
                         batch.setColor(1,1,1,1);

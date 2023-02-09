@@ -9,4 +9,7 @@ public final class elements {
     public static final int LEAVES = 4;
     public static final int LADDER = 5;
     public static final int STONE = 6;
+    public static final int COAL = 7;
+    public static final int IRON = 8;
+    public static final int DIAMOND = 9;
 }
