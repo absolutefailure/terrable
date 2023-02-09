@@ -24,7 +24,9 @@ public class Player {
     private int playerSizeY;
 
     private boolean onGround;
+    private boolean onLadder;
     private int onGroundTimer;
+
 
     private int soundTimer;
 
@@ -78,8 +80,11 @@ public class Player {
                 onGroundTimer = 0;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-                gravity = +4;
-                onGroundTimer = 0;
+
+                if (onLadder){
+                    gravity = +4;
+                    onGroundTimer = 0;
+                }
             }
             if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                 gravity = -5;
@@ -126,6 +131,7 @@ public class Player {
 
                             if (gravity > 0) {
                                 onGround = true;
+                                onLadder = false;
                                 onGroundTimer = 5;
                             }
                             playerPosY = oldY;
@@ -133,6 +139,7 @@ public class Player {
                         } else if (mapArray[i][j].getElement() == LADDER) {
                             gravity *= 0.8;
                             onGround = true;
+                            onLadder = true;
                             onGroundTimer = 5;
                         }
 
