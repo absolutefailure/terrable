@@ -37,16 +37,16 @@ public class Player {
 
     private Texture playerTexture;
     private Texture outlineTexture;
-    // private Sound damageSound;
+    private Sound damageSound;
     private Sound stoneHitSound;
 
-    private int playerHealth = 5;
+    private int playerHealth;
 
     public Player(float x, float y) {
         this.playerPosX = x;
         this.playerPosY = y;
 
-        // damageSound = Gdx.audio.newSound(Gdx.files.internal("damage.mp3"));
+        damageSound = Gdx.audio.newSound(Gdx.files.internal("damage.mp3"));
         stoneHitSound = Gdx.audio.newSound(Gdx.files.internal("stoneHitSound.mp3"));
         
         playerSizeX = 20;
@@ -108,21 +108,22 @@ public class Player {
                             
                             
             
-                        //   if(gravity > 10) {
-                        //         Gdx.app.exit();
-                        //     } else if(gravity >= 9.5) {
-                        //         playerHealth -= 4;
-                        //         damageSound.play(1.0f);
-                        //     } else if(gravity >= 9) {
-                        //         playerHealth -= 3;
-                        //         damageSound.play(1.0f);
-                        //     } else if(gravity >= 8.25) {
-                        //         playerHealth -= 2;
-                        //         damageSound.play(1.0f);
-                        //     } else if(gravity >= 7.25) {
-                        //         playerHealth -= 1;
-                        //         damageSound.play(1.0f);
-                        //     }
+                          if(gravity > 10) {
+                                // Gdx.app.exit();
+                                playerHealth -= 5;
+                            } else if(gravity >= 9.5) {
+                                playerHealth -= 4;
+                                damageSound.play(0.2f);
+                            } else if(gravity >= 9) {
+                                playerHealth -= 3;
+                                damageSound.play(0.2f);
+                            } else if(gravity >= 8.25) {
+                                playerHealth -= 2;
+                                damageSound.play(0.2f);
+                            } else if(gravity >= 7.25) {
+                                playerHealth -= 1;
+                                damageSound.play(0.2f);
+                            }
 
                             
   
@@ -288,6 +289,10 @@ public class Player {
 
     public int getPlayerHealth() {
         return playerHealth;
+    }
+
+    public void setPlayerHealth(int playerHealth) {
+        this.playerHealth = playerHealth;
     }
 
 }

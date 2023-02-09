@@ -90,6 +90,7 @@ public class GameScreen implements Screen {
     public void show() {
         // TODO Auto-generated method stub
         map.GenerateNewMap(player);
+        player.setPlayerHealth(5);
     }
 
 
