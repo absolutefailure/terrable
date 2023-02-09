@@ -28,10 +28,10 @@ public class Map {
         this.mapSizeY = sizeY;
 
         
-        mudTexture = new Texture("mud3.png");
-        grassTexture = new Texture("grass3.png");
+        mudTexture = new Texture("mud.png");
+        grassTexture = new Texture("grass.png");
         woodTexture = new Texture("wood.png");
-        leavesTexture = new Texture("leaves2.png");
+        leavesTexture = new Texture("leaves.png");
         ladderTexture = new Texture("ladder.png");
         stoneTexture = new Texture("stone.png");
 
