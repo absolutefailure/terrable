@@ -27,7 +27,6 @@ public class Player {
     private boolean onLadder;
     private int onGroundTimer;
 
-
     private int soundTimer;
 
     private float gravity;
