@@ -38,6 +38,15 @@ public class Block {
             this.blockHealth = 25;
         }else if(element == LADDER) {
             this.blockHealth = 25;
+        }else if(element == IRON) {
+            this.blockHealth = 250;
+            this.permanent = STONE;
+        }else if(element == COAL) {
+            this.blockHealth = 200;
+            this.permanent = STONE;
+        }else if(element == DIAMOND) {
+            this.blockHealth = 300;
+            this.permanent = STONE;
         }
         this.collision = collision;
         brightness = 1.f;
