@@ -28,10 +28,10 @@ public class Map {
         this.mapSizeY = sizeY;
 
         
-        mudTexture = new Texture("mud.png");
-        grassTexture = new Texture("grass.png");
+        mudTexture = new Texture("mud3.png");
+        grassTexture = new Texture("grass3.png");
         woodTexture = new Texture("wood.png");
-        leavesTexture = new Texture("leaves.png");
+        leavesTexture = new Texture("leaves2.png");
         ladderTexture = new Texture("ladder.png");
         stoneTexture = new Texture("stone.png");
 
@@ -98,6 +98,7 @@ public class Map {
                 }
                 else if(mapArray[i][j] == null){
                     mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, EMPTY, false);
+                    mapArray[i][j].setBrightness(0.5f);
                 }
             }
             // RADOMIZE NEXT ROWS HEIGHT
