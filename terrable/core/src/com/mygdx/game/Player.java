@@ -141,9 +141,7 @@ public class Player {
             }
 
         }
-        if(playerHealth <= 0) {
-            Gdx.app.exit();
-        }
+
 
         // GET MOUSE WORLD COORDINATES
         mouseInWorld3D.x = Gdx.input.getX();
@@ -201,6 +199,8 @@ public class Player {
                                 mapArray[i][j].setBlockHealth(25);
                             } else if (mapArray[i][j].getElement() == LADDER) {
                                 mapArray[i][j].setBlockHealth(25);
+                            }else if (mapArray[i][j].getElement() == STONE) {
+                                mapArray[i][j].setBlockHealth(200);
                             }
 
                         }
@@ -279,4 +279,9 @@ public class Player {
     public void setY(float y) {
         this.playerPosY = y;
     }
+
+    public int getPlayerHealth() {
+        return playerHealth;
+    }
+
 }

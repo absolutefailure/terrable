@@ -27,7 +27,7 @@ public class Map {
         this.mapSizeX = sizeX;
         this.mapSizeY = sizeY;
 
-        mapArray = new Block[mapSizeX][mapSizeY];
+        
         mudTexture = new Texture("mud.png");
         grassTexture = new Texture("grass.png");
         woodTexture = new Texture("wood.png");
@@ -41,6 +41,8 @@ public class Map {
     // MAP GENERATION
     public void GenerateNewMap(Player player) {
 
+
+        mapArray = new Block[mapSizeX][mapSizeY];
         
         int height = mapSizeY/2;
 
@@ -262,4 +264,8 @@ public class Map {
         this.mapSizeY = mapSizeY;
     }
 
+
+    public void dispose(){
+        mapArray = null;
+    }
 }
