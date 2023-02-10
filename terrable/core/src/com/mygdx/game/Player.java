@@ -110,16 +110,16 @@ public class Player {
         
         Block[][] mapArray = map.getMapArray();
 
-        for (int i = 0; i < mapArray.length; i++) {
-            if (mapArray[i][0].getPosX() > playerPosX - 400 && mapArray[i][0].getPosX() < playerPosX + 400) {
-                for (int j = 0; j < mapArray[i].length; j++) {
+        for (int x = 0; x < mapArray.length; x++) {
+            if (mapArray[x][0].getPosX() > playerPosX - 400 && mapArray[x][0].getPosX() < playerPosX + 400) {
+                for (int y = 0; y < mapArray[x].length; y++) {
                     // COLLISION DETECTION AND PHYSICS ON Y-AXIS
                     // IF PLAYER IS INSIDE A BLOCK SET POSITION TO THE OLD POSITION
-                    if (playerPosX + playerSizeX > mapArray[i][j].getPosX()
-                            && playerPosX < mapArray[i][j].getPosX() + mapArray[i][j].getBLOCKSIZE()
-                            && playerPosY > mapArray[i][j].getPosY() - mapArray[i][j].getBLOCKSIZE()
-                            && playerPosY - playerSizeY < mapArray[i][j].getPosY()) {
-                        if (mapArray[i][j].isCollision()) {
+                    if (playerPosX + playerSizeX > mapArray[x][y].getPosX()
+                            && playerPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
+                            && playerPosY > mapArray[x][y].getPosY() - mapArray[x][y].getBLOCKSIZE()
+                            && playerPosY - playerSizeY < mapArray[x][y].getPosY()) {
+                        if (mapArray[x][y].isCollision()) {
                             
                             
             
@@ -151,7 +151,7 @@ public class Player {
                             }
                             playerPosY = oldY;
                             gravity = -gravity * PLAYER_BOUNCINESS;
-                        } else if (mapArray[i][j].getElement() == LADDER) {
+                        } else if (mapArray[x][y].getElement() == LADDER) {
                             gravity *= 0.8;
                             onGround = true;
                             onLadder = true;
@@ -209,35 +209,35 @@ public class Player {
         // FRICTION
         acceleration *= PLAYER_FRICTION;
 
-        for (int i = 0; i < mapArray.length; i++) {
-            if (mapArray[i][0].getPosX() > playerPosX - 400 && mapArray[i][0].getPosX() < playerPosX + 400) {
-                for (int j = 0; j < mapArray[i].length; j++) {
-                    if (mapArray[i][j].getPosY() > playerPosY - 400 && mapArray[i][j].getPosY() < playerPosY + 400) {
+        for (int x = 0; x < mapArray.length; x++) {
+            if (mapArray[x][0].getPosX() > playerPosX - 400 && mapArray[x][0].getPosX() < playerPosX + 400) {
+                for (int y = 0; y < mapArray[x].length; y++) {
+                    if (mapArray[x][y].getPosY() > playerPosY - 400 && mapArray[x][y].getPosY() < playerPosY + 400) {
                         // COLLISION DETECTION AND PHYSICS ON X-AXIS
                         // IF PLAYER IS INSIDE A BLOCK SET POSITION TO THE OLD POSITION
-                        if (mapArray[i][j].isCollision() && playerPosX + playerSizeX > mapArray[i][j].getPosX()
-                                && playerPosX < mapArray[i][j].getPosX() + mapArray[i][j].getBLOCKSIZE()
-                                && playerPosY > mapArray[i][j].getPosY() - mapArray[i][j].getBLOCKSIZE()
-                                && playerPosY - playerSizeY < mapArray[i][j].getPosY()) {
+                        if (mapArray[x][y].isCollision() && playerPosX + playerSizeX > mapArray[x][y].getPosX()
+                                && playerPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
+                                && playerPosY > mapArray[x][y].getPosY() - mapArray[x][y].getBLOCKSIZE()
+                                && playerPosY - playerSizeY < mapArray[x][y].getPosY()) {
                             playerPosX = oldX;
                             acceleration = -acceleration * PLAYER_BOUNCINESS;
                         }
                         // SET BLOCK HEALTH TO MAX IF LEFT MOUSE BUTTON IS NOT DOWN
-                        if (mapArray[i][j].getElement() != EMPTY && !Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                        if (mapArray[x][y].getElement() != EMPTY && !Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                            
-                            mapArray[i][j].setBlockHealth(mapArray[i][j].getMaxhealth()); 
+                            mapArray[x][y].setBlockHealth(mapArray[x][y].getMaxhealth()); 
 
                         }
 
                         // CHECK IF MOUSE IS INSIDE CURRENT BLOCK
-                        if (mouseInWorld2D.y > mapArray[i][j].getPosY()
-                                && mouseInWorld2D.y < mapArray[i][j].getPosY() + mapArray[i][j].getBLOCKSIZE()
-                                && mouseInWorld2D.x > mapArray[i][j].getPosX()
-                                && mouseInWorld2D.x < mapArray[i][j].getPosX() + mapArray[i][j].getBLOCKSIZE()) {
-                            if (j > 3 && j < map.getMapSizeY() - 3 && i > 3 && i < map.getMapSizeX() - 3) {
-                                if (!mapArray[i - 1][j].isCollision()|| !mapArray[i + 1][j].isCollision()
-                                        || !mapArray[i][j - 1].isCollision()
-                                        || !mapArray[i][j + 1].isCollision()) {
+                        if (mouseInWorld2D.y > mapArray[x][y].getPosY()
+                                && mouseInWorld2D.y < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()
+                                && mouseInWorld2D.x > mapArray[x][y].getPosX()
+                                && mouseInWorld2D.x < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()) {
+                            if (y > 3 && y < map.getMapSizeY() - 3 && x > 3 && x < map.getMapSizeX() - 3) {
+                                if (!mapArray[x - 1][y].isCollision()|| !mapArray[x + 1][y].isCollision()
+                                        || !mapArray[x][y - 1].isCollision()
+                                        || !mapArray[x][y + 1].isCollision()) {
                                     float distance = (float) Math
                                             .sqrt((mouseInWorld2D.y - playerPosY) * (mouseInWorld2D.y - playerPosY)
                                                     + (mouseInWorld2D.x - playerPosX)
@@ -250,36 +250,36 @@ public class Player {
                                         // IF LEFT MOUSE BUTTON IS DOWN REDUCE BLOCK HEALTH OR DESTROY IT (CHANGE TO
                                         // EMPTY AND COLLISION OFF)
                                         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                                            if (mapArray[i][j].getBlockHealth() > 0) {
+                                            if (mapArray[x][y].getBlockHealth() > 0) {
                                                 
-                                                if(mapArray[i][j].getBlockHealth() * 100 / mapArray[i][j].getMaxhealth() > 75){
-                                                    batch.draw(blockBreakingAnimation[0][0],mapArray[i][j].getPosX(), mapArray[i][j].getPosY() );
-                                                }else if(mapArray[i][j].getBlockHealth() * 100 / mapArray[i][j].getMaxhealth() > 50){
-                                                    batch.draw(blockBreakingAnimation[0][1],mapArray[i][j].getPosX(), mapArray[i][j].getPosY() );
-                                                }else if(mapArray[i][j].getBlockHealth() * 100 / mapArray[i][j].getMaxhealth() > 25){
-                                                    batch.draw(blockBreakingAnimation[0][2],mapArray[i][j].getPosX(), mapArray[i][j].getPosY() );
+                                                if(mapArray[x][y].getBlockHealth() * 100 / mapArray[x][y].getMaxhealth() > 75){
+                                                    batch.draw(blockBreakingAnimation[0][0],mapArray[x][y].getPosX(), mapArray[x][y].getPosY() );
+                                                }else if(mapArray[x][y].getBlockHealth() * 100 / mapArray[x][y].getMaxhealth() > 50){
+                                                    batch.draw(blockBreakingAnimation[0][1],mapArray[x][y].getPosX(), mapArray[x][y].getPosY() );
+                                                }else if(mapArray[x][y].getBlockHealth() * 100 / mapArray[x][y].getMaxhealth() > 25){
+                                                    batch.draw(blockBreakingAnimation[0][2],mapArray[x][y].getPosX(), mapArray[x][y].getPosY() );
                                                 }else {
-                                                    batch.draw(blockBreakingAnimation[0][3],mapArray[i][j].getPosX(), mapArray[i][j].getPosY() );
+                                                    batch.draw(blockBreakingAnimation[0][3],mapArray[x][y].getPosX(), mapArray[x][y].getPosY() );
                                                 }
-                                                if(mapArray[i][j].getElement() == GROUND || mapArray[i][j].getElement() == GRASS) {
+                                                if(mapArray[x][y].getElement() == GROUND || mapArray[x][y].getElement() == GRASS) {
                                                     soundEffect = true;
                                                 }
-                                                mapArray[i][j].setBlockHealth(mapArray[i][j].getBlockHealth() - 1);
+                                                mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - 1);
                                                 soundTimer += 1;
                                             } else {
-                                                mapArray[i][j].setElement(EMPTY);
-                                                mapArray[i][j].setCollision(false);
+                                                mapArray[x][y].setElement(EMPTY);
+                                                mapArray[x][y].setCollision(false);
                                             }
                                         }else{
                                             soundTimer = 15;
                                         }
                                         batch.setColor(1,1,1,1);
-                                        batch.draw(outlineTexture, mapArray[i][j].getPosX(), mapArray[i][j].getPosY());
+                                        batch.draw(outlineTexture, mapArray[x][y].getPosX(), mapArray[x][y].getPosY());
 
                                         // IF RIGHT MOUSE BUTTON IS DOWN, PLACE BLOCK IN HAND
                                         if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-                                            if (mapArray[i][j].getElement() == EMPTY) {
-                                                mapArray[i][j].setElement(LADDER);
+                                            if (mapArray[x][y].getElement() == EMPTY) {
+                                                mapArray[x][y].setElement(LADDER);
                                             }
                                         }
                                     }

@@ -55,65 +55,65 @@ public class Map {
         */
         
 
-        for (int i = 0; i < mapSizeX; i++){
-            if (i == mapSizeX / 2){ // SET PLAYER POSITION TO THE CENTER OF THE MAP
+        for (int x = 0; x < mapSizeX; x++){
+            if (x == mapSizeX / 2){ // SET PLAYER POSITION TO THE CENTER OF THE MAP
                 player.setX(0);
                 player.setY((mapSizeY/2-height) * 25 + 60);
             }
-            for (int j = 0; j < mapSizeY; j++ ){
-                if ( j == height){
-                    if (rand.nextInt(15) == 1 && i > 5 && i < mapSizeX-5){ // GENERATE TREE
-                        mapArray[i][j-1] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - (j-1) * 25, WOOD, false);
-                        mapArray[i][j-2] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - (j-2) * 25, WOOD, false);
-                        mapArray[i][j-3] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - (j-3) * 25, LEAVES, false);
-                        mapArray[i][j-4] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - (j-4) * 25, LEAVES, false);
-                        mapArray[i-1][j-3] = new Block((-mapSizeX  * 25 / 2) + (i-1) * 25,(mapSizeY  * 25/ 2) - (j-3) * 25, LEAVES,  false);
-                        mapArray[i+1][j-3] = new Block((-mapSizeX  * 25 / 2) + (i+1) * 25,(mapSizeY  * 25/ 2) - (j-3) * 25, LEAVES, false);
-                        mapArray[i-1][j-4] = new Block((-mapSizeX  * 25 / 2) + (i-1) * 25,(mapSizeY  * 25/ 2) - (j-4) * 25, LEAVES, false);
-                        mapArray[i+1][j-4] = new Block((-mapSizeX  * 25 / 2) + (i+1) * 25,(mapSizeY  * 25/ 2) - (j-4) * 25, LEAVES, false);
-                        mapArray[i-2][j-4] = new Block((-mapSizeX  * 25 / 2) + (i-2) * 25,(mapSizeY  * 25/ 2) - (j-4) * 25, LEAVES, false);
-                        mapArray[i+2][j-4] = new Block((-mapSizeX  * 25 / 2) + (i+2) * 25,(mapSizeY  * 25/ 2) - (j-4) * 25, LEAVES, false);
-                        mapArray[i][j-5] = new Block((-mapSizeX  * 25 / 2) + (i) * 25,(mapSizeY  * 25/ 2) - (j-5) * 25, LEAVES, false);
-                        mapArray[i-1][j-5] = new Block((-mapSizeX  * 25 / 2) + (i-1) * 25,(mapSizeY  * 25/ 2) - (j-5) * 25, LEAVES, false);
-                        mapArray[i+1][j-5] = new Block((-mapSizeX  * 25 / 2) + (i+1) * 25,(mapSizeY  * 25/ 2) - (j-5) * 25, LEAVES, false);
-                        mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GROUND, true);
+            for (int y = 0; y < mapSizeY; y++ ){
+                if ( y == height){
+                    if (rand.nextInt(15) == 1 && x > 5 && x < mapSizeX-5){ // GENERATE TREE
+                        mapArray[x][y-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, WOOD, false);
+                        mapArray[x][y-2] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-2) * 25, WOOD, false);
+                        mapArray[x][y-3] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-3) * 25, LEAVES, false);
+                        mapArray[x][y-4] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, LEAVES, false);
+                        mapArray[x-1][y-3] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-3) * 25, LEAVES,  false);
+                        mapArray[x+1][y-3] = new Block((-mapSizeX  * 25 / 2) + (x+1) * 25,(mapSizeY  * 25/ 2) - (y-3) * 25, LEAVES, false);
+                        mapArray[x-1][y-4] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, LEAVES, false);
+                        mapArray[x+1][y-4] = new Block((-mapSizeX  * 25 / 2) + (x+1) * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, LEAVES, false);
+                        mapArray[x-2][y-4] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, LEAVES, false);
+                        mapArray[x+2][y-4] = new Block((-mapSizeX  * 25 / 2) + (x+2) * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, LEAVES, false);
+                        mapArray[x][y-5] = new Block((-mapSizeX  * 25 / 2) + (x) * 25,(mapSizeY  * 25/ 2) - (y-5) * 25, LEAVES, false);
+                        mapArray[x-1][y-5] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-5) * 25, LEAVES, false);
+                        mapArray[x+1][y-5] = new Block((-mapSizeX  * 25 / 2) + (x+1) * 25,(mapSizeY  * 25/ 2) - (y-5) * 25, LEAVES, false);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true);
                     }else{
                         if(rand.nextInt(100) < 60) {
-                            mapArray[i][j-1] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - (j-1) * 25, TALLGRASS, false);    
+                            mapArray[x][y-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, TALLGRASS, false);    
                         }
                         if(rand.nextInt(100) < 10){
-                            mapArray[i][j-1] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - (j-1) * 25, REDFLOWER, false);
+                            mapArray[x][y-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, REDFLOWER, false);
                         }
                         // GENERATE GRASS BLOCK
-                        mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GRASS, true);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GRASS, true);
                     }
-                } else if ( j > height + 15){ //only stone and ores from depth 15
+                } else if ( y > height + 15){ //only stone and ores from depth 15
                     int oreChance = rand.nextInt(1000);
                     if ( oreChance < 5 ) { // 0.5% chance for diamond
-                        mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, DIAMOND, true);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, DIAMOND, true);
                     } else if ( oreChance < 55 ) { // 5% chance for iron
-                        mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, IRON, true);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, IRON, true);
                     } else if ( oreChance < 160 ) { // 10% chance for coal
-                        mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, COAL, true);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, COAL, true);
                     } else { // 84.5% chance for stone
-                        mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, STONE, true);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, STONE, true);
                     }    
-                } else if ( j > height + 3){
+                } else if ( y > height + 3){
                     if (rand.nextInt(100) < 66 ) {//66% chance for stone, else spawning ground from depth 3
-                        mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, STONE, true);  
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, STONE, true);  
                     } else {
-                        mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GROUND, true);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true);
                     }
-                } else if ( j > height){
-                    mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GROUND, true);
+                } else if ( y > height){
+                    mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true);
                 }
-                else if(mapArray[i][j] == null){
-                    mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, EMPTY, false);
-                    mapArray[i][j].setBrightness(0.5f);
+                else if(mapArray[x][y] == null){
+                    mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, EMPTY, false);
+                    mapArray[x][y].setBrightness(0.5f);
                 }
             }
             // RADOMIZE NEXT ROWS HEIGHT
-            if ( i % (rand.nextInt(4) + 2) == 0){
+            if ( x % (rand.nextInt(4) + 2) == 0){
                 height += rand.nextInt(3) -1;
             }
             if (height > 120) height = 120;
@@ -170,55 +170,33 @@ public class Map {
 
     public void UpdateLighting(Player player){
 
-             for (int i = 0; i < mapArray.length; i++){
-            if (mapArray[i][0].getPosX() > player.getX() - 1200 && mapArray[i][0].getPosX() < player.getX() + 1200 && i > 5 && i < mapSizeX - 5) {
-                for (int j = 0; j < mapArray[i].length; j++){
-                    if (mapArray[i][j].isCollision() && mapArray[i][j].getPosY() > player.getY() - 1200 && mapArray[i][j].getPosY() < player.getY() + 1200 && j > 5 && j < mapSizeY - 5) {
+             for (int x = 0; x < mapArray.length; x++){
+            if (mapArray[x][0].getPosX() > player.getX() - 1200 && mapArray[x][0].getPosX() < player.getX() + 1200 && x > 5 && x < mapSizeX - 5) {
+                for (int y = 0; y < mapArray[x].length; y++){
+                    if (mapArray[x][y].isCollision() && mapArray[x][y].getPosY() > player.getY() - 1200 && mapArray[x][y].getPosY() < player.getY() + 1200 && y > 5 && y < mapSizeY - 5) {
 
-                        if(!mapArray[i-1][j].isCollision() || !mapArray[i+1][j].isCollision() || !mapArray[i][j-1].isCollision() || !mapArray[i][j+1].isCollision() ){
+                        if(!mapArray[x-1][y].isCollision() || !mapArray[x+1][y].isCollision() || !mapArray[x][y-1].isCollision() || !mapArray[x][y+1].isCollision() ){
 
-                            mapArray[i][j-2].setBrightness(0.1f);
-                            mapArray[i-1][j-2].setBrightness(0.1f);
-                            mapArray[i-2][j-2].setBrightness(0.1f);
-                            mapArray[i+1][j-2].setBrightness(0.1f);
-                            mapArray[i+2][j-2].setBrightness(0.1f);
+                            mapArray[x][y-2].setBrightness(0.1f);
+                            mapArray[x-1][y-2].setBrightness(0.1f);
+                            mapArray[x-2][y-2].setBrightness(0.1f);
+                            mapArray[x+1][y-2].setBrightness(0.1f);
+                            mapArray[x+2][y-2].setBrightness(0.1f);
 
-                            mapArray[i-2][j-1].setBrightness(0.1f);
-                            mapArray[i+2][j-1].setBrightness(0.1f);
+                            mapArray[x-2][y-1].setBrightness(0.1f);
+                            mapArray[x+2][y-1].setBrightness(0.1f);
 
-                            mapArray[i-2][j].setBrightness(0.1f);
-                            mapArray[i+2][j].setBrightness(0.1f);
+                            mapArray[x-2][y].setBrightness(0.1f);
+                            mapArray[x+2][y].setBrightness(0.1f);
 
-                            mapArray[i-2][j+1].setBrightness(0.1f);
-                            mapArray[i+2][j+1].setBrightness(0.1f);
+                            mapArray[x-2][y+1].setBrightness(0.1f);
+                            mapArray[x+2][y+1].setBrightness(0.1f);
 
-                            mapArray[i][j+2].setBrightness(0.1f);
-                            mapArray[i-1][j+2].setBrightness(0.1f);
-                            mapArray[i-2][j+2].setBrightness(0.1f);
-                            mapArray[i+1][j+2].setBrightness(0.1f);
-                            mapArray[i+2][j+2].setBrightness(0.1f);
-
-                        }
-                    
-                    }
-                }
-            }
-        }
-
-        for (int i = 0; i < mapArray.length; i++){
-            if (mapArray[i][0].getPosX() > player.getX() - 1200 && mapArray[i][0].getPosX() < player.getX() + 1200 && i > 5 && i < mapSizeX - 5) {
-                for (int j = 0; j < mapArray[i].length; j++){
-                    if (mapArray[i][j].isCollision() && mapArray[i][j].getPosY() > player.getY() - 1200 && mapArray[i][j].getPosY() < player.getY() + 1200 && j > 5 && j < mapSizeY - 5) {
-
-                        if(!mapArray[i-1][j].isCollision() || !mapArray[i+1][j].isCollision() || !mapArray[i][j-1].isCollision() || !mapArray[i][j+1].isCollision() ){
-                            mapArray[i][j-1].setBrightness(0.3f);
-                            mapArray[i+1][j-1].setBrightness(0.3f);
-                            mapArray[i-1][j-1].setBrightness(0.3f);
-                            mapArray[i+1][j].setBrightness(0.3f);
-                            mapArray[i-1][j].setBrightness(0.3f);
-                            mapArray[i-1][j+1].setBrightness(0.3f);
-                            mapArray[i][j+1].setBrightness(0.3f);
-                            mapArray[i+1][j+1].setBrightness(0.3f);
+                            mapArray[x][y+2].setBrightness(0.1f);
+                            mapArray[x-1][y+2].setBrightness(0.1f);
+                            mapArray[x-2][y+2].setBrightness(0.1f);
+                            mapArray[x+1][y+2].setBrightness(0.1f);
+                            mapArray[x+2][y+2].setBrightness(0.1f);
 
                         }
                     
@@ -227,13 +205,35 @@ public class Map {
             }
         }
 
-        for (int i = 0; i < mapArray.length; i++){
-            if (mapArray[i][0].getPosX() > player.getX() - 1200 && mapArray[i][0].getPosX() < player.getX() + 1200) {
-                for (int j = 0; j < mapArray[i].length; j++){
-                    if (mapArray[i][j].getElement() != EMPTY && mapArray[i][j].getPosY() > player.getY() - 1200 && mapArray[i][j].getPosY() < player.getY() + 1200 && i > 3 && i < mapSizeX-3 && j > 3 && j < mapSizeY-3) {
+        for (int x = 0; x < mapArray.length; x++){
+            if (mapArray[x][0].getPosX() > player.getX() - 1200 && mapArray[x][0].getPosX() < player.getX() + 1200 && x > 5 && x < mapSizeX - 5) {
+                for (int y = 0; y < mapArray[x].length; y++){
+                    if (mapArray[x][y].isCollision() && mapArray[x][y].getPosY() > player.getY() - 1200 && mapArray[x][y].getPosY() < player.getY() + 1200 && y > 5 && y < mapSizeY - 5) {
 
-                        if(!mapArray[i-1][j].isCollision() || !mapArray[i+1][j].isCollision() || !mapArray[i][j-1].isCollision() || !mapArray[i][j+1].isCollision() || !mapArray[i][j].isCollision()){
-                            mapArray[i][j].setBrightness(1f);
+                        if(!mapArray[x-1][y].isCollision() || !mapArray[x+1][y].isCollision() || !mapArray[x][y-1].isCollision() || !mapArray[x][y+1].isCollision() ){
+                            mapArray[x][y-1].setBrightness(0.3f);
+                            mapArray[x+1][y-1].setBrightness(0.3f);
+                            mapArray[x-1][y-1].setBrightness(0.3f);
+                            mapArray[x+1][y].setBrightness(0.3f);
+                            mapArray[x-1][y].setBrightness(0.3f);
+                            mapArray[x-1][y+1].setBrightness(0.3f);
+                            mapArray[x][y+1].setBrightness(0.3f);
+                            mapArray[x+1][y+1].setBrightness(0.3f);
+
+                        }
+                    
+                    }
+                }
+            }
+        }
+
+        for (int x = 0; x < mapArray.length; x++){
+            if (mapArray[x][0].getPosX() > player.getX() - 1200 && mapArray[x][0].getPosX() < player.getX() + 1200) {
+                for (int y = 0; y < mapArray[x].length; y++){
+                    if (mapArray[x][y].getElement() != EMPTY && mapArray[x][y].getPosY() > player.getY() - 1200 && mapArray[x][y].getPosY() < player.getY() + 1200 && x > 3 && x < mapSizeX-3 && y > 3 && y < mapSizeY-3) {
+
+                        if(!mapArray[x-1][y].isCollision() || !mapArray[x+1][y].isCollision() || !mapArray[x][y-1].isCollision() || !mapArray[x][y+1].isCollision() || !mapArray[x][y].isCollision()){
+                            mapArray[x][y].setBrightness(1f);
                         }
                     }
                 }
