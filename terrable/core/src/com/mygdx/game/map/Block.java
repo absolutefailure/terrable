@@ -112,4 +112,31 @@ public class Block {
         this.permanent = permanent;
     }
 
+    public int getMaxhealth(){
+        if (element == GROUND){
+            return 50;
+        } else if (element == GROUND){
+            return 50;
+        } else if (element == GRASS){
+            return 50;
+        } else if (element == WOOD){
+            return 100;
+        } else if (element == LEAVES){
+            return 25;
+        } else if (element == LADDER){
+            return 25;
+        } else if (element == STONE){
+            return 200;
+        } else if (element == COAL){
+            return 200;
+        } else if (element == IRON){
+            return 250;
+        } else if (element == DIAMOND){
+            return 300;
+        }else{
+            return 0;
+        }
+        
+    }
+
 }
