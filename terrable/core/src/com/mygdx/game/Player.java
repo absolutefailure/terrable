@@ -37,6 +37,7 @@ public class Player {
 
     private Texture playerTexture;
     private Texture outlineTexture;
+    private Texture healthTexture;
     private Sound damageSound;
     private Sound stoneHitSound;
 
@@ -59,6 +60,7 @@ public class Player {
 
         playerTexture = new Texture("jusju.png");
         outlineTexture = new Texture("outline.png");
+        healthTexture = new Texture("heart.png");
 
         gravity = 0;
         acceleration = 0;
@@ -284,6 +286,16 @@ public class Player {
         batch.draw(playerTexture, playerPosX, playerPosY - 25);
         cam.position.set((int)playerPosX, (int)playerPosY - 25, 0); 
         cam.update();
+    }
+
+
+    public void DrawHud(Batch batch){
+
+        // DRAW PLAYER HEALTH
+        for (int i = 0; i < playerHealth; i++){
+            batch.draw(healthTexture, 32 + 20 * i, 10);
+        }
+    
     }
 
     public float getX() {
