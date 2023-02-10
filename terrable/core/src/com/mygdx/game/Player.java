@@ -45,6 +45,8 @@ public class Player {
 
     private Sound damageSound;
     private Sound stoneHitSound;
+    private Sound groundHitSound;
+    private boolean soundEffect; //TEMPORARY
 
     private int playerHealth;
 
@@ -54,6 +56,8 @@ public class Player {
 
         damageSound = Gdx.audio.newSound(Gdx.files.internal("damage.mp3"));
         stoneHitSound = Gdx.audio.newSound(Gdx.files.internal("stoneHitSound.mp3"));
+        groundHitSound = Gdx.audio.newSound(Gdx.files.internal("groundHitSound.mp3"));
+        soundEffect = false;
         
         playerSizeX = 20;
         playerSizeY = 49;
@@ -257,13 +261,17 @@ public class Player {
                                                 }else {
                                                     batch.draw(blockBreakingAnimation[0][3],mapArray[i][j].getPosX(), mapArray[i][j].getPosY() );
                                                 }
-                                                
+                                                if(mapArray[i][j].getElement() == GROUND || mapArray[i][j].getElement() == GRASS) {
+                                                    soundEffect = true;
+                                                }
                                                 mapArray[i][j].setBlockHealth(mapArray[i][j].getBlockHealth() - 1);
                                                 soundTimer += 1;
                                             } else {
                                                 mapArray[i][j].setElement(EMPTY);
                                                 mapArray[i][j].setCollision(false);
                                             }
+                                        }else{
+                                            soundTimer = 15;
                                         }
                                         batch.setColor(1,1,1,1);
                                         batch.draw(outlineTexture, mapArray[i][j].getPosX(), mapArray[i][j].getPosY());
@@ -284,7 +292,12 @@ public class Player {
             }
         }
         if(soundTimer == 20) {
-            stoneHitSound.play();
+            if(soundEffect == true) {
+                groundHitSound.play(1f, 0.8f, 0);
+                soundEffect = false;
+            } else {
+                stoneHitSound.play();
+            }
             soundTimer -= 20;
         }
 

@@ -12,4 +12,6 @@ public final class elements {
     public static final int COAL = 7;
     public static final int IRON = 8;
     public static final int DIAMOND = 9;
+    public static final int TALLGRASS = 10;
+    public static final int REDFLOWER = 11;
 }
