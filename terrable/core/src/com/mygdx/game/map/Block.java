@@ -47,6 +47,10 @@ public class Block {
         }else if(element == DIAMOND) {
             this.blockHealth = 300;
             this.permanent = STONE;
+        }else if(element == TALLGRASS) {
+            this.blockHealth = 1;
+        }else if(element == REDFLOWER) {
+            this.blockHealth = 1;
         }
         this.collision = collision;
         brightness = 0;

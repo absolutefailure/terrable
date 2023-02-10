@@ -25,7 +25,7 @@ public class Map {
         this.mapSizeX = sizeX;
         this.mapSizeY = sizeY;
 
-        textures = new Texture("tileset.png");
+        textures = new Texture("tileset2.png");
 
         
         blockTextures = TextureRegion.split(textures, 25, 25); 
@@ -77,7 +77,14 @@ public class Map {
                         mapArray[i-1][j-5] = new Block((-mapSizeX  * 25 / 2) + (i-1) * 25,(mapSizeY  * 25/ 2) - (j-5) * 25, LEAVES, false);
                         mapArray[i+1][j-5] = new Block((-mapSizeX  * 25 / 2) + (i+1) * 25,(mapSizeY  * 25/ 2) - (j-5) * 25, LEAVES, false);
                         mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GROUND, true);
-                    }else{ // GENERATE GRASS BLOCK
+                    }else{
+                        if(rand.nextInt(100) < 60) {
+                            mapArray[i][j-1] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - (j-1) * 25, TALLGRASS, false);    
+                        }
+                        if(rand.nextInt(100) < 10){
+                            mapArray[i][j-1] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - (j-1) * 25, REDFLOWER, false);
+                        }
+                        // GENERATE GRASS BLOCK
                         mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, GRASS, true);
                     }
                 } else if ( j > height + 15){ //only stone and ores from depth 15
