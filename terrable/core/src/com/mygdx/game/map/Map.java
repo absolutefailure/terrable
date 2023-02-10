@@ -6,21 +6,16 @@ import java.util.Random;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.Player;
 
 public class Map {
 
     Block[][] mapArray;
 
-    private Texture mudTexture;
-    private Texture grassTexture;
-    private Texture woodTexture;
-    private Texture leavesTexture;
-    private Texture ladderTexture;
-    private Texture stoneTexture;
-    private Texture coalTexture;
-    private Texture ironTexture;
-    private Texture diamondTexture;
+    
+    private Texture textures;
+    private TextureRegion[][] blockTextures;
 
     private int mapSizeX; // map size in blocks
     private int mapSizeY; // map size in blocks
@@ -30,16 +25,11 @@ public class Map {
         this.mapSizeX = sizeX;
         this.mapSizeY = sizeY;
 
+        textures = new Texture("tileset.png");
+
         
-        mudTexture = new Texture("mud.png");
-        grassTexture = new Texture("grass.png");
-        woodTexture = new Texture("wood.png");
-        leavesTexture = new Texture("leaves.png");
-        ladderTexture = new Texture("ladder.png");
-        stoneTexture = new Texture("stone.png");
-        coalTexture = new Texture("coal.png");
-        ironTexture = new Texture("iron.png");
-        diamondTexture = new Texture("diamond.png");
+        blockTextures = TextureRegion.split(textures, 25, 25); 
+        
 
     }
 
@@ -135,53 +125,33 @@ public class Map {
 
 
         for (Block[] row : mapArray){ 
-            if (row[0].getPosX() > player.getX() - 1300 && row[0].getPosX() < player.getX() + 1300){ // LOOP ONLY VERTICAL ROWS THAT ARE INSIDE VISIBLE AREA
+            if (row[0].getPosX() > player.getX() - 1000 && row[0].getPosX() < player.getX() + 1000){ // LOOP ONLY VERTICAL ROWS THAT ARE INSIDE VISIBLE AREA
                 for (Block block: row){
-                    if (block.getPosY() > player.getY() - 1300 && block.getPosY() < player.getY() + 1300) { 
-                        if(block.getPermanent() == GROUND || block.getPermanent() == GRASS){
-                            batch.setColor(0.5f, 0.7f, 0.7f, 1);
-                            batch.draw(mudTexture, block.getPosX(), block.getPosY());
-                        } else if(block.getPermanent() == STONE) {
-                            batch.setColor(0.6f, 0.6f, 0.6f, 1);
-                            batch.draw(stoneTexture, block.getPosX(), block.getPosY());
-                        }
-                    }
+
                     batch.setColor(1, 1, 1, 1);
 
-                    if (block.getPosY() > player.getY() - 1300 && block.getPosY() < player.getY() + 1300 && block.getElement() != EMPTY){ // DRAW BLOCK ONLY IF INSIDE SCREEN
-                        // DRAW CORRECT TEXTURE BASED ON BLOCKS ELEMENT
-                        batch.setColor(block.getBrightness(),block.getBrightness(),block.getBrightness(),1f);
-                        switch (block.getElement()){             
-                            case(GROUND):
-                                batch.draw(mudTexture, block.getPosX(), block.getPosY(), 25, 25);
-                                break;
-                            case(GRASS):
-                                batch.draw(grassTexture, block.getPosX(), block.getPosY(), 25, 25);
-                                break;
-                            case(WOOD):
-                                batch.draw(woodTexture, block.getPosX(), block.getPosY(), 25, 25);
-                                break;
-                            case(LEAVES):
-                                batch.draw(leavesTexture, block.getPosX(), block.getPosY(), 25, 25);  
-                                break;
-                            case(LADDER):
-                                batch.draw(ladderTexture, block.getPosX(), block.getPosY(), 25, 25);
-                                break;
-                            case(STONE):
-                                batch.draw(stoneTexture, block.getPosX(), block.getPosY(), 25, 25);
-                                break;
-                            case(COAL):
-                                batch.draw(coalTexture, block.getPosX(), block.getPosY(), 25, 25);
-                                break;
-                            case(IRON):
-                                batch.draw(ironTexture, block.getPosX(), block.getPosY(), 25, 25);
-                                break;
-                            case(DIAMOND):
-                                batch.draw(diamondTexture, block.getPosX(), block.getPosY(), 25, 25);
-                                break;
+                    if (block.getPosY() > player.getY() - 1000 && block.getPosY() < player.getY() + 1000 ){ // DRAW BLOCK ONLY IF INSIDE SCREEN
+
+                        // DRAW BACKROUND TEXTURE IF BLOCK IS PERMANENT
+                        if(block.getPermanent() == GROUND || block.getPermanent() == GRASS){
+                            batch.setColor(0.5f, 0.7f, 0.7f, 1);
+                            batch.draw(blockTextures[0][0], block.getPosX(), block.getPosY());
+                        } else if(block.getPermanent() == STONE) {
+                            batch.setColor(0.6f, 0.6f, 0.6f, 1);
+                            batch.draw(blockTextures[0][5], block.getPosX(), block.getPosY());
                         }
-                        batch.setColor(1,1,1,1);
-                        block.setBrightness(0f);
+
+
+                        if (block.getElement() != EMPTY)  {
+                            batch.setColor(block.getBrightness(),block.getBrightness(),block.getBrightness(),1f);
+                        
+                            // DRAW CORRECT TEXTURE BASED ON BLOCKS ELEMENT
+                            batch.draw(blockTextures[0][block.getElement()-1], block.getPosX(), block.getPosY(), 25 , 25); // blockTextures[ROW][COLUMN]
+    
+                            batch.setColor(1,1,1,1);
+                            block.setBrightness(0f);
+                        }                     
+
                     }      
                     
                 }
