@@ -49,7 +49,7 @@ public class Block {
             this.permanent = STONE;
         }
         this.collision = collision;
-        brightness = 1.f;
+        brightness = 0;
     }
 
     public int getPosX() {
