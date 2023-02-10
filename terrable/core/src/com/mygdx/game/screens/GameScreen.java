@@ -49,7 +49,7 @@ public class GameScreen implements Screen {
  	// CLEAR SCREEN WITH SKY COLOR
         ScreenUtils.clear(0.35f, 0.7f, 1f, 1);
 
-        game.batch.setProjectionMatrix(game.cam.combined());
+        
 
 
         
@@ -57,9 +57,9 @@ public class GameScreen implements Screen {
         //Gdx.graphics.setTitle(""+Gdx.graphics.getFramesPerSecond());
         
         
-        
+        game.batch.setProjectionMatrix(game.cam.combined());
 
-        // draw stuff 
+        // draw world 
         game.batch.begin();
 
 
@@ -67,8 +67,15 @@ public class GameScreen implements Screen {
 
         player.Update(map, game.cam.getCamera(), game.batch);
         
+        // draw hud
+        game.batch.setProjectionMatrix(game.hudCam.combined());
+
+
+        player.DrawHud(game.batch);
     
         game.batch.end();
+
+        
         
 
 
@@ -86,7 +93,7 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         map.GenerateNewMap(player);
-        player.setPlayerHealth(5);
+        player.setPlayerHealth(10);
     }
 
 
