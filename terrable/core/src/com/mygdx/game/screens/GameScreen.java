@@ -50,7 +50,7 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(0.35f, 0.7f, 1f, 1);
 
         game.batch.setProjectionMatrix(game.cam.combined());
-        game.batch.begin();
+
 
         
 
@@ -60,6 +60,7 @@ public class GameScreen implements Screen {
         
 
         // draw stuff 
+        game.batch.begin();
 
 
         map.Draw(game.batch, player);
@@ -67,13 +68,9 @@ public class GameScreen implements Screen {
         player.Update(map, game.cam.getCamera(), game.batch);
         
     
-    
+        game.batch.end();
         
 
-        game.batch.end();
-
-        game.cam.setPosition(player.getX(), player.getY()); 
-        game.cam.update();
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || player.getPlayerHealth() <= 0) {
 
@@ -88,7 +85,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        // TODO Auto-generated method stub
         map.GenerateNewMap(player);
         player.setPlayerHealth(5);
     }
@@ -96,29 +92,23 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void pause() {
-        // TODO Auto-generated method stub
-        
         
     }
 
     @Override
     public void resume() {
-        // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void hide() {
-        // TODO Auto-generated method stub
-
-
-        
+        game.gameScreen.map.dispose();
+        System.gc();    
     }
 
     @Override

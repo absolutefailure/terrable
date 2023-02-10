@@ -161,7 +161,7 @@ public class Player {
         // LEFT AND RIGHT MOVEMENT
         if (Gdx.input.isKeyPressed(Input.Keys.A) && acceleration > -3) {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-                acceleration -= 2;
+                acceleration -= 3;
                 if (acceleration < -2)
                     acceleration = -4;
             } else {
@@ -171,13 +171,16 @@ public class Player {
 
         if (Gdx.input.isKeyPressed(Input.Keys.D) && acceleration < 3) {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-                acceleration += 2;
+                acceleration += 3;
                 if (acceleration > 2)
                     acceleration = 4;
             } else {
                 acceleration += 1;
             }
         }
+
+        if (acceleration > 3){acceleration = 3;}
+        if (acceleration < -3){acceleration = -3;}
 
         playerPosX += acceleration;
         // FRICTION
@@ -267,8 +270,12 @@ public class Player {
             onGroundTimer -= 1;
         }
 
+        
+
         // DRAW PLAYER
-        batch.draw(playerTexture, playerPosX, playerPosY - 25, playerSizeX, playerSizeY);
+        batch.draw(playerTexture, playerPosX, playerPosY - 25);
+        cam.position.set((int)playerPosX, (int)playerPosY - 25, 0); 
+        cam.update();
     }
 
     public float getX() {
