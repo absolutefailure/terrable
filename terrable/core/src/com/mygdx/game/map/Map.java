@@ -102,6 +102,7 @@ public class Map {
                 }
                 else if(mapArray[i][j] == null){
                     mapArray[i][j] = new Block((-mapSizeX  * 25 / 2) + i * 25,(mapSizeY  * 25/ 2) - j * 25, EMPTY, false);
+                    mapArray[i][j].setBrightness(0.5f);
                 }
             }
             // RADOMIZE NEXT ROWS HEIGHT

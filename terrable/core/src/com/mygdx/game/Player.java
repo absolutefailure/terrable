@@ -158,29 +158,37 @@ public class Player {
         mouseInWorld2D.x = mouseInWorld3D.x;
         mouseInWorld2D.y = mouseInWorld3D.y;
 
+        Boolean isRunning = false;
+
         // LEFT AND RIGHT MOVEMENT
-        if (Gdx.input.isKeyPressed(Input.Keys.A) && acceleration > -3) {
+        if (Gdx.input.isKeyPressed(Input.Keys.A) ) {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+                isRunning = true;
                 acceleration -= 3;
-                if (acceleration < -2)
-                    acceleration = -4;
             } else {
                 acceleration -= 1;
             }
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.D) && acceleration < 3) {
+        if (Gdx.input.isKeyPressed(Input.Keys.D) ) {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+                isRunning = true;
                 acceleration += 3;
-                if (acceleration > 2)
-                    acceleration = 4;
             } else {
                 acceleration += 1;
             }
         }
 
-        if (acceleration > 3){acceleration = 3;}
-        if (acceleration < -3){acceleration = -3;}
+        if (acceleration > 3 && isRunning == false) {
+            acceleration = 3;
+        } else if (acceleration > 4 && isRunning == true) {
+            acceleration = 4;
+        }
+        if (acceleration < -3 && isRunning == false) {
+            acceleration = -3;
+        }else if (acceleration < -4 && isRunning == true) {
+            acceleration = -4;
+        }
 
         playerPosX += acceleration;
         // FRICTION
