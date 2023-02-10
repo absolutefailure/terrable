@@ -99,8 +99,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void hide() {
-       game.gameScreen.map.dispose();
-       System.gc();
+
         
     }
 
