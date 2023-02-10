@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.map.Block;
@@ -38,6 +39,10 @@ public class Player {
     private Texture playerTexture;
     private Texture outlineTexture;
     private Texture healthTexture;
+
+    private Texture blockBreakingTexture;
+    private TextureRegion[][] blockBreakingAnimation;
+
     private Sound damageSound;
     private Sound stoneHitSound;
 
@@ -61,6 +66,10 @@ public class Player {
         playerTexture = new Texture("jusju.png");
         outlineTexture = new Texture("outline.png");
         healthTexture = new Texture("heart.png");
+        blockBreakingTexture = new Texture("breaktiles.png");
+
+        blockBreakingAnimation = TextureRegion.split(blockBreakingTexture, 25, 25);
+
 
         gravity = 0;
         acceleration = 0;
@@ -149,7 +158,7 @@ public class Player {
                 }
             }
 
-        }
+        }   
 
 
         // GET MOUSE WORLD COORDINATES
@@ -211,17 +220,8 @@ public class Player {
                         }
                         // SET BLOCK HEALTH TO MAX IF LEFT MOUSE BUTTON IS NOT DOWN
                         if (mapArray[i][j].getElement() != EMPTY && !Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                            if (mapArray[i][j].getElement() == GROUND || mapArray[i][j].getElement() == GRASS) {
-                                mapArray[i][j].setBlockHealth(50);
-                            } else if (mapArray[i][j].getElement() == WOOD) {
-                                mapArray[i][j].setBlockHealth(100);
-                            } else if (mapArray[i][j].getElement() == LEAVES) {
-                                mapArray[i][j].setBlockHealth(25);
-                            } else if (mapArray[i][j].getElement() == LADDER) {
-                                mapArray[i][j].setBlockHealth(25);
-                            }else if (mapArray[i][j].getElement() == STONE) {
-                                mapArray[i][j].setBlockHealth(200);
-                            }
+                           
+                            mapArray[i][j].setBlockHealth(mapArray[i][j].getMaxhealth()); 
 
                         }
 
@@ -241,12 +241,23 @@ public class Player {
 
                                     // IF DISTANCE IS < 150 PIXELS DRAW BLOCK OUTLINE
                                     if (distance <= 150) {
-                                        batch.draw(outlineTexture, mapArray[i][j].getPosX(), mapArray[i][j].getPosY());
-
+                                        
+                                        batch.setColor(1,1,1,0.5f);
                                         // IF LEFT MOUSE BUTTON IS DOWN REDUCE BLOCK HEALTH OR DESTROY IT (CHANGE TO
                                         // EMPTY AND COLLISION OFF)
                                         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                                             if (mapArray[i][j].getBlockHealth() > 0) {
+                                                
+                                                if(mapArray[i][j].getBlockHealth() * 100 / mapArray[i][j].getMaxhealth() > 75){
+                                                    batch.draw(blockBreakingAnimation[0][0],mapArray[i][j].getPosX(), mapArray[i][j].getPosY() );
+                                                }else if(mapArray[i][j].getBlockHealth() * 100 / mapArray[i][j].getMaxhealth() > 50){
+                                                    batch.draw(blockBreakingAnimation[0][1],mapArray[i][j].getPosX(), mapArray[i][j].getPosY() );
+                                                }else if(mapArray[i][j].getBlockHealth() * 100 / mapArray[i][j].getMaxhealth() > 25){
+                                                    batch.draw(blockBreakingAnimation[0][2],mapArray[i][j].getPosX(), mapArray[i][j].getPosY() );
+                                                }else {
+                                                    batch.draw(blockBreakingAnimation[0][3],mapArray[i][j].getPosX(), mapArray[i][j].getPosY() );
+                                                }
+                                                
                                                 mapArray[i][j].setBlockHealth(mapArray[i][j].getBlockHealth() - 1);
                                                 soundTimer += 1;
                                             } else {
@@ -254,6 +265,9 @@ public class Player {
                                                 mapArray[i][j].setCollision(false);
                                             }
                                         }
+                                        batch.setColor(1,1,1,1);
+                                        batch.draw(outlineTexture, mapArray[i][j].getPosX(), mapArray[i][j].getPosY());
+
                                         // IF RIGHT MOUSE BUTTON IS DOWN, PLACE BLOCK IN HAND
                                         if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
                                             if (mapArray[i][j].getElement() == EMPTY) {
@@ -281,9 +295,9 @@ public class Player {
         }
 
         
-
+        
         // DRAW PLAYER
-        batch.draw(playerTexture, playerPosX, playerPosY - 25);
+        batch.draw(playerTexture, playerPosX, playerPosY - 24);
         cam.position.set((int)playerPosX, (int)playerPosY - 25, 0); 
         cam.update();
     }
