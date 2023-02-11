@@ -46,7 +46,9 @@ public class Player {
     private Sound damageSound;
     private Sound stoneHitSound;
     private Sound groundHitSound;
-    private boolean soundEffect; //TEMPORARY
+    private Sound leavesHitSound;
+    private Sound blockBreakingSound;
+    private int soundEffect; //TEMPORARY
 
     private int playerHealth;
 
@@ -54,10 +56,12 @@ public class Player {
         this.playerPosX = x;
         this.playerPosY = y;
 
-        damageSound = Gdx.audio.newSound(Gdx.files.internal("damage.mp3"));
-        stoneHitSound = Gdx.audio.newSound(Gdx.files.internal("stoneHitSound.mp3"));
-        groundHitSound = Gdx.audio.newSound(Gdx.files.internal("groundHitSound.mp3"));
-        soundEffect = false;
+        damageSound = Gdx.audio.newSound(Gdx.files.internal("sounds/damage.mp3"));
+        stoneHitSound = Gdx.audio.newSound(Gdx.files.internal("sounds/stoneHitSound.mp3"));
+        groundHitSound = Gdx.audio.newSound(Gdx.files.internal("sounds/groundHitSound.mp3"));
+        leavesHitSound = Gdx.audio.newSound(Gdx.files.internal("sounds/leavesHitSound.mp3"));
+        blockBreakingSound = Gdx.audio.newSound(Gdx.files.internal("sounds/blockBreakingSound.mp3"));
+        
         
         playerSizeX = 20;
         playerSizeY = 49;
@@ -249,7 +253,7 @@ public class Player {
                                         batch.setColor(1,1,1,0.5f);
                                         // IF LEFT MOUSE BUTTON IS DOWN REDUCE BLOCK HEALTH OR DESTROY IT (CHANGE TO
                                         // EMPTY AND COLLISION OFF)
-                                        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                                        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && mapArray[x][y].getElement() != EMPTY) {
                                             if (mapArray[x][y].getBlockHealth() > 0) {
                                                 
                                                 if(mapArray[x][y].getBlockHealth() * 100 / mapArray[x][y].getMaxhealth() > 75){
@@ -261,14 +265,18 @@ public class Player {
                                                 }else {
                                                     batch.draw(blockBreakingAnimation[0][3],mapArray[x][y].getPosX(), mapArray[x][y].getPosY() );
                                                 }
-                                                if(mapArray[x][y].getElement() == GROUND || mapArray[x][y].getElement() == GRASS) {
-                                                    soundEffect = true;
-                                                }
+                                                soundEffect = mapArray[x][y].getElement();                  
                                                 mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - 1);
                                                 soundTimer += 1;
                                             } else {
+                                                if(mapArray[x][y].getElement() == LEAVES || mapArray[x][y].getElement() == TALLGRASS || mapArray[x][y].getElement() == REDFLOWER) {
+                                                    leavesHitSound.play(1, 0.5f, 0);
+                                                } else {
+                                                    blockBreakingSound.play();
+                                                }
                                                 mapArray[x][y].setElement(EMPTY);
                                                 mapArray[x][y].setCollision(false);
+                                                
                                             }
                                         }else{
                                             soundTimer = 15;
@@ -292,11 +300,11 @@ public class Player {
             }
         }
         if(soundTimer == 20) {
-            if(soundEffect == true) {
+            if(soundEffect == GRASS || soundEffect == GROUND) {
                 groundHitSound.play(1f, 0.8f, 0);
-                soundEffect = false;
-            } else {
+            } else if (soundEffect == STONE || soundEffect == IRON || soundEffect == COAL){
                 stoneHitSound.play();
+                soundEffect = 0;
             }
             soundTimer -= 20;
         }
