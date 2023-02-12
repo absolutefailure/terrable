@@ -17,6 +17,7 @@ public class Map {
 
     
     private Texture textures;
+    private Texture kivimiesTexture;
     private TextureRegion[][] blockTextures;
     ArrayList<Mob> mobs = new ArrayList<>();
 
@@ -29,6 +30,7 @@ public class Map {
         this.mapSizeY = sizeY;
 
         textures = new Texture("tileset2.png");
+        kivimiesTexture = new Texture("kaapo.png");
 
         
         blockTextures = TextureRegion.split(textures, 25, 25); 
@@ -37,7 +39,7 @@ public class Map {
     }
 
     // MAP GENERATION
-    public void GenerateNewMap(Player player, Mob mob) {
+    public void GenerateNewMap(Player player) {
 
 
         mapArray = new Block[mapSizeX][mapSizeY];
@@ -64,8 +66,6 @@ public class Map {
             if (x == mapSizeX / 2){ // SET PLAYER POSITION TO THE CENTER OF THE MAP
                 player.setX(0);
                 player.setY((mapSizeY/2-height) * 25 + 60);
-                mob.setMobPosX(-200);
-                mob.setMobPosY((mapSizeY/2-height)*25 + 300);
             }
             for (int y = 0; y < mapSizeY; y++ ){
                 if ( y == height){
