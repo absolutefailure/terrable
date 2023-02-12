@@ -20,11 +20,11 @@ public class Mob {
 
     private Sound mobScreamSound;
   
-    public Mob(float x, float y) {
+    public Mob(float x, float y, Texture texture) {
         this.mobPosX = x;
         this.mobPosY = y;
 
-        mobTexture = new Texture("kaapo.png");
+        mobTexture = texture;
 
         mobScreamSound = Gdx.audio.newSound(Gdx.files.internal("sounds/mobScreamSound.mp3"));
 
