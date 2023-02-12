@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.Player;
 import com.mygdx.game.Terrable;
 import com.mygdx.game.map.Map;
+import com.mygdx.game.mobs.Mob;
 
 public class GameScreen implements Screen {
    
@@ -14,7 +15,7 @@ public class GameScreen implements Screen {
     Map map;
 
 	private Player player;
-
+    private Mob mob;
 
 
 	final int MAP_SIZE_X = 5000; // blocks
@@ -32,7 +33,7 @@ public class GameScreen implements Screen {
 
 		// Create player and set starting position
 		player = new Player(0,0); 
-
+        mob = new Mob(0, 0);
 		
         map = new Map(MAP_SIZE_X, MAP_SIZE_Y);
 
@@ -66,6 +67,7 @@ public class GameScreen implements Screen {
         map.Draw(game.batch, player);
 
         player.Update(map, game.cam.getCamera(), game.batch);
+        mob.Update(map, game.batch, player);
         
         // draw hud
         game.batch.setProjectionMatrix(game.hudCam.combined());
@@ -92,7 +94,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        map.GenerateNewMap(player);
+        map.GenerateNewMap(player, mob);
         player.setPlayerHealth(10);
     }
 
