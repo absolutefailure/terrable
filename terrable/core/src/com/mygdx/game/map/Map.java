@@ -2,12 +2,14 @@ package com.mygdx.game.map;
 
 import static com.mygdx.game.map.elements.*;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.Player;
+import com.mygdx.game.mobs.Mob;
 
 public class Map {
 
@@ -16,6 +18,7 @@ public class Map {
     
     private Texture textures;
     private TextureRegion[][] blockTextures;
+    ArrayList<Mob> mobs = new ArrayList<>();
 
     private int mapSizeX; // map size in blocks
     private int mapSizeY; // map size in blocks
@@ -34,7 +37,7 @@ public class Map {
     }
 
     // MAP GENERATION
-    public void GenerateNewMap(Player player) {
+    public void GenerateNewMap(Player player, Mob mob) {
 
 
         mapArray = new Block[mapSizeX][mapSizeY];
@@ -42,6 +45,8 @@ public class Map {
         int height = mapSizeY/2;
 
         Random rand = new Random();
+
+        // ArrayList<Mob> mobs = new ArrayList<>();
 
         /*[
             [1,1,1,1,1,0,0,0,0,0],
@@ -59,6 +64,8 @@ public class Map {
             if (x == mapSizeX / 2){ // SET PLAYER POSITION TO THE CENTER OF THE MAP
                 player.setX(0);
                 player.setY((mapSizeY/2-height) * 25 + 60);
+                mob.setMobPosX(-200);
+                mob.setMobPosY((mapSizeY/2-height)*25 + 300);
             }
             for (int y = 0; y < mapSizeY; y++ ){
                 if ( y == height){
@@ -123,7 +130,7 @@ public class Map {
 
     // UPDATE MAP
     public void Update() {
-
+         
     }
 
    // DRAW MAP
@@ -131,6 +138,9 @@ public class Map {
 
         UpdateLighting(player);
 
+        for (Mob mob: mobs){ 
+            mob.Update(this, batch, player);
+        }
 
         for (Block[] row : mapArray){ 
             if (row[0].getPosX() > player.getX() - 1000 && row[0].getPosX() < player.getX() + 1000){ // LOOP ONLY VERTICAL ROWS THAT ARE INSIDE VISIBLE AREA
