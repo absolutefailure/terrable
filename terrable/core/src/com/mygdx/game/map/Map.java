@@ -52,8 +52,6 @@ public class Map {
 
         Random rand = new Random();
 
-        ArrayList<Mob> mobs = new ArrayList<>();
-
         /*[
             [1,1,1,1,1,0,0,0,0,0],
             [1,1,1,1,1,0,0,0,0,0],
