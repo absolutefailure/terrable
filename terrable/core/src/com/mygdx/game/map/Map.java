@@ -5,6 +5,8 @@ import static com.mygdx.game.map.elements.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -24,6 +26,7 @@ public class Map {
     private int mapSizeX; // map size in blocks
     private int mapSizeY; // map size in blocks
 
+    private Sound mobSpawnSound;
 
     public Map(int sizeX, int sizeY) {
         this.mapSizeX = sizeX;
@@ -32,6 +35,7 @@ public class Map {
         textures = new Texture("tileset2.png");
         kivimiesTexture = new Texture("kaapo.png");
 
+        mobSpawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/moaiSpawnSound.mp3"));
         
         blockTextures = TextureRegion.split(textures, 25, 25); 
         
@@ -48,7 +52,7 @@ public class Map {
 
         Random rand = new Random();
 
-        // ArrayList<Mob> mobs = new ArrayList<>();
+        ArrayList<Mob> mobs = new ArrayList<>();
 
         /*[
             [1,1,1,1,1,0,0,0,0,0],
@@ -135,13 +139,32 @@ public class Map {
 
    // DRAW MAP
    public void Draw(Batch batch, Player player){
-
+        Random rand = new Random();
         UpdateLighting(player);
 
         for (Mob mob: mobs){ 
             mob.Update(this, batch, player);
         }
-
+        if(rand.nextInt(1000)<2) {
+            Boolean direction = rand.nextBoolean();
+            if(direction) {
+                mobs.add(new Mob(player.getX() + 500, player.getY() + 200, kivimiesTexture));
+                mobSpawnSound.play(0.1f);
+            } else {
+                mobs.add(new Mob(player.getX() - 500, player.getY() + 200, kivimiesTexture));
+                mobSpawnSound.play(0.1f);
+            }
+        }
+        if(mobs.size() > 0) {
+            for(int i = 0; i < mobs.size(); i++) {
+                Mob thisMob = mobs.get(i);
+                if(thisMob.getMobPosX() - player.getX() >= 1000) {
+                    mobs.remove(i);
+                } else if(thisMob.getMobPosX() - player.getX() <= -1000) {
+                    mobs.remove(i);
+                }
+            }
+        }
         for (Block[] row : mapArray){ 
             if (row[0].getPosX() > player.getX() - 1000 && row[0].getPosX() < player.getX() + 1000){ // LOOP ONLY VERTICAL ROWS THAT ARE INSIDE VISIBLE AREA
                 for (Block block: row){
