@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.Terrable;
@@ -15,7 +16,7 @@ public class MainMenuScreen implements Screen {
 
     private Texture playButton;
     private Texture exitButton;
-
+    private Sound menuSound;
    
 
     public MainMenuScreen(final Terrable game){
@@ -23,7 +24,7 @@ public class MainMenuScreen implements Screen {
 
         playButton = new Texture("play.png");
         exitButton = new Texture("exit.png");
-
+        menuSound = Gdx.audio.newSound(Gdx.files.internal("sounds/moaiSpawnSound.mp3"));
 		game.cam.setPosition(game.WIDTH/2, game.HEIGHT/2);
         game.cam.update();
 
@@ -35,7 +36,7 @@ public class MainMenuScreen implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(0,0,0,1);
         game.batch.setProjectionMatrix(game.cam.combined());
-
+        menuSound.loop(0.1f);
 
         game.batch.begin();
         
@@ -44,6 +45,7 @@ public class MainMenuScreen implements Screen {
         
         if (game.cam.getInputInGameWorld().x > game.WIDTH/2-250 && game.cam.getInputInGameWorld().x < game.WIDTH/2+250 && game.cam.getInputInGameWorld().y > game.HEIGHT/2 -150 && game.cam.getInputInGameWorld().y < game.HEIGHT/2 -50 ){
             if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
+                menuSound.stop();
                 //game.gameScreen.map.GenerateNewMap(game.gameScreen.player);
                 game.setScreen(game.gameScreen);
             }
