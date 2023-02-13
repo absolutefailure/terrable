@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.Player;
 import com.mygdx.game.Terrable;
 import com.mygdx.game.map.Map;
-import com.mygdx.game.mobs.Mob;
 
 public class GameScreen implements Screen {
    

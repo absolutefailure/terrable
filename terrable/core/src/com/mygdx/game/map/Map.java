@@ -147,10 +147,10 @@ public class Map {
             Boolean direction = rand.nextBoolean();
             if(direction) {
                 mobs.add(new Mob(player.getX() + 500, player.getY() + 200, kivimiesTexture));
-                mobSpawnSound.play(0.1f);
+                mobSpawnSound.play(0.01f);
             } else {
                 mobs.add(new Mob(player.getX() - 500, player.getY() + 200, kivimiesTexture));
-                mobSpawnSound.play(0.1f);
+                mobSpawnSound.play(0.01f);
             }
         }
         if(mobs.size() > 0) {
