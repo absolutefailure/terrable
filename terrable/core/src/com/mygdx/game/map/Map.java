@@ -146,7 +146,7 @@ public class Map {
    public void Draw(Batch batch, Player player){
         Random rand = new Random();
         UpdateLighting(player);
-
+        //Mob spawning / despawning loop
         for (Mob mob: mobs){ 
             mob.Update(this, batch, player);
         }
@@ -170,7 +170,7 @@ public class Map {
                 }
             }
         }
-
+        //Bat spawning despawning loop
         for (Bat bat: bats){ 
             bat.Update(this, batch, player);
         }
