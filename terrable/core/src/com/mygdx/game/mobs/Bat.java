@@ -22,7 +22,7 @@ public class Bat {
     
     public Bat(float x, float y, Texture texture) {
         this.mobPosX = x;
-        this.mobPosX = y;
+        this.mobPosY = y;
 
         mobTexture = texture;
 
