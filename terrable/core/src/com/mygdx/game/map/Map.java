@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.Player;
+import com.mygdx.game.mobs.Bat;
 import com.mygdx.game.mobs.Mob;
 
 public class Map {
@@ -20,13 +21,16 @@ public class Map {
     
     private Texture textures;
     private Texture kivimiesTexture;
+    private Texture batTexture;
     private TextureRegion[][] blockTextures;
     ArrayList<Mob> mobs = new ArrayList<>();
+    ArrayList<Bat> bats = new ArrayList<>();
 
     private int mapSizeX; // map size in blocks
     private int mapSizeY; // map size in blocks
 
     private Sound mobSpawnSound;
+    private Sound batSpawnSound;
 
     public Map(int sizeX, int sizeY) {
         this.mapSizeX = sizeX;
@@ -34,8 +38,11 @@ public class Map {
 
         textures = new Texture("tileset2.png");
         kivimiesTexture = new Texture("kaapo.png");
+        batTexture = new Texture("bat.png");
 
         mobSpawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/moaiSpawnSound.mp3"));
+
+        batSpawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/batSpawnSound.mp3"));
         
         blockTextures = TextureRegion.split(textures, 25, 25); 
         
@@ -163,6 +170,31 @@ public class Map {
                 }
             }
         }
+
+        for (Bat bat: bats){ 
+            bat.Update(this, batch, player);
+        }
+        if(rand.nextInt(1000)<2) {
+            Boolean direction = rand.nextBoolean();
+            if(direction) {
+                bats.add(new Bat(player.getX() + 500, player.getY() + 200, batTexture));
+                batSpawnSound.play(0.01f);
+            } else {
+                bats.add(new Bat(player.getX() - 500, player.getY() + 200, batTexture));
+                batSpawnSound.play(0.01f);
+            }
+        }
+        if(bats.size() > 0) {
+            for(int i = 0; i < bats.size(); i++) {
+                Bat thisBat = bats.get(i);
+                if(thisBat.getMobPosX() - player.getX() >= 1000) {
+                    bats.remove(i);
+                } else if(thisBat.getMobPosX() - player.getX() <= -1000) {
+                    bats.remove(i);
+                }
+            }
+        }
+
         for (Block[] row : mapArray){ 
             if (row[0].getPosX() > player.getX() - 1000 && row[0].getPosX() < player.getX() + 1000){ // LOOP ONLY VERTICAL ROWS THAT ARE INSIDE VISIBLE AREA
                 for (Block block: row){
