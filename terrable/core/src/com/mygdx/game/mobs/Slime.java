@@ -73,9 +73,9 @@ public class Slime {
                 jumpTimer = 0;
             }
             if (mobPosX < player.getX()){
-                acceleration +=0.5f;
+                acceleration +=0.3f;
             }else if (mobPosX > player.getX()){
-                acceleration -= 0.5f;
+                acceleration -= 0.3f;
             }
         }
         
