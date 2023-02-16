@@ -1,7 +1,7 @@
 package com.mygdx.game.mobs;
 
-// import com.badlogic.gdx.Gdx;
-// import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.mygdx.game.Player;
@@ -16,7 +16,8 @@ public class Slime {
     private int mobSizeY;
     private float gravity;
     private float acceleration;
-    // private Sound slimeSound;
+    private Sound slimeSound;
+    private int jumpTimer;
 
     public Slime(float x, float y, Texture texture) {
         this.mobPosX = x;
@@ -24,7 +25,7 @@ public class Slime {
 
         mobTexture = texture;
 
-        // slimeSound = Gdx.audio.newSound(Gdx.files.internal("sounds/slimeSound.mp3"));
+        slimeSound = Gdx.audio.newSound(Gdx.files.internal("sounds/slimeSound.mp3"));
 
         mobSizeX = 20;
         mobSizeY = 20;
@@ -64,8 +65,13 @@ public class Slime {
         }
 
         //mob left right movement
-        // fix later with jumping mechanic !!
         if(200 > Math.sqrt((player.getY() - mobPosY) * (player.getY() - mobPosY) + (player.getX() - mobPosX) * (player.getX() - mobPosX))){
+            jumpTimer += 1;
+            if (jumpTimer == 300) {
+                gravity = 5;
+                slimeSound.play(1f);
+                jumpTimer = 0;
+            }
             if (mobPosX < player.getX()){
                 acceleration +=0.5f;
             }else if (mobPosX > player.getX()){
