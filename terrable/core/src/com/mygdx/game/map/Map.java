@@ -12,7 +12,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.Player;
 import com.mygdx.game.mobs.Bat;
+import com.mygdx.game.mobs.Chicken;
 import com.mygdx.game.mobs.Mob;
+import com.mygdx.game.mobs.Slime;
 
 public class Map {
 
@@ -22,15 +24,19 @@ public class Map {
     private Texture textures;
     private Texture kivimiesTexture;
     private Texture batTexture;
+    private Texture chickenTexture;
+    private Texture slimeTexture;
     private TextureRegion[][] blockTextures;
     ArrayList<Mob> mobs = new ArrayList<>();
-    ArrayList<Bat> bats = new ArrayList<>();
 
     private int mapSizeX; // map size in blocks
     private int mapSizeY; // map size in blocks
 
     private Sound mobSpawnSound;
     private Sound batSpawnSound;
+    private Sound batScreamSound;
+    private Sound slimeSound;
+    private Sound mobScreamSound;
 
     public Map(int sizeX, int sizeY) {
         this.mapSizeX = sizeX;
@@ -39,10 +45,15 @@ public class Map {
         textures = new Texture("tileset2.png");
         kivimiesTexture = new Texture("kaapo.png");
         batTexture = new Texture("bat.png");
+        chickenTexture = new Texture("chicken.png");
+        slimeTexture = new Texture("slime.png");
 
         mobSpawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/moaiSpawnSound.mp3"));
-
         batSpawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/batSpawnSound.mp3"));
+
+        batScreamSound = Gdx.audio.newSound(Gdx.files.internal("sounds/batScreamSound.mp3"));
+        slimeSound =  Gdx.audio.newSound(Gdx.files.internal("sounds/slimeSound.mp3"));
+        mobScreamSound =  Gdx.audio.newSound(Gdx.files.internal("sounds/mobScreamSound.mp3"));
         
         blockTextures = TextureRegion.split(textures, 25, 25); 
         
@@ -144,56 +155,53 @@ public class Map {
 
    // DRAW MAP
    public void Draw(Batch batch, Player player){
+
         Random rand = new Random();
         UpdateLighting(player);
-        //Mob spawning / despawning loop
+
+        // Update all mobs
         for (Mob mob: mobs){ 
             mob.Update(this, batch, player);
         }
-        if(rand.nextInt(1000)<2) {
-            Boolean direction = rand.nextBoolean();
-            if(direction) {
-                mobs.add(new Mob(player.getX() + 500, player.getY() + 200, kivimiesTexture));
-                mobSpawnSound.play(0.01f);
-            } else {
-                mobs.add(new Mob(player.getX() - 500, player.getY() + 200, kivimiesTexture));
-                mobSpawnSound.play(0.01f);
+
+        // mob spawner
+        if(mobs.size() < 10 && rand.nextInt(500)<2) {
+            int direction = rand.nextInt(2) * 2 - 1;
+            int spawn = rand.nextInt(4) + 1;
+
+            switch (spawn) {
+                case 1:  
+                    mobs.add(new Mob(player.getX() + (1000 * direction), player.getY() + 200, kivimiesTexture, mobScreamSound));
+                    mobSpawnSound.play(0.01f);
+                    break;
+                case 2:  
+                    mobs.add(new Chicken(player.getX() + (1000 * direction), player.getY() + 200, chickenTexture));
+                    break;
+                case 3:  
+                    mobs.add(new Bat(player.getX() + (1000 * direction), player.getY() + 200, batTexture, batScreamSound));
+                    batSpawnSound.play(0.01f);
+                    break;
+                case 4:  
+                    mobs.add(new Slime(player.getX() + (1000 * direction), player.getY() + 200, slimeTexture, slimeSound));
+                    break;
+                default:
+                    break;
             }
+            
         }
+
+        // mob despawner
         if(mobs.size() > 0) {
             for(int i = 0; i < mobs.size(); i++) {
                 Mob thisMob = mobs.get(i);
-                if(thisMob.getMobPosX() - player.getX() >= 1000) {
+                if(thisMob.getMobPosX() > player.getX() + 1500 || thisMob.getMobPosY() > player.getY() + 1000) {
                     mobs.remove(i);
-                } else if(thisMob.getMobPosX() - player.getX() <= -1000) {
+                } else if(thisMob.getMobPosX() < player.getX() - 1500 || thisMob.getMobPosY() < player.getY() - 1000) {
                     mobs.remove(i);
                 }
             }
         }
-        //Bat spawning despawning loop
-        for (Bat bat: bats){ 
-            bat.Update(this, batch, player);
-        }
-        if(rand.nextInt(1000)<2) {
-            Boolean direction = rand.nextBoolean();
-            if(direction) {
-                bats.add(new Bat(player.getX() + 500, player.getY() + 200, batTexture));
-                batSpawnSound.play(0.01f);
-            } else {
-                bats.add(new Bat(player.getX() - 500, player.getY() + 200, batTexture));
-                batSpawnSound.play(0.01f);
-            }
-        }
-        if(bats.size() > 0) {
-            for(int i = 0; i < bats.size(); i++) {
-                Bat thisBat = bats.get(i);
-                if(thisBat.getMobPosX() - player.getX() >= 1000) {
-                    bats.remove(i);
-                } else if(thisBat.getMobPosX() - player.getX() <= -1000) {
-                    bats.remove(i);
-                }
-            }
-        }
+
 
         for (Block[] row : mapArray){ 
             if (row[0].getPosX() > player.getX() - 1000 && row[0].getPosX() < player.getX() + 1000){ // LOOP ONLY VERTICAL ROWS THAT ARE INSIDE VISIBLE AREA
@@ -331,5 +339,6 @@ public class Map {
 
     public void dispose(){
         mapArray = null;
+        mobs.clear();
     }
 }

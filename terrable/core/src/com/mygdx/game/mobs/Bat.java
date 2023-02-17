@@ -1,6 +1,7 @@
 package com.mygdx.game.mobs;
 
-import com.badlogic.gdx.Gdx;
+import java.util.Random;
+
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -8,7 +9,7 @@ import com.mygdx.game.Player;
 import com.mygdx.game.map.Block;
 import com.mygdx.game.map.Map;
 
-public class Bat {
+public class Bat extends Mob{
     private Texture mobTexture;
     private float mobPosX;
     private float mobPosY;
@@ -18,22 +19,27 @@ public class Bat {
     private float acceleration;
     private int soundTimer;
 
+    private Random rand;
     private Sound batScreamSound;
     
-    public Bat(float x, float y, Texture texture) {
+    public Bat(float x, float y, Texture texture, Sound sound) {
+        super();
         this.mobPosX = x;
         this.mobPosY = y;
 
         mobTexture = texture;
 
-        batScreamSound = Gdx.audio.newSound(Gdx.files.internal("sounds/batScreamSound.mp3"));
+        batScreamSound = sound;
 
         mobSizeX = 20;
         mobSizeY = 20;
 
         gravity = 0;
+    
+        rand = new Random();
     }
 
+    @Override
     public void Update(Map map, Batch batch, Player player) {
         float oldMobX = mobPosX;
         float oldMobY = mobPosY;
@@ -43,7 +49,7 @@ public class Bat {
 
 
         //mob up down movement
-        gravity -= 0.25;
+        gravity -= (rand.nextFloat() * 0.2f) - 0.1f;
 
         mobPosY += gravity;
 
@@ -57,9 +63,9 @@ public class Bat {
             if (mapArray[x][0].getPosX() > mobPosX - 100 && mapArray[x][0].getPosX() < mobPosX + 100) {
                 for (int y = 0; y < mapArray[x].length; y++){
                     if (mapArray[x][y].isCollision() && mobPosX + mobSizeX > mapArray[x][y].getPosX()
-                        && mobPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
-                        && mobPosY > mapArray[x][y].getPosY() - mapArray[x][y].getBLOCKSIZE()
-                        && mobPosY - mobSizeY < mapArray[x][y].getPosY()) {
+                    && mobPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
+                    && mobPosY + mobSizeY > mapArray[x][y].getPosY()
+                    && mobPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
                         mobPosY = oldMobY;
                         if (mapArray[x-1][y-1].isCollision() || mapArray[x+1][y-1].isCollision()) {
                             gravity = 4;
@@ -90,17 +96,16 @@ public class Bat {
         }
         
         
-        
+        acceleration -= (rand.nextFloat() * 0.6f) - 0.3f;
         mobPosX += acceleration;
-        acceleration *= 0.5f;
 
         for (int x = 0; x < mapArray.length; x++){
             if (mapArray[x][0].getPosX() > mobPosX - 100 && mapArray[x][0].getPosX() < mobPosX + 100) {
                 for (int y = 0; y < mapArray[x].length; y++){
                     if (mapArray[x][y].isCollision() && mobPosX + mobSizeX > mapArray[x][y].getPosX()
-                        && mobPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
-                        && mobPosY > mapArray[x][y].getPosY() - mapArray[x][y].getBLOCKSIZE()
-                        && mobPosY - mobSizeY < mapArray[x][y].getPosY()) {
+                    && mobPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
+                    && mobPosY + mobSizeY > mapArray[x][y].getPosY()
+                    && mobPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
                        
                         mobPosX = oldMobX;
                         acceleration = 0;
@@ -110,7 +115,7 @@ public class Bat {
         }
 
 
-        batch.draw(mobTexture, mobPosX, mobPosY - 15);
+        batch.draw(mobTexture, mobPosX, mobPosY);
     }
 
     public float getMobPosX() {
