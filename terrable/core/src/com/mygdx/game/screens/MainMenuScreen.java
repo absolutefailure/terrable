@@ -36,7 +36,7 @@ public class MainMenuScreen implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(0,0,0,1);
         game.batch.setProjectionMatrix(game.cam.combined());
-        menuSound.loop(0.01f);
+
 
         game.batch.begin();
         
@@ -76,7 +76,7 @@ public class MainMenuScreen implements Screen {
     public void show() {
         game.cam.setPosition(game.WIDTH/2, game.HEIGHT/2);
         game.cam.update();
-        
+        menuSound.loop(0.01f);
     }
 
 

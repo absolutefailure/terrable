@@ -1,6 +1,5 @@
 package com.mygdx.game.mobs;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -20,19 +19,23 @@ public class Mob {
 
     private Sound mobScreamSound;
   
-    public Mob(float x, float y, Texture texture) {
+    public Mob(float x, float y, Texture texture, Sound sound) {
         this.mobPosX = x;
         this.mobPosY = y;
 
         mobTexture = texture;
 
-        mobScreamSound = Gdx.audio.newSound(Gdx.files.internal("sounds/mobScreamSound.mp3"));
+        mobScreamSound = sound;
 
         mobSizeX = 20;
         mobSizeY = 40;
 
         gravity = 0;
         
+    }
+
+    public Mob(){
+
     }
     
     public void Update(Map map, Batch batch, Player player) {
@@ -58,9 +61,9 @@ public class Mob {
             if (mapArray[x][0].getPosX() > mobPosX - 100 && mapArray[x][0].getPosX() < mobPosX + 100) {
                 for (int y = 0; y < mapArray[x].length; y++){
                     if (mapArray[x][y].isCollision() && mobPosX + mobSizeX > mapArray[x][y].getPosX()
-                        && mobPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
-                        && mobPosY > mapArray[x][y].getPosY() - mapArray[x][y].getBLOCKSIZE()
-                        && mobPosY - mobSizeY < mapArray[x][y].getPosY()) {
+                    && mobPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
+                    && mobPosY + mobSizeY > mapArray[x][y].getPosY()
+                    && mobPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
                         mobPosY = oldMobY;
                         if (mapArray[x-1][y-1].isCollision() || mapArray[x+1][y-1].isCollision()) {
                             gravity = 4;
@@ -99,9 +102,9 @@ public class Mob {
             if (mapArray[x][0].getPosX() > mobPosX - 100 && mapArray[x][0].getPosX() < mobPosX + 100) {
                 for (int y = 0; y < mapArray[x].length; y++){
                     if (mapArray[x][y].isCollision() && mobPosX + mobSizeX > mapArray[x][y].getPosX()
-                        && mobPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
-                        && mobPosY > mapArray[x][y].getPosY() - mapArray[x][y].getBLOCKSIZE()
-                        && mobPosY - mobSizeY < mapArray[x][y].getPosY()) {
+                    && mobPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
+                    && mobPosY + mobSizeY > mapArray[x][y].getPosY()
+                    && mobPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
                        
                         mobPosX = oldMobX;
                         acceleration = 0;
@@ -111,7 +114,7 @@ public class Mob {
         }
 
 
-        batch.draw(mobTexture, mobPosX, mobPosY - 15);
+        batch.draw(mobTexture, mobPosX, mobPosY);
     }
 
     public float getMobPosX() {
