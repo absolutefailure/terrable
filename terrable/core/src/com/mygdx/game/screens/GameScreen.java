@@ -69,7 +69,7 @@ public class GameScreen implements Screen {
         game.batch.setProjectionMatrix(game.hudCam.combined());
 
 
-        player.DrawHud(game.batch);
+        player.DrawHud(game.batch, game.hudCam);
     
         game.batch.end();
 
