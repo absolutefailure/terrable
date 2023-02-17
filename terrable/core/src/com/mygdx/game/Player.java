@@ -16,7 +16,6 @@ import com.mygdx.game.map.Map;
 
 import static com.mygdx.game.map.elements.*;
 
-import java.nio.channels.spi.SelectorProvider;
 import java.util.ArrayList;
 
 public class Player {
@@ -444,10 +443,10 @@ public class Player {
                         inventory.get(grab).setElement(0);
                         grab = -1;
                     }else{
-                        InventorySlot emt = inventory.get(grab);
-                        InventorySlot emt2 = inventory.get(i);
-                        inventory.set(i, emt);
-                        inventory.set(grab, emt2);
+                        InventorySlot reserveSlot = inventory.get(grab);
+                        InventorySlot reserveSlot2 = inventory.get(i);
+                        inventory.set(i, reserveSlot);
+                        inventory.set(grab, reserveSlot2);
                         grab = -1;
                     }
                 }
