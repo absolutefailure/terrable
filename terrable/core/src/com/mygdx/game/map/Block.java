@@ -17,23 +17,21 @@ public class Block {
     boolean collision;
     int permanent;
 
-    public Block(int x, int y, int element, boolean collision){
+    public Block(int x, int y, int element, boolean collision, int permanent){
         this.posX = x;
         this.posY = y;
         this.element = element;
+        this.permanent = permanent;
         if (element == EMPTY){
             this.blockHealth = 0;
         }else if(element == GROUND){
             this.blockHealth = 50;
-            this.permanent = GROUND;
         }else if(element == GRASS){
             this.blockHealth = 50;
-            this.permanent = GROUND;
         }else if(element == WOOD){
             this.blockHealth = 100;
         }else if(element == STONE){
             this.blockHealth = 200;
-            this.permanent = STONE;
         }else if(element == LEAVES){
             this.blockHealth = 25;
         }else if(element == LADDER) {
@@ -138,7 +136,7 @@ public class Block {
         } else if (element == DIAMOND){
             return 300;
         }else{
-            return 0;
+            return 1;
         }
         
     }

@@ -24,7 +24,6 @@ public class Player {
 
     private final int INVENTORY_SLOT_MAX = 32;
 
-    private int selectedSlot = 0;
 
     private float playerPosX;
     private float playerPosY;
@@ -48,6 +47,7 @@ public class Player {
     private Texture outlineTexture;
     private Texture healthTexture;
     private Texture hotbarTexture;
+    private Texture inventoryTexture;
     private Texture textures;
     private TextureRegion[][] blockTextures;
 
@@ -64,6 +64,8 @@ public class Player {
     private int playerHealth;
 
     private int grab = -1;
+    private int selectedSlot = 0;
+    private boolean isInventoryOpen = false;
 
     private ArrayList<InventorySlot> inventory;
     BitmapFont font = new BitmapFont();
@@ -92,6 +94,7 @@ public class Player {
         healthTexture = new Texture("heart.png");
         blockBreakingTexture = new Texture("breaktiles.png");
         hotbarTexture = new Texture("hotbar.png");
+        inventoryTexture = new Texture("inventory.png");
 
         textures = new Texture("tileset2.png");
         blockTextures = TextureRegion.split(textures, 25, 25); 
@@ -99,7 +102,7 @@ public class Player {
         blockBreakingAnimation = TextureRegion.split(blockBreakingTexture, 25, 25);
 
         inventory = new ArrayList<>();
-        for (int i = 0; i < 9; i++){
+        for (int i = 0; i < 36; i++){
             inventory.add(new InventorySlot());
         }
 
@@ -145,7 +148,7 @@ public class Player {
                 for (int y = 0; y < mapArray[x].length; y++) {
                     // COLLISION DETECTION AND PHYSICS ON Y-AXIS
                     // IF PLAYER IS INSIDE A BLOCK SET POSITION TO THE OLD POSITION
-                    if (mapArray[x][y].isCollision() && playerPosX + playerSizeX > mapArray[x][y].getPosX()
+                    if (playerPosX + playerSizeX > mapArray[x][y].getPosX()
                     && playerPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
                     && playerPosY + playerSizeY > mapArray[x][y].getPosY()
                     && playerPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
@@ -292,7 +295,7 @@ public class Player {
                                                     batch.draw(blockBreakingAnimation[0][3],mapArray[x][y].getPosX(), mapArray[x][y].getPosY() );
                                                 }
                                                 soundEffect = mapArray[x][y].getElement();                  
-                                                mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - 1);
+                                                mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - 3);
                                                 soundTimer += 1;
                                             } else {
                                                 if(mapArray[x][y].getElement() == LEAVES || mapArray[x][y].getElement() == TALLGRASS || mapArray[x][y].getElement() == REDFLOWER) {
@@ -340,23 +343,35 @@ public class Player {
                                             if (!(playerPosX + playerSizeX > mapArray[x][y].getPosX()
                                             && playerPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
                                             && playerPosY + playerSizeY > mapArray[x][y].getPosY()
-                                            && playerPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE())){
+                                            && playerPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) 
+                                            || inventory.get(selectedSlot).getElement() == LADDER 
+                                            || inventory.get(selectedSlot).getElement() == TALLGRASS 
+                                            || inventory.get(selectedSlot).getElement() == REDFLOWER){
                                                 if (inventory.get(selectedSlot).getAmount() > 0) {
                                                     mapArray[x][y].setElement(inventory.get(selectedSlot).getElement());
-                                                    if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)){
-                                                        mapArray[x][y].setCollision(false);
-                                                    }else{
-                                                        mapArray[x][y].setCollision(true);
+                                                    // prevent collision on certain blocks
+                                                    switch (inventory.get(selectedSlot).getElement()) {
+                                                        case LADDER:        
+                                                            break;
+                                                        case TALLGRASS:
+                                                            break;
+                                                        case REDFLOWER:
+                                                            break;
+                                                        default:
+                                                            if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)){
+                                                                mapArray[x][y].setCollision(false);
+                                                            }else{
+                                                                mapArray[x][y].setCollision(true);
+                                                            }
                                                     }
+
                                                     inventory.get(selectedSlot).removeItem();
                                                 }
                                             }
- 
                                         }
                                     }
                                 }
                             }
-
                         }
                     }
                 }
@@ -382,14 +397,14 @@ public class Player {
         
         // DRAW PLAYER
         batch.draw(playerTexture, playerPosX, playerPosY);
-        cam.position.set((int)playerPosX, (int)playerPosY - 25, 0); 
+        cam.position.set((int)playerPosX + playerSizeX/2, (int)playerPosY + playerSizeY/2, 0); 
         cam.update();
     }
 
 
     public void DrawHud(Batch batch, HudCamera cam){
 
-
+        // change selected slot
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)){
             selectedSlot = 0;
         }else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)){
@@ -410,6 +425,16 @@ public class Player {
             selectedSlot = 8;
         }
 
+        // show/hide inventory
+        if (!isInventoryOpen){
+            if (Gdx.input.isKeyJustPressed(Input.Keys.TAB) || Gdx.input.isKeyJustPressed(Input.Keys.E)){
+                isInventoryOpen = true;
+            }
+           
+        }else if (Gdx.input.isKeyJustPressed(Input.Keys.TAB) || Gdx.input.isKeyJustPressed(Input.Keys.E)){
+            isInventoryOpen = false;
+        }
+
         // DRAW PLAYER HEALTH
         for (int i = 0; i < playerHealth; i++){
             batch.draw(healthTexture, 32 + 20 * i, 10);
@@ -418,8 +443,9 @@ public class Player {
         batch.draw(hotbarTexture, 800-(261/2), 0);
 
 
-        
-        for (int i = 0; i < inventory.size(); i++){
+
+        // hotbar
+        for (int i = 0; i < 9; i++){
             CharSequence str = Integer.toString(inventory.get(i).getAmount());
             if (inventory.get(i).getAmount() > 0 && grab != i){
                 batch.draw(blockTextures[0][inventory.get(i).getElement()-1],802-(261/2) + (29 * i), 2 );
@@ -429,12 +455,7 @@ public class Player {
                     grab = i;
                 }
             }
-            if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)  ){
-                if(inventory.get(i).getAmount() > 0 &&  i == grab){
-                    batch.draw(blockTextures[0][inventory.get(i).getElement()-1],cam.getInputInGameWorld().x- 12, cam.getInputInGameWorld().y- 12);
-                    font.draw(batch, str,cam.getInputInGameWorld().x - 12, cam.getInputInGameWorld().y- 12);
-                }
-            }else {
+            if(!Gdx.input.isButtonPressed(Input.Buttons.LEFT)  ){
       
                 if (cam.getInputInGameWorld().x > 802-(261/2) + (29 * i) && cam.getInputInGameWorld().x < (802-(261/2) + (29 * i ))+ 25 && cam.getInputInGameWorld().y > 2 && cam.getInputInGameWorld().y < 27 && grab > -1 && grab != i){
                     if (inventory.get(grab).getElement() == inventory.get(i).getElement() && inventory.get(i).getAmount() + inventory.get(grab).getAmount() < INVENTORY_SLOT_MAX ){
@@ -455,6 +476,54 @@ public class Player {
                 batch.draw(outlineTexture,802-(261/2) + (29 * i), 2  );
             }
         }
+        // inventory
+        if (isInventoryOpen){
+            batch.draw(inventoryTexture, 800-(261/2), 250-(88/2));
+            
+            int invDrawRow = 0;
+            int invDrawColumn = 0;
+            for (int i = 9; i < 36; i++){
+                CharSequence str = Integer.toString(inventory.get(i).getAmount());
+                if (inventory.get(i).getAmount() > 0 && grab != i){
+                    batch.draw(blockTextures[0][inventory.get(i).getElement()-1],802-(261/2) + (29 * invDrawRow), 250-(88/2) + 2 + (invDrawColumn * 29));
+                    font.draw(batch, str,802-(261/2) + (29 * invDrawRow), 250-(88/2) +15  + (invDrawColumn * 29));
+    
+                    if (cam.getInputInGameWorld().x > 802-(261/2) + (29 * invDrawRow) && cam.getInputInGameWorld().x < (802-(261/2) + (29 * invDrawRow ))+ 25 && cam.getInputInGameWorld().y > 250-(88/2) + (invDrawColumn * 29) && cam.getInputInGameWorld().y <  250-(88/2) + 27 + (invDrawColumn * 29) && Gdx.input.isButtonPressed(Input.Buttons.LEFT) && grab == -1){
+                        grab = i;
+                    }
+                }
+                if(!Gdx.input.isButtonPressed(Input.Buttons.LEFT)  ){
+        
+                    if (cam.getInputInGameWorld().x > 802-(261/2) + (29 * invDrawRow) && cam.getInputInGameWorld().x < (802-(261/2) + (29 * invDrawRow ))+ 25 && cam.getInputInGameWorld().y > 250-(88/2) + (invDrawColumn * 29) && cam.getInputInGameWorld().y < 250-(88/2) + 27 + (invDrawColumn * 29) && grab > -1 && grab != i){
+                        
+                        if (inventory.get(grab).getElement() == inventory.get(i).getElement() && inventory.get(i).getAmount() + inventory.get(grab).getAmount() < INVENTORY_SLOT_MAX ){
+                            inventory.get(i).setAmount(inventory.get(i).getAmount() + inventory.get(grab).getAmount());
+                            inventory.get(grab).setAmount(0);
+                            inventory.get(grab).setElement(0);
+                            grab = -1;
+                        }else{
+                            InventorySlot reserveSlot = inventory.get(grab);
+                            InventorySlot reserveSlot2 = inventory.get(i);
+                            inventory.set(i, reserveSlot);
+                            inventory.set(grab, reserveSlot2);
+                            grab = -1;
+                        }
+                    }
+                }
+                invDrawRow++;
+                if (invDrawRow % 9 == 0){
+                    invDrawColumn++;
+                    invDrawRow = 0;
+                }
+            }
+        }
+        
+        // draw grabbed item 
+        if(grab > -1 && inventory.get(grab).getAmount() > 0 ){
+            CharSequence str = Integer.toString(inventory.get(grab).getAmount());
+            batch.draw(blockTextures[0][inventory.get(grab).getElement()-1],cam.getInputInGameWorld().x- 12, cam.getInputInGameWorld().y- 12);
+            font.draw(batch, str,cam.getInputInGameWorld().x -12, cam.getInputInGameWorld().y+1);
+        }   
         
         if(!Gdx.input.isButtonPressed(Input.Buttons.LEFT)  ){
             grab = -1;
