@@ -153,8 +153,8 @@ public class Map {
             if ( x % (rand.nextInt(4) + 2) == 0){
                 height += rand.nextInt(3) -1;
             }
-            if (height > 120) height = 120;
-            if (height < 80) height = 80;
+            if (height > 200) height = 200;
+            if (height < 100) height = 100;
         }
     }
 
