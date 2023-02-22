@@ -13,7 +13,7 @@ public class GameScreen implements Screen {
 
     Map map;
 
-	private Player player;
+	Player player;
 
 
 	final int MAP_SIZE_X = 5000; // blocks
@@ -90,8 +90,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        map.GenerateNewMap(player);
-        player.setPlayerHealth(10);
+
     }
 
 
@@ -112,8 +111,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-        game.gameScreen.map.dispose();
-        System.gc();    
+
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.Terrable;
+import com.mygdx.game.save.SaveGame;
 
 public class MainMenuScreen implements Screen {
     
@@ -17,7 +18,6 @@ public class MainMenuScreen implements Screen {
     private Texture playButton;
     private Texture exitButton;
     private Sound menuSound;
-   
 
     public MainMenuScreen(final Terrable game){
         this.game = game;
@@ -28,7 +28,8 @@ public class MainMenuScreen implements Screen {
 		game.cam.setPosition(game.WIDTH/2, game.HEIGHT/2);
         game.cam.update();
 
-
+        game.gameScreen.map.GenerateNewMap(game.gameScreen.player);
+        game.gameScreen.player.setPlayerHealth(10);
 
     }
 
@@ -40,8 +41,13 @@ public class MainMenuScreen implements Screen {
 
         game.batch.begin();
         
-
-        
+        if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
+            SaveGame.Save(game.gameScreen.map.getMapArray(), game.gameScreen.player);
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+            SaveGame.Load(game.gameScreen.map, game.gameScreen.player);
+            System.gc();
+        }
         
         if (game.cam.getInputInGameWorld().x > game.WIDTH/2-250 && game.cam.getInputInGameWorld().x < game.WIDTH/2+250 && game.cam.getInputInGameWorld().y > game.HEIGHT/2 -150 && game.cam.getInputInGameWorld().y < game.HEIGHT/2 -50 ){
             if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){

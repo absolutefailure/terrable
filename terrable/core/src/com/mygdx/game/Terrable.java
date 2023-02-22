@@ -37,8 +37,8 @@ public class Terrable extends Game {
 
 		Gdx.graphics.setWindowedMode(WIDTH, HEIGHT);
 
-		mainMenuScreen = new MainMenuScreen(this);
 		gameScreen = new GameScreen(this);
+		mainMenuScreen = new MainMenuScreen(this);
 
 		this.setScreen(mainMenuScreen);
 

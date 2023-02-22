@@ -16,11 +16,12 @@ import com.mygdx.game.map.Map;
 
 import static com.mygdx.game.map.elements.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player {
-    private Vector2 mouseInWorld2D = new Vector2();
-    private Vector3 mouseInWorld3D = new Vector3();
+public class Player implements Serializable {
+    private transient Vector2 mouseInWorld2D = new Vector2();
+    private transient Vector3 mouseInWorld3D = new Vector3();
 
     private final int INVENTORY_SLOT_MAX = 32;
 
@@ -31,44 +32,44 @@ public class Player {
     private int playerSizeX;
     private int playerSizeY;
 
-    private boolean onGround;
-    private boolean onLadder;
-    private int onGroundTimer;
+    private transient boolean onGround;
+    private transient boolean onLadder;
+    private transient int onGroundTimer;
 
-    private int soundTimer;
+    private transient int soundTimer;
 
     private float gravity;
-    private float acceleration;
+    private transient float acceleration;
 
-    final float PLAYER_BOUNCINESS = 0.0f; // 0 = NO BOUNCE
-    final float PLAYER_FRICTION = 0.7f; // 1 = NO FRICTION
+    final transient float PLAYER_BOUNCINESS = 0.0f; // 0 = NO BOUNCE
+    final transient float PLAYER_FRICTION = 0.7f; // 1 = NO FRICTION
 
-    private Texture playerTexture;
-    private Texture outlineTexture;
-    private Texture healthTexture;
-    private Texture hotbarTexture;
-    private Texture inventoryTexture;
-    private Texture textures;
-    private TextureRegion[][] blockTextures;
+    private transient Texture playerTexture;
+    private transient Texture outlineTexture;
+    private transient Texture healthTexture;
+    private transient Texture hotbarTexture;
+    private transient Texture inventoryTexture;
+    private transient Texture textures;
+    private transient TextureRegion[][] blockTextures;
 
-    private Texture blockBreakingTexture;
-    private TextureRegion[][] blockBreakingAnimation;
+    private transient Texture blockBreakingTexture;
+    private transient TextureRegion[][] blockBreakingAnimation;
 
-    private Sound damageSound;
-    private Sound stoneHitSound;
-    private Sound groundHitSound;
-    private Sound leavesHitSound;
-    private Sound blockBreakingSound;
-    private int soundEffect; //TEMPORARY
+    private transient Sound damageSound;
+    private transient Sound stoneHitSound;
+    private transient Sound groundHitSound;
+    private transient Sound leavesHitSound;
+    private transient Sound blockBreakingSound;
+    private transient int soundEffect; //TEMPORARY
 
     private int playerHealth;
 
-    private int grab = -1;
-    private int selectedSlot = 0;
-    private boolean isInventoryOpen = false;
+    private transient int grab = -1;
+    private transient int selectedSlot = 0;
+    private transient boolean isInventoryOpen = false;
 
     private ArrayList<InventorySlot> inventory;
-    BitmapFont font = new BitmapFont();
+    transient BitmapFont font = new BitmapFont();
 
     public Player(float x, float y) {
         this.playerPosX = x;
@@ -555,6 +556,22 @@ public class Player {
 
     public void setPlayerHealth(int playerHealth) {
         this.playerHealth = playerHealth;
+    }
+
+    public float getGravity() {
+        return gravity;
+    }
+
+    public void setGravity(float gravity) {
+        this.gravity = gravity;
+    }
+
+    public ArrayList<InventorySlot> getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(ArrayList<InventorySlot> inventory) {
+        this.inventory = inventory;
     }
 
 }

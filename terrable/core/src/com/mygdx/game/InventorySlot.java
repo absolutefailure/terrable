@@ -1,6 +1,8 @@
 package com.mygdx.game;
 
-public class InventorySlot {
+import java.io.Serializable;
+
+public class InventorySlot implements Serializable {
     private int element;
     private int amount;
 
