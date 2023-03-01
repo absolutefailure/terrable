@@ -26,6 +26,12 @@ public class Crafting {
             return result;
         }
 
+        //STONE PICKAXE
+        result = craftStonePickaxe(resources);
+        if (result != null) {
+            return result;
+        }
+
         return null;
     }
 
@@ -126,6 +132,37 @@ public class Crafting {
             item.setElement(PLANKS);
             item.setAmount(amount);
             item.setRemoveAmount(amount / 4);
+            return item;
+        }
+        // return null if resources are not correct
+        return null;
+    }
+
+    private static InventorySlot craftStonePickaxe(List<InventorySlot> resources) {
+        // check slots for correct resources
+        if (resources.get(0).getElement() == EMPTY
+                && resources.get(1).getElement() == PLANKS
+                && resources.get(2).getElement() == EMPTY
+                && resources.get(3).getElement() == EMPTY
+                && resources.get(4).getElement() == PLANKS
+                && resources.get(5).getElement() == EMPTY
+                && resources.get(6).getElement() == STONE
+                && resources.get(7).getElement() == STONE
+                && resources.get(8).getElement() == STONE) {
+            int amount = 32;
+           
+            for (InventorySlot slot : resources) {
+                    if ((slot.getElement() == PLANKS || slot.getElement() == STONE) && amount > slot.getAmount()) {
+                        amount = slot.getAmount();
+                    }
+                }
+
+            amount *= 1;
+            // create new item/s
+            InventorySlot item = new InventorySlot();
+            item.setElement(STONEPICKAXE);
+            item.setAmount(amount);
+            item.setRemoveAmount(amount);
             return item;
         }
         // return null if resources are not correct

@@ -51,7 +51,10 @@ public class Block implements Serializable {
             this.blockHealth = 1;
         }else if(element == REDFLOWER) {
             this.blockHealth = 1;
+        }else if(element == STONEPICKAXE) {
+            this.blockHealth = 2500;
         }
+
         this.collision = collision;
         brightness = 0;
     }
@@ -139,6 +142,8 @@ public class Block implements Serializable {
             return 300;
         } else if (element == PLANKS){
             return 75;
+        } else if (element == STONEPICKAXE){
+            return 2500;
         } else{
             return 1;
         }
