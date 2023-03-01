@@ -5,16 +5,16 @@ import java.io.Serializable;
 
 public class Block implements Serializable {
     
-    final int BLOCKSIZE = 25; // block size in pixels
+    final transient int BLOCKSIZE = 25; // block size in pixels
 
     private int posX;
     private int posY;
 
     private int element = 0;
 
-    private float blockHealth;
+    private transient float blockHealth;
 
-    private float brightness;
+    private transient float brightness;
 
     boolean collision;
     int permanent;
@@ -137,7 +137,9 @@ public class Block implements Serializable {
             return 250;
         } else if (element == DIAMOND){
             return 300;
-        }else{
+        } else if (element == PLANKS){
+            return 75;
+        } else{
             return 1;
         }
         
