@@ -307,6 +307,12 @@ public class Player implements Serializable {
                                                 if (mapArray[x][y].getElement() == GRASS) {
                                                     mapArray[x][y].setElement(GROUND);
                                                 }
+                                                if (mapArray[x][y].getElement() == COAL) {
+                                                    mapArray[x][y].setElement(COALITEM);
+                                                }
+                                                if (mapArray[x][y].getElement() == DIAMOND) {
+                                                    mapArray[x][y].setElement(DIAMONDITEM);
+                                                }
                                                 int slotIndex = -1;
                                                 for (int i = 0; i < 36; i++) {
                                                     if (inventory.get(i).getElement() == mapArray[x][y].getElement()
