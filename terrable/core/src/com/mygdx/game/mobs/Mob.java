@@ -65,7 +65,7 @@ public class Mob {
                     && mobPosY + mobSizeY > mapArray[x][y].getPosY()
                     && mobPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
                         mobPosY = oldMobY;
-                        if (mapArray[x-1][y-1].isCollision() || mapArray[x+1][y-1].isCollision()) {
+                        if (Math.abs(acceleration) > 0.1f && mapArray[x-1][y-1].isCollision() || mapArray[x+1][y-1].isCollision()) {
                             gravity = 4;
                         }else{
                             gravity = 0;

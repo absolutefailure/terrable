@@ -45,14 +45,22 @@ public class MainMenuScreen implements Screen {
             SaveGame.Save(game.gameScreen.map.getMapArray(), game.gameScreen.player);
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.O)) {
-            SaveGame.Load(game.gameScreen.map, game.gameScreen.player);
+            game.gameScreen.map.setMapArray(null);
             System.gc();
+            SaveGame.Load(game.gameScreen.map, game.gameScreen.player);
         }
         
         if (game.cam.getInputInGameWorld().x > game.WIDTH/2-250 && game.cam.getInputInGameWorld().x < game.WIDTH/2+250 && game.cam.getInputInGameWorld().y > game.HEIGHT/2 -150 && game.cam.getInputInGameWorld().y < game.HEIGHT/2 -50 ){
             if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
                 menuSound.stop();
-                //game.gameScreen.map.GenerateNewMap(game.gameScreen.player);
+                // reset game if player is dead
+                if (game.gameScreen.player.getPlayerHealth() <= 0){
+                    game.gameScreen.map.setMapArray(null);
+                    game.gameScreen.player.resetInventory();
+                    System.gc();
+                    game.gameScreen.player.setPlayerHealth(10);
+                    game.gameScreen.map.GenerateNewMap(game.gameScreen.player);
+                }
                 game.setScreen(game.gameScreen);
             }
             game.batch.setColor(0.5f,0.5f,0.5f,1);

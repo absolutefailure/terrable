@@ -169,6 +169,42 @@ public class Map {
         Random rand = new Random();
         UpdateLighting(player);
 
+
+        for (Block[] row : mapArray){ 
+            if (row[0].getPosX() > player.getX() - 1000 && row[0].getPosX() < player.getX() + 1000){ // LOOP ONLY VERTICAL ROWS THAT ARE INSIDE VISIBLE AREA
+                for (Block block: row){
+
+                    batch.setColor(1, 1, 1, 1);
+
+                    if (block.getPosY() > player.getY() - 1000 && block.getPosY() < player.getY() + 1000 ){ // DRAW BLOCK ONLY IF INSIDE SCREEN
+
+                        // DRAW BACKROUND TEXTURE IF BLOCK IS PERMANENT
+                        if(block.getPermanent() == GROUND || block.getPermanent() == GRASS){
+                            batch.setColor(0.5f, 0.7f, 0.7f, 1);
+                            batch.draw(blockTextures[0][0], block.getPosX(), block.getPosY());
+                        } else if(block.getPermanent() == STONE) {
+                            batch.setColor(0.6f, 0.6f, 0.6f, 1);
+                            batch.draw(blockTextures[0][5], block.getPosX(), block.getPosY());
+                        }
+
+
+                        if (block.getElement() != EMPTY)  {
+                            batch.setColor(block.getBrightness(),block.getBrightness(),block.getBrightness(),1f);
+                        
+                            // DRAW CORRECT TEXTURE BASED ON BLOCKS ELEMENT
+                            batch.draw(blockTextures[0][block.getElement()-1], block.getPosX(), block.getPosY(), 25 , 25); // blockTextures[ROW][COLUMN]
+    
+                            batch.setColor(1,1,1,1);
+                            block.setBrightness(0f);
+                        }                     
+
+                    }      
+                    
+                }
+            }
+        }
+
+
         // Update all mobs
         for (Mob mob: mobs){ 
             mob.Update(this, batch, player);
@@ -213,39 +249,7 @@ public class Map {
         }
 
 
-        for (Block[] row : mapArray){ 
-            if (row[0].getPosX() > player.getX() - 1000 && row[0].getPosX() < player.getX() + 1000){ // LOOP ONLY VERTICAL ROWS THAT ARE INSIDE VISIBLE AREA
-                for (Block block: row){
 
-                    batch.setColor(1, 1, 1, 1);
-
-                    if (block.getPosY() > player.getY() - 1000 && block.getPosY() < player.getY() + 1000 ){ // DRAW BLOCK ONLY IF INSIDE SCREEN
-
-                        // DRAW BACKROUND TEXTURE IF BLOCK IS PERMANENT
-                        if(block.getPermanent() == GROUND || block.getPermanent() == GRASS){
-                            batch.setColor(0.5f, 0.7f, 0.7f, 1);
-                            batch.draw(blockTextures[0][0], block.getPosX(), block.getPosY());
-                        } else if(block.getPermanent() == STONE) {
-                            batch.setColor(0.6f, 0.6f, 0.6f, 1);
-                            batch.draw(blockTextures[0][5], block.getPosX(), block.getPosY());
-                        }
-
-
-                        if (block.getElement() != EMPTY)  {
-                            batch.setColor(block.getBrightness(),block.getBrightness(),block.getBrightness(),1f);
-                        
-                            // DRAW CORRECT TEXTURE BASED ON BLOCKS ELEMENT
-                            batch.draw(blockTextures[0][block.getElement()-1], block.getPosX(), block.getPosY(), 25 , 25); // blockTextures[ROW][COLUMN]
-    
-                            batch.setColor(1,1,1,1);
-                            block.setBrightness(0f);
-                        }                     
-
-                    }      
-                    
-                }
-            }
-        }
 
     }
 
