@@ -95,7 +95,10 @@ public class InventorySlot implements Serializable {
     }
 
     public boolean isPlaceable(){
-        if (!isResource && !isFood && !isWeapon){ return true;}
-        return false;
+        if (isResource || isFood || isWeapon){ 
+            return false;
+        }else{
+            return true;
+        }
     }
 }

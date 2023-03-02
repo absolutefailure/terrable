@@ -53,6 +53,10 @@ public class Block implements Serializable {
             this.blockHealth = 1;
         }else if(element == STONEPICKAXE) {
             this.blockHealth = 2500;
+        }else if(element == DOOR1) {
+            this.blockHealth = 75;
+        }else if(element == DOOR2) {
+            this.blockHealth = 75;
         }
 
         this.collision = collision;
@@ -144,6 +148,10 @@ public class Block implements Serializable {
             return 75;
         } else if (element == STONEPICKAXE){
             return 2500;
+        }else if (element == DOOR1){
+            return 75;
+        }else if (element == DOOR2){
+            return 75;
         } else{
             return 1;
         }

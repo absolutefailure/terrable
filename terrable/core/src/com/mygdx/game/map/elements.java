@@ -18,4 +18,7 @@ public final class elements {
     public static final int COALITEM = 13;
     public static final int DIAMONDITEM = 14;
     public static final int STONEPICKAXE = 15;
+    public static final int DOOR = 16;
+    public static final int DOOR1 = 17;
+    public static final int DOOR2 = 18;
 }
