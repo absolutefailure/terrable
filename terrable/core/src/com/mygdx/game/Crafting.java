@@ -164,7 +164,6 @@ public class Crafting {
             item.setWeapon(true);
             item.setAmount(amount);
             item.setRemoveAmount(amount);
-            item.setWeapon(true);
             return item;
         }
         // return null if resources are not correct
