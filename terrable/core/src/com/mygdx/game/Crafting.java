@@ -149,7 +149,7 @@ public class Crafting {
                 && resources.get(6).getElement() == STONE
                 && resources.get(7).getElement() == STONE
                 && resources.get(8).getElement() == STONE) {
-            int amount = 32;
+            int amount = 1;
            
             for (InventorySlot slot : resources) {
                     if ((slot.getElement() == PLANKS || slot.getElement() == STONE) && amount > slot.getAmount()) {
@@ -163,6 +163,7 @@ public class Crafting {
             item.setElement(STONEPICKAXE);
             item.setAmount(amount);
             item.setRemoveAmount(amount);
+            item.setWeapon(true);
             return item;
         }
         // return null if resources are not correct
