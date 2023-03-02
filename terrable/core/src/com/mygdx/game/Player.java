@@ -369,7 +369,7 @@ public class Player implements Serializable {
                                         batch.draw(outlineTexture, mapArray[x][y].getPosX(), mapArray[x][y].getPosY());
 
                                         // IF RIGHT MOUSE BUTTON IS DOWN, PLACE BLOCK IN HAND
-                                        if (inventory.get(selectedSlot).isResource() == false
+                                        if  (inventory.get(selectedSlot).isPlaceable()
                                                 && mapArray[x][y].getElement() == EMPTY
                                                 && Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
                                             if (!(playerPosX + playerSizeX > mapArray[x][y].getPosX()
