@@ -332,6 +332,9 @@ public class Player implements Serializable {
                                                         if (inventory.get(i).getAmount() == 0) {
                                                             inventory.get(i).addItem();
                                                             inventory.get(i).setElement(mapArray[x][y].getElement());
+                                                            if (mapArray[x][y].getElement() == COALITEM || mapArray[x][y].getElement() == DIAMONDITEM){
+                                                                inventory.get(i).setResource(true);
+                                                            }
                                                             break;
                                                         } else if (inventory.get(i).getElement() == mapArray[x][y]
                                                                 .getElement()
@@ -467,7 +470,10 @@ public class Player implements Serializable {
             CharSequence str = Integer.toString(inventory.get(i).getAmount());
             if (inventory.get(i).getAmount() > 0 && grab != i) {
                 batch.draw(blockTextures[0][inventory.get(i).getElement() - 1], 802 - (261 / 2) + (29 * i), 2);
-                font.draw(batch, str, 802 - (261 / 2) + (29 * i), 15);
+                if (!inventory.get(i).isWeapon()){
+                    font.draw(batch, str, 802 - (261 / 2) + (29 * i), 15);
+                }
+                
 
                 if (cam.getInputInGameWorld().x > 802 - (261 / 2) + (29 * i)
                         && cam.getInputInGameWorld().x < (802 - (261 / 2) + (29 * i)) + 25
@@ -483,7 +489,7 @@ public class Player implements Serializable {
                         && cam.getInputInGameWorld().x < (802 - (261 / 2) + (29 * i)) + 25
                         && cam.getInputInGameWorld().y > 2 && cam.getInputInGameWorld().y < 27 && grab > -1
                         && grab != i) {
-                    if (inventory.get(grab).getElement() == inventory.get(i).getElement()
+                    if (!inventory.get(grab).isWeapon() && inventory.get(grab).getElement() == inventory.get(i).getElement()
                             && inventory.get(i).getAmount() + inventory.get(grab).getAmount() < INVENTORY_SLOT_MAX) {
                         inventory.get(i).setAmount(inventory.get(i).getAmount() + inventory.get(grab).getAmount());
                         inventory.get(grab).setAmount(0);
@@ -511,10 +517,10 @@ public class Player implements Serializable {
             for (int i = 9; i < 36; i++) {
                 CharSequence str = Integer.toString(inventory.get(i).getAmount());
                 if (inventory.get(i).getAmount() > 0 && grab != i) {
-                    batch.draw(blockTextures[0][inventory.get(i).getElement() - 1], 802 - (261 / 2) + (29 * invDrawRow),
-                            250 - (88 / 2) + 2 + (invDrawColumn * 29));
-                    font.draw(batch, str, 802 - (261 / 2) + (29 * invDrawRow),
-                            250 - (88 / 2) + 15 + (invDrawColumn * 29));
+                    batch.draw(blockTextures[0][inventory.get(i).getElement() - 1], 802 - (261 / 2) + (29 * invDrawRow),250 - (88 / 2) + 2 + (invDrawColumn * 29));
+                    if (!inventory.get(i).isWeapon()){
+                        font.draw(batch, str, 802 - (261 / 2) + (29 * invDrawRow),250 - (88 / 2) + 15 + (invDrawColumn * 29));
+                    }
 
                     if (cam.getInputInGameWorld().x > 802 - (261 / 2) + (29 * invDrawRow)
                             && cam.getInputInGameWorld().x < (802 - (261 / 2) + (29 * invDrawRow)) + 25
@@ -533,7 +539,7 @@ public class Player implements Serializable {
                             && cam.getInputInGameWorld().y < 250 - (88 / 2) + 27 + (invDrawColumn * 29) && grab > -1
                             && grab != i) {
 
-                        if (inventory.get(grab).getElement() == inventory.get(i).getElement()
+                        if (!inventory.get(grab).isWeapon() && inventory.get(grab).getElement() == inventory.get(i).getElement()
                                 && inventory.get(i).getAmount()
                                         + inventory.get(grab).getAmount() < INVENTORY_SLOT_MAX) {
                             inventory.get(i).setAmount(inventory.get(i).getAmount() + inventory.get(grab).getAmount());
@@ -564,8 +570,9 @@ public class Player implements Serializable {
                 if (inventory.get(i).getAmount() > 0 && grab != i) {
                     batch.draw(blockTextures[0][inventory.get(i).getElement() - 1], 860 - (261 / 2) + (29 * invDrawRow),
                             363 - (88 / 2) + 2 + (invDrawColumn * 29));
-                    font.draw(batch, str, 860 - (261 / 2) + (29 * invDrawRow),
-                            363 - (88 / 2) + 15 + (invDrawColumn * 29));
+                    if (!inventory.get(i).isWeapon()){
+                        font.draw(batch, str, 860 - (261 / 2) + (29 * invDrawRow),363 - (88 / 2) + 15 + (invDrawColumn * 29));
+                    }
 
                     if (cam.getInputInGameWorld().x > 860 - (261 / 2) + (29 * invDrawRow)
                             && cam.getInputInGameWorld().x < (860 - (261 / 2) + (29 * invDrawRow)) + 25
@@ -584,7 +591,7 @@ public class Player implements Serializable {
                             && cam.getInputInGameWorld().y < 363 - (88 / 2) + 27 + (invDrawColumn * 29) && grab > -1
                             && grab != i) {
 
-                        if (inventory.get(grab).getElement() == inventory.get(i).getElement()
+                        if (!inventory.get(grab).isWeapon() && inventory.get(grab).getElement() == inventory.get(i).getElement()
                                 && inventory.get(i).getAmount()
                                         + inventory.get(grab).getAmount() < INVENTORY_SLOT_MAX) {
                             inventory.get(i).setAmount(inventory.get(i).getAmount() + inventory.get(grab).getAmount());
@@ -607,7 +614,7 @@ public class Player implements Serializable {
                             && cam.getInputInGameWorld().y < 363 - (88 / 2) + 27 + (invDrawColumn * 29) && grab > -1
                             && grab != i) {
                         int putAmount = 1;
-                        if (inventory.get(grab).getElement() == inventory.get(i).getElement()
+                        if (!inventory.get(grab).isWeapon() && inventory.get(grab).getElement() == inventory.get(i).getElement()
                                 && inventory.get(i).getAmount() + putAmount < INVENTORY_SLOT_MAX) {
                             inventory.get(i).setAmount(inventory.get(i).getAmount() + putAmount);
                             inventory.get(grab).removeItem();
@@ -639,20 +646,25 @@ public class Player implements Serializable {
             if (newItem != null) {
                 CharSequence str = Integer.toString(newItem.getAmount());
                 batch.draw(blockTextures[0][newItem.getElement() - 1], 976 - (261 / 2), 392 - (88 / 2) + 2);
-                font.draw(batch, str, 976 - (261 / 2), 392 - (88 / 2) + 15);
+                if (!newItem.isWeapon()){
+                    font.draw(batch, str, 976 - (261 / 2), 392 - (88 / 2) + 15);
+                }
                 if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && cam.getInputInGameWorld().x > 976 - (261 / 2)
                         && cam.getInputInGameWorld().x < (976 - (261 / 2) + 25)
                         && cam.getInputInGameWorld().y > 392 - (88 / 2)
                         && cam.getInputInGameWorld().y < 392 - (88 / 2) + 27) {
                     int slotIndex = -1;
                     boolean craftingSuccess = false;
-                    for (int i = 0; i < 36; i++) {
-                        if (inventory.get(i).getElement() == newItem.getElement()
-                                && inventory.get(i).getAmount() + newItem.getAmount() < INVENTORY_SLOT_MAX) {
-                            slotIndex = i;
-                            break;
+                    if (!newItem.isWeapon()){
+                        for (int i = 0; i < 36; i++) {
+                            if (inventory.get(i).getElement() == newItem.getElement()
+                                    && inventory.get(i).getAmount() + newItem.getAmount() < INVENTORY_SLOT_MAX) {
+                                slotIndex = i;
+                                break;
+                            }
                         }
                     }
+
                     if (slotIndex > 0) {
                         inventory.get(slotIndex).setAmount(inventory.get(slotIndex).getAmount() + newItem.getAmount());
                         craftingSuccess = true;
@@ -661,11 +673,17 @@ public class Player implements Serializable {
                             if (inventory.get(i).getAmount() == 0) {
                                 inventory.get(i).setAmount(newItem.getAmount());
                                 inventory.get(i).setElement(newItem.getElement());
+                                inventory.get(i).setWeapon(newItem.isWeapon());
+                                inventory.get(i).setFood(newItem.isFood());
+                                inventory.get(i).setResource(newItem.isResource());
                                 craftingSuccess = true;
                                 break;
-                            } else if (inventory.get(i).getElement() == newItem.getElement()
+                            } else if (!newItem.isWeapon() && inventory.get(i).getElement() == newItem.getElement()
                                     && inventory.get(i).getAmount() + newItem.getAmount() < INVENTORY_SLOT_MAX) {
                                 inventory.get(i).setAmount(inventory.get(i).getAmount() + newItem.getAmount());
+                                inventory.get(i).setWeapon(newItem.isWeapon());
+                                inventory.get(i).setFood(newItem.isFood());
+                                inventory.get(i).setResource(newItem.isResource());
                                 craftingSuccess = true;
                                 break;
                             }
@@ -690,7 +708,10 @@ public class Player implements Serializable {
             CharSequence str = Integer.toString(inventory.get(grab).getAmount());
             batch.draw(blockTextures[0][inventory.get(grab).getElement() - 1], cam.getInputInGameWorld().x - 12,
                     cam.getInputInGameWorld().y - 12);
-            font.draw(batch, str, cam.getInputInGameWorld().x - 12, cam.getInputInGameWorld().y + 1);
+            if (!inventory.get(grab).isWeapon()){
+                font.draw(batch, str, cam.getInputInGameWorld().x - 12, cam.getInputInGameWorld().y + 1);
+            }
+            
         }
 
         if (!isGrabbed) {
