@@ -294,7 +294,11 @@ public class Player implements Serializable {
                                                             mapArray[x][y].getPosY());
                                                 }
                                                 soundEffect = mapArray[x][y].getElement();
-                                                mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - 3);
+                                                if (inventory.get(selectedSlot).getAmount() > 5) {
+                                                    mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - 25);
+                                                } else {
+                                                    mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - 3);
+                                                }
                                                 soundTimer += 1;
                                             } else {
                                                 if (mapArray[x][y].getElement() == LEAVES

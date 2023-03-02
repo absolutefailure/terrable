@@ -161,6 +161,7 @@ public class Crafting {
             // create new item/s
             InventorySlot item = new InventorySlot();
             item.setElement(STONEPICKAXE);
+            item.setWeapon(true);
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             return item;
