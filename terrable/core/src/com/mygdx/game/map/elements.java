@@ -15,4 +15,6 @@ public final class elements {
     public static final int TALLGRASS = 10;
     public static final int REDFLOWER = 11;
     public static final int PLANKS = 12;
+    public static final int COALITEM = 13;
+    public static final int DIAMONDITEM = 14;
 }
