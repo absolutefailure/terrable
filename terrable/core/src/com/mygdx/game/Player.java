@@ -294,11 +294,8 @@ public class Player implements Serializable {
                                                             mapArray[x][y].getPosY());
                                                 }
                                                 soundEffect = mapArray[x][y].getElement();
-                                                if (inventory.get(selectedSlot).isWeapon()) {
-                                                    mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - 25);
-                                                } else {
-                                                    mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - 3);
-                                                }
+                                                //damage to block determined here
+                                                mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - inventory.get(selectedSlot).getDamage());
                                                 soundTimer += 1;
                                             } else {
                                                 if (mapArray[x][y].getElement() == LEAVES
@@ -676,6 +673,7 @@ public class Player implements Serializable {
                                 inventory.get(i).setWeapon(newItem.isWeapon());
                                 inventory.get(i).setFood(newItem.isFood());
                                 inventory.get(i).setResource(newItem.isResource());
+                                inventory.get(i).setDamage(newItem.getDamage());
                                 craftingSuccess = true;
                                 break;
                             } else if (!newItem.isWeapon() && inventory.get(i).getElement() == newItem.getElement()
@@ -684,6 +682,7 @@ public class Player implements Serializable {
                                 inventory.get(i).setWeapon(newItem.isWeapon());
                                 inventory.get(i).setFood(newItem.isFood());
                                 inventory.get(i).setResource(newItem.isResource());
+                                inventory.get(i).setDamage(newItem.getDamage());
                                 craftingSuccess = true;
                                 break;
                             }

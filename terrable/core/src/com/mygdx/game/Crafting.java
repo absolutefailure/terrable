@@ -32,6 +32,55 @@ public class Crafting {
             return result;
         }
 
+        //WOOD PICKAXE
+        result = craftWoodPickaxe(resources);
+        if (result != null) {
+            return result;
+        }
+
+        //IRON PICKAXE
+        result = craftIronPickaxe(resources);
+        if (result != null) {
+            return result;
+        }
+
+        //DIAMOND PICKAXE
+        result = craftDiamondPickaxe(resources);
+        if (result != null) {
+            return result;
+        }
+
+        
+        //STONE AXE
+        result = craftStoneAxe(resources);
+        if (result != null) {
+            return result;
+        }
+
+        //WOOD AXE
+        result = craftWoodAxe(resources);
+        if (result != null) {
+            return result;
+        }
+
+        //IRON AXE
+        result = craftIronAxe(resources);
+        if (result != null) {
+            return result;
+        }
+
+        //DIAMOND AXE
+        result = craftDiamondAxe(resources);
+        if (result != null) {
+            return result;
+        }
+
+        //IRON INGOT (VERY TEMPORARY BEROFE SMELTING MECHANIC)
+        result = craftIronIngot(resources);
+        if (result != null) {
+            return result;
+        }
+
         return null;
     }
 
@@ -164,9 +213,273 @@ public class Crafting {
             item.setWeapon(true);
             item.setAmount(amount);
             item.setRemoveAmount(amount);
+            item.setDamage(25);
             return item;
         }
         // return null if resources are not correct
         return null;
     }
+
+    private static InventorySlot craftWoodPickaxe(List<InventorySlot> resources) {
+        // check slots for correct resources
+        if (resources.get(0).getElement() == EMPTY
+                && resources.get(1).getElement() == PLANKS
+                && resources.get(2).getElement() == EMPTY
+                && resources.get(3).getElement() == EMPTY
+                && resources.get(4).getElement() == PLANKS
+                && resources.get(5).getElement() == EMPTY
+                && resources.get(6).getElement() == WOOD
+                && resources.get(7).getElement() == WOOD
+                && resources.get(8).getElement() == WOOD) {
+            int amount = 1;
+           
+            for (InventorySlot slot : resources) {
+                    if ((slot.getElement() == PLANKS || slot.getElement() == WOOD) && amount > slot.getAmount()) {
+                        amount = slot.getAmount();
+                    }
+                }
+
+            amount *= 1;
+            // create new item/s
+            InventorySlot item = new InventorySlot();
+            item.setElement(WOODPICKAXE);
+            item.setWeapon(true);
+            item.setAmount(amount);
+            item.setRemoveAmount(amount);
+            item.setDamage(10);
+            return item;
+        }
+        // return null if resources are not correct
+        return null;
+    }
+
+    private static InventorySlot craftIronPickaxe(List<InventorySlot> resources) {
+        // check slots for correct resources
+        if (resources.get(0).getElement() == EMPTY
+                && resources.get(1).getElement() == PLANKS
+                && resources.get(2).getElement() == EMPTY
+                && resources.get(3).getElement() == EMPTY
+                && resources.get(4).getElement() == PLANKS
+                && resources.get(5).getElement() == EMPTY
+                && resources.get(6).getElement() == IRONINGOT
+                && resources.get(7).getElement() == IRONINGOT
+                && resources.get(8).getElement() == IRONINGOT) {
+            int amount = 1;
+           
+            for (InventorySlot slot : resources) {
+                    if ((slot.getElement() == PLANKS || slot.getElement() == IRONINGOT) && amount > slot.getAmount()) {
+                        amount = slot.getAmount();
+                    }
+                }
+
+            amount *= 1;
+            // create new item/s
+            InventorySlot item = new InventorySlot();
+            item.setElement(IRONPICKAXE);
+            item.setWeapon(true);
+            item.setAmount(amount);
+            item.setRemoveAmount(amount);
+            item.setDamage(50);
+            return item;
+        }
+        // return null if resources are not correct
+        return null;
+    }
+
+    private static InventorySlot craftDiamondPickaxe(List<InventorySlot> resources) {
+        // check slots for correct resources
+        if (resources.get(0).getElement() == EMPTY
+                && resources.get(1).getElement() == PLANKS
+                && resources.get(2).getElement() == EMPTY
+                && resources.get(3).getElement() == EMPTY
+                && resources.get(4).getElement() == PLANKS
+                && resources.get(5).getElement() == EMPTY
+                && resources.get(6).getElement() == DIAMONDITEM
+                && resources.get(7).getElement() == DIAMONDITEM
+                && resources.get(8).getElement() == DIAMONDITEM) {
+            int amount = 1;
+           
+            for (InventorySlot slot : resources) {
+                    if ((slot.getElement() == PLANKS || slot.getElement() == DIAMONDITEM) && amount > slot.getAmount()) {
+                        amount = slot.getAmount();
+                    }
+                }
+
+            amount *= 1;
+            // create new item/s
+            InventorySlot item = new InventorySlot();
+            item.setElement(DIAMONDAXE);
+            item.setWeapon(true);
+            item.setAmount(amount);
+            item.setRemoveAmount(amount);
+            item.setDamage(75);
+            return item;
+        }
+        // return null if resources are not correct
+        return null;
+    }
+
+    private static InventorySlot craftStoneAxe(List<InventorySlot> resources) {
+        // check slots for correct resources
+        if (resources.get(0).getElement() == EMPTY
+                && resources.get(1).getElement() == PLANKS
+                && resources.get(2).getElement() == EMPTY
+                && resources.get(3).getElement() == EMPTY
+                && resources.get(4).getElement() == PLANKS
+                && resources.get(5).getElement() == STONE
+                && resources.get(6).getElement() == EMPTY
+                && resources.get(7).getElement() == STONE
+                && resources.get(8).getElement() == STONE) {
+            int amount = 1;
+           
+            for (InventorySlot slot : resources) {
+                    if ((slot.getElement() == PLANKS || slot.getElement() == STONE) && amount > slot.getAmount()) {
+                        amount = slot.getAmount();
+                    }
+                }
+
+            amount *= 1;
+            // create new item/s
+            InventorySlot item = new InventorySlot();
+            item.setElement(STONEAXE);
+            item.setWeapon(true);
+            item.setAmount(amount);
+            item.setRemoveAmount(amount);
+            item.setDamage(25);
+            return item;
+        }
+        // return null if resources are not correct
+        return null;
+    }
+
+    private static InventorySlot craftWoodAxe(List<InventorySlot> resources) {
+        // check slots for correct resources
+        if (resources.get(0).getElement() == EMPTY
+                && resources.get(1).getElement() == PLANKS
+                && resources.get(2).getElement() == EMPTY
+                && resources.get(3).getElement() == EMPTY
+                && resources.get(4).getElement() == PLANKS
+                && resources.get(5).getElement() == WOOD
+                && resources.get(6).getElement() == EMPTY
+                && resources.get(7).getElement() == WOOD
+                && resources.get(8).getElement() == WOOD) {
+            int amount = 1;
+           
+            for (InventorySlot slot : resources) {
+                    if ((slot.getElement() == PLANKS || slot.getElement() == WOOD) && amount > slot.getAmount()) {
+                        amount = slot.getAmount();
+                    }
+                }
+
+            amount *= 1;
+            // create new item/s
+            InventorySlot item = new InventorySlot();
+            item.setElement(WOODAXE);
+            item.setWeapon(true);
+            item.setAmount(amount);
+            item.setRemoveAmount(amount);
+            item.setDamage(10);
+            return item;
+        }
+        // return null if resources are not correct
+        return null;
+    }
+
+    private static InventorySlot craftIronAxe(List<InventorySlot> resources) {
+        // check slots for correct resources
+        if (resources.get(0).getElement() == EMPTY
+                && resources.get(1).getElement() == PLANKS
+                && resources.get(2).getElement() == EMPTY
+                && resources.get(3).getElement() == EMPTY
+                && resources.get(4).getElement() == PLANKS
+                && resources.get(5).getElement() == IRONINGOT
+                && resources.get(6).getElement() == EMPTY
+                && resources.get(7).getElement() == IRONINGOT
+                && resources.get(8).getElement() == IRONINGOT) {
+            int amount = 1;
+           
+            for (InventorySlot slot : resources) {
+                    if ((slot.getElement() == PLANKS || slot.getElement() == IRONINGOT) && amount > slot.getAmount()) {
+                        amount = slot.getAmount();
+                    }
+                }
+
+            amount *= 1;
+            // create new item/s
+            InventorySlot item = new InventorySlot();
+            item.setElement(IRONAXE);
+            item.setWeapon(true);
+            item.setAmount(amount);
+            item.setRemoveAmount(amount);
+            item.setDamage(50);
+            return item;
+        }
+        // return null if resources are not correct
+        return null;
+    }
+
+    private static InventorySlot craftDiamondAxe(List<InventorySlot> resources) {
+        // check slots for correct resources
+        if (resources.get(0).getElement() == EMPTY
+                && resources.get(1).getElement() == PLANKS
+                && resources.get(2).getElement() == EMPTY
+                && resources.get(3).getElement() == EMPTY
+                && resources.get(4).getElement() == PLANKS
+                && resources.get(5).getElement() == DIAMONDITEM
+                && resources.get(6).getElement() == EMPTY
+                && resources.get(7).getElement() == DIAMONDITEM
+                && resources.get(8).getElement() == DIAMONDITEM) {
+            int amount = 1;
+           
+            for (InventorySlot slot : resources) {
+                    if ((slot.getElement() == PLANKS || slot.getElement() == DIAMONDITEM) && amount > slot.getAmount()) {
+                        amount = slot.getAmount();
+                    }
+                }
+
+            amount *= 1;
+            // create new item/s
+            InventorySlot item = new InventorySlot();
+            item.setElement(DIAMONDAXE);
+            item.setWeapon(true);
+            item.setAmount(amount);
+            item.setRemoveAmount(amount);
+            item.setDamage(75);
+            return item;
+        }
+        // return null if resources are not correct
+        return null;
+    }
+
+    private static InventorySlot craftIronIngot(List<InventorySlot> resources) {
+        // check slots for correct resources
+        if (resources.get(0).getElement() == IRON
+                && resources.get(1).getElement() == IRON
+                && resources.get(2).getElement() == IRON
+                && resources.get(3).getElement() == EMPTY
+                && resources.get(4).getElement() == EMPTY
+                && resources.get(5).getElement() == EMPTY
+                && resources.get(6).getElement() == EMPTY
+                && resources.get(7).getElement() == EMPTY
+                && resources.get(8).getElement() == EMPTY) {
+            int amount = 1;
+           
+            for (InventorySlot slot : resources) {
+                    if ((slot.getElement() == IRON) && amount > slot.getAmount()) {
+                        amount = slot.getAmount();
+                    }
+                }
+
+            amount *= 1;
+            // create new item/s
+            InventorySlot item = new InventorySlot();
+            item.setElement(IRONINGOT);
+            item.setAmount(amount);
+            item.setRemoveAmount(amount);
+            return item;
+        }
+        // return null if resources are not correct
+        return null;
+    }
+
 }
