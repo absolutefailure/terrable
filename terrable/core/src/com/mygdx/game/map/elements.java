@@ -18,4 +18,12 @@ public final class elements {
     public static final int COALITEM = 13;
     public static final int DIAMONDITEM = 14;
     public static final int STONEPICKAXE = 15;
+    public static final int WOODPICKAXE = 16;
+    public static final int IRONPICKAXE = 17;
+    public static final int DIAMONDPICKAXE = 18;
+    public static final int STONEAXE = 19;
+    public static final int WOODAXE = 20;
+    public static final int IRONAXE = 21;
+    public static final int DIAMONDAXE = 22;
+    public static final int IRONINGOT = 23;
 }
