@@ -125,9 +125,27 @@ public class Map {
                         block = 8;
                     }else if ( oreChance < 50 ) {
                         block = 7;
+                    }else if ( oreChance < 51 ) {
+                        block = 0;
                     }
-                    
-                    if (block != 6 && x > 1 && x < mapSizeX -1){
+
+                    if (oreChance > 660 && x > 15 && x < mapSizeX -15 && y < mapSizeY - 5) {
+                        int caveRandomX = rand.nextInt(6);
+                        int caveRandomY = rand.nextInt(3);
+                        int caveY = caveRandomY + 1;
+                        int caveX = caveRandomX + 3;
+
+                        for (int i = 0; i <= caveX; i++){
+                            if (mapArray[x - 2][y].getElement() == EMPTY 
+                            || mapArray[x][y - 1].getElement() == EMPTY ){
+                                for (int a = 0; a <= caveY; a++){
+                                    mapArray[x - i][y - a] = new Block((-mapSizeX  * 25 / 2) + (x - i) * 25,(mapSizeY  * 25/ 2) - (y - a) * 25, EMPTY, false, STONE);
+                                }
+                            }
+                        }
+                    }
+
+                    if (block != 6 && x > 1 && x < mapSizeX -1 && block != 0){
                         int vein = rand.nextInt(100);
 
                         // Determine the size of the ore vein from 1 to 4 blocks
@@ -146,6 +164,14 @@ public class Map {
                         }else{
                             mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE);
                         }
+                    } else if (block == 0 && x > 3 && x < mapSizeX - 3) {
+                        mapArray[x - 1][y] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - y * 25, block, false, STONE);
+                        mapArray[x - 1][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, false, STONE);
+                        mapArray[x - 1][y - 2] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 2) * 25, block, false, STONE);
+                        mapArray[x - 2][y] = new Block((-mapSizeX  * 25 / 2) + (x - 2) * 25,(mapSizeY  * 25/ 2) - y * 25, block, false, STONE);
+                        mapArray[x - 2][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 2) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, false, STONE);
+                        mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, false, STONE);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y) * 25, block, false, STONE);
                     } else {
                         mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, STONE, true, STONE);
                     }
