@@ -44,10 +44,12 @@ public class Slime extends Mob{
 
         mobPosY += gravity;
 
+        int startBlockX = (int)(mobPosX / 25 - 1600 / 25 / 2) +2500;
+        int endBlockX = (startBlockX + 1600 / 25) ;
 
         Block[][] mapArray = map.getMapArray();
 
-        for (int x = 0; x < mapArray.length; x++){
+        for (int x = startBlockX; x < endBlockX; x++){
             if (mapArray[x][0].getPosX() > mobPosX - 100 && mapArray[x][0].getPosX() < mobPosX + 100) {
                 for (int y = 0; y < mapArray[x].length; y++){
                     if (mapArray[x][y].isCollision() && mobPosX + mobSizeX > mapArray[x][y].getPosX()
@@ -83,7 +85,7 @@ public class Slime extends Mob{
         mobPosX += acceleration;
         acceleration *= 0.5f;
 
-        for (int x = 0; x < mapArray.length; x++){
+        for (int x = startBlockX; x < endBlockX; x++){
             if (mapArray[x][0].getPosX() > mobPosX - 100 && mapArray[x][0].getPosX() < mobPosX + 100) {
                 for (int y = 0; y < mapArray[x].length; y++){
                     if (mapArray[x][y].isCollision() && mobPosX + mobSizeX > mapArray[x][y].getPosX()

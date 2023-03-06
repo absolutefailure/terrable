@@ -21,20 +21,24 @@ public class MainMenuScreen implements Screen {
     private Texture loadButton;
     private Texture quitButton;
     private Texture playButton;
+    private Texture backArrow;
     private Texture selectArrow;
     private Sound menuSound;
+
+    private Boolean isGameLoaded;
 
     private Vector2 mouseInWorld2D = new Vector2();
     private Vector3 mouseInWorld3D = new Vector3();
 
     public MainMenuScreen(final Terrable game) {
         this.game = game;
-
-        newButton = new Texture("menubuttons/playbutton.png");
+        isGameLoaded = false;
+        newButton = new Texture("menubuttons/newbutton.png");
         saveButton = new Texture("menubuttons/savebutton.png");
         loadButton = new Texture("menubuttons/loadbutton.png");
         quitButton = new Texture("menubuttons/quitbutton.png");
         playButton = new Texture("menubuttons/playbutton.png");
+        backArrow = new Texture("menubuttons/backarrow.png");
         selectArrow = new Texture("menubuttons/selectarrow.png");
         menuSound = Gdx.audio.newSound(Gdx.files.internal("sounds/moaiSpawnSound.mp3"));
         game.cam.setPosition(game.WIDTH / 2, game.HEIGHT / 2);
@@ -56,7 +60,7 @@ public class MainMenuScreen implements Screen {
 
         if (mouseInWorld2D.x > x && mouseInWorld2D.x < x + buttonSizeX && mouseInWorld2D.y > y
                 && mouseInWorld2D.y < y + buttonSizeY) {
-            if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
                 return true;
             }
             game.batch.draw(selectArrow, x - 75, y + 37);
@@ -77,40 +81,62 @@ public class MainMenuScreen implements Screen {
 
         game.batch.begin();
 
-        if (button(550, 600, 500, 150, newButton)) {
-            menuSound.stop();
-            // reset game if player is dead
-            if (game.gameScreen.player.getPlayerHealth() <= 0) {
-                game.gameScreen.map.setMapArray(null);
-                game.gameScreen.player.resetInventory();
-                System.gc();
-                game.gameScreen.player.setPlayerHealth(10);
-                game.gameScreen.map.GenerateNewMap(game.gameScreen.player);
+        //MAIN MENU BUTTONS
+        if(!isGameLoaded) {
+            if (button(550, 600, 500, 150, newButton)) {
+                menuSound.stop();
+                // reset game if player is dead
+                if (game.gameScreen.player.getPlayerHealth() <= 0) {
+                    game.gameScreen.map.setMapArray(null);
+                    game.gameScreen.player.resetInventory();
+                    System.gc();
+                    game.gameScreen.player.setPlayerHealth(10);
+                    game.gameScreen.map.GenerateNewMap(game.gameScreen.player);
+                }
+                game.setScreen(game.gameScreen);
+                game.batch.draw(newButton, 550, 600);
+    
+            } else if (button(550, 450, 500, 150, saveButton)) {
+                if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                    SaveGame.Save(game.gameScreen.map.getMapArray(), game.gameScreen.player);
+                }
+                game.batch.draw(saveButton, 550, 450);
+            } else if (button(550, 300, 500, 150, loadButton)) {
+                if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                    isGameLoaded = true;
+                    //game.gameScreen.map.dispose();
+                    SaveGame.Load(game.gameScreen.map, game.gameScreen.player);
+                    System.gc();
+                }
+                game.batch.draw(loadButton, 550, 300);
+            } else if (button(550, 150, 500, 150, quitButton)) {
+                Gdx.app.exit();
+                game.batch.draw(quitButton, 550, 150);
             }
-            game.setScreen(game.gameScreen);
-            game.batch.draw(newButton, 550, 600);
 
-        } else if (button(550, 450, 500, 150, saveButton)) {
-            if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                SaveGame.Save(game.gameScreen.map.getMapArray(), game.gameScreen.player);
+        } else {
+            if(button(550, 450, 500, 150, playButton)) {
+                menuSound.stop();
+                isGameLoaded = false;
+                // reset game if player is dead
+                if (game.gameScreen.player.getPlayerHealth() <= 0) {
+                    game.gameScreen.map.setMapArray(null);
+                    game.gameScreen.player.resetInventory();
+                    System.gc();
+                    game.gameScreen.player.setPlayerHealth(10);
+                    game.gameScreen.map.GenerateNewMap(game.gameScreen.player);
+                }
+                game.setScreen(game.gameScreen);
+                game.batch.draw(playButton, 550, 600);
+            } else if(button(550, 300, 500, 150, backArrow)) {
+                    isGameLoaded = false;
+                game.batch.draw(backArrow, 550, 150);
             }
-            game.batch.draw(saveButton, 550, 450);
-        } else if (button(550, 300, 500, 150, loadButton)) {
-            if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                game.gameScreen.map.setMapArray(null);
-                System.gc();
-                SaveGame.Load(game.gameScreen.map, game.gameScreen.player);
-            }
-            game.batch.draw(loadButton, 550, 300);
-        } else if (button(550, 150, 500, 150, quitButton)) {
-            Gdx.app.exit();
-            game.batch.draw(quitButton, 550, 150);
         }
         game.batch.setColor(0.5f, 0.5f, 0.5f, 1);
-
+    
         game.batch.end();
-
-    }
+        }
 
     @Override
     public void show() {
