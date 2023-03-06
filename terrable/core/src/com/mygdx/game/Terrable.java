@@ -18,7 +18,7 @@ public class Terrable extends Game {
 	public final int WIDTH = 1600;
 	public final int HEIGHT = 900;
 
-	public int gameVolume = 175;
+	public int gameVolume = 25;
 
 	public GameScreen gameScreen;
 	public MainMenuScreen mainMenuScreen;
