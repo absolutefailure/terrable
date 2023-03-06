@@ -23,14 +23,20 @@ public class MainMenuScreen implements Screen {
     private Texture playButton;
     private Texture backArrow;
     private Texture selectArrow;
+    private Texture volumeSlider, volumeBar;
     private Sound menuSound;
+
+    private boolean volumeGrab = false;
 
     private Boolean isGameLoaded;
 
     private Vector2 mouseInWorld2D = new Vector2();
     private Vector3 mouseInWorld3D = new Vector3();
 
-    public MainMenuScreen(final Terrable game) {
+    public int volume;
+
+    public MainMenuScreen(final Terrable game, int volume) {
+        this.volume = volume;
         this.game = game;
         isGameLoaded = false;
         newButton = new Texture("menubuttons/newbutton.png");
@@ -40,6 +46,8 @@ public class MainMenuScreen implements Screen {
         playButton = new Texture("menubuttons/playbutton.png");
         backArrow = new Texture("menubuttons/backarrow.png");
         selectArrow = new Texture("menubuttons/selectarrow.png");
+        volumeSlider = new Texture("menubuttons/volume2.png");
+        volumeBar = new Texture("menubuttons/volume.png");
         menuSound = Gdx.audio.newSound(Gdx.files.internal("sounds/moaiSpawnSound.mp3"));
         game.cam.setPosition(game.WIDTH / 2, game.HEIGHT / 2);
         game.cam.update();
@@ -78,7 +86,12 @@ public class MainMenuScreen implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
         game.batch.setProjectionMatrix(game.cam.combined());
-
+        mouseInWorld3D.x = Gdx.input.getX();
+        mouseInWorld3D.y = Gdx.input.getY();
+        mouseInWorld3D.z = 0;
+        game.cam.getCamera().unproject(mouseInWorld3D);
+        mouseInWorld2D.x = mouseInWorld3D.x;
+        mouseInWorld2D.y = mouseInWorld3D.y;
         game.batch.begin();
 
         //MAIN MENU BUTTONS
@@ -134,6 +147,29 @@ public class MainMenuScreen implements Screen {
             }
         }
         game.batch.setColor(0.5f, 0.5f, 0.5f, 1);
+
+        game.batch.draw(volumeBar, 1300f,110f);
+        game.batch.draw(volumeSlider,1300+volume,100);
+
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            if (mouseInWorld2D.x > 1300+volume && mouseInWorld2D.x < 1300+volume+25 && mouseInWorld2D.y > 100
+            && mouseInWorld2D.y < 120) {
+                volumeGrab = true;
+            }
+        }else{
+            volumeGrab = false;
+        }
+        int oldVolume = volume;
+        if (volumeGrab){
+            volume = (int)mouseInWorld2D.x-1310;
+        }
+        if (volume > 175){volume = 175;}
+        if(volume < 0){volume = 0;}
+        if (oldVolume != volume){
+            menuSound.stop();
+            menuSound.loop(volume / 2000f);
+            game.gameScreen.setVolume(volume);
+        }
     
         game.batch.end();
         }
@@ -142,7 +178,7 @@ public class MainMenuScreen implements Screen {
     public void show() {
         game.cam.setPosition(game.WIDTH / 2, game.HEIGHT / 2);
         game.cam.update();
-        menuSound.loop(0.01f);
+        menuSound.loop(volume / 2000f);
     }
 
     @Override

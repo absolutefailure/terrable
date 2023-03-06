@@ -35,7 +35,7 @@ public class Slime extends Mob{
     }
 
     @Override
-    public void Update(Map map, Batch batch, Player player) {
+    public void Update(Map map, Batch batch, Player player, int volume) {
         float oldMobX = mobPosX;
         float oldMobY = mobPosY;
 
@@ -72,7 +72,7 @@ public class Slime extends Mob{
             jumpTimer += 1;
             if (jumpTimer == 300) {
                 gravity = 5;
-                slimeSound.play(1f);
+                slimeSound.play(volume/200f);
                 jumpTimer = 0;
             }
             if (mobPosX < player.getX()){

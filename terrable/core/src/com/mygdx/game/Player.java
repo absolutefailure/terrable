@@ -114,7 +114,7 @@ public class Player {
     }
 
     // UPDATE AND DRAW PLAYER
-    public void Update(Map map, Camera cam, Batch batch) {
+    public void Update(Map map, Camera cam, Batch batch, int volume) {
         float oldX = playerPosX;
         float oldY = playerPosY;
 
@@ -164,16 +164,16 @@ public class Player {
                                 playerHealth -= 5;
                             } else if (gravity >= 9.5) {
                                 playerHealth -= 4;
-                                damageSound.play(0.2f);
+                                damageSound.play(volume/200f);
                             } else if (gravity >= 9) {
                                 playerHealth -= 3;
-                                damageSound.play(0.2f);
+                                damageSound.play(volume/200f);
                             } else if (gravity >= 8.25) {
                                 playerHealth -= 2;
-                                damageSound.play(0.2f);
+                                damageSound.play(volume/200f);
                             } else if (gravity >= 7.25) {
                                 playerHealth -= 1;
-                                damageSound.play(0.2f);
+                                damageSound.play(volume/200f);
                             }
 
                             if (gravity > 0) {
@@ -308,9 +308,9 @@ public class Player {
                                                 if (mapArray[x][y].getElement() == LEAVES
                                                         || mapArray[x][y].getElement() == TALLGRASS
                                                         || mapArray[x][y].getElement() == REDFLOWER) {
-                                                    leavesHitSound.play(1, 0.5f, 0);
+                                                    leavesHitSound.play(volume/200f, 0.5f, 0);
                                                 } else {
-                                                    blockBreakingSound.play();
+                                                    blockBreakingSound.play(volume / 200f);
                                                 }
                                                 if (mapArray[x][y].getElement() == GRASS) {
                                                     mapArray[x][y].setElement(GROUND);
@@ -431,11 +431,11 @@ public class Player {
                                                 if (mapArray[x][y].isCollision() == true){
                                                     mapArray[x][y].setCollision(false);
                                                     mapArray[x][y - 1].setCollision(false);
-                                                    doorCloseSound.play(1, 1.1f, 0);
+                                                    doorCloseSound.play(volume/200f, 1.1f, 0);
                                                 }else if (mapArray[x][y].isCollision() == false) {
                                                     mapArray[x][y].setCollision(true);
                                                     mapArray[x][y - 1].setCollision(true);
-                                                    doorOpenSound.play(1, 1f, 0);
+                                                    doorOpenSound.play(volume/200f, 1f, 0);
                                                 }
                                             }
 
@@ -443,11 +443,11 @@ public class Player {
                                                 if (mapArray[x][y].isCollision() == true){
                                                     mapArray[x][y].setCollision(false);
                                                     mapArray[x][y + 1].setCollision(false);
-                                                    doorCloseSound.play(1, 1f, 0);
+                                                    doorCloseSound.play(volume/200f, 1f, 0);
                                                 }else if (mapArray[x][y].isCollision() == false){
                                                     mapArray[x][y].setCollision(true);
                                                     mapArray[x][y + 1].setCollision(true);
-                                                    doorOpenSound.play(1, 1.1f, 0);
+                                                    doorOpenSound.play(volume/200f, 1.1f, 0);
                                                 } 
                                             } 
                                         } 
@@ -461,9 +461,9 @@ public class Player {
         }
         if (soundTimer == 20) {
             if (soundEffect == GRASS || soundEffect == GROUND) {
-                groundHitSound.play(1f, 0.8f, 0);
+                groundHitSound.play(volume/200f, 0.8f, 0);
             } else if (soundEffect == STONE || soundEffect == IRON || soundEffect == COAL) {
-                stoneHitSound.play();
+                stoneHitSound.play(volume / 200f);
                 soundEffect = 0;
             }
             soundTimer -= 20;

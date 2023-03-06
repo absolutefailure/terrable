@@ -189,7 +189,7 @@ public class Map {
     }
 
    // DRAW MAP
-   public void Draw(Batch batch, Player player){
+   public void Draw(Batch batch, Player player, int volume){
 
         Random rand = new Random();
         UpdateLighting(player);
@@ -233,7 +233,7 @@ public class Map {
 
         // Update all mobs
         for (Mob mob: mobs){ 
-            mob.Update(this, batch, player);
+            mob.Update(this, batch, player, volume);
         }
 
         // mob spawner
@@ -244,14 +244,14 @@ public class Map {
             switch (spawn) {
                 case 1:  
                     mobs.add(new Mob(player.getX() + (1000 * direction), player.getY() + 200, kivimiesTexture, mobScreamSound));
-                    mobSpawnSound.play(0.01f);
+                    mobSpawnSound.play(volume/2000f);
                     break;
                 case 2:  
                     mobs.add(new Chicken(player.getX() + (1000 * direction), player.getY() + 200, chickenTexture));
                     break;
                 case 3:  
                     mobs.add(new Bat(player.getX() + (1000 * direction), player.getY() + 200, batTexture, batScreamSound));
-                    batSpawnSound.play(0.01f);
+                    batSpawnSound.play(volume/200f);
                     break;
                 case 4:  
                     mobs.add(new Slime(player.getX() + (1000 * direction), player.getY() + 200, slimeTexture, slimeSound));

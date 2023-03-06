@@ -21,10 +21,11 @@ public class GameScreen implements Screen {
 
     final Terrable game;
 
-
-    public GameScreen(final Terrable game){
+    public int volume;
+    public GameScreen(final Terrable game, int volume){
         this.game = game;
 
+        this.volume = volume;
 	
         
 
@@ -61,9 +62,9 @@ public class GameScreen implements Screen {
         game.batch.begin();
 
 
-        map.Draw(game.batch, player);
+        map.Draw(game.batch, player, volume);
 
-        player.Update(map, game.cam.getCamera(), game.batch);
+        player.Update(map, game.cam.getCamera(), game.batch, volume);
         
         // draw hud
         game.batch.setProjectionMatrix(game.hudCam.combined());
@@ -118,5 +119,9 @@ public class GameScreen implements Screen {
     public void dispose() {
 
         
+    }
+
+    public void setVolume(int volume){
+        this.volume = volume;
     }
 }
