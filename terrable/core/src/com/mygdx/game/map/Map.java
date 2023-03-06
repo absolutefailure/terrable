@@ -116,15 +116,40 @@ public class Map {
                     }
                 } else if ( y > height + 15){ //only stone and ores from depth 15
                     int oreChance = rand.nextInt(1000);
-                    if ( oreChance < 5 ) { // 0.5% chance for diamond
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, DIAMOND, true, STONE);
-                    } else if ( oreChance < 55 ) { // 5% chance for iron
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, IRON, true, STONE);
-                    } else if ( oreChance < 160 ) { // 10% chance for coal
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, COAL, true, STONE);
-                    } else { // 84.5% chance for stone
+                    int block = 6;
+
+                    // Change created block to an ore based on oreChance (default is stone)
+                    if ( oreChance < 5 ){
+                        block = 9;
+                    } else if ( oreChance < 20 ){
+                        block = 8;
+                    }else if ( oreChance < 50 ) {
+                        block = 7;
+                    }
+                    
+                    if (block != 6 && x > 1 && x < mapSizeX -1){
+                        int vein = rand.nextInt(100);
+
+                        // Determine the size of the ore vein from 1 to 4 blocks
+                        if (vein <= 25){
+                            mapArray[x - 1][y] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE);
+                            mapArray[x - 1][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE);
+                            mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE);
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y) * 25, block, true, STONE);
+                        }else  if (vein <= 50){
+                            mapArray[x - 1][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE);
+                            mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE);
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y) * 25, block, true, STONE);
+                        }else  if (vein <= 75){
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE);
+                            mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE);
+                        }else{
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE);
+                        }
+                    } else {
                         mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, STONE, true, STONE);
-                    }    
+                    }
+
                 } else if ( y > height + 2){
                     if (rand.nextInt(100) < 66 ) {//66% chance for stone, else spawning ground from depth 3
                         if (y > height + 3){
