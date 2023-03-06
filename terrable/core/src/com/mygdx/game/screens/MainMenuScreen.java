@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.Terrable;
+import com.mygdx.game.map.Map;
 import com.mygdx.game.save.SaveGame;
 
 public class MainMenuScreen implements Screen {
@@ -30,7 +31,7 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(final Terrable game) {
         this.game = game;
 
-        newButton = new Texture("menubuttons/playbutton.png");
+        newButton = new Texture("menubuttons/newbutton.png");
         saveButton = new Texture("menubuttons/savebutton.png");
         loadButton = new Texture("menubuttons/loadbutton.png");
         quitButton = new Texture("menubuttons/quitbutton.png");
@@ -97,9 +98,9 @@ public class MainMenuScreen implements Screen {
             game.batch.draw(saveButton, 550, 450);
         } else if (button(550, 300, 500, 150, loadButton)) {
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                game.gameScreen.map.setMapArray(null);
-                System.gc();
+                //game.gameScreen.map.dispose();
                 SaveGame.Load(game.gameScreen.map, game.gameScreen.player);
+                System.gc();
             }
             game.batch.draw(loadButton, 550, 300);
         } else if (button(550, 150, 500, 150, quitButton)) {

@@ -1,20 +1,19 @@
 package com.mygdx.game.map;
 import static com.mygdx.game.map.elements.*;
 
-import java.io.Serializable;
 
-public class Block implements Serializable {
+public class Block {
     
-    final transient int BLOCKSIZE = 25; // block size in pixels
+    final int BLOCKSIZE = 25; // block size in pixels
 
     private int posX;
     private int posY;
 
     private int element = 0;
 
-    private transient float blockHealth;
+    private float blockHealth;
 
-    private transient float brightness;
+    private float brightness;
 
     boolean collision;
     int permanent;

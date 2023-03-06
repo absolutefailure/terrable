@@ -169,39 +169,40 @@ public class Map {
         Random rand = new Random();
         UpdateLighting(player);
 
+        int startBlockX = (int)(player.getX() / 25 - 1800 / 25 / 2) +(mapSizeX/2);
+        int endBlockX = (startBlockX + 1800 / 25) ;
+        for (int x = startBlockX; x < endBlockX; x++){ 
+            
+            for (int y = 0; y < mapArray[x].length; y++){
+                Block block = mapArray[x][y];
+                batch.setColor(1, 1, 1, 1);
 
-        for (Block[] row : mapArray){ 
-            if (row[0].getPosX() > player.getX() - 1000 && row[0].getPosX() < player.getX() + 1000){ // LOOP ONLY VERTICAL ROWS THAT ARE INSIDE VISIBLE AREA
-                for (Block block: row){
+                if (block.getPosY() > player.getY() - 1000 && block.getPosY() < player.getY() + 1000 ){ // DRAW BLOCK ONLY IF INSIDE SCREEN
 
-                    batch.setColor(1, 1, 1, 1);
-
-                    if (block.getPosY() > player.getY() - 1000 && block.getPosY() < player.getY() + 1000 ){ // DRAW BLOCK ONLY IF INSIDE SCREEN
-
-                        // DRAW BACKROUND TEXTURE IF BLOCK IS PERMANENT
-                        if(block.getPermanent() == GROUND || block.getPermanent() == GRASS){
-                            batch.setColor(0.5f, 0.7f, 0.7f, 1);
-                            batch.draw(blockTextures[0][0], block.getPosX(), block.getPosY());
-                        } else if(block.getPermanent() == STONE) {
-                            batch.setColor(0.6f, 0.6f, 0.6f, 1);
-                            batch.draw(blockTextures[0][5], block.getPosX(), block.getPosY());
-                        }
+                    // DRAW BACKROUND TEXTURE IF BLOCK IS PERMANENT
+                    if(block.getPermanent() == GROUND || block.getPermanent() == GRASS){
+                        batch.setColor(0.5f, 0.7f, 0.7f, 1);
+                        batch.draw(blockTextures[0][0], block.getPosX(), block.getPosY());
+                    } else if(block.getPermanent() == STONE) {
+                        batch.setColor(0.6f, 0.6f, 0.6f, 1);
+                        batch.draw(blockTextures[0][5], block.getPosX(), block.getPosY());
+                    }
 
 
-                        if (block.getElement() != EMPTY)  {
-                            batch.setColor(block.getBrightness(),block.getBrightness(),block.getBrightness(),1f);
-                        
-                            // DRAW CORRECT TEXTURE BASED ON BLOCKS ELEMENT
-                            batch.draw(blockTextures[0][block.getElement()-1], block.getPosX(), block.getPosY(), 25 , 25); // blockTextures[ROW][COLUMN]
-    
-                            batch.setColor(1,1,1,1);
-                            block.setBrightness(0f);
-                        }                     
-
-                    }      
+                    if (block.getElement() != EMPTY)  {
+                        batch.setColor(block.getBrightness(),block.getBrightness(),block.getBrightness(),1f);
                     
-                }
+                        // DRAW CORRECT TEXTURE BASED ON BLOCKS ELEMENT
+                        batch.draw(blockTextures[0][block.getElement()-1], block.getPosX(), block.getPosY(), 25 , 25); // blockTextures[ROW][COLUMN]
+
+                        batch.setColor(1,1,1,1);
+                        block.setBrightness(0f);
+                    }                     
+
+                }      
+                
             }
+            
         }
 
 
@@ -255,7 +256,10 @@ public class Map {
 
     public void UpdateLighting(Player player){
 
-             for (int x = 0; x < mapArray.length; x++){
+        int startBlockX = (int)(player.getX() / 25 - 1800 / 25 / 2) +(mapSizeX/2);
+        int endBlockX = (startBlockX + 1800 / 25) ;
+
+        for (int x = startBlockX; x < endBlockX; x++){
             if (mapArray[x][0].getPosX() > player.getX() - 1200 && mapArray[x][0].getPosX() < player.getX() + 1200 && x > 5 && x < mapSizeX - 5) {
                 for (int y = 0; y < mapArray[x].length; y++){
                     if (mapArray[x][y].isCollision() && mapArray[x][y].getPosY() > player.getY() - 1200 && mapArray[x][y].getPosY() < player.getY() + 1200 && y > 5 && y < mapSizeY - 5) {
@@ -290,7 +294,7 @@ public class Map {
             }
         }
 
-        for (int x = 0; x < mapArray.length; x++){
+        for (int x = startBlockX; x < endBlockX; x++){
             if (mapArray[x][0].getPosX() > player.getX() - 1200 && mapArray[x][0].getPosX() < player.getX() + 1200 && x > 5 && x < mapSizeX - 5) {
                 for (int y = 0; y < mapArray[x].length; y++){
                     if (mapArray[x][y].isCollision() && mapArray[x][y].getPosY() > player.getY() - 1200 && mapArray[x][y].getPosY() < player.getY() + 1200 && y > 5 && y < mapSizeY - 5) {
@@ -312,7 +316,7 @@ public class Map {
             }
         }
 
-        for (int x = 0; x < mapArray.length; x++){
+        for (int x = startBlockX; x < endBlockX; x++){
             if (mapArray[x][0].getPosX() > player.getX() - 1200 && mapArray[x][0].getPosX() < player.getX() + 1200) {
                 for (int y = 0; y < mapArray[x].length; y++){
                     if (mapArray[x][y].getElement() != EMPTY && mapArray[x][y].getPosY() > player.getY() - 1200 && mapArray[x][y].getPosY() < player.getY() + 1200 && x > 3 && x < mapSizeX-3 && y > 3 && y < mapSizeY-3) {
