@@ -32,7 +32,7 @@ public class Chicken extends Mob {
     }
 
     @Override
-    public void Update(Map map, Batch batch, Player player) {
+    public void Update(Map map, Batch batch, Player player, int volume) {
         float oldMobX = mobPosX;
         float oldMobY = mobPosY;
 
