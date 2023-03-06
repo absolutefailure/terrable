@@ -52,6 +52,10 @@ public class Block {
             this.blockHealth = 1;
         }else if(element == STONEPICKAXE) {
             this.blockHealth = 2500;
+        }else if(element == DOOR1) {
+            this.blockHealth = 75;
+        }else if(element == DOOR2) {
+            this.blockHealth = 75;
         }else if(element == WOODPICKAXE) {
             this.blockHealth = 500;
         }else if(element == IRONPICKAXE) {
@@ -157,6 +161,10 @@ public class Block {
             return 75;
         } else if (element == STONEPICKAXE){
             return 2500;
+        }else if (element == DOOR1){
+            return 75;
+        }else if (element == DOOR2){
+            return 75;
         } else if (element == WOODPICKAXE){
             return 500;
         } else if (element == IRONPICKAXE){

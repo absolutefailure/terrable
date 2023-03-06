@@ -32,6 +32,12 @@ public class Crafting {
             return result;
         }
 
+        //DOOR
+        result = craftDoor(resources);
+        if (result != null) {
+            return result;
+        }
+
         //WOOD PICKAXE
         result = craftWoodPickaxe(resources);
         if (result != null) {
@@ -482,4 +488,36 @@ public class Crafting {
         return null;
     }
 
+    private static InventorySlot craftDoor(List<InventorySlot> resources) {
+        // check slots for correct resources
+        if (resources.get(0).getElement() == PLANKS
+                && resources.get(1).getElement() == PLANKS
+                && resources.get(2).getElement() == EMPTY
+                && resources.get(3).getElement() == PLANKS
+                && resources.get(4).getElement() == PLANKS
+                && resources.get(5).getElement() == EMPTY
+                && resources.get(6).getElement() == PLANKS
+                && resources.get(7).getElement() == PLANKS
+                && resources.get(8).getElement() == EMPTY) {
+            int amount = 32;
+            for (InventorySlot slot : resources) {
+                if (slot.getElement() == PLANKS && amount > slot.getAmount()) {
+                    amount = slot.getAmount();
+                }
+            }
+            // check for max slot size
+            if (amount > 8) {
+                amount = 8;
+            }
+            amount *= 1;
+            // create new item/s
+            InventorySlot item = new InventorySlot();
+            item.setElement(DOOR);
+            item.setAmount(amount);
+            item.setRemoveAmount(amount);
+            return item;
+        }
+        // return null if resources are not correct
+        return null;
+    }
 }

@@ -26,4 +26,8 @@ public final class elements {
     public static final int IRONAXE = 21;
     public static final int DIAMONDAXE = 22;
     public static final int IRONINGOT = 23;
+    public static final int DOOR = 24;
+    public static final int DOOR1 = 25;
+    public static final int DOOR2 = 26;
+
 }
