@@ -57,6 +57,20 @@ public class Block implements Serializable {
             this.blockHealth = 75;
         }else if(element == DOOR2) {
             this.blockHealth = 75;
+        }else if(element == WOODPICKAXE) {
+            this.blockHealth = 500;
+        }else if(element == IRONPICKAXE) {
+            this.blockHealth = 5000;
+        }else if(element == DIAMONDPICKAXE) {
+            this.blockHealth = 10000;
+        }else if(element == STONEAXE) {
+            this.blockHealth = 2500;
+        }else if(element == WOODAXE) {
+            this.blockHealth = 500;
+        }else if(element == IRONAXE) {
+            this.blockHealth = 5000;
+        }else if(element == DIAMONDAXE) {
+            this.blockHealth = 10000;
         }
 
         this.collision = collision;
@@ -152,6 +166,22 @@ public class Block implements Serializable {
             return 75;
         }else if (element == DOOR2){
             return 75;
+        } else if (element == WOODPICKAXE){
+            return 500;
+        } else if (element == IRONPICKAXE){
+            return 5000;
+        } else if (element == DIAMONDPICKAXE){
+            return 10000;
+        } else if (element == STONEAXE){
+            return 2500;
+        } else if (element == WOODAXE){
+            return 500;
+        } else if (element == IRONAXE){
+            return 5000;
+        } else if (element == DIAMONDAXE){
+            return 10000;
+        } else if (element == IRONINGOT){
+            return 50;
         } else{
             return 1;
         }
