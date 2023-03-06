@@ -59,6 +59,8 @@ public class Player implements Serializable {
     private transient Sound groundHitSound;
     private transient Sound leavesHitSound;
     private transient Sound blockBreakingSound;
+    private transient Sound doorOpenSound;
+    private transient Sound doorCloseSound;
     private transient int soundEffect; // TEMPORARY
 
     private int playerHealth;
@@ -80,6 +82,8 @@ public class Player implements Serializable {
         groundHitSound = Gdx.audio.newSound(Gdx.files.internal("sounds/groundHitSound.mp3"));
         leavesHitSound = Gdx.audio.newSound(Gdx.files.internal("sounds/leavesHitSound.mp3"));
         blockBreakingSound = Gdx.audio.newSound(Gdx.files.internal("sounds/blockBreakingSound.mp3"));
+        doorOpenSound = Gdx.audio.newSound(Gdx.files.internal("sounds/door-close.mp3"));
+        doorCloseSound = Gdx.audio.newSound(Gdx.files.internal("sounds/door-open.mp3"));
 
         playerSizeX = 20;
         playerSizeY = 49;
@@ -314,6 +318,21 @@ public class Player implements Serializable {
                                                 if (mapArray[x][y].getElement() == DIAMOND) {
                                                     mapArray[x][y].setElement(DIAMONDITEM);
                                                 }
+
+                                                // Both parts of door break when destroyed
+                                                if (mapArray[x][y].getElement() == DOOR2){
+                                                    mapArray[x][y].setElement(DOOR);
+                                                    mapArray[x][y + 1].setElement(EMPTY);
+                                                    mapArray[x][y].setCollision(false);
+                                                    mapArray[x][y + 1].setCollision(false);
+                                                }
+                                                if (mapArray[x][y].getElement() == DOOR1){
+                                                    mapArray[x][y].setElement(DOOR);
+                                                    mapArray[x][y - 1].setElement(EMPTY);
+                                                    mapArray[x][y].setCollision(false);
+                                                    mapArray[x][y - 1].setCollision(false);
+                                                }
+                                                
                                                 int slotIndex = -1;
                                                 for (int i = 0; i < 36; i++) {
                                                     if (inventory.get(i).getElement() == mapArray[x][y].getElement()
@@ -349,11 +368,12 @@ public class Player implements Serializable {
                                         } else {
                                             soundTimer = 15;
                                         }
+
                                         batch.setColor(1, 1, 1, 1);
                                         batch.draw(outlineTexture, mapArray[x][y].getPosX(), mapArray[x][y].getPosY());
 
                                         // IF RIGHT MOUSE BUTTON IS DOWN, PLACE BLOCK IN HAND
-                                        if (inventory.get(selectedSlot).isPlaceable()
+                                        if  (inventory.get(selectedSlot).isPlaceable()
                                                 && mapArray[x][y].getElement() == EMPTY
                                                 && Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
                                             if (!(playerPosX + playerSizeX > mapArray[x][y].getPosX()
@@ -366,27 +386,68 @@ public class Player implements Serializable {
                                                     || inventory.get(selectedSlot).getElement() == TALLGRASS
                                                     || inventory.get(selectedSlot).getElement() == REDFLOWER) {
                                                 if (inventory.get(selectedSlot).getAmount() > 0) {
-                                                    mapArray[x][y].setElement(inventory.get(selectedSlot).getElement());
-                                                    // prevent collision on certain blocks
-                                                    switch (inventory.get(selectedSlot).getElement()) {
-                                                        case LADDER:
-                                                            break;
-                                                        case TALLGRASS:
-                                                            break;
-                                                        case REDFLOWER:
-                                                            break;
-                                                        default:
-                                                            if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
-                                                                mapArray[x][y].setCollision(false);
-                                                            } else {
-                                                                mapArray[x][y].setCollision(true);
-                                                            }
-                                                    }
+   
+                                                    // Placing a door block makes a 2 block tall and prevent placing a door in 1 block space
+                                                    if (inventory.get(selectedSlot).getElement() == DOOR && mapArray[x][y-1].getElement() == EMPTY){
+                                                        mapArray[x][y].setElement(DOOR1);
+                                                        mapArray[x][y - 1].setElement(DOOR2);
 
-                                                    inventory.get(selectedSlot).removeItem();
+                                                        inventory.get(selectedSlot).removeItem();
+
+                                                    }else if (inventory.get(selectedSlot).getElement() != DOOR) {
+                                                        mapArray[x][y].setElement(inventory.get(selectedSlot).getElement());
+
+                                                        // prevent collision on certain blocks
+                                                        switch (inventory.get(selectedSlot).getElement()) {
+                                                            case LADDER:
+                                                                break;
+                                                            case TALLGRASS:
+                                                                break;
+                                                            case REDFLOWER:
+                                                                break;
+                                                            default:
+                                                                if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+                                                                    mapArray[x][y].setCollision(false);
+                                                                } else {
+                                                                    mapArray[x][y].setCollision(true);
+                                                                }
+                                                                
+                                                        }
+
+                                                        inventory.get(selectedSlot).removeItem();
+                                                    }
                                                 }
                                             }
                                         }
+                                        // Right click to open door
+                                        if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)
+                                        && (mapArray[x][y].getElement()  == DOOR1 || mapArray[x][y].getElement()  == DOOR2)){
+
+                                            if (mapArray[x][y].getElement() == DOOR1){
+                                                
+                                                if (mapArray[x][y].isCollision() == true){
+                                                    mapArray[x][y].setCollision(false);
+                                                    mapArray[x][y - 1].setCollision(false);
+                                                    doorCloseSound.play(1, 1.1f, 0);
+                                                }else if (mapArray[x][y].isCollision() == false) {
+                                                    mapArray[x][y].setCollision(true);
+                                                    mapArray[x][y - 1].setCollision(true);
+                                                    doorOpenSound.play(1, 1f, 0);
+                                                }
+                                            }
+
+                                            if (mapArray[x][y].getElement() == DOOR2){
+                                                if (mapArray[x][y].isCollision() == true){
+                                                    mapArray[x][y].setCollision(false);
+                                                    mapArray[x][y + 1].setCollision(false);
+                                                    doorCloseSound.play(1, 1f, 0);
+                                                }else if (mapArray[x][y].isCollision() == false){
+                                                    mapArray[x][y].setCollision(true);
+                                                    mapArray[x][y + 1].setCollision(true);
+                                                    doorOpenSound.play(1, 1.1f, 0);
+                                                } 
+                                            } 
+                                        } 
                                     }
                                 }
                             }
