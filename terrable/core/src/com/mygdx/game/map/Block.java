@@ -18,6 +18,8 @@ public class Block {
     boolean collision;
     int permanent;
 
+    public float brightnessLevel;
+
     public Block(int x, int y, int element, boolean collision, int permanent){
         this.posX = x;
         this.posY = y;
