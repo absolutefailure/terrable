@@ -314,7 +314,7 @@ public class Crafting {
             amount *= 1;
             // create new item/s
             InventorySlot item = new InventorySlot();
-            item.setElement(DIAMONDAXE);
+            item.setElement(DIAMONDPICKAXE);
             item.setWeapon(true);
             item.setAmount(amount);
             item.setRemoveAmount(amount);

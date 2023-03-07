@@ -159,19 +159,19 @@ public class Player {
                             && playerPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
                         if (mapArray[x][y].isCollision()) {
 
-                            if (gravity > 10) {
+                            if (gravity > 13) {
                                 // Gdx.app.exit();
                                 playerHealth -= 5;
-                            } else if (gravity >= 9.5) {
+                            } else if (gravity >= 12) {
                                 playerHealth -= 4;
                                 damageSound.play(volume/200f);
-                            } else if (gravity >= 9) {
+                            } else if (gravity >= 11) {
                                 playerHealth -= 3;
                                 damageSound.play(volume/200f);
-                            } else if (gravity >= 8.25) {
+                            } else if (gravity >= 10) {
                                 playerHealth -= 2;
                                 damageSound.play(volume/200f);
-                            } else if (gravity >= 7.25) {
+                            } else if (gravity >= 9) {
                                 playerHealth -= 1;
                                 damageSound.play(volume/200f);
                             }
@@ -390,7 +390,7 @@ public class Player {
                                                     || inventory.get(selectedSlot).getElement() == REDFLOWER) {
                                                 if (inventory.get(selectedSlot).getAmount() > 0) {
    
-                                                    // Placing a door block makes a 2 block tall and prevent placing a door in 1 block space
+                                                    // Placing a door block makes a 2 block tall door and prevent placing a door in 1 block space
                                                     if (inventory.get(selectedSlot).getElement() == DOOR && mapArray[x][y-1].getElement() == EMPTY){
                                                         mapArray[x][y].setElement(DOOR1);
                                                         mapArray[x][y - 1].setElement(DOOR2);
