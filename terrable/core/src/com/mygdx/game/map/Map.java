@@ -20,7 +20,7 @@ public class Map {
 
     Block[][] mapArray;
 
-    
+
     private Texture textures;
     private Texture kivimiesTexture;
     private Texture batTexture;
@@ -220,6 +220,24 @@ public class Map {
             if (height > 200) height = 200;
             if (height < 100) height = 100;
         }
+        for (int i = 0; i < 5000; i++){
+            boolean isAirBlock = true;
+            int start = 9999;
+            for(int j = 0; j < 300; j++){
+                if (isAirBlock && mapArray[i][j].getElement() != EMPTY){
+                    isAirBlock = false;
+                    start = j;
+                }
+                mapArray[i][j].brightnessLevel = 0f;
+                
+
+                if (j > start && 0.01f*(j-start) < 1f){
+                    mapArray[i][j].brightnessLevel = 0.01f*(j-start);
+                }else if(j > start ){
+                    mapArray[i][j].brightnessLevel = 1f;
+                }
+            }
+        }
     }
 
     // UPDATE MAP
@@ -245,16 +263,16 @@ public class Map {
 
                     // DRAW BACKROUND TEXTURE IF BLOCK IS PERMANENT
                     if(block.getPermanent() == GROUND || block.getPermanent() == GRASS){
-                        batch.setColor(0.5f, 0.7f, 0.7f, 1);
+                        batch.setColor(0.5f-block.brightnessLevel, 0.7f-block.brightnessLevel, 0.7f-block.brightnessLevel, 1);
                         batch.draw(blockTextures[0][0], block.getPosX(), block.getPosY());
                     } else if(block.getPermanent() == STONE) {
-                        batch.setColor(0.6f, 0.6f, 0.6f, 1);
+                        batch.setColor(0.6f-block.brightnessLevel, 0.6f-block.brightnessLevel, 0.6f-block.brightnessLevel, 1);
                         batch.draw(blockTextures[0][5], block.getPosX(), block.getPosY());
                     }
 
 
                     if (block.getElement() != EMPTY)  {
-                        batch.setColor(block.getBrightness(),block.getBrightness(),block.getBrightness(),1f);
+                        batch.setColor(block.getBrightness()-block.brightnessLevel, block.getBrightness()-block.brightnessLevel, block.getBrightness()-block.brightnessLevel, 1f);
                     
                         // DRAW CORRECT TEXTURE BASED ON BLOCKS ELEMENT
                         batch.draw(blockTextures[0][block.getElement()-1], block.getPosX(), block.getPosY(), 25 , 25); // blockTextures[ROW][COLUMN]
@@ -387,8 +405,8 @@ public class Map {
 
                         if(!mapArray[x-1][y].isCollision() || !mapArray[x+1][y].isCollision() || !mapArray[x][y-1].isCollision() || !mapArray[x][y+1].isCollision() || !mapArray[x][y].isCollision()){
                             if(mapArray[x][y].isCollision() || mapArray[x][y].getElement() == REDFLOWER || mapArray[x][y].getElement() == TALLGRASS || mapArray[x][y].getElement() == LADDER){
-                                mapArray[x][y].setBrightness(1f);
-                            }else{
+                                mapArray[x][y].setBrightness(0.8f);
+                            } else{
                                 mapArray[x][y].setBrightness(0.7f);
                             }
                             
