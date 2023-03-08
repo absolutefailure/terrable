@@ -46,12 +46,6 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
  	// CLEAR SCREEN WITH SKY COLOR
-        ScreenUtils.clear(0.35f, 0.7f, 1f, 1);
-
-        
-
-
-        
 
         //Gdx.graphics.setTitle(""+Gdx.graphics.getFramesPerSecond());
         
