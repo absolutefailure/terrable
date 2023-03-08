@@ -260,8 +260,8 @@ public class Map {
    // DRAW MAP
    public void Draw(Batch batch, Player player, int volume){
         Random rand = new Random();
-        float red = (clock/1000f)/2;
-        float green = (clock/1000f)/3;
+        float red = (clock/1000f)/3;
+        float green = (clock/1000f)/2;
         float blue = clock/1000f;
         System.out.println(clock);
         ScreenUtils.clear(red, green, blue, 1);
