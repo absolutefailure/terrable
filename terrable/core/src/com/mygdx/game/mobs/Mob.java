@@ -17,7 +17,7 @@ public class Mob {
     private float acceleration;
     private int soundTimer;
 
-    private Sound mobScreamSound;
+    // private Sound mobScreamSound;
   
     public Mob(float x, float y, Texture texture, Sound sound) {
         this.mobPosX = x;
@@ -25,7 +25,7 @@ public class Mob {
 
         mobTexture = texture;
 
-        mobScreamSound = sound;
+        // mobScreamSound = sound;
 
         mobSizeX = 20;
         mobSizeY = 40;
@@ -38,7 +38,7 @@ public class Mob {
 
     }
     
-    public void Update(Map map, Batch batch, Player player) {
+    public void Update(Map map, Batch batch, Player player, int volume) {
         float oldMobX = mobPosX;
         float oldMobY = mobPosY;
 
@@ -87,7 +87,7 @@ public class Mob {
         if(mobPosX + 1 > player.getX() && mobPosX - 1 < player.getX()) {
             soundTimer += 1;
             if(soundTimer == 100) {
-                mobScreamSound.play(0.01f);
+                //mobScreamSound.play(volume/400f);
                 soundTimer = 0;
             }
         } else {

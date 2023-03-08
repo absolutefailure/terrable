@@ -68,6 +68,7 @@ public class Player {
     private boolean isGrabbed;
     private int selectedSlot = 0;
     private boolean isInventoryOpen = false;
+    private ArrayList<Integer> usedSlots = new ArrayList<>();
 
     private ArrayList<InventorySlot> inventory;
     BitmapFont font = new BitmapFont();
@@ -114,7 +115,7 @@ public class Player {
     }
 
     // UPDATE AND DRAW PLAYER
-    public void Update(Map map, Camera cam, Batch batch) {
+    public void Update(Map map, Camera cam, Batch batch, int volume) {
         float oldX = playerPosX;
         float oldY = playerPosY;
 
@@ -159,21 +160,21 @@ public class Player {
                             && playerPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
                         if (mapArray[x][y].isCollision()) {
 
-                            if (gravity > 10) {
+                            if (gravity > 13) {
                                 // Gdx.app.exit();
                                 playerHealth -= 5;
-                            } else if (gravity >= 9.5) {
+                            } else if (gravity >= 12) {
                                 playerHealth -= 4;
-                                damageSound.play(0.2f);
-                            } else if (gravity >= 9) {
+                                damageSound.play(volume/200f);
+                            } else if (gravity >= 11) {
                                 playerHealth -= 3;
-                                damageSound.play(0.2f);
-                            } else if (gravity >= 8.25) {
+                                damageSound.play(volume/200f);
+                            } else if (gravity >= 10) {
                                 playerHealth -= 2;
-                                damageSound.play(0.2f);
-                            } else if (gravity >= 7.25) {
+                                damageSound.play(volume/200f);
+                            } else if (gravity >= 9) {
                                 playerHealth -= 1;
-                                damageSound.play(0.2f);
+                                damageSound.play(volume/200f);
                             }
 
                             if (gravity > 0) {
@@ -308,9 +309,9 @@ public class Player {
                                                 if (mapArray[x][y].getElement() == LEAVES
                                                         || mapArray[x][y].getElement() == TALLGRASS
                                                         || mapArray[x][y].getElement() == REDFLOWER) {
-                                                    leavesHitSound.play(1, 0.5f, 0);
+                                                    leavesHitSound.play(volume/200f, 0.5f, 0);
                                                 } else {
-                                                    blockBreakingSound.play();
+                                                    blockBreakingSound.play(volume / 200f);
                                                 }
                                                 if (mapArray[x][y].getElement() == GRASS) {
                                                     mapArray[x][y].setElement(GROUND);
@@ -390,7 +391,7 @@ public class Player {
                                                     || inventory.get(selectedSlot).getElement() == REDFLOWER) {
                                                 if (inventory.get(selectedSlot).getAmount() > 0) {
    
-                                                    // Placing a door block makes a 2 block tall and prevent placing a door in 1 block space
+                                                    // Placing a door block makes a 2 block tall door and prevent placing a door in 1 block space
                                                     if (inventory.get(selectedSlot).getElement() == DOOR && mapArray[x][y-1].getElement() == EMPTY){
                                                         mapArray[x][y].setElement(DOOR1);
                                                         mapArray[x][y - 1].setElement(DOOR2);
@@ -431,11 +432,11 @@ public class Player {
                                                 if (mapArray[x][y].isCollision() == true){
                                                     mapArray[x][y].setCollision(false);
                                                     mapArray[x][y - 1].setCollision(false);
-                                                    doorCloseSound.play(1, 1.1f, 0);
+                                                    doorCloseSound.play(volume/200f, 1.1f, 0);
                                                 }else if (mapArray[x][y].isCollision() == false) {
                                                     mapArray[x][y].setCollision(true);
                                                     mapArray[x][y - 1].setCollision(true);
-                                                    doorOpenSound.play(1, 1f, 0);
+                                                    doorOpenSound.play(volume/200f, 1f, 0);
                                                 }
                                             }
 
@@ -443,11 +444,11 @@ public class Player {
                                                 if (mapArray[x][y].isCollision() == true){
                                                     mapArray[x][y].setCollision(false);
                                                     mapArray[x][y + 1].setCollision(false);
-                                                    doorCloseSound.play(1, 1f, 0);
+                                                    doorCloseSound.play(volume/200f, 1f, 0);
                                                 }else if (mapArray[x][y].isCollision() == false){
                                                     mapArray[x][y].setCollision(true);
                                                     mapArray[x][y + 1].setCollision(true);
-                                                    doorOpenSound.play(1, 1.1f, 0);
+                                                    doorOpenSound.play(volume/200f, 1.1f, 0);
                                                 } 
                                             } 
                                         } 
@@ -461,9 +462,9 @@ public class Player {
         }
         if (soundTimer == 20) {
             if (soundEffect == GRASS || soundEffect == GROUND) {
-                groundHitSound.play(1f, 0.8f, 0);
+                groundHitSound.play(volume/200f, 0.8f, 0);
             } else if (soundEffect == STONE || soundEffect == IRON || soundEffect == COAL) {
-                stoneHitSound.play();
+                stoneHitSound.play(volume / 200f);
                 soundEffect = 0;
             }
             soundTimer -= 20;
@@ -512,6 +513,44 @@ public class Player {
 
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.TAB) || Gdx.input.isKeyJustPressed(Input.Keys.E)) {
             isInventoryOpen = false;
+            for (int j = 36; j < 45; j++){
+                for (int i = 0; i < 36; i++){
+                    int slotIndex = -1;
+                    for (int o = 0; o < 36; o++) {
+                        if (inventory.get(j).getElement() == inventory.get(o).getElement()
+                                && inventory.get(j).getAmount() + inventory.get(o).getAmount() < INVENTORY_SLOT_MAX) {
+                            slotIndex = o;
+                            break;
+                        }
+                    }
+                    if (slotIndex > 0) {
+                        inventory.get(slotIndex).setAmount(inventory.get(slotIndex).getAmount() + inventory.get(j).getAmount());
+                        break;
+                    } else {
+                        if (!inventory.get(j).isWeapon() && inventory.get(i).getElement() == inventory.get(j).getElement()
+                                && inventory.get(i).getAmount() + inventory.get(j).getAmount() < INVENTORY_SLOT_MAX) {
+                            inventory.get(i).setAmount(inventory.get(i).getAmount() + inventory.get(j).getAmount());
+                            inventory.get(i).setWeapon(inventory.get(j).isWeapon());
+                            inventory.get(i).setFood(inventory.get(j).isFood());
+                            inventory.get(i).setResource(inventory.get(j).isResource());
+                            inventory.get(i).setDamage(inventory.get(j).getDamage());
+                            break;
+                        }else if (inventory.get(i).getAmount() == 0) {
+                            inventory.get(i).setAmount(inventory.get(j).getAmount());
+                            inventory.get(i).setElement(inventory.get(j).getElement());
+                            inventory.get(i).setWeapon(inventory.get(j).isWeapon());
+                            inventory.get(i).setFood(inventory.get(j).isFood());
+                            inventory.get(i).setResource(inventory.get(j).isResource());
+                            inventory.get(i).setDamage(inventory.get(j).getDamage());
+                            break;
+                        } 
+                    }
+                  
+                }
+                inventory.get(j).setAmount(0);
+            }
+
+            
         }
 
         // DRAW PLAYER HEALTH
@@ -536,9 +575,9 @@ public class Player {
                 }
                 
 
-                if (cam.getInputInGameWorld().x > 802 - (261 / 2) + (29 * i)
-                        && cam.getInputInGameWorld().x < (802 - (261 / 2) + (29 * i)) + 25
-                        && cam.getInputInGameWorld().y > 2 && cam.getInputInGameWorld().y < 27
+                if (cam.getInputInGameWorld().x >= 800 - (261 / 2) + (29 * i)
+                        && cam.getInputInGameWorld().x <= (800 - (261 / 2) + (29 * i)) + 28
+                        && cam.getInputInGameWorld().y >= 0 && cam.getInputInGameWorld().y < 28
                         && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && grab == -1) {
                     grab = i;
                     isGrabbed = true;
@@ -546,9 +585,9 @@ public class Player {
             }
             if (!isGrabbed) {
 
-                if (cam.getInputInGameWorld().x > 802 - (261 / 2) + (29 * i)
-                        && cam.getInputInGameWorld().x < (802 - (261 / 2) + (29 * i)) + 25
-                        && cam.getInputInGameWorld().y > 2 && cam.getInputInGameWorld().y < 27 && grab > -1
+                if (cam.getInputInGameWorld().x >= 800 - (261 / 2) + (29 * i)
+                        && cam.getInputInGameWorld().x <= (800 - (261 / 2) + (29 * i)) + 28
+                        && cam.getInputInGameWorld().y >= 0 && cam.getInputInGameWorld().y < 28 && grab > -1
                         && grab != i) {
                     if (!inventory.get(grab).isWeapon() && inventory.get(grab).getElement() == inventory.get(i).getElement()
                             && inventory.get(i).getAmount() + inventory.get(grab).getAmount() < INVENTORY_SLOT_MAX) {
@@ -583,10 +622,10 @@ public class Player {
                         font.draw(batch, str, 802 - (261 / 2) + (29 * invDrawRow),250 - (88 / 2) + 15 + (invDrawColumn * 29));
                     }
 
-                    if (cam.getInputInGameWorld().x > 802 - (261 / 2) + (29 * invDrawRow)
-                            && cam.getInputInGameWorld().x < (802 - (261 / 2) + (29 * invDrawRow)) + 25
-                            && cam.getInputInGameWorld().y > 250 - (88 / 2) + (invDrawColumn * 29)
-                            && cam.getInputInGameWorld().y < 250 - (88 / 2) + 27 + (invDrawColumn * 29)
+                    if (cam.getInputInGameWorld().x >= 800 - (261 / 2) + (29 * invDrawRow)
+                            && cam.getInputInGameWorld().x <= (800 - (261 / 2) + (29 * invDrawRow)) + 28
+                            && cam.getInputInGameWorld().y >= 254 - (90 / 2) + (invDrawColumn * 29)
+                            && cam.getInputInGameWorld().y <= 254 - (90 / 2) + 28 + (invDrawColumn * 29)
                             && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && grab == -1) {
                         grab = i;
                         isGrabbed = true;
@@ -594,10 +633,10 @@ public class Player {
                 }
                 if (!isGrabbed) {
 
-                    if (cam.getInputInGameWorld().x > 802 - (261 / 2) + (29 * invDrawRow)
-                            && cam.getInputInGameWorld().x < (802 - (261 / 2) + (29 * invDrawRow)) + 25
-                            && cam.getInputInGameWorld().y > 250 - (88 / 2) + (invDrawColumn * 29)
-                            && cam.getInputInGameWorld().y < 250 - (88 / 2) + 27 + (invDrawColumn * 29) && grab > -1
+                    if (cam.getInputInGameWorld().x >= 800 - (261 / 2) + (29 * invDrawRow)
+                    && cam.getInputInGameWorld().x <= (800 - (261 / 2) + (29 * invDrawRow)) + 28
+                    && cam.getInputInGameWorld().y >= 254 - (90 / 2) + (invDrawColumn * 29)
+                    && cam.getInputInGameWorld().y <= 254 - (90 / 2) + 29 + (invDrawColumn * 29) && grab > -1
                             && grab != i) {
 
                         if (!inventory.get(grab).isWeapon() && inventory.get(grab).getElement() == inventory.get(i).getElement()
@@ -635,10 +674,10 @@ public class Player {
                         font.draw(batch, str, 860 - (261 / 2) + (29 * invDrawRow),363 - (88 / 2) + 15 + (invDrawColumn * 29));
                     }
 
-                    if (cam.getInputInGameWorld().x > 860 - (261 / 2) + (29 * invDrawRow)
-                            && cam.getInputInGameWorld().x < (860 - (261 / 2) + (29 * invDrawRow)) + 25
-                            && cam.getInputInGameWorld().y > 363 - (88 / 2) + (invDrawColumn * 29)
-                            && cam.getInputInGameWorld().y < 363 - (88 / 2) + 27 + (invDrawColumn * 29)
+                    if (cam.getInputInGameWorld().x >= 858 - (261 / 2) + (29 * invDrawRow)
+                        && cam.getInputInGameWorld().x <= (858 - (261 / 2) + (29 * invDrawRow)) + 28
+                        && cam.getInputInGameWorld().y >= 365 - (90 / 2) + (invDrawColumn * 29)
+                        && cam.getInputInGameWorld().y <= 365 - (90 / 2) + 29 + (invDrawColumn * 29)
                             && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && grab == -1) {
                         grab = i;
                         isGrabbed = true;
@@ -646,11 +685,11 @@ public class Player {
                 }
                 if (!isGrabbed) {
 
-                    if (cam.getInputInGameWorld().x > 860 - (261 / 2) + (29 * invDrawRow)
-                            && cam.getInputInGameWorld().x < (860 - (261 / 2) + (29 * invDrawRow)) + 25
-                            && cam.getInputInGameWorld().y > 363 - (88 / 2) + (invDrawColumn * 29)
-                            && cam.getInputInGameWorld().y < 363 - (88 / 2) + 27 + (invDrawColumn * 29) && grab > -1
-                            && grab != i) {
+                    if (cam.getInputInGameWorld().x >= 858 - (261 / 2) + (29 * invDrawRow)
+                        && cam.getInputInGameWorld().x <= (858 - (261 / 2) + (29 * invDrawRow)) + 28
+                        && cam.getInputInGameWorld().y >= 365 - (90 / 2) + (invDrawColumn * 29)
+                        && cam.getInputInGameWorld().y <= 365 - (90 / 2) + 29 + (invDrawColumn * 29) && grab > -1
+                        && grab != i) {
 
                         if (!inventory.get(grab).isWeapon() && inventory.get(grab).getElement() == inventory.get(i).getElement()
                                 && inventory.get(i).getAmount()
@@ -668,17 +707,18 @@ public class Player {
                         }
                     }
                 }
-                if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
-                    if (cam.getInputInGameWorld().x > 860 - (261 / 2) + (29 * invDrawRow)
-                            && cam.getInputInGameWorld().x < (860 - (261 / 2) + (29 * invDrawRow)) + 25
-                            && cam.getInputInGameWorld().y > 363 - (88 / 2) + (invDrawColumn * 29)
-                            && cam.getInputInGameWorld().y < 363 - (88 / 2) + 27 + (invDrawColumn * 29) && grab > -1
-                            && grab != i) {
+                if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+                    if (cam.getInputInGameWorld().x >= 858 - (261 / 2) + (29 * invDrawRow)
+                            && cam.getInputInGameWorld().x <= (858 - (261 / 2) + (29 * invDrawRow)) + 28
+                            && cam.getInputInGameWorld().y >= 365 - (90 / 2) + (invDrawColumn * 29)
+                            && cam.getInputInGameWorld().y <= 365 - (90 / 2) + 29 + (invDrawColumn * 29) && grab > -1
+                            && grab != i && !usedSlots.contains(i)) {
                         int putAmount = 1;
                         if (!inventory.get(grab).isWeapon() && inventory.get(grab).getElement() == inventory.get(i).getElement()
                                 && inventory.get(i).getAmount() + putAmount < INVENTORY_SLOT_MAX) {
                             inventory.get(i).setAmount(inventory.get(i).getAmount() + putAmount);
                             inventory.get(grab).removeItem();
+                            usedSlots.add(i);
                             if (inventory.get(grab).getAmount() <= 0) {
                                 inventory.get(grab).setElement(0);
                                 grab = -1;
@@ -686,14 +726,21 @@ public class Player {
                         } else if (inventory.get(i).getAmount() == 0
                                 && inventory.get(i).getAmount() + putAmount < INVENTORY_SLOT_MAX) {
                             inventory.get(i).setElement(inventory.get(grab).getElement());
+                            inventory.get(i).setDamage(inventory.get(grab).getDamage());
+                            inventory.get(i).setResource(inventory.get(grab).isResource());
+                            inventory.get(i).setFood(inventory.get(grab).isFood());
+                            inventory.get(i).setWeapon(inventory.get(grab).isWeapon());
                             inventory.get(i).setAmount(inventory.get(i).getAmount() + putAmount);
                             inventory.get(grab).removeItem();
+                            usedSlots.add(i);
                             if (inventory.get(grab).getAmount() <= 0) {
                                 inventory.get(grab).setElement(0);
                                 grab = -1;
                             }
                         }
                     }
+                }else{
+                    usedSlots.clear();
                 }
                 invDrawRow++;
                 if (invDrawRow % 3 == 0) {

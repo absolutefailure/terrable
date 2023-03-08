@@ -18,12 +18,14 @@ public class Terrable extends Game {
 	public final int WIDTH = 1600;
 	public final int HEIGHT = 900;
 
+	public int gameVolume = 25;
+
 	public GameScreen gameScreen;
 	public MainMenuScreen mainMenuScreen;
 
 	Terrable game = this;
 
-
+public int volume;
 
 	
 	public void create (){
@@ -37,8 +39,8 @@ public class Terrable extends Game {
 
 		Gdx.graphics.setWindowedMode(WIDTH, HEIGHT);
 
-		gameScreen = new GameScreen(this);
-		mainMenuScreen = new MainMenuScreen(this);
+		gameScreen = new GameScreen(this, gameVolume);
+		mainMenuScreen = new MainMenuScreen(this, gameVolume);
 
 		this.setScreen(mainMenuScreen);
 

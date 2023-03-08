@@ -40,7 +40,7 @@ public class Bat extends Mob{
     }
 
     @Override
-    public void Update(Map map, Batch batch, Player player) {
+    public void Update(Map map, Batch batch, Player player, int volume) {
         float oldMobX = mobPosX;
         float oldMobY = mobPosY;
 
@@ -89,7 +89,7 @@ public class Bat extends Mob{
         if(mobPosX + 1 > player.getX() && mobPosX - 1 < player.getX()) {
             soundTimer += 1;
             if(soundTimer == 100) {
-                batScreamSound.play(0.01f);
+                batScreamSound.play(volume/200f);
                 soundTimer = 0;
             }
         } else {
