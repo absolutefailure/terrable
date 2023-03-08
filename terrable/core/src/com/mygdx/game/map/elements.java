@@ -29,5 +29,7 @@ public final class elements {
     public static final int DOOR = 24;
     public static final int DOOR1 = 25;
     public static final int DOOR2 = 26;
+    public static final int STICK = 27;
+    public static final int TORCH = 28;
 
 }

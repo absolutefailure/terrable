@@ -87,6 +87,18 @@ public class Crafting {
             return result;
         }
 
+        //STICK
+        result = craftStick(resources);
+        if (result != null) {
+            return result;
+        }
+
+        //TORCH
+        result = craftTorch(resources);
+        if (result != null) {
+            return result;
+        }
+
         return null;
     }
 
@@ -513,6 +525,72 @@ public class Crafting {
             // create new item/s
             InventorySlot item = new InventorySlot();
             item.setElement(DOOR);
+            item.setAmount(amount);
+            item.setRemoveAmount(amount);
+            return item;
+        }
+        // return null if resources are not correct
+        return null;
+    }
+
+    private static InventorySlot craftStick(List<InventorySlot> resources) {
+        int isPlanks = 0;
+        // check slots for correct resources
+        for (InventorySlot slot : resources) {
+            if (slot.getElement() == PLANKS) {
+                isPlanks++;
+            }
+            if (slot.getElement() != PLANKS && slot.getElement() != EMPTY) {
+                return null;
+            }
+        }
+
+        if (isPlanks == 1) {
+            int amount = 32;
+            for (InventorySlot slot : resources) {
+                if ((slot.getElement() == PLANKS) && amount > slot.getAmount()) {
+                    amount = slot.getAmount();
+                }
+            }
+            // check for max slot size
+            if (amount > 8) {
+                amount = 8;
+            }
+            amount *= 4;
+            // create new item/s
+            InventorySlot item = new InventorySlot();
+            item.setElement(STICK);
+            item.setAmount(amount);
+            item.setRemoveAmount(amount / 4);
+            return item;
+        }
+        // return null if resources are not correct
+        return null;
+    }
+
+    private static InventorySlot craftTorch(List<InventorySlot> resources) {
+        // check slots for correct resources
+        if (resources.get(0).getElement() == EMPTY
+                && resources.get(1).getElement() == STICK
+                && resources.get(2).getElement() == EMPTY
+                && resources.get(3).getElement() == EMPTY
+                && resources.get(4).getElement() == COALITEM
+                && resources.get(5).getElement() == EMPTY
+                && resources.get(6).getElement() == EMPTY
+                && resources.get(7).getElement() == EMPTY
+                && resources.get(8).getElement() == EMPTY) {
+            int amount = 1;
+           
+            for (InventorySlot slot : resources) {
+                    if ((slot.getElement() == STICK || slot.getElement() == COALITEM) && amount > slot.getAmount()) {
+                        amount = slot.getAmount();
+                    }
+                }
+
+            amount *= 1;
+            // create new item/s
+            InventorySlot item = new InventorySlot();
+            item.setElement(TORCH);
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             return item;
