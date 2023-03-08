@@ -10,6 +10,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.Player;
 import com.mygdx.game.mobs.Bat;
 import com.mygdx.game.mobs.Chicken;
@@ -39,6 +40,8 @@ public class Map {
     private Sound mobScreamSound;
     
     private int rainTimer = 0;
+    private int clock = 0;
+    private Boolean timeShift = false;
     private boolean isRaining = false;
     private Texture rainTexture;
     private TextureRegion[][] rainTextureRegions;
@@ -257,9 +260,25 @@ public class Map {
    // DRAW MAP
    public void Draw(Batch batch, Player player, int volume){
         Random rand = new Random();
-
+        float red = (clock/1000f)/2;
+        float green = (clock/1000f)/3;
+        float blue = clock/1000f;
+        System.out.println(clock);
+        ScreenUtils.clear(red, green, blue, 1);
         rainTimer--;
-
+        if(!timeShift){
+            if(clock < 1000) {
+                clock++;
+            } else {
+                timeShift = true;
+            }
+        } else {
+            if(clock > 0) {
+                clock--;
+            } else {
+                timeShift = false;
+            }
+        }
         if (rainTimer < 0 && !isRaining){
             isRaining = true;
             rainTimer = rand.nextInt(9000)+1000;
@@ -293,27 +312,27 @@ public class Map {
 
         }
         for (int i = 0; i < rainDropList.size(); i++){
-            Raindrop r = rainDropList.get(i);
-            int rX = (int)(((r.getX())-50) / 25) +(mapSizeX/2);
-            int rY = (int)(mapSizeY/2 - ((r.getY()+50) / 25)) ;
-            if (rY < 0){rY = 0;}
-            if(rY > mapSizeY-1){rY = mapSizeY-1;}
-            if (rX < 0){rX = 0;}
-            if(rX > mapSizeX-1){rX = mapSizeX-1;}
-            r.Update(batch, wind/100f);
-            for (int x = rX; x < rX + 3; x++){
-                for (int y = rY; y < rY+4; y++){
-                    if ((mapArray[x][y].isCollision() || mapArray[x][y].getElement() == LEAVES) && r.getX() >= mapArray[x][y].getPosX()
-                    && r.getX() <= mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
-                    && r.getY() >= mapArray[x][y].getPosY()
-                    && r.getY() <= mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
-                        r.setY(mapArray[x][y].getPosY()+25);
-                        r.setOnGround(true);
+            Raindrop raindrop = rainDropList.get(i);
+            int raindropX = (int)(((raindrop.getX())-50) / 25) +(mapSizeX/2);
+            int raindropY = (int)(mapSizeY/2 - ((raindrop.getY()+50) / 25)) ;
+            if (raindropY < 0){raindropY = 0;}
+            if(raindropY > mapSizeY-5){raindropY = mapSizeY-5;}
+            if (raindropX < 0){raindropX = 0;}
+            if(raindropX > mapSizeX-5){raindropX = mapSizeX-5;}
+            raindrop.Update(batch, wind/100f);
+            for (int x = raindropX; x < raindropX + 3; x++){
+                for (int y = raindropY; y < raindropY+4; y++){
+                    if ((mapArray[x][y].isCollision() || mapArray[x][y].getElement() == LEAVES) && raindrop.getX() >= mapArray[x][y].getPosX()
+                    && raindrop.getX() <= mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
+                    && raindrop.getY() >= mapArray[x][y].getPosY()
+                    && raindrop.getY() <= mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
+                        raindrop.setY(mapArray[x][y].getPosY()+25);
+                        raindrop.setOnGround(true);
                         break;
                     }
                 }
             }
-            if (r.isOnGround() && r.getTimer() > 50){
+            if (raindrop.isOnGround() && raindrop.getTimer() > 50){
                 rainDropList.remove(i);
 
             }
