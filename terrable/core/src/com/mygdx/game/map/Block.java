@@ -72,6 +72,10 @@ public class Block {
             this.blockHealth = 5000;
         }else if(element == DIAMONDAXE) {
             this.blockHealth = 10000;
+        }else if(element == STICK) {
+            this.blockHealth = 1;
+        }else if(element == TORCH) {
+            this.blockHealth = 1;
         }
 
         this.collision = collision;
