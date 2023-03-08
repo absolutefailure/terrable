@@ -37,6 +37,13 @@ public class Map {
     private Sound batScreamSound;
     private Sound slimeSound;
     private Sound mobScreamSound;
+    
+    private int rainTimer = 0;
+    private boolean isRaining = false;
+    private Texture rainTexture;
+    private TextureRegion[][] rainTextureRegions;
+    private ArrayList<Raindrop> rainDropList = new ArrayList<>();
+    private int wind = 0;
 
     public Map(int sizeX, int sizeY) {
         this.mapSizeX = sizeX;
@@ -57,6 +64,8 @@ public class Map {
         
         blockTextures = TextureRegion.split(textures, 25, 25); 
         
+        rainTexture = new Texture("raindrop.png");
+        rainTextureRegions = TextureRegion.split(rainTexture,6,6);
 
     }
 
@@ -69,7 +78,7 @@ public class Map {
         int height = mapSizeY/2;
 
         Random rand = new Random();
-
+        rainTimer = rand.nextInt(10000);
         /*[
             [1,1,1,1,1,0,0,0,0,0],
             [1,1,1,1,1,0,0,0,0,0],
@@ -224,7 +233,7 @@ public class Map {
             boolean isAirBlock = true;
             int start = 9999;
             for(int j = 0; j < 300; j++){
-                if (isAirBlock && mapArray[i][j].getElement() != EMPTY){
+                if (isAirBlock && mapArray[i][j].isCollision()){
                     isAirBlock = false;
                     start = j;
                 }
@@ -247,8 +256,69 @@ public class Map {
 
    // DRAW MAP
    public void Draw(Batch batch, Player player, int volume){
-
         Random rand = new Random();
+
+        rainTimer--;
+
+        if (rainTimer < 0 && !isRaining){
+            isRaining = true;
+            rainTimer = rand.nextInt(9000)+1000;
+            wind = rand.nextInt(900)-400;
+        }else if(rainTimer < 0){
+            isRaining = false;
+            rainTimer = rand.nextInt(9000)+1000;
+        }
+
+        if (!isRaining && rainTimer > 0 && rainTimer < 200){
+            if (rainDropList.size() < 2000 && rainTimer % 2 == 0){
+                rainDropList.add(new Raindrop(rainTextureRegions, (int)player.getX() + rand.nextInt(2500)-1250+(-wind), (int)player.getY()+1000));
+            }
+        }
+
+        if (isRaining){
+            if (rainTimer > 200){
+                wind += rand.nextInt(9)-4;
+                if (wind < -500){wind = -500;}
+                if(wind > 500){wind = 500;}
+                if (rainDropList.size() < 2000){
+                    for (int i = 0; i < 5; i++){
+                        rainDropList.add(new Raindrop(rainTextureRegions, (int)player.getX() + rand.nextInt(2500)-1250+(-wind), (int)player.getY()+1000));
+                    }
+                }
+            }else{
+                if (rainDropList.size() < 2000 && rainTimer % 2 == 0){
+                    rainDropList.add(new Raindrop(rainTextureRegions, (int)player.getX() + rand.nextInt(2500)-1250+(-wind), (int)player.getY()+1000));
+                }
+            }
+
+        }
+        for (int i = 0; i < rainDropList.size(); i++){
+            Raindrop r = rainDropList.get(i);
+            int rX = (int)(((r.getX())-50) / 25) +(mapSizeX/2);
+            int rY = (int)(mapSizeY/2 - ((r.getY()+50) / 25)) ;
+            if (rY < 0){rY = 0;}
+            if(rY > mapSizeY-1){rY = mapSizeY-1;}
+            if (rX < 0){rX = 0;}
+            if(rX > mapSizeX-1){rX = mapSizeX-1;}
+            r.Update(batch, wind/100f);
+            for (int x = rX; x < rX + 3; x++){
+                for (int y = rY; y < rY+4; y++){
+                    if ((mapArray[x][y].isCollision() || mapArray[x][y].getElement() == LEAVES) && r.getX() >= mapArray[x][y].getPosX()
+                    && r.getX() <= mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
+                    && r.getY() >= mapArray[x][y].getPosY()
+                    && r.getY() <= mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
+                        r.setY(mapArray[x][y].getPosY()+25);
+                        r.setOnGround(true);
+                        break;
+                    }
+                }
+            }
+            if (r.isOnGround() && r.getTimer() > 50){
+                rainDropList.remove(i);
+
+            }
+        }
+        
         UpdateLighting(player);
 
         int startBlockX = (int)(player.getX() / 25 - 1800 / 25 / 2) +(mapSizeX/2);
@@ -286,6 +356,9 @@ public class Map {
             }
             
         }
+
+
+
 
 
         // Update all mobs
