@@ -29,7 +29,7 @@ public class Map {
     private Texture slimeTexture;
     private TextureRegion[][] blockTextures;
     ArrayList<Mob> mobs = new ArrayList<>();
-
+    private Texture sunTexture;
     private int mapSizeX; // map size in blocks
     private int mapSizeY; // map size in blocks
 
@@ -47,6 +47,7 @@ public class Map {
     private TextureRegion[][] rainTextureRegions;
     private ArrayList<Raindrop> rainDropList = new ArrayList<>();
     private int wind = 0;
+    private float sunPosY = 1000;
 
     public Map(int sizeX, int sizeY) {
         this.mapSizeX = sizeX;
@@ -57,7 +58,7 @@ public class Map {
         batTexture = new Texture("bat.png");
         chickenTexture = new Texture("chicken.png");
         slimeTexture = new Texture("slime.png");
-
+        sunTexture = new Texture("sun.png");
         mobSpawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/moaiSpawnSound.mp3"));
         batSpawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/batSpawnSound.mp3"));
 
@@ -269,6 +270,7 @@ public class Map {
         if(!timeShift){
             if(clock < 1000) {
                 clock++;
+                batch.draw(sunTexture, player.getX()-500, (player.getY()-sunPosY)+clock);
             } else {
                 timeShift = true;
             }
