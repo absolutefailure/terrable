@@ -30,6 +30,7 @@ public class Map {
     private TextureRegion[][] blockTextures;
     ArrayList<Mob> mobs = new ArrayList<>();
     private Texture sunTexture;
+    // private Texture moonTexture;
     private int mapSizeX; // map size in blocks
     private int mapSizeY; // map size in blocks
 
@@ -47,7 +48,7 @@ public class Map {
     private TextureRegion[][] rainTextureRegions;
     private ArrayList<Raindrop> rainDropList = new ArrayList<>();
     private int wind = 0;
-    private float sunPosY = 1000;
+    private int dayTime = 10000;
 
     public Map(int sizeX, int sizeY) {
         this.mapSizeX = sizeX;
@@ -59,6 +60,7 @@ public class Map {
         chickenTexture = new Texture("chicken.png");
         slimeTexture = new Texture("slime.png");
         sunTexture = new Texture("sun.png");
+        // moonTexture = new Texture("moon.png");
         mobSpawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/moaiSpawnSound.mp3"));
         batSpawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/batSpawnSound.mp3"));
 
@@ -261,21 +263,22 @@ public class Map {
    // DRAW MAP
    public void Draw(Batch batch, Player player, int volume){
         Random rand = new Random();
-        float red = (clock/1000f)/3;
-        float green = (clock/1000f)/2;
-        float blue = clock/1000f;
+        float red = (clock/10000f)/3;
+        float green = (clock/10000f)/2;
+        float blue = clock/10000f;
         System.out.println(clock);
         ScreenUtils.clear(red, green, blue, 1);
         rainTimer--;
         if(!timeShift){
-            if(clock < 1000) {
+            if(clock < 10000) {
                 clock++;
-                batch.draw(sunTexture, player.getX()-500, (player.getY()-sunPosY)+clock);
+                batch.draw(sunTexture, player.getX()-500, -(2500)+(clock)/2);
             } else {
                 timeShift = true;
             }
         } else {
             if(clock > 0) {
+                batch.draw(sunTexture, player.getX()-500, -(2500)+(dayTime-(dayTime-clock))/2);
                 clock--;
             } else {
                 timeShift = false;
