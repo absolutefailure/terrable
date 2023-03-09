@@ -512,6 +512,80 @@ public class Map {
                 }
             }
         }
+
+        // Torches increase brightness around them
+        for (int x = startBlockX; x < endBlockX; x++){
+            if (mapArray[x][0].getPosX() > player.getX() - 1200 && mapArray[x][0].getPosX() < player.getX() + 1200) {
+                for (int y = 0; y < mapArray[x].length; y++){
+                    if (mapArray[x][y].getElement() == TORCH){
+                        mapArray[x][y].setCollision(false);
+                        for (int i = 1; i<9; i++){
+                            float brightness = 1.1f;
+                            brightness = brightness - (i*0.1f);
+                            mapArray[x-i][y].setBrightness(mapArray[x-i][y].getBrightness() + brightness);
+                            mapArray[x][y-i].setBrightness(mapArray[x][y-i].getBrightness() + brightness);
+                            mapArray[x+i][y].setBrightness(mapArray[x+i][y].getBrightness() + brightness);
+                            mapArray[x][y+i].setBrightness(mapArray[x][y+i].getBrightness() + brightness);
+                        }
+
+                        for (int i = 2; i<8; i++){
+                            float brightness = 1.1f;
+                            brightness = brightness - (i*0.1f);
+                            
+                            mapArray[x-i][y +1].setBrightness(mapArray[x-i][y +1].getBrightness() + brightness);
+                            mapArray[x +1][y-i].setBrightness(mapArray[x +1][y-i].getBrightness() + brightness);
+                            mapArray[x+i][y +1].setBrightness(mapArray[x+i][y +1].getBrightness() + brightness);
+                            mapArray[x +1][y+i].setBrightness(mapArray[x +1][y+i].getBrightness() + brightness);
+
+                            mapArray[x-i][y -1].setBrightness(mapArray[x-i][y -1].getBrightness() + brightness);
+                            mapArray[x -1][y-i].setBrightness(mapArray[x -1][y-i].getBrightness() + brightness);
+                            mapArray[x+i][y -1].setBrightness(mapArray[x+i][y -1].getBrightness() + brightness);
+                            mapArray[x -1][y+i].setBrightness(mapArray[x -1][y+i].getBrightness() + brightness);
+                        }
+
+                        for (int i = 3; i<7; i++){
+                            float brightness = 1.1f;
+                            brightness = brightness - (i*0.1f);
+
+                            mapArray[x-i][y +2].setBrightness(mapArray[x-i][y +2].getBrightness() + brightness);
+                            mapArray[x +2][y-i].setBrightness(mapArray[x +2][y-i].getBrightness() + brightness);
+                            mapArray[x+i][y +2].setBrightness(mapArray[x+i][y +2].getBrightness() + brightness);
+                            mapArray[x +2][y+i].setBrightness(mapArray[x +2][y+i].getBrightness() + brightness);
+
+                            mapArray[x-i][y -2].setBrightness(mapArray[x-i][y -2].getBrightness() + brightness);
+                            mapArray[x -2][y-i].setBrightness(mapArray[x -2][y-i].getBrightness() + brightness);
+                            mapArray[x+i][y -2].setBrightness(mapArray[x+i][y -2].getBrightness() + brightness);
+                            mapArray[x -2][y+i].setBrightness(mapArray[x -2][y+i].getBrightness() + brightness);
+                        }
+
+                        for (int i = 4; i<6; i++){
+                            float brightness = 1.1f;
+                            brightness = brightness - (i*0.1f);
+
+                            mapArray[x-i][y +3].setBrightness(mapArray[x-i][y +3].getBrightness() + brightness);
+                            mapArray[x +3][y-i].setBrightness(mapArray[x +3][y-i].getBrightness() + brightness);
+                            mapArray[x+i][y +3].setBrightness(mapArray[x+i][y +3].getBrightness() + brightness);
+                            mapArray[x +3][y+i].setBrightness(mapArray[x -3][y+i].getBrightness() + brightness);
+
+                            mapArray[x-i][y -3].setBrightness(mapArray[x-i][y -3].getBrightness() + brightness);
+                            mapArray[x -3][y-i].setBrightness(mapArray[x -3][y-i].getBrightness() + brightness);
+                            mapArray[x+i][y -3].setBrightness(mapArray[x+i][y -3].getBrightness() + brightness);
+                            mapArray[x -3][y+i].setBrightness(mapArray[x -3][y+i].getBrightness() + brightness);
+                        }
+
+                        for (int i = 1; i<5; i++){
+                            float brightness = 1.1f;
+                            brightness = brightness - (i*0.1f);
+
+                            mapArray[x+i][y+i].setBrightness(mapArray[x+i][y+i].getBrightness() + brightness);
+                            mapArray[x+i][y-i].setBrightness(mapArray[x+i][y-i].getBrightness() + brightness);
+                            mapArray[x-i][y+i].setBrightness(mapArray[x-i][y+i].getBrightness() + brightness);
+                            mapArray[x-i][y-i].setBrightness(mapArray[x-i][y-i].getBrightness() + brightness);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public Block[][] getMapArray() {
