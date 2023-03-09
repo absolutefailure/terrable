@@ -16,6 +16,7 @@ public class Mob {
     private float gravity;
     private float acceleration;
     private int soundTimer;
+    private int mobHealth;
 
     // private Sound mobScreamSound;
   
@@ -31,6 +32,7 @@ public class Mob {
         mobSizeY = 40;
 
         gravity = 0;
+        mobHealth = 10;
         
     }
 
@@ -132,6 +134,22 @@ public class Mob {
 
     public void setMobPosY(float mobPosY) {
         this.mobPosY = mobPosY;
+    }
+
+    public int getMobHealth() {
+        return mobHealth;
+    }
+
+    public void setMobHealth(int mobHealth) {
+        this.mobHealth = mobHealth;
+    }
+
+    public int getMobSizeX() {
+        return mobSizeX;
+    }
+
+    public int getMobSizeY() {
+        return mobSizeY;
     }
     
 }

@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.camera.HudCamera;
 import com.mygdx.game.map.Block;
 import com.mygdx.game.map.Map;
+import com.mygdx.game.mobs.Mob;
 
 import static com.mygdx.game.map.elements.*;
 
@@ -70,6 +71,8 @@ public class Player {
     private boolean isInventoryOpen = false;
     private ArrayList<Integer> usedSlots = new ArrayList<>();
 
+    private ArrayList<Mob> mobs;
+
     private ArrayList<InventorySlot> inventory;
     BitmapFont font = new BitmapFont();
 
@@ -109,6 +112,8 @@ public class Player {
         for (int i = 0; i < 46; i++) {
             inventory.add(new InventorySlot());
         }
+
+        mobs = Map.getMobs();
 
         gravity = 0;
         acceleration = 0;
@@ -471,6 +476,34 @@ public class Player {
                 }
             }
         }
+
+        // check if mouse is inside mob
+        for(int i = 0; i < mobs.size(); i++) {
+            Mob thisMob = mobs.get(i);
+            if (!isInventoryOpen &&
+            mouseInWorld2D.x >= thisMob.getMobPosX() &&
+            mouseInWorld2D.x <= thisMob.getMobPosX() + thisMob.getMobSizeX() &&
+            mouseInWorld2D.y >= thisMob.getMobPosY() &&
+            mouseInWorld2D.y <= thisMob.getMobPosY() + thisMob.getMobSizeY()) {
+                
+                // distance to mob
+                float distance = (float) Math.sqrt((mouseInWorld2D.y - playerPosY) * (mouseInWorld2D.y - playerPosY) + 
+                (mouseInWorld2D.x - playerPosX) * (mouseInWorld2D.x - playerPosX));
+                
+                if (distance <= 50) {
+                    if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+                        // change damage to scale with weapon + add hit effect
+                        // indicator when mob is close enough?
+                        if (thisMob.getMobHealth() - 5 == 0) {
+                            mobs.remove(i);
+                        } else {
+                            thisMob.setMobHealth(thisMob.getMobHealth() - 5);
+                        }
+                    }
+                }
+            }
+        }
+
         if (soundTimer == 20) {
             if (soundEffect == GRASS || soundEffect == GROUND) {
                 groundHitSound.play(volume/200f, 0.8f, 0);
