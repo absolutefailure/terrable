@@ -288,52 +288,52 @@ public class Player {
                                             if (mapArray[x][y].getBlockHealth() > 0) {
 
                                                 if (mapArray[x][y].getBlockHealth() * 100
-                                                        / mapArray[x][y].getMaxhealth() > 75) {
-                                                    batch.draw(blockBreakingAnimation[0][0], mapArray[x][y].getPosX(),
-                                                            mapArray[x][y].getPosY());
-                                                } else if (mapArray[x][y].getBlockHealth() * 100
-                                                        / mapArray[x][y].getMaxhealth() > 50) {
-                                                    batch.draw(blockBreakingAnimation[0][1], mapArray[x][y].getPosX(),
-                                                            mapArray[x][y].getPosY());
-                                                } else if (mapArray[x][y].getBlockHealth() * 100
-                                                        / mapArray[x][y].getMaxhealth() > 25) {
-                                                    batch.draw(blockBreakingAnimation[0][2], mapArray[x][y].getPosX(),
-                                                            mapArray[x][y].getPosY());
-                                                } else {
-                                                    batch.draw(blockBreakingAnimation[0][3], mapArray[x][y].getPosX(),
-                                                            mapArray[x][y].getPosY());
+                                                / mapArray[x][y].getMaxhealth() < 99 ){
+
+                                                    if (mapArray[x][y].getBlockHealth() * 100
+                                                    / mapArray[x][y].getMaxhealth() > 75) {
+                                                        batch.draw(blockBreakingAnimation[0][0], mapArray[x][y].getPosX(),
+                                                                mapArray[x][y].getPosY());
+                                                    } else if (mapArray[x][y].getBlockHealth() * 100
+                                                            / mapArray[x][y].getMaxhealth() > 50) {
+                                                        batch.draw(blockBreakingAnimation[0][1], mapArray[x][y].getPosX(),
+                                                                mapArray[x][y].getPosY());
+                                                    } else if (mapArray[x][y].getBlockHealth() * 100
+                                                            / mapArray[x][y].getMaxhealth() > 25) {
+                                                        batch.draw(blockBreakingAnimation[0][2], mapArray[x][y].getPosX(),
+                                                                mapArray[x][y].getPosY());
+                                                    } else {
+                                                        batch.draw(blockBreakingAnimation[0][3], mapArray[x][y].getPosX(),
+                                                                mapArray[x][y].getPosY());
+                                                    }
                                                 }
+
                                                 soundEffect = mapArray[x][y].getElement();
                                                 //damage to block determined here
                                                 if (mapArray[x][y].getMaxhealth() >= 0 && mapArray[x][y].getMaxhealth() < 101) {
                                                     mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - inventory.get(selectedSlot).getDamage());
                                                 } else if (mapArray[x][y].getMaxhealth() > 199 && mapArray[x][y].getMaxhealth() < 220 && inventory.get(selectedSlot).getDamage() > 4) {
                                                     mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - inventory.get(selectedSlot).getDamage());
-                                                    inventory.get(selectedSlot).setHealth(inventory.get(selectedSlot).getHealth() - 2);
-                                                    if(inventory.get(selectedSlot).getHealth() == 0) {
-                                                        inventory.get(selectedSlot).removeItem();
-                                                        weaponBreakingSound.play(volume / 200f);
-                                                    }
                                                 } else if (mapArray[x][y].getMaxhealth() > 221 && mapArray[x][y].getMaxhealth() < 251 && inventory.get(selectedSlot).getDamage() > 24) {
                                                     mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - inventory.get(selectedSlot).getDamage());
-                                                    inventory.get(selectedSlot).setHealth(inventory.get(selectedSlot).getHealth() - 25);
-                                                    if(inventory.get(selectedSlot).getHealth() == 0) {
-                                                        inventory.get(selectedSlot).removeItem();
-                                                        weaponBreakingSound.play(volume / 200f);
-                                                    }
                                                 } else if (mapArray[x][y].getMaxhealth() > 252 && inventory.get(selectedSlot).getDamage() > 49) {
                                                     mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - inventory.get(selectedSlot).getDamage());
-                                                    inventory.get(selectedSlot).setHealth(inventory.get(selectedSlot).getHealth() - 25);
-                                                    if(inventory.get(selectedSlot).getHealth() == 0) {
-                                                        inventory.get(selectedSlot).removeItem();
-                                                        weaponBreakingSound.play(volume / 200f);
-                                                    }
                                                 } else {
                                                     mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - 0);
                                                 }
 
                                                 soundTimer += 1;
                                             } else {
+                                                if (inventory.get(selectedSlot).isWeapon()){
+                                                    inventory.get(selectedSlot).setHealth(inventory.get(selectedSlot).getHealth()-1);
+                                                    if(inventory.get(selectedSlot).getHealth() == 0) {
+                                                        inventory.get(selectedSlot).removeItem();
+                                                        weaponBreakingSound.play(volume / 200f);
+                                                    }
+                                                }
+                                                if (mapArray[x][y-1].getElement() == REDFLOWER || mapArray[x][y-1].getElement() == TALLGRASS){
+                                                    mapArray[x][y-1].setElement(EMPTY);
+                                                }
                                                 if (mapArray[x][y].getElement() == LEAVES
                                                         || mapArray[x][y].getElement() == TALLGRASS
                                                         || mapArray[x][y].getElement() == REDFLOWER) {
@@ -436,6 +436,8 @@ public class Player {
                                                             case TALLGRASS:
                                                                 break;
                                                             case REDFLOWER:
+                                                                break;
+                                                            case TORCH:
                                                                 break;
                                                             default:
                                                                 if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {

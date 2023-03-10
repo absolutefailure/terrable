@@ -22,7 +22,7 @@ public class SaveGame {
                 bw.newLine();
                 for (InventorySlot slot : player.getInventory()) {
                     bw.write(slot.getElement() + "," + slot.getAmount() + "," + slot.getDamage() + "," +
-                            slot.isWeapon() + "," + slot.isFood() + "," + slot.isResource());
+                            slot.isWeapon() + "," + slot.isFood() + "," + slot.isResource() + "," + slot.getHealth());
                     bw.newLine();
                 }
                 // Write map array to file as plain text
@@ -30,7 +30,7 @@ public class SaveGame {
                     for (int j = 0; j < mapArray[i].length; j++) {
                         bw.write(mapArray[i][j].getPosX() + "," + mapArray[i][j].getPosY() + "," +
                                 mapArray[i][j].getElement() + "," + mapArray[i][j].isCollision() + "," +
-                                mapArray[i][j].getPermanent());
+                                mapArray[i][j].getPermanent() + "," + mapArray[i][j].brightnessLevel);
                         bw.newLine();
                     }
                 }
@@ -78,12 +78,14 @@ public class SaveGame {
                     boolean isWeapon = Boolean.parseBoolean(inventoryTokens[3]);
                     boolean isFood = Boolean.parseBoolean(inventoryTokens[4]);
                     boolean isResource = Boolean.parseBoolean(inventoryTokens[5]);
+                    int itemHealth = Integer.parseInt(inventoryTokens[6]);
                     slot.setElement(element);
                     slot.setAmount(amount);
                     slot.setDamage(damage);
                     slot.setWeapon(isWeapon);
                     slot.setFood(isFood);
                     slot.setResource(isResource);
+                    slot.setHealth(itemHealth);
                     inventory.add(slot);
                 }
                 player.setInventory(inventory);
@@ -102,11 +104,13 @@ public class SaveGame {
                         int element = Integer.parseInt(tokens[2]);
                         boolean collision = Boolean.parseBoolean(tokens[3]);
                         int permanent = Integer.parseInt(tokens[4]);
+                        float brightnessLevel = Float.parseFloat(tokens[5]);
                         mapArray[i][j].setPosX(posX);
                         mapArray[i][j].setPosY(posY);
                         mapArray[i][j].setElement(element);
                         mapArray[i][j].setCollision(collision);
                         mapArray[i][j].setPermanent(permanent);
+                        mapArray[i][j].brightnessLevel = brightnessLevel;
                         //mapArray[i][j] = new Block(posX, posY, element, collision, permanent);
                     }
                 }
