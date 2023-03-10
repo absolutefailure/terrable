@@ -48,7 +48,7 @@ public class Map {
     private TextureRegion[][] rainTextureRegions;
     private ArrayList<Raindrop> rainDropList = new ArrayList<>();
     private int wind = 0;
-    private int dayTime = 10000;
+    private float dayTime = 10000;
 
     public Map(int sizeX, int sizeY) {
         this.mapSizeX = sizeX;
@@ -264,13 +264,13 @@ public class Map {
    public void Draw(Batch batch, Player player, int volume){
         Random rand = new Random();
 
-        float red = (clock/1000f)/3;
-        float green = (clock/1000f)/2;
-        float blue = clock/1000f;
+        float red = (clock/dayTime)/3;
+        float green = (clock/dayTime)/2;
+        float blue = clock/dayTime;
         ScreenUtils.clear(red, green, blue, 1);
         rainTimer--;
         if(!timeShift){
-            if(clock < 10000) {
+            if(clock < dayTime) {
                 clock++;
                 batch.draw(sunTexture, player.getX()-500, -(2500)+(clock)/2);
             } else {
