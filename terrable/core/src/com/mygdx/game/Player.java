@@ -58,6 +58,7 @@ public class Player {
     private Sound groundHitSound;
     private Sound leavesHitSound;
     private Sound blockBreakingSound;
+    private Sound weaponBreakingSound;
     private Sound doorOpenSound;
     private Sound doorCloseSound;
     private int soundEffect; // TEMPORARY
@@ -82,6 +83,7 @@ public class Player {
         groundHitSound = Gdx.audio.newSound(Gdx.files.internal("sounds/groundHitSound.mp3"));
         leavesHitSound = Gdx.audio.newSound(Gdx.files.internal("sounds/leavesHitSound.mp3"));
         blockBreakingSound = Gdx.audio.newSound(Gdx.files.internal("sounds/blockBreakingSound.mp3"));
+        weaponBreakingSound = Gdx.audio.newSound(Gdx.files.internal("sounds/weaponBreakingSound.mp3"));
         doorOpenSound = Gdx.audio.newSound(Gdx.files.internal("sounds/door-close.mp3"));
         doorCloseSound = Gdx.audio.newSound(Gdx.files.internal("sounds/door-open.mp3"));
 
@@ -307,10 +309,25 @@ public class Player {
                                                     mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - inventory.get(selectedSlot).getDamage());
                                                 } else if (mapArray[x][y].getMaxhealth() > 199 && mapArray[x][y].getMaxhealth() < 220 && inventory.get(selectedSlot).getDamage() > 4) {
                                                     mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - inventory.get(selectedSlot).getDamage());
+                                                    inventory.get(selectedSlot).setHealth(inventory.get(selectedSlot).getHealth() - 2);
+                                                    if(inventory.get(selectedSlot).getHealth() == 0) {
+                                                        inventory.get(selectedSlot).removeItem();
+                                                        weaponBreakingSound.play(volume / 200f);
+                                                    }
                                                 } else if (mapArray[x][y].getMaxhealth() > 221 && mapArray[x][y].getMaxhealth() < 251 && inventory.get(selectedSlot).getDamage() > 24) {
                                                     mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - inventory.get(selectedSlot).getDamage());
+                                                    inventory.get(selectedSlot).setHealth(inventory.get(selectedSlot).getHealth() - 25);
+                                                    if(inventory.get(selectedSlot).getHealth() == 0) {
+                                                        inventory.get(selectedSlot).removeItem();
+                                                        weaponBreakingSound.play(volume / 200f);
+                                                    }
                                                 } else if (mapArray[x][y].getMaxhealth() > 252 && inventory.get(selectedSlot).getDamage() > 49) {
                                                     mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - inventory.get(selectedSlot).getDamage());
+                                                    inventory.get(selectedSlot).setHealth(inventory.get(selectedSlot).getHealth() - 25);
+                                                    if(inventory.get(selectedSlot).getHealth() == 0) {
+                                                        inventory.get(selectedSlot).removeItem();
+                                                        weaponBreakingSound.play(volume / 200f);
+                                                    }
                                                 } else {
                                                     mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - 0);
                                                 }
@@ -545,6 +562,7 @@ public class Player {
                             inventory.get(i).setFood(inventory.get(j).isFood());
                             inventory.get(i).setResource(inventory.get(j).isResource());
                             inventory.get(i).setDamage(inventory.get(j).getDamage());
+                            inventory.get(i).setHealth(inventory.get(j).getHealth());
                             break;
                         }else if (inventory.get(i).getAmount() == 0) {
                             inventory.get(i).setAmount(inventory.get(j).getAmount());
@@ -553,6 +571,7 @@ public class Player {
                             inventory.get(i).setFood(inventory.get(j).isFood());
                             inventory.get(i).setResource(inventory.get(j).isResource());
                             inventory.get(i).setDamage(inventory.get(j).getDamage());
+                            inventory.get(i).setHealth(inventory.get(j).getHealth());
                             break;
                         } 
                     }
@@ -738,6 +757,7 @@ public class Player {
                                 && inventory.get(i).getAmount() + putAmount < INVENTORY_SLOT_MAX) {
                             inventory.get(i).setElement(inventory.get(grab).getElement());
                             inventory.get(i).setDamage(inventory.get(grab).getDamage());
+                            inventory.get(i).setHealth(inventory.get(grab).getHealth());
                             inventory.get(i).setResource(inventory.get(grab).isResource());
                             inventory.get(i).setFood(inventory.get(grab).isFood());
                             inventory.get(i).setWeapon(inventory.get(grab).isWeapon());
@@ -796,6 +816,7 @@ public class Player {
                                 inventory.get(i).setFood(newItem.isFood());
                                 inventory.get(i).setResource(newItem.isResource());
                                 inventory.get(i).setDamage(newItem.getDamage());
+                                inventory.get(i).setHealth(newItem.getHealth());
                                 craftingSuccess = true;
                                 break;
                             } else if (!newItem.isWeapon() && inventory.get(i).getElement() == newItem.getElement()
@@ -805,6 +826,7 @@ public class Player {
                                 inventory.get(i).setFood(newItem.isFood());
                                 inventory.get(i).setResource(newItem.isResource());
                                 inventory.get(i).setDamage(newItem.getDamage());
+                                inventory.get(i).setHealth(newItem.getHealth());
                                 craftingSuccess = true;
                                 break;
                             }

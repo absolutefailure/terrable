@@ -7,6 +7,7 @@ public class InventorySlot implements Serializable {
     private int element;
     private int amount;
     private int damage = 3;
+    private int health;
 
     private boolean isWeapon, isFood, isResource;
 
@@ -32,6 +33,8 @@ public class InventorySlot implements Serializable {
             isWeapon = false;
             isResource = false;
             element = 0;
+            damage = 3;
+            health = 0;
         }
     }
 
@@ -83,6 +86,14 @@ public class InventorySlot implements Serializable {
 
     public void setDamage(int damage) {
         this.damage = damage;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
     }
 
     public boolean isFood() {
