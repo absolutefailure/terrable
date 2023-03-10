@@ -232,6 +232,7 @@ public class Crafting {
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             item.setDamage(25);
+            item.setHealth(5000);
             return item;
         }
         // return null if resources are not correct
@@ -265,6 +266,7 @@ public class Crafting {
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             item.setDamage(10);
+            item.setHealth(250);
             return item;
         }
         // return null if resources are not correct
@@ -298,6 +300,7 @@ public class Crafting {
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             item.setDamage(50);
+            item.setHealth(15000);
             return item;
         }
         // return null if resources are not correct
@@ -331,6 +334,7 @@ public class Crafting {
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             item.setDamage(75);
+            item.setHealth(250000);
             return item;
         }
         // return null if resources are not correct
@@ -364,6 +368,7 @@ public class Crafting {
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             item.setDamage(25);
+            item.setHealth(2500);
             return item;
         }
         // return null if resources are not correct
@@ -397,6 +402,7 @@ public class Crafting {
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             item.setDamage(10);
+            item.setHealth(250);
             return item;
         }
         // return null if resources are not correct
@@ -430,6 +436,7 @@ public class Crafting {
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             item.setDamage(50);
+            item.setHealth(15000);
             return item;
         }
         // return null if resources are not correct
@@ -463,6 +470,7 @@ public class Crafting {
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             item.setDamage(75);
+            item.setHealth(250000);
             return item;
         }
         // return null if resources are not correct
