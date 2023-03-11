@@ -573,6 +573,9 @@ public class Map {
     public void setMapSizeY(int mapSizeY) {
         this.mapSizeY = mapSizeY;
     }
+    public void clearMap(){
+        mobs.clear();
+    }
 
 
     public void dispose(){
