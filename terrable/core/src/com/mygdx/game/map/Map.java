@@ -105,20 +105,25 @@ public class Map {
             for (int y = 0; y < mapSizeY; y++ ){
                 if ( y == height){
                     if (rand.nextInt(15) == 1 && x > 5 && x < mapSizeX-5){ // GENERATE TREE
-                        mapArray[x][y-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, WOOD, false, EMPTY);
-                        mapArray[x][y-2] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-2) * 25, WOOD, false, EMPTY);
-                        mapArray[x][y-3] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-3) * 25, LEAVES, false, EMPTY);
-                        mapArray[x][y-4] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, LEAVES, false, EMPTY);
-                        mapArray[x-1][y-3] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-3) * 25, LEAVES,  false, EMPTY);
-                        mapArray[x+1][y-3] = new Block((-mapSizeX  * 25 / 2) + (x+1) * 25,(mapSizeY  * 25/ 2) - (y-3) * 25, LEAVES, false, EMPTY);
-                        mapArray[x-1][y-4] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, LEAVES, false, EMPTY);
-                        mapArray[x+1][y-4] = new Block((-mapSizeX  * 25 / 2) + (x+1) * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, LEAVES, false, EMPTY);
-                        mapArray[x-2][y-4] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, LEAVES, false, EMPTY);
-                        mapArray[x+2][y-4] = new Block((-mapSizeX  * 25 / 2) + (x+2) * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, LEAVES, false, EMPTY);
-                        mapArray[x][y-5] = new Block((-mapSizeX  * 25 / 2) + (x) * 25,(mapSizeY  * 25/ 2) - (y-5) * 25, LEAVES, false, EMPTY);
-                        mapArray[x-1][y-5] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-5) * 25, LEAVES, false, EMPTY);
-                        mapArray[x+1][y-5] = new Block((-mapSizeX  * 25 / 2) + (x+1) * 25,(mapSizeY  * 25/ 2) - (y-5) * 25, LEAVES, false, EMPTY);
+                        int treeHeight = rand.nextInt(5) + 3;
+                        for (int t = 1; t < treeHeight; t++){
+                            mapArray[x][y-t] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-t) * 25, WOOD, false, EMPTY);
+                        }
+                        
+                        mapArray[x][y-treeHeight] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-treeHeight) * 25, LEAVES, false, EMPTY);
+                        mapArray[x][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY);
+                        mapArray[x-1][y-treeHeight] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight) * 25, LEAVES,  false, EMPTY);
+                        mapArray[x+1][y-treeHeight] = new Block((-mapSizeX  * 25 / 2) + (x+1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight) * 25, LEAVES, false, EMPTY);
+                        mapArray[x-1][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY);
+                        mapArray[x+1][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + (x+1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY);
+                        mapArray[x-2][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY);
+                        mapArray[x+2][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + (x+2) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY);
+                        mapArray[x][y-treeHeight-2] = new Block((-mapSizeX  * 25 / 2) + (x) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-2) * 25, LEAVES, false, EMPTY);
+                        mapArray[x-1][y-treeHeight-2] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-2) * 25, LEAVES, false, EMPTY);
+                        mapArray[x+1][y-treeHeight-2] = new Block((-mapSizeX  * 25 / 2) + (x+1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-2) * 25, LEAVES, false, EMPTY);
+
                         mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true, EMPTY);
+                        
                     }else{
                         if(rand.nextInt(100) < 60) {
                             mapArray[x][y-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, TALLGRASS, false, EMPTY);    
