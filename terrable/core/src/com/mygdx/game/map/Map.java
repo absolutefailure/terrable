@@ -268,11 +268,10 @@ public class Map {
    // DRAW MAP
    public void Draw(Batch batch, Player player, int volume){
         Random rand = new Random();
-        float dayBrightness = 1000f/clock;
-        if(dayBrightness >= 1) {
-            dayBrightness = 1;
+        float dayBrightness = 800f/clock;
+        if(dayBrightness >= 0.7f) {
+            dayBrightness = 0.7f;
         }
-        System.out.println(dayBrightness);
         float red = (clock/dayTime)/3;
         float green = (clock/dayTime)/2;
         float blue = clock/dayTime;
