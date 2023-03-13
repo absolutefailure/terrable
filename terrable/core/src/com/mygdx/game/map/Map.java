@@ -28,7 +28,7 @@ public class Map {
     private Texture chickenTexture;
     private Texture slimeTexture;
     private TextureRegion[][] blockTextures;
-    ArrayList<Mob> mobs = new ArrayList<>();
+    public static ArrayList<Mob> mobs = new ArrayList<>();
     private Texture sunTexture;
     // private Texture moonTexture;
     private int mapSizeX; // map size in blocks
@@ -577,6 +577,9 @@ public class Map {
         mobs.clear();
     }
 
+    public static ArrayList<Mob> getMobs() {
+        return mobs;
+    }
 
     public void dispose(){
         mapArray = null;

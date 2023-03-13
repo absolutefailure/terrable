@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.mygdx.game.Player;
 import com.mygdx.game.map.Block;
 import com.mygdx.game.map.Map;
+import com.mygdx.game.map.elements;
 
 public class Chicken extends Mob {
     private Texture mobTexture;
@@ -16,6 +17,9 @@ public class Chicken extends Mob {
     private int mobSizeY;
     private float gravity;
     private float acceleration;
+    private int mobHealth;
+    private String type;
+    private int element;
 
     public Chicken(float x, float y, Texture texture) {
         super();
@@ -28,6 +32,10 @@ public class Chicken extends Mob {
         mobSizeY = 40;
 
         gravity = 0;
+        mobHealth = 5;
+        type = "friendly";
+
+        element = elements.FEATHER;
         
     }
 
@@ -120,6 +128,30 @@ public class Chicken extends Mob {
 
     public void setMobPosY(float mobPosY) {
         this.mobPosY = mobPosY;
+    }
+
+    public int getMobHealth() {
+        return mobHealth;
+    }
+
+    public void setMobHealth(int mobHealth) {
+        this.mobHealth = mobHealth;
+    }
+
+    public int getMobSizeX() {
+        return mobSizeX;
+    }
+
+    public int getMobSizeY() {
+        return mobSizeY;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getElement() {
+        return element;
     }
     
 }

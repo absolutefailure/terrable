@@ -13,11 +13,13 @@ import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.camera.HudCamera;
 import com.mygdx.game.map.Block;
 import com.mygdx.game.map.Map;
+import com.mygdx.game.mobs.Mob;
 
 import static com.mygdx.game.map.elements.*;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Date;
 
 public class Player {
     private Vector2 mouseInWorld2D = new Vector2();
@@ -65,12 +67,15 @@ public class Player {
     private int soundEffect; // TEMPORARY
 
     private int playerHealth;
+    private long lastHitTime;
 
     private int grab = -1;
     private boolean isGrabbed;
     private int selectedSlot = 0;
     private boolean isInventoryOpen = false;
     private ArrayList<Integer> usedSlots = new ArrayList<>();
+
+    private ArrayList<Mob> mobs;
 
     private ArrayList<InventorySlot> inventory;
     private ArrayList<InventorySlot> droppedItems;
@@ -96,6 +101,7 @@ public class Player {
         onGroundTimer = 0;
 
         soundTimer = 0;
+        lastHitTime = 0;
 
         playerTexture = new Texture("jusju.png");
         outlineTexture = new Texture("outline.png");
@@ -114,6 +120,8 @@ public class Player {
             inventory.add(new InventorySlot());
         }
         droppedItems = new ArrayList<>();
+
+        mobs = Map.getMobs();
 
         gravity = 0;
         acceleration = 0;
@@ -480,6 +488,84 @@ public class Player {
                 }
             }
         }
+
+        // check if mouse is inside mob
+        for(int i = 0; i < mobs.size(); i++) {
+            Mob thisMob = mobs.get(i);
+            if (!isInventoryOpen &&
+            mouseInWorld2D.x >= thisMob.getMobPosX() &&
+            mouseInWorld2D.x <= thisMob.getMobPosX() + thisMob.getMobSizeX() &&
+            mouseInWorld2D.y >= thisMob.getMobPosY() &&
+            mouseInWorld2D.y <= thisMob.getMobPosY() + thisMob.getMobSizeY()) {
+                
+                // distance to mob
+                float distance = (float) Math.sqrt((mouseInWorld2D.y - playerPosY) * (mouseInWorld2D.y - playerPosY) + 
+                (mouseInWorld2D.x - playerPosX) * (mouseInWorld2D.x - playerPosX));
+                
+                if (distance <= 50) {
+                    if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+                        // add hit effect
+                        if (thisMob.getMobHealth() - inventory.get(selectedSlot).getDamage() <= 0) {
+                            
+                            /* Add drop from mob to players inventory
+                            int slotIndex = -1;
+                            for (int a = 0; a < 36; a++) {
+                                if (inventory.get(a).getElement() == thisMob.getElement()
+                                        && inventory.get(a).getAmount() < INVENTORY_SLOT_MAX) {
+                                    slotIndex = a;
+                                    break;
+                                }
+                            }
+                            if (slotIndex > 0) {
+                                inventory.get(slotIndex).addItem();
+                            } else {
+                                for (int a = 0; a < 36; a++) {
+                                    if (inventory.get(a).getAmount() == 0) {
+                                        inventory.get(a).addItem();
+                                        inventory.get(a).setElement(thisMob.getElement());
+                                        inventory.get(a).setResource(true);
+                                        break;
+                                    } else if (inventory.get(a).getElement() == thisMob.getElement()
+                                            && inventory.get(a).getAmount() < INVENTORY_SLOT_MAX) {
+                                        inventory.get(a).addItem();
+                                        break;
+                                    }
+                                }
+                            }
+                            */
+
+                            mobs.remove(i);
+                        } else {
+                            thisMob.setMobHealth(thisMob.getMobHealth() - inventory.get(selectedSlot).getDamage());
+                        }
+                    }
+                }
+            }
+        }
+
+        // Hit damage to player when mob is close
+        if (mobs.size() > 0) {
+            for(int i = 0; i < mobs.size(); i++) {
+                Mob thisMob = mobs.get(i);
+                long currentTime = new Date().getTime();
+                long timeSinceLastHit = (currentTime - lastHitTime);
+                if (thisMob.getType() == "harmful") {
+                    if(20 >= (Math.sqrt((thisMob.getMobPosX() - getX()) * (thisMob.getMobPosX() - getX()) + (thisMob.getMobPosY() - getY()) * (thisMob.getMobPosY() - getY()))) && timeSinceLastHit > 2000) {
+                        // Add knockback left and right
+                        if (thisMob.getMobPosX() < getX()){
+                            int healthWhenHit = getPlayerHealth();
+                            setPlayerHealth(healthWhenHit-3);
+                            lastHitTime = currentTime;
+                        }else if (thisMob.getMobPosX() > getX()){
+                            int healthWhenHit = getPlayerHealth();
+                            setPlayerHealth(healthWhenHit-3);
+                            lastHitTime = currentTime;
+                        }
+                    }
+                }
+            }
+        }
+
         if (soundTimer == 20) {
             if (soundEffect == GRASS || soundEffect == GROUND) {
                 groundHitSound.play(volume/200f, 0.8f, 0);

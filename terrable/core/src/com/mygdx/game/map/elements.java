@@ -31,5 +31,7 @@ public final class elements {
     public static final int DOOR2 = 26;
     public static final int STICK = 27;
     public static final int TORCH = 28;
+    public static final int FEATHER = 29;
+    public static final int SLIMEBALL = 30;
 
 }
