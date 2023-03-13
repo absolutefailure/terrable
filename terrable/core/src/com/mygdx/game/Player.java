@@ -320,21 +320,40 @@ public class Player {
                                                 }
 
                                                 soundEffect = mapArray[x][y].getElement();
+
                                                 //damage to block determined here
+                                                int damage = inventory.get(selectedSlot).getDamage();
+                                                //damage modifiers for pickaxes
+                                                if ((inventory.get(selectedSlot)).getElement() == WOODPICKAXE || (inventory.get(selectedSlot)).getElement() == STONEPICKAXE ||
+                                                 (inventory.get(selectedSlot)).getElement() == IRONPICKAXE || (inventory.get(selectedSlot)).getElement() == DIAMONDPICKAXE ) {
+                                                    if (mapArray[x][y].getElement() == STONE || mapArray[x][y].getElement() == IRON || mapArray[x][y].getElement() == COAL || mapArray[x][y].getElement() == DIAMOND) {
+                                                        damage *= 2;
+                                                    }
+                                                }
+                                                //damage modifiers for axes
+                                                if ((inventory.get(selectedSlot)).getElement() == WOODAXE || (inventory.get(selectedSlot)).getElement() == STONEAXE ||
+                                                 (inventory.get(selectedSlot)).getElement() == IRONAXE || (inventory.get(selectedSlot)).getElement() == DIAMONDAXE ) {
+                                                    if (mapArray[x][y].getElement() == WOOD || mapArray[x][y].getElement() == PLANKS) {
+                                                        damage *= 3;
+                                                    }
+                                                }
+
+                                                //block damage calculated based on block health and weapon damage
                                                 if (mapArray[x][y].getMaxhealth() >= 0 && mapArray[x][y].getMaxhealth() < 101) {
-                                                    mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - inventory.get(selectedSlot).getDamage());
+                                                    mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - damage);
                                                 } else if (mapArray[x][y].getMaxhealth() > 199 && mapArray[x][y].getMaxhealth() < 220 && inventory.get(selectedSlot).getDamage() > 4) {
-                                                    mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - inventory.get(selectedSlot).getDamage());
+                                                    mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - damage);
                                                 } else if (mapArray[x][y].getMaxhealth() > 221 && mapArray[x][y].getMaxhealth() < 251 && inventory.get(selectedSlot).getDamage() > 24) {
-                                                    mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - inventory.get(selectedSlot).getDamage());
+                                                    mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - damage);
                                                 } else if (mapArray[x][y].getMaxhealth() > 252 && inventory.get(selectedSlot).getDamage() > 49) {
-                                                    mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - inventory.get(selectedSlot).getDamage());
+                                                    mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - damage);
                                                 } else {
                                                     mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - 0);
                                                 }
 
                                                 soundTimer += 1;
                                             } else {
+                                                // hitting blocks damages weapon and ultimately breaks them
                                                 if (inventory.get(selectedSlot).isWeapon()){
                                                     inventory.get(selectedSlot).setHealth(inventory.get(selectedSlot).getHealth()-1);
                                                     if(inventory.get(selectedSlot).getHealth() == 0) {
