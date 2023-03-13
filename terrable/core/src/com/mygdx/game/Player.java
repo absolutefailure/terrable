@@ -18,6 +18,7 @@ import com.mygdx.game.mobs.Mob;
 import static com.mygdx.game.map.elements.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Player {
     private Vector2 mouseInWorld2D = new Vector2();
@@ -64,6 +65,7 @@ public class Player {
     private int soundEffect; // TEMPORARY
 
     private int playerHealth;
+    private long lastHitTime;
 
     private int grab = -1;
     private boolean isGrabbed;
@@ -95,6 +97,7 @@ public class Player {
         onGroundTimer = 0;
 
         soundTimer = 0;
+        lastHitTime = 0;
 
         playerTexture = new Texture("jusju.png");
         outlineTexture = new Texture("outline.png");
@@ -492,12 +495,62 @@ public class Player {
                 
                 if (distance <= 50) {
                     if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-                        // change damage to scale with weapon + add hit effect
-                        // indicator when mob is close enough?
-                        if (thisMob.getMobHealth() - 5 == 0) {
+                        // add hit effect
+                        if (thisMob.getMobHealth() - inventory.get(selectedSlot).getDamage() <= 0) {
+                            
+                            /* Add drop from mob to players inventory
+                            int slotIndex = -1;
+                            for (int a = 0; a < 36; a++) {
+                                if (inventory.get(a).getElement() == thisMob.getElement()
+                                        && inventory.get(a).getAmount() < INVENTORY_SLOT_MAX) {
+                                    slotIndex = a;
+                                    break;
+                                }
+                            }
+                            if (slotIndex > 0) {
+                                inventory.get(slotIndex).addItem();
+                            } else {
+                                for (int a = 0; a < 36; a++) {
+                                    if (inventory.get(a).getAmount() == 0) {
+                                        inventory.get(a).addItem();
+                                        inventory.get(a).setElement(thisMob.getElement());
+                                        inventory.get(a).setResource(true);
+                                        break;
+                                    } else if (inventory.get(a).getElement() == thisMob.getElement()
+                                            && inventory.get(a).getAmount() < INVENTORY_SLOT_MAX) {
+                                        inventory.get(a).addItem();
+                                        break;
+                                    }
+                                }
+                            }
+                            */
+
                             mobs.remove(i);
                         } else {
-                            thisMob.setMobHealth(thisMob.getMobHealth() - 5);
+                            thisMob.setMobHealth(thisMob.getMobHealth() - inventory.get(selectedSlot).getDamage());
+                        }
+                    }
+                }
+            }
+        }
+
+        // Hit damage to player when mob is close
+        if (mobs.size() > 0) {
+            for(int i = 0; i < mobs.size(); i++) {
+                Mob thisMob = mobs.get(i);
+                long currentTime = new Date().getTime();
+                long timeSinceLastHit = (currentTime - lastHitTime);
+                if (thisMob.getType() == "harmful") {
+                    if(20 >= (Math.sqrt((thisMob.getMobPosX() - getX()) * (thisMob.getMobPosX() - getX()) + (thisMob.getMobPosY() - getY()) * (thisMob.getMobPosY() - getY()))) && timeSinceLastHit > 2000) {
+                        // Add knockback left and right
+                        if (thisMob.getMobPosX() < getX()){
+                            int healthWhenHit = getPlayerHealth();
+                            setPlayerHealth(healthWhenHit-3);
+                            lastHitTime = currentTime;
+                        }else if (thisMob.getMobPosX() > getX()){
+                            int healthWhenHit = getPlayerHealth();
+                            setPlayerHealth(healthWhenHit-3);
+                            lastHitTime = currentTime;
                         }
                     }
                 }

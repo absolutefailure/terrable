@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.mygdx.game.Player;
 import com.mygdx.game.map.Block;
 import com.mygdx.game.map.Map;
+import com.mygdx.game.map.elements;
 
 public class Mob {
     private Texture mobTexture;
@@ -17,6 +18,8 @@ public class Mob {
     private float acceleration;
     private int soundTimer;
     private int mobHealth;
+    private String type;
+    private int element;
 
     // private Sound mobScreamSound;
   
@@ -33,6 +36,8 @@ public class Mob {
 
         gravity = 0;
         mobHealth = 10;
+        type = "harmful";
+        element = elements.FEATHER;
         
     }
 
@@ -150,6 +155,14 @@ public class Mob {
 
     public int getMobSizeY() {
         return mobSizeY;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getElement() {
+        return element;
     }
     
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.mygdx.game.Player;
 import com.mygdx.game.map.Block;
 import com.mygdx.game.map.Map;
+import com.mygdx.game.map.elements;
 
 public class Slime extends Mob{
     private Texture mobTexture;
@@ -18,6 +19,8 @@ public class Slime extends Mob{
     private Sound slimeSound;
     private int jumpTimer;
     private int mobHealth;
+    private String type;
+    private int element;
 
     public Slime(float x, float y, Texture texture, Sound sound) {
         super();
@@ -33,6 +36,8 @@ public class Slime extends Mob{
 
         gravity = 0;
         mobHealth = 10;
+        type = "harmful";
+        element = elements.SLIMEBALL;
         
     }
 
@@ -136,6 +141,14 @@ public class Slime extends Mob{
 
     public int getMobSizeY() {
         return mobSizeY;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getElement() {
+        return element;
     }
     
 }

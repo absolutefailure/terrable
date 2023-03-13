@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.mygdx.game.Player;
 import com.mygdx.game.map.Block;
 import com.mygdx.game.map.Map;
+import com.mygdx.game.map.elements;
 
 public class Bat extends Mob{
     private Texture mobTexture;
@@ -19,6 +20,8 @@ public class Bat extends Mob{
     private float acceleration;
     private int soundTimer;
     private int mobHealth;
+    private String type;
+    private int element;
 
     private Random rand;
     private Sound batScreamSound;
@@ -37,6 +40,8 @@ public class Bat extends Mob{
 
         gravity = 0;
         mobHealth = 5;
+        type = "harmful";
+        element = elements.FEATHER;
     
         rand = new Random();
     }
@@ -151,6 +156,14 @@ public class Bat extends Mob{
 
     public int getMobSizeY() {
         return mobSizeY;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getElement() {
+        return element;
     }
     
 }
