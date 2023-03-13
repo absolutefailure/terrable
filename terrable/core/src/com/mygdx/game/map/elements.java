@@ -33,5 +33,8 @@ public final class elements {
     public static final int TORCH = 28;
     public static final int FEATHER = 29;
     public static final int SLIMEBALL = 30;
+    public static final int STONEBACKGROUND = 31;
+    public static final int DIRTBACKGROUND = 32;
+
 
 }
