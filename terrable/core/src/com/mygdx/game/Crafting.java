@@ -104,18 +104,18 @@ public class Crafting {
 
     private static InventorySlot craftLadder(List<InventorySlot> resources) {
         // check slots for correct resources
-        if (resources.get(0).getElement() == PLANKS
+        if (resources.get(0).getElement() == STICK
                 && resources.get(1).getElement() == EMPTY
-                && resources.get(2).getElement() == PLANKS
-                && resources.get(3).getElement() == PLANKS
-                && resources.get(4).getElement() == PLANKS
-                && resources.get(5).getElement() == PLANKS
-                && resources.get(6).getElement() == PLANKS
+                && resources.get(2).getElement() == STICK
+                && resources.get(3).getElement() == STICK
+                && resources.get(4).getElement() == STICK
+                && resources.get(5).getElement() == STICK
+                && resources.get(6).getElement() == STICK
                 && resources.get(7).getElement() == EMPTY
-                && resources.get(8).getElement() == PLANKS) {
+                && resources.get(8).getElement() == STICK) {
             int amount = 32;
             for (InventorySlot slot : resources) {
-                if (slot.getElement() == PLANKS && amount > slot.getAmount()) {
+                if (slot.getElement() == STICK && amount > slot.getAmount()) {
                     amount = slot.getAmount();
                 }
             }
@@ -208,10 +208,10 @@ public class Crafting {
     private static InventorySlot craftStonePickaxe(List<InventorySlot> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == EMPTY
-                && resources.get(1).getElement() == PLANKS
+                && resources.get(1).getElement() == STICK
                 && resources.get(2).getElement() == EMPTY
                 && resources.get(3).getElement() == EMPTY
-                && resources.get(4).getElement() == PLANKS
+                && resources.get(4).getElement() == STICK
                 && resources.get(5).getElement() == EMPTY
                 && resources.get(6).getElement() == STONE
                 && resources.get(7).getElement() == STONE
@@ -219,7 +219,7 @@ public class Crafting {
             int amount = 1;
            
             for (InventorySlot slot : resources) {
-                    if ((slot.getElement() == PLANKS || slot.getElement() == STONE) && amount > slot.getAmount()) {
+                    if ((slot.getElement() == STICK || slot.getElement() == STONE) && amount > slot.getAmount()) {
                         amount = slot.getAmount();
                     }
                 }
@@ -232,6 +232,7 @@ public class Crafting {
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             item.setDamage(25);
+            item.setHealth(50);
             return item;
         }
         // return null if resources are not correct
@@ -241,10 +242,10 @@ public class Crafting {
     private static InventorySlot craftWoodPickaxe(List<InventorySlot> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == EMPTY
-                && resources.get(1).getElement() == PLANKS
+                && resources.get(1).getElement() == STICK
                 && resources.get(2).getElement() == EMPTY
                 && resources.get(3).getElement() == EMPTY
-                && resources.get(4).getElement() == PLANKS
+                && resources.get(4).getElement() == STICK
                 && resources.get(5).getElement() == EMPTY
                 && resources.get(6).getElement() == WOOD
                 && resources.get(7).getElement() == WOOD
@@ -252,7 +253,7 @@ public class Crafting {
             int amount = 1;
            
             for (InventorySlot slot : resources) {
-                    if ((slot.getElement() == PLANKS || slot.getElement() == WOOD) && amount > slot.getAmount()) {
+                    if ((slot.getElement() == STICK || slot.getElement() == WOOD) && amount > slot.getAmount()) {
                         amount = slot.getAmount();
                     }
                 }
@@ -265,6 +266,7 @@ public class Crafting {
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             item.setDamage(10);
+            item.setHealth(25);
             return item;
         }
         // return null if resources are not correct
@@ -274,10 +276,10 @@ public class Crafting {
     private static InventorySlot craftIronPickaxe(List<InventorySlot> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == EMPTY
-                && resources.get(1).getElement() == PLANKS
+                && resources.get(1).getElement() == STICK
                 && resources.get(2).getElement() == EMPTY
                 && resources.get(3).getElement() == EMPTY
-                && resources.get(4).getElement() == PLANKS
+                && resources.get(4).getElement() == STICK
                 && resources.get(5).getElement() == EMPTY
                 && resources.get(6).getElement() == IRONINGOT
                 && resources.get(7).getElement() == IRONINGOT
@@ -285,7 +287,7 @@ public class Crafting {
             int amount = 1;
            
             for (InventorySlot slot : resources) {
-                    if ((slot.getElement() == PLANKS || slot.getElement() == IRONINGOT) && amount > slot.getAmount()) {
+                    if ((slot.getElement() == STICK || slot.getElement() == IRONINGOT) && amount > slot.getAmount()) {
                         amount = slot.getAmount();
                     }
                 }
@@ -298,6 +300,7 @@ public class Crafting {
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             item.setDamage(50);
+            item.setHealth(150);
             return item;
         }
         // return null if resources are not correct
@@ -307,10 +310,10 @@ public class Crafting {
     private static InventorySlot craftDiamondPickaxe(List<InventorySlot> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == EMPTY
-                && resources.get(1).getElement() == PLANKS
+                && resources.get(1).getElement() == STICK
                 && resources.get(2).getElement() == EMPTY
                 && resources.get(3).getElement() == EMPTY
-                && resources.get(4).getElement() == PLANKS
+                && resources.get(4).getElement() == STICK
                 && resources.get(5).getElement() == EMPTY
                 && resources.get(6).getElement() == DIAMONDITEM
                 && resources.get(7).getElement() == DIAMONDITEM
@@ -318,7 +321,7 @@ public class Crafting {
             int amount = 1;
            
             for (InventorySlot slot : resources) {
-                    if ((slot.getElement() == PLANKS || slot.getElement() == DIAMONDITEM) && amount > slot.getAmount()) {
+                    if ((slot.getElement() == STICK || slot.getElement() == DIAMONDITEM) && amount > slot.getAmount()) {
                         amount = slot.getAmount();
                     }
                 }
@@ -331,6 +334,7 @@ public class Crafting {
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             item.setDamage(75);
+            item.setHealth(300);
             return item;
         }
         // return null if resources are not correct
@@ -340,10 +344,10 @@ public class Crafting {
     private static InventorySlot craftStoneAxe(List<InventorySlot> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == EMPTY
-                && resources.get(1).getElement() == PLANKS
+                && resources.get(1).getElement() == STICK
                 && resources.get(2).getElement() == EMPTY
                 && resources.get(3).getElement() == EMPTY
-                && resources.get(4).getElement() == PLANKS
+                && resources.get(4).getElement() == STICK
                 && resources.get(5).getElement() == STONE
                 && resources.get(6).getElement() == EMPTY
                 && resources.get(7).getElement() == STONE
@@ -351,7 +355,7 @@ public class Crafting {
             int amount = 1;
            
             for (InventorySlot slot : resources) {
-                    if ((slot.getElement() == PLANKS || slot.getElement() == STONE) && amount > slot.getAmount()) {
+                    if ((slot.getElement() == STICK || slot.getElement() == STONE) && amount > slot.getAmount()) {
                         amount = slot.getAmount();
                     }
                 }
@@ -364,6 +368,7 @@ public class Crafting {
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             item.setDamage(25);
+            item.setHealth(50);
             return item;
         }
         // return null if resources are not correct
@@ -373,10 +378,10 @@ public class Crafting {
     private static InventorySlot craftWoodAxe(List<InventorySlot> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == EMPTY
-                && resources.get(1).getElement() == PLANKS
+                && resources.get(1).getElement() == STICK
                 && resources.get(2).getElement() == EMPTY
                 && resources.get(3).getElement() == EMPTY
-                && resources.get(4).getElement() == PLANKS
+                && resources.get(4).getElement() == STICK
                 && resources.get(5).getElement() == WOOD
                 && resources.get(6).getElement() == EMPTY
                 && resources.get(7).getElement() == WOOD
@@ -384,7 +389,7 @@ public class Crafting {
             int amount = 1;
            
             for (InventorySlot slot : resources) {
-                    if ((slot.getElement() == PLANKS || slot.getElement() == WOOD) && amount > slot.getAmount()) {
+                    if ((slot.getElement() == STICK || slot.getElement() == WOOD) && amount > slot.getAmount()) {
                         amount = slot.getAmount();
                     }
                 }
@@ -397,6 +402,7 @@ public class Crafting {
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             item.setDamage(10);
+            item.setHealth(25);
             return item;
         }
         // return null if resources are not correct
@@ -406,10 +412,10 @@ public class Crafting {
     private static InventorySlot craftIronAxe(List<InventorySlot> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == EMPTY
-                && resources.get(1).getElement() == PLANKS
+                && resources.get(1).getElement() == STICK
                 && resources.get(2).getElement() == EMPTY
                 && resources.get(3).getElement() == EMPTY
-                && resources.get(4).getElement() == PLANKS
+                && resources.get(4).getElement() == STICK
                 && resources.get(5).getElement() == IRONINGOT
                 && resources.get(6).getElement() == EMPTY
                 && resources.get(7).getElement() == IRONINGOT
@@ -417,7 +423,7 @@ public class Crafting {
             int amount = 1;
            
             for (InventorySlot slot : resources) {
-                    if ((slot.getElement() == PLANKS || slot.getElement() == IRONINGOT) && amount > slot.getAmount()) {
+                    if ((slot.getElement() == STICK || slot.getElement() == IRONINGOT) && amount > slot.getAmount()) {
                         amount = slot.getAmount();
                     }
                 }
@@ -430,6 +436,7 @@ public class Crafting {
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             item.setDamage(50);
+            item.setHealth(150);
             return item;
         }
         // return null if resources are not correct
@@ -439,10 +446,10 @@ public class Crafting {
     private static InventorySlot craftDiamondAxe(List<InventorySlot> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == EMPTY
-                && resources.get(1).getElement() == PLANKS
+                && resources.get(1).getElement() == STICK
                 && resources.get(2).getElement() == EMPTY
                 && resources.get(3).getElement() == EMPTY
-                && resources.get(4).getElement() == PLANKS
+                && resources.get(4).getElement() == STICK
                 && resources.get(5).getElement() == DIAMONDITEM
                 && resources.get(6).getElement() == EMPTY
                 && resources.get(7).getElement() == DIAMONDITEM
@@ -450,7 +457,7 @@ public class Crafting {
             int amount = 1;
            
             for (InventorySlot slot : resources) {
-                    if ((slot.getElement() == PLANKS || slot.getElement() == DIAMONDITEM) && amount > slot.getAmount()) {
+                    if ((slot.getElement() == STICK || slot.getElement() == DIAMONDITEM) && amount > slot.getAmount()) {
                         amount = slot.getAmount();
                     }
                 }
@@ -463,6 +470,7 @@ public class Crafting {
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             item.setDamage(75);
+            item.setHealth(300);
             return item;
         }
         // return null if resources are not correct
@@ -493,6 +501,7 @@ public class Crafting {
             InventorySlot item = new InventorySlot();
             item.setElement(IRONINGOT);
             item.setAmount(amount);
+            item.setResource(true);
             item.setRemoveAmount(amount);
             return item;
         }
@@ -561,6 +570,7 @@ public class Crafting {
             InventorySlot item = new InventorySlot();
             item.setElement(STICK);
             item.setAmount(amount);
+            item.setResource(true);
             item.setRemoveAmount(amount / 4);
             return item;
         }

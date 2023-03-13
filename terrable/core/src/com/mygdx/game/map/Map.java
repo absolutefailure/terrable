@@ -29,7 +29,8 @@ public class Map {
     private Texture slimeTexture;
     private TextureRegion[][] blockTextures;
     public static ArrayList<Mob> mobs = new ArrayList<>();
-
+    private Texture sunTexture;
+    // private Texture moonTexture;
     private int mapSizeX; // map size in blocks
     private int mapSizeY; // map size in blocks
 
@@ -47,6 +48,7 @@ public class Map {
     private TextureRegion[][] rainTextureRegions;
     private ArrayList<Raindrop> rainDropList = new ArrayList<>();
     private int wind = 0;
+    private float dayTime = 10000;
 
     public Map(int sizeX, int sizeY) {
         this.mapSizeX = sizeX;
@@ -57,7 +59,8 @@ public class Map {
         batTexture = new Texture("bat.png");
         chickenTexture = new Texture("chicken.png");
         slimeTexture = new Texture("slime.png");
-
+        sunTexture = new Texture("sun.png");
+        // moonTexture = new Texture("moon.png");
         mobSpawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/moaiSpawnSound.mp3"));
         batSpawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/batSpawnSound.mp3"));
 
@@ -260,20 +263,22 @@ public class Map {
    // DRAW MAP
    public void Draw(Batch batch, Player player, int volume){
         Random rand = new Random();
-        float red = (clock/1000f)/3;
-        float green = (clock/1000f)/2;
-        float blue = clock/1000f;
-        System.out.println(clock);
+
+        float red = (clock/dayTime)/3;
+        float green = (clock/dayTime)/2;
+        float blue = clock/dayTime;
         ScreenUtils.clear(red, green, blue, 1);
         rainTimer--;
         if(!timeShift){
-            if(clock < 1000) {
+            if(clock < dayTime) {
                 clock++;
+                batch.draw(sunTexture, player.getX()-500, -(2500)+(clock)/2);
             } else {
                 timeShift = true;
             }
         } else {
             if(clock > 0) {
+                batch.draw(sunTexture, player.getX()-500, -(2500)+(dayTime-(dayTime-clock))/2);
                 clock--;
             } else {
                 timeShift = false;
@@ -384,31 +389,67 @@ public class Map {
         for (Mob mob: mobs){ 
             mob.Update(this, batch, player, volume);
         }
+        
+        
+        
+         // mob spawner
+     if(mobs.size() < 10 && rand.nextInt(500)<2) {
+        //int direction = rand.nextInt(2) * 2 - 1;
+        int spawn = rand.nextInt(4) + 1;
+        int mobSpawnX = (int)(((player.getX())- 1500) / 25) +(mapSizeX/2);
+        int mobSpawnY = (int)(mapSizeY/2 - ((player.getY()+1500) / 25)) ;
+        ArrayList<Integer> noCollisionXList = new ArrayList<>();
+        ArrayList<Integer> noCollisionYList = new ArrayList<>();
 
-        // mob spawner
-        if(mobs.size() < 10 && rand.nextInt(500)<2) {
-            int direction = rand.nextInt(2) * 2 - 1;
-            int spawn = rand.nextInt(4) + 1;
-
-            switch (spawn) {
-                case 1:  
-                    mobs.add(new Mob(player.getX() + (1000 * direction), player.getY() + 200, kivimiesTexture, mobScreamSound));
-                    mobSpawnSound.play(volume/2000f);
-                    break;
-                case 2:  
-                    mobs.add(new Chicken(player.getX() + (1000 * direction), player.getY() + 200, chickenTexture));
-                    break;
-                case 3:  
-                    mobs.add(new Bat(player.getX() + (1000 * direction), player.getY() + 200, batTexture, batScreamSound));
-                    batSpawnSound.play(volume/200f);
-                    break;
-                case 4:  
-                    mobs.add(new Slime(player.getX() + (1000 * direction), player.getY() + 200, slimeTexture, slimeSound));
-                    break;
-                default:
-                    break;
+        
+        for (int x = mobSpawnX; x < mobSpawnX + 100; x++){
+            for (int y = mobSpawnY; y < mobSpawnY + 50; y++){
+                if (mapArray[x][y].isCollision() == false) {
+                    noCollisionXList.add(x);
+                    noCollisionYList.add(y);
+                    }
+                }
             }
-            
+
+        switch (spawn) { 
+            case 1:  
+                int a = rand.nextInt(noCollisionXList.size() -1);
+                int mobX = mapArray[noCollisionXList.get(a)][noCollisionYList.get(a)].getPosX();
+                int mobY = mapArray[noCollisionXList.get(a)][noCollisionYList.get(a)].getPosY();
+                mobs.add(new Mob( mobX, mobY, kivimiesTexture, mobScreamSound));
+                mobSpawnSound.play(volume/2000f);
+                noCollisionXList.clear();
+                noCollisionYList.clear();
+                break;
+            case 2:  
+                int b = rand.nextInt(noCollisionXList.size() -1);
+                int batX = mapArray[noCollisionXList.get(b)][noCollisionYList.get(b)].getPosX();
+                int batY = mapArray[noCollisionXList.get(b)][noCollisionYList.get(b)].getPosY();
+                mobs.add(new Bat(batX , batY, batTexture, batScreamSound));
+                batSpawnSound.play(volume/200f);
+                noCollisionXList.clear();
+                noCollisionYList.clear();
+                break;
+            case 3:  
+                int c = rand.nextInt(noCollisionXList.size() -1);
+                int chikX = mapArray[noCollisionXList.get(c)][noCollisionYList.get(c)].getPosX();
+                int chikY = mapArray[noCollisionXList.get(c)][noCollisionYList.get(c)].getPosY();
+                mobs.add(new Chicken(chikX , chikY, chickenTexture));
+                noCollisionXList.clear();
+                noCollisionYList.clear();
+                break;
+            case 4: 
+                int s = rand.nextInt(noCollisionXList.size() -1);
+                int slimX = mapArray[noCollisionXList.get(s)][noCollisionYList.get(s)].getPosX();
+                int slimY = mapArray[noCollisionXList.get(s)][noCollisionYList.get(s)].getPosY();
+                mobs.add(new Slime(slimX , slimY, slimeTexture, slimeSound));
+                noCollisionXList.clear();
+                noCollisionYList.clear();
+                break;
+            default:
+                break;
+        }
+        
         }
 
         // mob despawner
@@ -531,6 +572,9 @@ public class Map {
 
     public void setMapSizeY(int mapSizeY) {
         this.mapSizeY = mapSizeY;
+    }
+    public void clearMap(){
+        mobs.clear();
     }
 
     public static ArrayList<Mob> getMobs() {
