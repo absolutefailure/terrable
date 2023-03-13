@@ -7,6 +7,7 @@ It is created using the open-source game-development application framework: LibG
  >NOTE: *The game is currently in an unfinished state. Many of the textures featured below are temporary.*
 ![image](https://user-images.githubusercontent.com/103279302/224699376-50d345e6-2674-45a9-bf0f-254323ee3e7f.png)
 ![image](https://user-images.githubusercontent.com/103279302/224698919-522b14db-15c7-40ff-b375-bbc6d70142ea.png)
+![image](https://user-images.githubusercontent.com/103279302/224761155-9e40f9a6-c578-4476-bdad-ae3261421af5.png)
 
 # Current version:
 *Game version:* 0.1<br>
