@@ -488,7 +488,7 @@ public class Crafting {
                 && resources.get(6).getElement() == EMPTY
                 && resources.get(7).getElement() == EMPTY
                 && resources.get(8).getElement() == EMPTY) {
-            int amount = 1;
+            int amount = 32;
            
             for (InventorySlot slot : resources) {
                     if ((slot.getElement() == IRON) && amount > slot.getAmount()) {
@@ -589,7 +589,7 @@ public class Crafting {
                 && resources.get(6).getElement() == EMPTY
                 && resources.get(7).getElement() == EMPTY
                 && resources.get(8).getElement() == EMPTY) {
-            int amount = 1;
+            int amount = 32;
            
             for (InventorySlot slot : resources) {
                     if ((slot.getElement() == STICK || slot.getElement() == COALITEM) && amount > slot.getAmount()) {
