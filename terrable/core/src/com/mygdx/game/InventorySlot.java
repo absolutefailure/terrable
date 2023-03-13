@@ -188,10 +188,10 @@ public class InventorySlot {
         && y + 12 >= playerPosY - 30
         && y <= playerPosY + 49 + 30) {
             if (y + 12 > playerPosY-30 && y < playerPosY+25){
-                gravity++;
+                y += 5;
             }
             if (y < playerPosY+49+30 && y + 12 > playerPosY+25){
-                gravity--;
+                y -= 5;
             }
         }
 
@@ -217,10 +217,10 @@ public class InventorySlot {
         && y + 12 >= playerPosY - 30
         && y <= playerPosY + 49 + 30) {
             if (x + 12 > playerPosX-30 && x < playerPosX+10){
-                acceleration++;
+                x += 5;
             }
             if (x < playerPosX+20+30 && x + 12 > playerPosX+10){
-                acceleration--;
+                x -= 5;
             }
         }
         x += acceleration;
