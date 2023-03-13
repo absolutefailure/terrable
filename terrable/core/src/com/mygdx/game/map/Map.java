@@ -268,7 +268,11 @@ public class Map {
    // DRAW MAP
    public void Draw(Batch batch, Player player, int volume){
         Random rand = new Random();
-
+        float dayBrightness = 1000f/clock;
+        if(dayBrightness >= 1) {
+            dayBrightness = 1;
+        }
+        System.out.println(dayBrightness);
         float red = (clock/dayTime)/3;
         float green = (clock/dayTime)/2;
         float blue = clock/dayTime;
@@ -277,13 +281,13 @@ public class Map {
         if(!timeShift){
             if(clock < dayTime) {
                 clock++;
-                batch.draw(sunTexture, player.getX()-500, -(2500)+(clock)/2);
+                batch.draw(sunTexture, player.getX()-800, -(2500)+(clock)/2);
             } else {
                 timeShift = true;
             }
         } else {
             if(clock > 0) {
-                batch.draw(sunTexture, player.getX()-500, -(2500)+(dayTime-(dayTime-clock))/2);
+                batch.draw(sunTexture, player.getX()-800, -(2500)+(dayTime-(dayTime-clock))/2);
                 clock--;
             } else {
                 timeShift = false;
@@ -371,7 +375,7 @@ public class Map {
 
 
                     if (block.getElement() != EMPTY)  {
-                        batch.setColor(block.getBrightness()-block.brightnessLevel, block.getBrightness()-block.brightnessLevel, block.getBrightness()-block.brightnessLevel, 1f);
+                        batch.setColor(block.getBrightness()-dayBrightness, block.getBrightness()-dayBrightness, block.getBrightness()-dayBrightness, 1f);
                     
                         // DRAW CORRECT TEXTURE BASED ON BLOCKS ELEMENT
                         batch.draw(blockTextures[0][block.getElement()-1], block.getPosX(), block.getPosY(), 25 , 25); // blockTextures[ROW][COLUMN]
