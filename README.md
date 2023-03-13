@@ -5,7 +5,18 @@ It is created using the open-source game-development application framework: LibG
 
  # Preview:
  >NOTE: *The game is currently in an unfinished state. Many of the textures featured below are temporary.*
-![image](https://user-images.githubusercontent.com/103279302/218457697-51498c11-26b4-4ddd-a768-7a2ca2658b74.png)
+![image](https://user-images.githubusercontent.com/103279302/224699376-50d345e6-2674-45a9-bf0f-254323ee3e7f.png)
+![image](https://user-images.githubusercontent.com/103279302/224698919-522b14db-15c7-40ff-b375-bbc6d70142ea.png)
 
 # Current version:
->*no game versions to be displayed yet*
+*Game version:* 0.1<br>
+>*Day night cycle*<br>
+>*Inventory system*<br>
+>*Mob damage*<br>
+>*Rain weather*<br>
+>*Lighting*<br>
+>*Item crafting*<br>
+>*Destructible world*<br>
+>*Cave spawning*<br>
+>*Tool breaking*<br>
+>*Door crafting/mechanics*<br>

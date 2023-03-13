@@ -13,10 +13,13 @@ import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.camera.HudCamera;
 import com.mygdx.game.map.Block;
 import com.mygdx.game.map.Map;
+import com.mygdx.game.mobs.Mob;
 
 import static com.mygdx.game.map.elements.*;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.Date;
 
 public class Player {
     private Vector2 mouseInWorld2D = new Vector2();
@@ -58,11 +61,13 @@ public class Player {
     private Sound groundHitSound;
     private Sound leavesHitSound;
     private Sound blockBreakingSound;
+    private Sound weaponBreakingSound;
     private Sound doorOpenSound;
     private Sound doorCloseSound;
     private int soundEffect; // TEMPORARY
 
     private int playerHealth;
+    private long lastHitTime;
 
     private int grab = -1;
     private boolean isGrabbed;
@@ -70,7 +75,10 @@ public class Player {
     private boolean isInventoryOpen = false;
     private ArrayList<Integer> usedSlots = new ArrayList<>();
 
+    private ArrayList<Mob> mobs;
+
     private ArrayList<InventorySlot> inventory;
+    private ArrayList<InventorySlot> droppedItems;
     BitmapFont font = new BitmapFont();
 
     public Player(float x, float y) {
@@ -82,6 +90,7 @@ public class Player {
         groundHitSound = Gdx.audio.newSound(Gdx.files.internal("sounds/groundHitSound.mp3"));
         leavesHitSound = Gdx.audio.newSound(Gdx.files.internal("sounds/leavesHitSound.mp3"));
         blockBreakingSound = Gdx.audio.newSound(Gdx.files.internal("sounds/blockBreakingSound.mp3"));
+        weaponBreakingSound = Gdx.audio.newSound(Gdx.files.internal("sounds/weaponBreakingSound.mp3"));
         doorOpenSound = Gdx.audio.newSound(Gdx.files.internal("sounds/door-close.mp3"));
         doorCloseSound = Gdx.audio.newSound(Gdx.files.internal("sounds/door-open.mp3"));
 
@@ -92,6 +101,7 @@ public class Player {
         onGroundTimer = 0;
 
         soundTimer = 0;
+        lastHitTime = 0;
 
         playerTexture = new Texture("jusju.png");
         outlineTexture = new Texture("outline.png");
@@ -109,6 +119,9 @@ public class Player {
         for (int i = 0; i < 46; i++) {
             inventory.add(new InventorySlot());
         }
+        droppedItems = new ArrayList<>();
+
+        mobs = Map.getMobs();
 
         gravity = 0;
         acceleration = 0;
@@ -286,21 +299,26 @@ public class Player {
                                             if (mapArray[x][y].getBlockHealth() > 0) {
 
                                                 if (mapArray[x][y].getBlockHealth() * 100
-                                                        / mapArray[x][y].getMaxhealth() > 75) {
-                                                    batch.draw(blockBreakingAnimation[0][0], mapArray[x][y].getPosX(),
-                                                            mapArray[x][y].getPosY());
-                                                } else if (mapArray[x][y].getBlockHealth() * 100
-                                                        / mapArray[x][y].getMaxhealth() > 50) {
-                                                    batch.draw(blockBreakingAnimation[0][1], mapArray[x][y].getPosX(),
-                                                            mapArray[x][y].getPosY());
-                                                } else if (mapArray[x][y].getBlockHealth() * 100
-                                                        / mapArray[x][y].getMaxhealth() > 25) {
-                                                    batch.draw(blockBreakingAnimation[0][2], mapArray[x][y].getPosX(),
-                                                            mapArray[x][y].getPosY());
-                                                } else {
-                                                    batch.draw(blockBreakingAnimation[0][3], mapArray[x][y].getPosX(),
-                                                            mapArray[x][y].getPosY());
+                                                / mapArray[x][y].getMaxhealth() < 99 ){
+
+                                                    if (mapArray[x][y].getBlockHealth() * 100
+                                                    / mapArray[x][y].getMaxhealth() > 75) {
+                                                        batch.draw(blockBreakingAnimation[0][0], mapArray[x][y].getPosX(),
+                                                                mapArray[x][y].getPosY());
+                                                    } else if (mapArray[x][y].getBlockHealth() * 100
+                                                            / mapArray[x][y].getMaxhealth() > 50) {
+                                                        batch.draw(blockBreakingAnimation[0][1], mapArray[x][y].getPosX(),
+                                                                mapArray[x][y].getPosY());
+                                                    } else if (mapArray[x][y].getBlockHealth() * 100
+                                                            / mapArray[x][y].getMaxhealth() > 25) {
+                                                        batch.draw(blockBreakingAnimation[0][2], mapArray[x][y].getPosX(),
+                                                                mapArray[x][y].getPosY());
+                                                    } else {
+                                                        batch.draw(blockBreakingAnimation[0][3], mapArray[x][y].getPosX(),
+                                                                mapArray[x][y].getPosY());
+                                                    }
                                                 }
+
                                                 soundEffect = mapArray[x][y].getElement();
                                                 //damage to block determined here
                                                 if (mapArray[x][y].getMaxhealth() >= 0 && mapArray[x][y].getMaxhealth() < 101) {
@@ -317,6 +335,24 @@ public class Player {
 
                                                 soundTimer += 1;
                                             } else {
+                                                if (inventory.get(selectedSlot).isWeapon()){
+                                                    inventory.get(selectedSlot).setHealth(inventory.get(selectedSlot).getHealth()-1);
+                                                    if(inventory.get(selectedSlot).getHealth() == 0) {
+                                                        inventory.get(selectedSlot).removeItem();
+                                                        weaponBreakingSound.play(volume / 200f);
+                                                    }
+                                                }
+                                                if (mapArray[x][y-1].getElement() == REDFLOWER || mapArray[x][y-1].getElement() == TALLGRASS){
+                                                    Random rand = new Random();
+                                                    InventorySlot newItem = new InventorySlot();
+                                                    newItem.setElement(mapArray[x][y-1].getElement());
+                                                    newItem.setAmount(1);
+                                                    newItem.setX(mapArray[x][y-1].getPosX()+6);
+                                                    newItem.setY(mapArray[x][y-1].getPosY()+6);
+                                                    newItem.setAcceleration(rand.nextFloat() * 2 - 1);
+                                                    droppedItems.add(newItem);
+                                                    mapArray[x][y-1].setElement(EMPTY);
+                                                }
                                                 if (mapArray[x][y].getElement() == LEAVES
                                                         || mapArray[x][y].getElement() == TALLGRASS
                                                         || mapArray[x][y].getElement() == REDFLOWER) {
@@ -347,35 +383,14 @@ public class Player {
                                                     mapArray[x][y].setCollision(false);
                                                     mapArray[x][y - 1].setCollision(false);
                                                 }
-                                                
-                                                int slotIndex = -1;
-                                                for (int i = 0; i < 36; i++) {
-                                                    if (inventory.get(i).getElement() == mapArray[x][y].getElement()
-                                                            && inventory.get(i).getAmount() < INVENTORY_SLOT_MAX) {
-                                                        slotIndex = i;
-                                                        break;
-                                                    }
-                                                }
-                                                if (slotIndex > 0) {
-                                                    inventory.get(slotIndex).addItem();
-                                                } else {
-                                                    for (int i = 0; i < 36; i++) {
-                                                        if (inventory.get(i).getAmount() == 0) {
-                                                            inventory.get(i).addItem();
-                                                            inventory.get(i).setElement(mapArray[x][y].getElement());
-                                                            if (mapArray[x][y].getElement() == COALITEM || mapArray[x][y].getElement() == DIAMONDITEM){
-                                                                inventory.get(i).setResource(true);
-                                                            }
-                                                            break;
-                                                        } else if (inventory.get(i).getElement() == mapArray[x][y]
-                                                                .getElement()
-                                                                && inventory.get(i).getAmount() < INVENTORY_SLOT_MAX) {
-                                                            inventory.get(i).addItem();
-                                                            break;
-                                                        }
-                                                    }
-                                                }
-
+                                                Random rand = new Random();
+                                                InventorySlot newItem = new InventorySlot();
+                                                newItem.setElement(mapArray[x][y].getElement());
+                                                newItem.setAmount(1);
+                                                newItem.setX(mapArray[x][y].getPosX()+6);
+                                                newItem.setY(mapArray[x][y].getPosY()+6);
+                                                newItem.setAcceleration(rand.nextFloat() * 2 - 1);
+                                                droppedItems.add(newItem);
                                                 mapArray[x][y].setElement(EMPTY);
                                                 mapArray[x][y].setCollision(false);
 
@@ -419,6 +434,8 @@ public class Player {
                                                             case TALLGRASS:
                                                                 break;
                                                             case REDFLOWER:
+                                                                break;
+                                                            case TORCH:
                                                                 break;
                                                             default:
                                                                 if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
@@ -471,6 +488,84 @@ public class Player {
                 }
             }
         }
+
+        // check if mouse is inside mob
+        for(int i = 0; i < mobs.size(); i++) {
+            Mob thisMob = mobs.get(i);
+            if (!isInventoryOpen &&
+            mouseInWorld2D.x >= thisMob.getMobPosX() &&
+            mouseInWorld2D.x <= thisMob.getMobPosX() + thisMob.getMobSizeX() &&
+            mouseInWorld2D.y >= thisMob.getMobPosY() &&
+            mouseInWorld2D.y <= thisMob.getMobPosY() + thisMob.getMobSizeY()) {
+                
+                // distance to mob
+                float distance = (float) Math.sqrt((mouseInWorld2D.y - playerPosY) * (mouseInWorld2D.y - playerPosY) + 
+                (mouseInWorld2D.x - playerPosX) * (mouseInWorld2D.x - playerPosX));
+                
+                if (distance <= 50) {
+                    if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+                        // add hit effect
+                        if (thisMob.getMobHealth() - inventory.get(selectedSlot).getDamage() <= 0) {
+                            
+                            /* Add drop from mob to players inventory
+                            int slotIndex = -1;
+                            for (int a = 0; a < 36; a++) {
+                                if (inventory.get(a).getElement() == thisMob.getElement()
+                                        && inventory.get(a).getAmount() < INVENTORY_SLOT_MAX) {
+                                    slotIndex = a;
+                                    break;
+                                }
+                            }
+                            if (slotIndex > 0) {
+                                inventory.get(slotIndex).addItem();
+                            } else {
+                                for (int a = 0; a < 36; a++) {
+                                    if (inventory.get(a).getAmount() == 0) {
+                                        inventory.get(a).addItem();
+                                        inventory.get(a).setElement(thisMob.getElement());
+                                        inventory.get(a).setResource(true);
+                                        break;
+                                    } else if (inventory.get(a).getElement() == thisMob.getElement()
+                                            && inventory.get(a).getAmount() < INVENTORY_SLOT_MAX) {
+                                        inventory.get(a).addItem();
+                                        break;
+                                    }
+                                }
+                            }
+                            */
+
+                            mobs.remove(i);
+                        } else {
+                            thisMob.setMobHealth(thisMob.getMobHealth() - inventory.get(selectedSlot).getDamage());
+                        }
+                    }
+                }
+            }
+        }
+
+        // Hit damage to player when mob is close
+        if (mobs.size() > 0) {
+            for(int i = 0; i < mobs.size(); i++) {
+                Mob thisMob = mobs.get(i);
+                long currentTime = new Date().getTime();
+                long timeSinceLastHit = (currentTime - lastHitTime);
+                if (thisMob.getType() == "harmful") {
+                    if(20 >= (Math.sqrt((thisMob.getMobPosX() - getX()) * (thisMob.getMobPosX() - getX()) + (thisMob.getMobPosY() - getY()) * (thisMob.getMobPosY() - getY()))) && timeSinceLastHit > 2000) {
+                        // Add knockback left and right
+                        if (thisMob.getMobPosX() < getX()){
+                            int healthWhenHit = getPlayerHealth();
+                            setPlayerHealth(healthWhenHit-3);
+                            lastHitTime = currentTime;
+                        }else if (thisMob.getMobPosX() > getX()){
+                            int healthWhenHit = getPlayerHealth();
+                            setPlayerHealth(healthWhenHit-3);
+                            lastHitTime = currentTime;
+                        }
+                    }
+                }
+            }
+        }
+
         if (soundTimer == 20) {
             if (soundEffect == GRASS || soundEffect == GROUND) {
                 groundHitSound.play(volume/200f, 0.8f, 0);
@@ -486,6 +581,62 @@ public class Player {
         } else {
             onGroundTimer -= 1;
         }
+
+
+        for (int a = 0; a < droppedItems.size(); a++){
+            InventorySlot item = droppedItems.get(a);
+            
+
+            item.Update(mapArray, playerPosX, playerPosY);
+            if (item.getX() + 12 >= playerPosX 
+            && item.getX() <= playerPosX + playerSizeX
+            && item.getY() + 12 >= playerPosY 
+            && item.getY() <= playerPosY + playerSizeY ) {
+
+                for (int i = 0; i < 36; i++){
+                    int slotIndex = -1;
+                    for (int o = 0; o < 36; o++) {
+                        if (item.getElement() == inventory.get(o).getElement()
+                                && item.getAmount() + inventory.get(o).getAmount() < INVENTORY_SLOT_MAX) {
+                            slotIndex = o;
+                            break;
+                        }
+                    }
+                    if (slotIndex > 0) {
+                        inventory.get(slotIndex).setAmount(inventory.get(slotIndex).getAmount() + item.getAmount());
+                        break;
+                    } else {
+                        if (!item.isWeapon() && inventory.get(i).getElement() == item.getElement()
+                                && inventory.get(i).getAmount() + item.getAmount() < INVENTORY_SLOT_MAX) {
+                            inventory.get(i).setAmount(inventory.get(i).getAmount() + item.getAmount());
+                            inventory.get(i).setWeapon(item.isWeapon());
+                            inventory.get(i).setFood(item.isFood());
+                            inventory.get(i).setResource(item.isResource());
+                            inventory.get(i).setDamage(item.getDamage());
+                            inventory.get(i).setHealth(item.getHealth());
+                            break;
+                        }else if (inventory.get(i).getAmount() == 0) {
+                            inventory.get(i).setAmount(item.getAmount());
+                            inventory.get(i).setElement(item.getElement());
+                            inventory.get(i).setWeapon(item.isWeapon());
+                            inventory.get(i).setFood(item.isFood());
+                            inventory.get(i).setResource(item.isResource());
+                            inventory.get(i).setDamage(item.getDamage());
+                            inventory.get(i).setHealth(item.getHealth());
+                            break;
+                        } 
+                    }
+                    
+                }
+                droppedItems.remove(item);
+
+            
+            }
+
+            
+            batch.draw(blockTextures[0][item.getElement()-1], (int)item.getX(),(int)item.getY()+item.getShakeTimer(),12,12);
+        }
+
 
         // DRAW PLAYER
         batch.draw(playerTexture, playerPosX, playerPosY);
@@ -545,6 +696,7 @@ public class Player {
                             inventory.get(i).setFood(inventory.get(j).isFood());
                             inventory.get(i).setResource(inventory.get(j).isResource());
                             inventory.get(i).setDamage(inventory.get(j).getDamage());
+                            inventory.get(i).setHealth(inventory.get(j).getHealth());
                             break;
                         }else if (inventory.get(i).getAmount() == 0) {
                             inventory.get(i).setAmount(inventory.get(j).getAmount());
@@ -553,6 +705,7 @@ public class Player {
                             inventory.get(i).setFood(inventory.get(j).isFood());
                             inventory.get(i).setResource(inventory.get(j).isResource());
                             inventory.get(i).setDamage(inventory.get(j).getDamage());
+                            inventory.get(i).setHealth(inventory.get(j).getHealth());
                             break;
                         } 
                     }
@@ -613,6 +766,11 @@ public class Player {
                         inventory.set(grab, reserveSlot2);
                         grab = -1;
                     }
+                }else if (cam.getInputInGameWorld().x >= 800 - (261 / 2) + (29 * i)
+                && cam.getInputInGameWorld().x <= (800 - (261 / 2) + (29 * i)) + 28
+                && cam.getInputInGameWorld().y >= 0 && cam.getInputInGameWorld().y < 28 && grab > -1
+                && grab == i){
+                    grab = -1;
                 }
             }
             if (i == selectedSlot) {
@@ -664,7 +822,13 @@ public class Player {
                             inventory.set(grab, reserveSlot2);
                             grab = -1;
                         }
-                    }
+                    }else if (cam.getInputInGameWorld().x >= 800 - (261 / 2) + (29 * invDrawRow)
+                    && cam.getInputInGameWorld().x <= (800 - (261 / 2) + (29 * invDrawRow)) + 28
+                    && cam.getInputInGameWorld().y >= 254 - (90 / 2) + (invDrawColumn * 29)
+                    && cam.getInputInGameWorld().y <= 254 - (90 / 2) + 29 + (invDrawColumn * 29) && grab > -1
+                        && grab == i){
+                            grab = -1;
+                        }
                 }
                 invDrawRow++;
                 if (invDrawRow % 9 == 0) {
@@ -716,6 +880,12 @@ public class Player {
                             inventory.set(grab, reserveSlot2);
                             grab = -1;
                         }
+                    }else if (cam.getInputInGameWorld().x >= 858 - (261 / 2) + (29 * invDrawRow)
+                    && cam.getInputInGameWorld().x <= (858 - (261 / 2) + (29 * invDrawRow)) + 28
+                    && cam.getInputInGameWorld().y >= 365 - (90 / 2) + (invDrawColumn * 29)
+                    && cam.getInputInGameWorld().y <= 365 - (90 / 2) + 29 + (invDrawColumn * 29) && grab > -1
+                    && grab == i){
+                        grab = -1;
                     }
                 }
                 if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
@@ -738,6 +908,7 @@ public class Player {
                                 && inventory.get(i).getAmount() + putAmount < INVENTORY_SLOT_MAX) {
                             inventory.get(i).setElement(inventory.get(grab).getElement());
                             inventory.get(i).setDamage(inventory.get(grab).getDamage());
+                            inventory.get(i).setHealth(inventory.get(grab).getHealth());
                             inventory.get(i).setResource(inventory.get(grab).isResource());
                             inventory.get(i).setFood(inventory.get(grab).isFood());
                             inventory.get(i).setWeapon(inventory.get(grab).isWeapon());
@@ -796,6 +967,7 @@ public class Player {
                                 inventory.get(i).setFood(newItem.isFood());
                                 inventory.get(i).setResource(newItem.isResource());
                                 inventory.get(i).setDamage(newItem.getDamage());
+                                inventory.get(i).setHealth(newItem.getHealth());
                                 craftingSuccess = true;
                                 break;
                             } else if (!newItem.isWeapon() && inventory.get(i).getElement() == newItem.getElement()
@@ -805,6 +977,7 @@ public class Player {
                                 inventory.get(i).setFood(newItem.isFood());
                                 inventory.get(i).setResource(newItem.isResource());
                                 inventory.get(i).setDamage(newItem.getDamage());
+                                inventory.get(i).setHealth(newItem.getHealth());
                                 craftingSuccess = true;
                                 break;
                             }
@@ -834,8 +1007,27 @@ public class Player {
             }
             
         }
+        if(!isGrabbed && grab > -1){
 
-        if (!isGrabbed) {
+            InventorySlot item = new InventorySlot();
+            item.setX(playerPosX);
+            item.setY(playerPosY+playerSizeY+15);
+            if (cam.getInputInGameWorld().x > 800){
+                item.setAcceleration(7);
+            }else{
+                item.setAcceleration(-7);
+            }
+            item.setAmount(inventory.get(grab).getAmount());
+            item.setElement(inventory.get(grab).getElement());
+            item.setDamage(inventory.get(grab).getDamage());
+            item.setFood(inventory.get(grab).isFood());
+            item.setResource(inventory.get(grab).isResource());
+            item.setWeapon(inventory.get(grab).isWeapon());
+            item.setHealth(inventory.get(grab).getHealth());
+            droppedItems.add(item);
+            inventory.get(grab).setAmount(0);
+            grab = -1;
+        }else if (!isGrabbed) {
             grab = -1;
         }
 
@@ -883,6 +1075,7 @@ public class Player {
 
     public void resetInventory() {
         inventory.clear();
+        droppedItems.clear();
         for (int i = 0; i < 46; i++) {
             inventory.add(new InventorySlot());
         }

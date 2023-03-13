@@ -118,6 +118,8 @@ public class MainMenuScreen implements Screen {
                 if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                     isGameLoaded = true;
                     //game.gameScreen.map.dispose();
+                    game.gameScreen.map.clearMap();
+                    game.gameScreen.player.resetInventory();
                     SaveGame.Load(game.gameScreen.map, game.gameScreen.player);
                     System.gc();
                 }
