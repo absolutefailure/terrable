@@ -502,12 +502,11 @@ public class Player {
                 float distance = (float) Math.sqrt((mouseInWorld2D.y - playerPosY) * (mouseInWorld2D.y - playerPosY) + 
                 (mouseInWorld2D.x - playerPosX) * (mouseInWorld2D.x - playerPosX));
                 
-                if (distance <= 50) {
+                if (distance <= 75) {
                     if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
                         // add hit effect
                         if (thisMob.getMobHealth() - inventory.get(selectedSlot).getDamage() <= 0) {
                             
-                            /* Add drop from mob to players inventory
                             int slotIndex = -1;
                             for (int a = 0; a < 36; a++) {
                                 if (inventory.get(a).getElement() == thisMob.getElement()
@@ -532,7 +531,6 @@ public class Player {
                                     }
                                 }
                             }
-                            */
 
                             mobs.remove(i);
                         } else {
