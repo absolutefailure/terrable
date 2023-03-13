@@ -9,4 +9,14 @@ It is created using the open-source game-development application framework: LibG
 ![image](https://user-images.githubusercontent.com/103279302/224698919-522b14db-15c7-40ff-b375-bbc6d70142ea.png)
 
 # Current version:
-*Game version:* 0.1
+*Game version:* 0.1<br>
+>*Day night cycle*<br>
+>*Inventory system*<br>
+>*Mob damage*<br>
+>*Rain weather*<br>
+>*Lighting*<br>
+>*Item crafting*<br>
+>*Destructible world*<br>
+>*Cave spawning*<br>
+>*Tool breaking*<br>
+>*Door crafting/mechanics*<br>
