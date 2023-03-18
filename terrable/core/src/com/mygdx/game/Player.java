@@ -545,30 +545,14 @@ public class Player {
                         // add hit effect
                         if (thisMob.getMobHealth() - inventory.get(selectedSlot).getDamage() <= 0) {
                             
-                            int slotIndex = -1;
-                            for (int a = 0; a < 36; a++) {
-                                if (inventory.get(a).getElement() == thisMob.getElement()
-                                        && inventory.get(a).getAmount() < INVENTORY_SLOT_MAX) {
-                                    slotIndex = a;
-                                    break;
-                                }
-                            }
-                            if (slotIndex > 0) {
-                                inventory.get(slotIndex).addItem();
-                            } else {
-                                for (int a = 0; a < 36; a++) {
-                                    if (inventory.get(a).getAmount() == 0) {
-                                        inventory.get(a).addItem();
-                                        inventory.get(a).setElement(thisMob.getElement());
-                                        inventory.get(a).setResource(true);
-                                        break;
-                                    } else if (inventory.get(a).getElement() == thisMob.getElement()
-                                            && inventory.get(a).getAmount() < INVENTORY_SLOT_MAX) {
-                                        inventory.get(a).addItem();
-                                        break;
-                                    }
-                                }
-                            }
+                            Random rand = new Random();
+                            InventorySlot newItem = new InventorySlot();
+                            newItem.setElement(thisMob.getElement());
+                            newItem.setAmount(1);
+                            newItem.setX(thisMob.getMobPosX()+6);
+                            newItem.setY(thisMob.getMobPosY()+6);
+                            newItem.setAcceleration(rand.nextFloat() * 2 - 1);
+                            droppedItems.add(newItem);
 
                             mobs.remove(i);
                         } else {
