@@ -18,7 +18,7 @@ public class Bat extends Mob{
     private int mobSizeY;
     private float gravity;
     private float acceleration;
-    private int soundTimer;
+    private float soundTimer;
     private int mobHealth;
     private String type;
     private int element;
@@ -47,7 +47,7 @@ public class Bat extends Mob{
     }
 
     @Override
-    public void Update(Map map, Batch batch, Player player, int volume) {
+    public void Update(Map map, Batch batch, Player player, int volume, float delta) {
         float oldMobX = mobPosX;
         float oldMobY = mobPosY;
 
@@ -56,9 +56,9 @@ public class Bat extends Mob{
 
 
         //mob up down movement
-        gravity -= (rand.nextFloat() * 0.2f) - 0.1f;
+        gravity -= ((rand.nextFloat() * 0.2f) - 0.1f) * delta;
 
-        mobPosY += gravity;
+        mobPosY += gravity * delta;
 
         int startBlockX = (int)(mobPosX / 25 - 1600 / 25 / 2) +2500;
         int endBlockX = (startBlockX + 1600 / 25) ;
@@ -88,14 +88,14 @@ public class Bat extends Mob{
         //mob left right movement
         if(200 > Math.sqrt((player.getY() - mobPosY) * (player.getY() - mobPosY) + (player.getX() - mobPosX) * (player.getX() - mobPosX))){
             if (mobPosX < player.getX()){
-                acceleration +=0.5f;
+                acceleration +=0.5f * delta;
             }else if (mobPosX > player.getX()){
-                acceleration -= 0.5f;
+                acceleration -= 0.5f * delta;
             }
         }
         if(mobPosX + 1 > player.getX() && mobPosX - 1 < player.getX()) {
-            soundTimer += 1;
-            if(soundTimer == 100) {
+            soundTimer += 1 * delta;
+            if(soundTimer >= 100) {
                 batScreamSound.play(volume/200f);
                 soundTimer = 0;
             }
@@ -104,8 +104,8 @@ public class Bat extends Mob{
         }
         
         
-        acceleration -= (rand.nextFloat() * 0.6f) - 0.3f;
-        mobPosX += acceleration;
+        acceleration -= ((rand.nextFloat() * 0.6f) - 0.3f) * delta;
+        mobPosX += acceleration * delta;
 
         for (int x = startBlockX; x < endBlockX; x++){
             if (mapArray[x][0].getPosX() > mobPosX - 100 && mapArray[x][0].getPosX() < mobPosX + 100) {

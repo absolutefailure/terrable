@@ -35,14 +35,14 @@ public class Player {
 
     private boolean onGround;
     private boolean onLadder;
-    private int onGroundTimer;
+    private float onGroundTimer;
 
-    private int soundTimer;
+    private float soundTimer;
 
     private float gravity;
     private float acceleration;
 
-    final float PLAYER_BOUNCINESS = 0.0f; // 0 = NO BOUNCE
+    final float PLAYER_BOUNCINESS = 0f; // 0 = NO BOUNCE
     final float PLAYER_FRICTION = 0.7f; // 1 = NO FRICTION
 
     private Texture playerTexture;
@@ -126,37 +126,37 @@ public class Player {
         gravity = 0;
         acceleration = 0;
     }
-
+    
     // UPDATE AND DRAW PLAYER
-    public void Update(Map map, Camera cam, Batch batch, int volume) {
+    public void Update(Map map, Camera cam, Batch batch, int volume, float delta) {
         float oldX = playerPosX;
         float oldY = playerPosY;
 
-        // APPLY GRAVITY TO PLAYER
-        playerPosY -= gravity;
 
         // JUMP
         if (onGround) {
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-                gravity = -4;
+                gravity = -4.3f;
                 onGroundTimer = 0;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.S)) {
 
                 if (onLadder) {
-                    gravity = +4;
+                    gravity = +4.3f;
                     onGroundTimer = 0;
                 }
             }
             if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-                gravity = -5;
+                gravity = -5.3f;
                 onGroundTimer = 0;
             }
-        } else {
-            gravity += 0.25;
         }
-
-
+        if (!onLadder){
+            gravity += 0.25 * delta;
+        }
+        
+        // APPLY GRAVITY TO PLAYER
+        playerPosY -= gravity * delta;
         int startBlockX = (int)(playerPosX / 25 - 1600 / 25 / 2) +2500;
         int endBlockX = (startBlockX + 1600 / 25) ;
 
@@ -195,10 +195,21 @@ public class Player {
                                 onLadder = false;
                                 onGroundTimer = 5;
                             }
-                            playerPosY = oldY;
-                            gravity = -gravity * PLAYER_BOUNCINESS;
+                            float blockTop = mapArray[x][y].getPosY();
+                            float blockBottom = mapArray[x][y].getPosY() + 25;
+                            float dy = playerPosY - oldY;
+
+                            if (dy > 0) {
+                                playerPosY = blockTop - playerSizeY;
+                            } else {
+                                playerPosY = blockBottom;
+                            }
+                            
+
+                            //playerPosY = oldY;
+                            gravity = -gravity * PLAYER_BOUNCINESS * delta ;
                         } else if (mapArray[x][y].getElement() == LADDER) {
-                            gravity *= 0.8;
+                            gravity *= Math.pow(0.8f, delta);
                             onGround = true;
                             onLadder = true;
                             onGroundTimer = 5;
@@ -250,9 +261,9 @@ public class Player {
             acceleration = -4;
         }
 
-        playerPosX += acceleration;
+        playerPosX += acceleration * delta;
         // FRICTION
-        acceleration *= PLAYER_FRICTION;
+        acceleration *= Math.pow(PLAYER_FRICTION, delta);
 
         for (int x = startBlockX; x < endBlockX; x++) {
             if (mapArray[x][0].getPosX() > playerPosX - 400 && mapArray[x][0].getPosX() < playerPosX + 400) {
@@ -264,8 +275,16 @@ public class Player {
                                 && playerPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
                                 && playerPosY + playerSizeY > mapArray[x][y].getPosY()
                                 && playerPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
-                            playerPosX = oldX;
-                            acceleration = -acceleration * PLAYER_BOUNCINESS;
+                            float blockTop = mapArray[x][y].getPosX();
+                            float blockBottom = mapArray[x][y].getPosX() + 25;
+                            float dx = playerPosX - oldX;
+                            if (dx > 0) {
+                                playerPosX = blockTop - playerSizeX;
+                            } else {
+                                playerPosX = blockBottom;
+                            }
+                            //playerPosX = oldX;
+                            acceleration = -acceleration * PLAYER_BOUNCINESS * delta;
                         }
                         // SET BLOCK HEALTH TO MAX IF LEFT MOUSE BUTTON IS NOT DOWN
                         if (mapArray[x][y].getElement() != EMPTY && !Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
@@ -322,7 +341,7 @@ public class Player {
                                                 soundEffect = mapArray[x][y].getElement();
 
                                                 //damage to block determined here
-                                                int damage = inventory.get(selectedSlot).getDamage();
+                                                float damage = inventory.get(selectedSlot).getDamage() * delta;
                                                 //damage modifiers for pickaxes
                                                 if ((inventory.get(selectedSlot)).getElement() == WOODPICKAXE || (inventory.get(selectedSlot)).getElement() == STONEPICKAXE ||
                                                  (inventory.get(selectedSlot)).getElement() == IRONPICKAXE || (inventory.get(selectedSlot)).getElement() == DIAMONDPICKAXE ) {
@@ -351,7 +370,7 @@ public class Player {
                                                     mapArray[x][y].setBlockHealth(mapArray[x][y].getBlockHealth() - 0);
                                                 }
 
-                                                soundTimer += 1;
+                                                soundTimer += 1 * delta;
                                             } else {
                                                 // hitting blocks damages weapon and ultimately breaks them
                                                 if (inventory.get(selectedSlot).isWeapon()){
@@ -532,6 +551,7 @@ public class Player {
                             newItem.setAmount(1);
                             newItem.setX(thisMob.getMobPosX()+6);
                             newItem.setY(thisMob.getMobPosY()+6);
+                            newItem.setResource(true);
                             newItem.setAcceleration(rand.nextFloat() * 2 - 1);
                             droppedItems.add(newItem);
 
@@ -567,20 +587,21 @@ public class Player {
             }
         }
 
-        if (soundTimer == 20) {
+        if (soundTimer >= 20) {
             if (soundEffect == GRASS || soundEffect == GROUND) {
                 groundHitSound.play(volume/200f, 0.8f, 0);
             } else if (soundEffect == STONE || soundEffect == IRON || soundEffect == COAL) {
                 stoneHitSound.play(volume / 200f);
                 soundEffect = 0;
             }
-            soundTimer -= 20;
+            soundTimer = 0;
         }
 
         if (onGroundTimer <= 0) {
             onGround = false;
+            onLadder = false;
         } else {
-            onGroundTimer -= 1;
+            onGroundTimer -= 1 * delta;
         }
 
 
@@ -588,7 +609,7 @@ public class Player {
             InventorySlot item = droppedItems.get(a);
             
 
-            item.Update(mapArray, playerPosX, playerPosY);
+            item.Update(mapArray, playerPosX, playerPosY, delta);
             if (item.getX() + 12 >= playerPosX 
             && item.getX() <= playerPosX + playerSizeX
             && item.getY() + 12 >= playerPosY 
@@ -635,13 +656,13 @@ public class Player {
             }
 
             
-            batch.draw(blockTextures[0][item.getElement()-1], (int)item.getX(),(int)item.getY()+item.getShakeTimer(),12,12);
+            batch.draw(blockTextures[0][item.getElement()-1], item.getX(),item.getY()+item.getShakeTimer(),12,12);
         }
 
 
         // DRAW PLAYER
-        batch.draw(playerTexture, playerPosX, playerPosY);
-        cam.position.set((int) playerPosX + playerSizeX / 2, (int) playerPosY + playerSizeY / 2, 0);
+        batch.draw(playerTexture, cam.position.x+acceleration,cam.position.y-gravity);
+        cam.position.set( Math.round(playerPosX-acceleration),  Math.round(playerPosY+gravity), 0);
         cam.update();
     }
 

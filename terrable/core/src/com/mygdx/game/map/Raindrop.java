@@ -9,7 +9,7 @@ public class Raindrop {
     private float y;
     private boolean onGround = false;
 
-    private int timer = 0;
+    private float timer = 0;
 
 
     public Raindrop(TextureRegion[][] tex, float x, float y){
@@ -18,12 +18,12 @@ public class Raindrop {
         this.y = y;
     }
 
-    public void Update(Batch b, float wind){
+    public void Update(Batch b, float wind, float delta){
         if (!onGround){
-            y -= 10;
-            x += wind;
+            y -= 10 * delta;
+            x += wind * delta;
         }else{
-            timer += 1;
+            timer += 1f * delta;
         }
         if (timer == 0){
             b.draw(textures[0][0], x-5, y);
@@ -52,7 +52,7 @@ public class Raindrop {
     public void setY(float y) {
         this.y = y;
     }
-    public int getTimer() {
+    public float getTimer() {
         return timer;
     }
     public boolean isOnGround() {

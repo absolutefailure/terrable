@@ -100,7 +100,7 @@ public class MainMenuScreen implements Screen {
                 menuSound.stop();
                 // reset game if player is dead
                 if (game.gameScreen.player.getPlayerHealth() <= 0) {
-                    game.gameScreen.map.setMapArray(null);
+                    game.gameScreen.map.reset();
                     game.gameScreen.player.resetInventory();
                     System.gc();
                     game.gameScreen.player.setPlayerHealth(10);
@@ -111,7 +111,7 @@ public class MainMenuScreen implements Screen {
     
             } else if (button(550, 450, 500, 150, saveButton)) {
                 if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                    SaveGame.Save(game.gameScreen.map.getMapArray(), game.gameScreen.player);
+                    SaveGame.Save(game.gameScreen.map, game.gameScreen.player);
                 }
                 game.batch.draw(saveButton, 550, 450);
             } else if (button(550, 300, 500, 150, loadButton)) {
@@ -135,7 +135,7 @@ public class MainMenuScreen implements Screen {
                 isGameLoaded = false;
                 // reset game if player is dead
                 if (game.gameScreen.player.getPlayerHealth() <= 0) {
-                    game.gameScreen.map.setMapArray(null);
+                    game.gameScreen.map.reset();
                     game.gameScreen.player.resetInventory();
                     System.gc();
                     game.gameScreen.player.setPlayerHealth(10);

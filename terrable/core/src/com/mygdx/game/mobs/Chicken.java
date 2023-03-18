@@ -20,7 +20,8 @@ public class Chicken extends Mob {
     private int mobHealth;
     private String type;
     private int element;
-
+    private float moveTimer;
+    private Boolean direction = true;
     public Chicken(float x, float y, Texture texture) {
         super();
         this.mobPosX = x;
@@ -31,6 +32,7 @@ public class Chicken extends Mob {
         mobSizeX = 20;
         mobSizeY = 40;
 
+        moveTimer = 0;
         gravity = 0;
         mobHealth = 5;
         type = "friendly";
@@ -40,7 +42,7 @@ public class Chicken extends Mob {
     }
 
     @Override
-    public void Update(Map map, Batch batch, Player player, int volume) {
+    public void Update(Map map, Batch batch, Player player, int volume, float delta) {
         float oldMobX = mobPosX;
         float oldMobY = mobPosY;
 
@@ -50,9 +52,9 @@ public class Chicken extends Mob {
 
 
         //mob up down movement
-        gravity -= 0.25;
+        gravity -= 0.25 * delta;
 
-        mobPosY += gravity;
+        mobPosY += gravity * delta;
 
 
         int startBlockX = (int)(mobPosX / 25 - 1600 / 25 / 2) +2500;
@@ -79,22 +81,24 @@ public class Chicken extends Mob {
             }
         }
 
+        moveTimer -= 1 * delta;
+        if (moveTimer < 0){
+            moveTimer = rand.nextInt(100);
+            direction = rand.nextBoolean();
+        }
+
         //mob left right movement
-        if(rand.nextInt(1000)<10){
-            Boolean move = rand.nextBoolean();
-            if (move){
-                Boolean direction = rand.nextBoolean();
-                if (direction){
-                    acceleration =0.5f;
-                }else{
-                    acceleration = -0.5f;
-                }
-            }else {
-                acceleration = 0;
+        if(moveTimer >= 20){
+            if (direction){
+                acceleration =0.5f;
+            }else{
+                acceleration = -0.5f;
             }
-        }        
+        } else{
+            acceleration = 0;
+        }      
         
-        mobPosX += acceleration;
+        mobPosX += acceleration * delta;
 
         for (int x = startBlockX; x < endBlockX; x++){
             if (mapArray[x][0].getPosX() > mobPosX - 100 && mapArray[x][0].getPosX() < mobPosX + 100) {
