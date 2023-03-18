@@ -173,7 +173,7 @@ public class InventorySlot {
     public void setShakeDirection(boolean shakeDirection) {
         this.shakeDirection = shakeDirection;
     }
-    public void Update(Block[][] mapArray, float playerPosX, float playerPosY){
+    public void Update(Block[][] mapArray, float playerPosX, float playerPosY, float delta){
         float itemOldX = x;
         float itemOldY = y;
         int loopStartX = (int)(((x)-50) / 25) +((5000)/2);
@@ -188,16 +188,16 @@ public class InventorySlot {
         && y + 12 >= playerPosY - 30
         && y <= playerPosY + 49 + 30) {
             if (y + 12 > playerPosY-30 && y < playerPosY+25){
-                y += 5;
+                y += 5 * delta;
             }
             if (y < playerPosY+49+30 && y + 12 > playerPosY+25){
-                y -= 5;
+                y -= 5 * delta;
             }
         }
 
 
-        gravity -= 0.1f;
-        y += gravity;
+        gravity -= 0.1f * delta;
+        y += gravity * delta;
         
          
         for (int i = loopStartX; i < loopStartX + 4; i++){
@@ -207,7 +207,7 @@ public class InventorySlot {
                 && y + 12 > mapArray[i][j].getPosY()
                 && y < mapArray[i][j].getPosY() + mapArray[i][j].getBLOCKSIZE()) {
                     y = itemOldY;
-                    gravity *= 0.9f;
+                    gravity *= Math.pow(0.9f, delta);
                     break;
                 }
             }
@@ -217,13 +217,13 @@ public class InventorySlot {
         && y + 12 >= playerPosY - 30
         && y <= playerPosY + 49 + 30) {
             if (x + 12 > playerPosX-30 && x < playerPosX+10){
-                x += 5;
+                x += 5 * delta;
             }
             if (x < playerPosX+20+30 && x + 12 > playerPosX+10){
-                x -= 5;
+                x -= 5 * delta;
             }
         }
-        x += acceleration;
+        x += acceleration * delta;
         // acceleration *= 0.99f;
  
          for (int i = loopStartX; i < loopStartX + 4; i++){
@@ -233,19 +233,19 @@ public class InventorySlot {
                  && y + 12 > mapArray[i][j].getPosY()
                  && y < mapArray[i][j].getPosY() + mapArray[i][j].getBLOCKSIZE()) {
                      x = itemOldX;
-                     acceleration *= 0.99;
+                     acceleration *= Math.pow(0.99f, delta);
                      break;
                  }
              }
          }
 
         if (shakeDirection){
-            shakeTimer += 0.2;
+            shakeTimer += 0.2 * delta;
             if(shakeTimer > 5){
                 shakeDirection = false;
             }
         }else{
-            shakeTimer -= 0.2;
+            shakeTimer -= 0.2 * delta;
             if(shakeTimer < 0){
                 shakeDirection = true;
             }

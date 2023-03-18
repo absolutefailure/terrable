@@ -3,6 +3,7 @@ package com.mygdx.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.mygdx.game.Player;
 import com.mygdx.game.Terrable;
 import com.mygdx.game.map.Map;
@@ -14,7 +15,7 @@ public class GameScreen implements Screen {
 
 	Player player;
 
-
+    BitmapFont font = new BitmapFont();
 	final int MAP_SIZE_X = 5000; // blocks
 	final int MAP_SIZE_Y = 300; // blocks
 
@@ -47,31 +48,49 @@ public class GameScreen implements Screen {
  	// CLEAR SCREEN WITH SKY COLOR
 
         //Gdx.graphics.setTitle(""+Gdx.graphics.getFramesPerSecond());
-        
-        
-        game.batch.setProjectionMatrix(game.cam.combined());
+        delta *= 60;
+        if (delta > 2f){delta = 2f;}
 
-        // draw world 
-        game.batch.begin();
+        if (player.getPlayerHealth() > 0){
+            game.batch.setProjectionMatrix(game.cam.combined());
 
-
-        map.Draw(game.batch, player, volume);
-
-        player.Update(map, game.cam.getCamera(), game.batch, volume);
-        
-        // draw hud
-        game.batch.setProjectionMatrix(game.hudCam.combined());
-
-
-        player.DrawHud(game.batch, game.hudCam);
+            // draw world 
+            game.batch.begin();
     
-        game.batch.end();
+    
+            map.Draw(game.batch, player, volume, delta);
+    
+            player.Update(map, game.cam.getCamera(), game.batch, volume, delta);
+            
+            // draw hud
+            game.batch.setProjectionMatrix(game.hudCam.combined());
+    
+    
+            player.DrawHud(game.batch, game.hudCam);
+        
+            game.batch.end();
+        }else{
+            game.batch.setProjectionMatrix(game.cam.combined());
+
+            // draw world 
+            game.batch.begin();
+    
+            map.Draw(game.batch, player, volume, delta);
+            
+            // draw hud
+            game.batch.setProjectionMatrix(game.hudCam.combined());
+    
+            font.draw(game.batch, "You died", 780, 450);
+        
+            game.batch.end();
+        }
+
 
         
         
 
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || player.getPlayerHealth() <= 0) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 
 			game.setScreen(game.mainMenuScreen);
 

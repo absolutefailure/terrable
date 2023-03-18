@@ -9,8 +9,9 @@ import com.mygdx.game.map.Block;
 import com.mygdx.game.map.Map;
 
 public class SaveGame {
-
-    public static void Save(Block[][] mapArray, Player player) {
+    
+    public static void Save(Map map, Player player) {
+        Block[][] mapArray = map.getMapArray();
         if (player.getPlayerHealth() > 0) {
             try {
                 // Create file writer and buffered writer
@@ -34,7 +35,13 @@ public class SaveGame {
                         bw.newLine();
                     }
                 }
-
+                bw.write("" + map.getClock());
+                bw.newLine();
+                bw.write("" + map.getTimeShift());
+                bw.newLine();
+                bw.write("" + map.getRainTimer());
+                bw.newLine();
+                bw.write("" + map.isRaining());
                 // Close writers
                 bw.close();
                 fw.close();
@@ -115,8 +122,10 @@ public class SaveGame {
                     }
                 }
 
-
-
+                map.setClock(Float.parseFloat(br.readLine()));
+                map.setTimeShift(Boolean.parseBoolean(br.readLine()));
+                map.setRainTimer(Float.parseFloat(br.readLine()));
+                map.setRaining(Boolean.parseBoolean(br.readLine()));
                 // Close readers
                 br.close();
                 fr.close();

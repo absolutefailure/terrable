@@ -16,7 +16,7 @@ public class Mob {
     private int mobSizeY;
     private float gravity;
     private float acceleration;
-    private int soundTimer;
+    private float soundTimer;
     private int mobHealth;
     private String type;
     private int element;
@@ -45,7 +45,7 @@ public class Mob {
 
     }
     
-    public void Update(Map map, Batch batch, Player player, int volume) {
+    public void Update(Map map, Batch batch, Player player, int volume, float delta) {
         float oldMobX = mobPosX;
         float oldMobY = mobPosY;
 
@@ -54,9 +54,9 @@ public class Mob {
 
 
         //mob up down movement
-        gravity -= 0.25;
+        gravity -= 0.25 * delta;
 
-        mobPosY += gravity;
+        mobPosY += gravity * delta;
 
 
         int startBlockX = (int)(mobPosX / 25 - 1600 / 25 / 2) +2500;
@@ -86,9 +86,9 @@ public class Mob {
         //mob left right movement
         if(200 > Math.sqrt((player.getY() - mobPosY) * (player.getY() - mobPosY) + (player.getX() - mobPosX) * (player.getX() - mobPosX))){
             if (mobPosX < player.getX()){
-                acceleration +=0.5f;
+                acceleration +=0.5f * delta;
             }else if (mobPosX > player.getX()){
-                acceleration -= 0.5f;
+                acceleration -= 0.5f * delta;
             }
         }
         if(mobPosX + 1 > player.getX() && mobPosX - 1 < player.getX()) {
@@ -103,8 +103,8 @@ public class Mob {
         
         
         
-        mobPosX += acceleration;
-        acceleration *= 0.5f;
+        mobPosX += acceleration * delta;
+        acceleration *= Math.pow(0.5f, delta);
 
         for (int x = startBlockX; x < endBlockX; x++){
             if (mapArray[x][0].getPosX() > mobPosX - 100 && mapArray[x][0].getPosX() < mobPosX + 100) {

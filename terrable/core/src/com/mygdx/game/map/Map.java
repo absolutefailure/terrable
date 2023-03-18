@@ -40,8 +40,9 @@ public class Map {
     private Sound slimeSound;
     private Sound mobScreamSound;
     
-    private int rainTimer = 0;
-    private int clock = 0;
+    private float rainTimer = 0;
+    private float clock = 0;
+    private float newRaindropTimer = 0;
     private Boolean timeShift = false;
     private boolean isRaining = false;
     private Texture rainTexture;
@@ -266,7 +267,7 @@ public class Map {
     }
 
    // DRAW MAP
-   public void Draw(Batch batch, Player player, int volume){
+   public void Draw(Batch batch, Player player, int volume, float delta){
         Random rand = new Random();
         float dayBrightness = 800f/clock;
         if(dayBrightness >= 0.7f) {
@@ -276,18 +277,18 @@ public class Map {
         float green = (clock/dayTime)/2;
         float blue = clock/dayTime;
         ScreenUtils.clear(red, green, blue, 1);
-        rainTimer--;
+        rainTimer -= 1f * delta;
         if(!timeShift){
             if(clock < dayTime) {
-                clock++;
-                batch.draw(sunTexture, player.getX()-800, -(2500)+(clock)/2);
+                clock += 1f * delta;
+                batch.draw(sunTexture, (int)player.getX()-800, -(2500)+(clock)/2);
             } else {
                 timeShift = true;
             }
         } else {
             if(clock > 0) {
-                batch.draw(sunTexture, player.getX()-800, -(2500)+(dayTime-(dayTime-clock))/2);
-                clock--;
+                batch.draw(sunTexture, (int)player.getX()-800, -(2500)+(dayTime-(dayTime-clock))/2);
+                clock -= 1f * delta;
             } else {
                 timeShift = false;
             }
@@ -301,13 +302,15 @@ public class Map {
             rainTimer = rand.nextInt(9000)+1000;
         }
 
-        if (!isRaining && rainTimer > 0 && rainTimer < 200){
+        newRaindropTimer -= 1 * delta;
+        if (!isRaining && rainTimer > 0 && rainTimer < 200 && newRaindropTimer < 0){
             if (rainDropList.size() < 2000 && rainTimer % 2 == 0){
                 rainDropList.add(new Raindrop(rainTextureRegions, (int)player.getX() + rand.nextInt(2500)-1250+(-wind), (int)player.getY()+1000));
+                newRaindropTimer = 5;
             }
         }
 
-        if (isRaining){
+        if (isRaining && newRaindropTimer < 0){
             if (rainTimer > 200){
                 wind += rand.nextInt(9)-4;
                 if (wind < -500){wind = -500;}
@@ -316,6 +319,7 @@ public class Map {
                     for (int i = 0; i < 5; i++){
                         rainDropList.add(new Raindrop(rainTextureRegions, (int)player.getX() + rand.nextInt(2500)-1250+(-wind), (int)player.getY()+1000));
                     }
+                    newRaindropTimer = 1;
                 }
             }else{
                 if (rainDropList.size() < 2000 && rainTimer % 2 == 0){
@@ -327,12 +331,12 @@ public class Map {
         for (int i = 0; i < rainDropList.size(); i++){
             Raindrop raindrop = rainDropList.get(i);
             int raindropX = (int)(((raindrop.getX())-50) / 25) +(mapSizeX/2);
-            int raindropY = (int)(mapSizeY/2 - ((raindrop.getY()+50) / 25)) ;
+            int raindropY = (int)(mapSizeY/2 - ((raindrop.getY()+50) / 25));
             if (raindropY < 0){raindropY = 0;}
             if(raindropY > mapSizeY-5){raindropY = mapSizeY-5;}
             if (raindropX < 0){raindropX = 0;}
             if(raindropX > mapSizeX-5){raindropX = mapSizeX-5;}
-            raindrop.Update(batch, wind/100f);
+            raindrop.Update(batch, wind/100f, delta);
             for (int x = raindropX; x < raindropX + 3; x++){
                 for (int y = raindropY; y < raindropY+4; y++){
                     if ((mapArray[x][y].isCollision() || mapArray[x][y].getElement() == LEAVES) && raindrop.getX() >= mapArray[x][y].getPosX()
@@ -374,7 +378,14 @@ public class Map {
 
 
                     if (block.getElement() != EMPTY)  {
-                        batch.setColor(block.getBrightness()-dayBrightness, block.getBrightness()-dayBrightness, block.getBrightness()-dayBrightness, 1f);
+                        if (block.getBrightness() <= 0.1f){
+                            batch.setColor(block.getBrightness()-block.brightnessLevel-(dayBrightness/7f), block.getBrightness()-block.brightnessLevel-(dayBrightness/7f), block.getBrightness()-block.brightnessLevel-(dayBrightness/7f), 1f);
+                        }else if(block.getBrightness() <= 0.3f){
+                            batch.setColor(block.getBrightness()-block.brightnessLevel-(dayBrightness/2f), block.getBrightness()-block.brightnessLevel-(dayBrightness/2f), block.getBrightness()-block.brightnessLevel-(dayBrightness/2f), 1f);
+                        }else{
+                            batch.setColor(block.getBrightness()-block.brightnessLevel-dayBrightness, block.getBrightness()-block.brightnessLevel-dayBrightness, block.getBrightness()-block.brightnessLevel-dayBrightness, 1f);
+                        }
+                        
                     
                         // DRAW CORRECT TEXTURE BASED ON BLOCKS ELEMENT
                         batch.draw(blockTextures[0][block.getElement()-1], block.getPosX(), block.getPosY(), 25 , 25); // blockTextures[ROW][COLUMN]
@@ -395,7 +406,7 @@ public class Map {
 
         // Update all mobs
         for (Mob mob: mobs){ 
-            mob.Update(this, batch, player, volume);
+            mob.Update(this, batch, player, volume, delta);
         }
         
         
@@ -664,8 +675,41 @@ public class Map {
     public static ArrayList<Mob> getMobs() {
         return mobs;
     }
+    
 
-    public void dispose(){
+    public Boolean getTimeShift() {
+        return timeShift;
+    }
+
+    public void setTimeShift(Boolean timeShift) {
+        this.timeShift = timeShift;
+    }
+
+    public boolean isRaining() {
+        return isRaining;
+    }
+
+    public void setRaining(boolean isRaining) {
+        this.isRaining = isRaining;
+    }
+
+    public float getRainTimer() {
+        return rainTimer;
+    }
+
+    public void setRainTimer(float rainTimer) {
+        this.rainTimer = rainTimer;
+    }
+
+    public float getClock() {
+        return clock;
+    }
+
+    public void setClock(float clock) {
+        this.clock = clock;
+    }
+
+    public void reset(){
         mapArray = null;
         mobs.clear();
     }
