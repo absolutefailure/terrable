@@ -551,6 +551,7 @@ public class Player {
                             newItem.setAmount(1);
                             newItem.setX(thisMob.getMobPosX()+6);
                             newItem.setY(thisMob.getMobPosY()+6);
+                            newItem.setResource(true);
                             newItem.setAcceleration(rand.nextFloat() * 2 - 1);
                             droppedItems.add(newItem);
 
