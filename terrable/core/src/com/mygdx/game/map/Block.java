@@ -1,5 +1,5 @@
 package com.mygdx.game.map;
-import static com.mygdx.game.map.elements.*;
+import static com.mygdx.game.map.Element.*;
 
 
 public class Block {

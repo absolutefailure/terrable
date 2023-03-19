@@ -1,4 +1,4 @@
-package com.mygdx.game.map;
+package com.mygdx.game.map.rain;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

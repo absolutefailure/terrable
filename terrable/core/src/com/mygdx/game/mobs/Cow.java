@@ -1,5 +1,4 @@
 package com.mygdx.game.mobs;
-
 import java.util.Random;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -9,7 +8,7 @@ import com.mygdx.game.map.Map;
 import com.mygdx.game.map.Element;
 import com.mygdx.game.player.Player;
 
-public class Chicken extends Mob {
+public class Cow extends Mob {
     private TextureRegion[][] mobTexture;
     private float mobPosX;
     private float mobPosY;
@@ -22,14 +21,14 @@ public class Chicken extends Mob {
     private int element;
     private float moveTimer;
     private int direction = 0;
-    public Chicken(float x, float y, TextureRegion[][] texture) {
+    public Cow(float x, float y, TextureRegion[][] texture) {
         super();
         this.mobPosX = x;
         this.mobPosY = y;
 
         mobTexture = texture;
 
-        mobSizeX = 20;
+        mobSizeX = 50;
         mobSizeY = 40;
 
         moveTimer = 0;
@@ -71,7 +70,7 @@ public class Chicken extends Mob {
                     && mobPosY + mobSizeY > mapArray[x][y].getPosY()
                     && mobPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
                         mobPosY = oldMobY;
-                        if (Math.abs(acceleration) > 0.1f && mapArray[x-1][y-1].isCollision() || mapArray[x+1][y-1].isCollision()) {
+                        if (Math.abs(acceleration) > 0.1f && mapArray[x-1][y-1].isCollision() || mapArray[x+1][y-1].isCollision() || mapArray[x+2][y-1].isCollision()) {
                             gravity = 4;
                         }else{
                             gravity = 0;
@@ -83,7 +82,7 @@ public class Chicken extends Mob {
 
         moveTimer -= 1 * delta;
         if (moveTimer < 0){
-            moveTimer = rand.nextInt(100);
+            moveTimer = rand.nextInt(1000);
             direction = rand.nextInt(2);
         }
 

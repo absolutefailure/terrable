@@ -5,10 +5,10 @@ import java.util.Random;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.mygdx.game.Player;
 import com.mygdx.game.map.Block;
 import com.mygdx.game.map.Map;
-import com.mygdx.game.map.elements;
+import com.mygdx.game.map.Element;
+import com.mygdx.game.player.Player;
 
 public class Bat extends Mob{
     private Texture mobTexture;
@@ -41,7 +41,7 @@ public class Bat extends Mob{
         gravity = 0;
         mobHealth = 5;
         type = "harmful";
-        element = elements.FEATHER;
+        element = Element.FEATHER;
     
         rand = new Random();
     }
@@ -60,8 +60,8 @@ public class Bat extends Mob{
 
         mobPosY += gravity * delta;
 
-        int startBlockX = (int)(mobPosX / 25 - 1600 / 25 / 2) +2500;
-        int endBlockX = (startBlockX + 1600 / 25) ;
+        int startBlockX = (int)(mobPosX / 25 - 200 / 25 / 2) +2500;
+        int endBlockX = (startBlockX + 400 / 25) ;
 
 
 

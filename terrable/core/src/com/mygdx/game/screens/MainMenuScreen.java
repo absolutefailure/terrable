@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.Terrable;
+import com.mygdx.game.save.LoadGame;
 import com.mygdx.game.save.SaveGame;
 
 public class MainMenuScreen implements Screen {
@@ -120,7 +121,7 @@ public class MainMenuScreen implements Screen {
                     //game.gameScreen.map.dispose();
                     game.gameScreen.map.clearMap();
                     game.gameScreen.player.resetInventory();
-                    SaveGame.Load(game.gameScreen.map, game.gameScreen.player);
+                    LoadGame.Load(game.gameScreen.map, game.gameScreen.player);
                     System.gc();
                 }
                 game.batch.draw(loadButton, 550, 300);

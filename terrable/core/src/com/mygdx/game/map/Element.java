@@ -1,6 +1,6 @@
 package com.mygdx.game.map;
 
-public final class elements {
+public final class Element {
 
     public static final int EMPTY = 0;
     public static final int GROUND = 1;

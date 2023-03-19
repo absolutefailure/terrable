@@ -4,9 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.mygdx.game.Player;
 import com.mygdx.game.Terrable;
 import com.mygdx.game.map.Map;
+import com.mygdx.game.player.Player;
 
 public class GameScreen implements Screen {
    
@@ -47,7 +47,7 @@ public class GameScreen implements Screen {
     public void render(float delta) {
  	// CLEAR SCREEN WITH SKY COLOR
 
-        //Gdx.graphics.setTitle(""+Gdx.graphics.getFramesPerSecond());
+        Gdx.graphics.setTitle(""+Gdx.graphics.getFramesPerSecond());
         delta *= 60;
         if (delta > 2f){delta = 2f;}
 
