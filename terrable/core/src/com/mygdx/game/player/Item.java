@@ -1,8 +1,8 @@
-package com.mygdx.game;
+package com.mygdx.game.player;
 
 import com.mygdx.game.map.Block;
 
-public class InventorySlot {
+public class Item {
 
     private float x;
     private float y;
@@ -26,7 +26,7 @@ public class InventorySlot {
     // for crafting
     private int removeAmount;
 
-    public InventorySlot(){
+    public Item(){
 
     }
 
@@ -206,8 +206,17 @@ public class InventorySlot {
                 && x < mapArray[i][j].getPosX() + mapArray[i][j].getBLOCKSIZE()
                 && y + 12 > mapArray[i][j].getPosY()
                 && y < mapArray[i][j].getPosY() + mapArray[i][j].getBLOCKSIZE()) {
-                    y = itemOldY;
-                    gravity *= Math.pow(0.9f, delta);
+                    float blockTop = mapArray[i][j].getPosY() + mapArray[i][j].getBLOCKSIZE();
+                    float blockBottom = (mapArray[i][j].getPosY());
+                    float dy = y-itemOldY ;
+            
+                    if (dy > 0) {
+                        y = blockBottom - 12f;
+                    } else {
+                        y = blockTop;
+                    }
+                    //y = itemOldY;
+                    gravity *= Math.pow(0.7f, delta);
                     break;
                 }
             }
@@ -224,7 +233,7 @@ public class InventorySlot {
             }
         }
         x += acceleration * delta;
-        // acceleration *= 0.99f;
+        acceleration *= Math.pow(0.96f, delta);
  
          for (int i = loopStartX; i < loopStartX + 4; i++){
              for (int j = loopStartY; j < loopStartY+4; j++){
@@ -232,9 +241,18 @@ public class InventorySlot {
                  && x < mapArray[i][j].getPosX() + mapArray[i][j].getBLOCKSIZE()
                  && y + 12 > mapArray[i][j].getPosY()
                  && y < mapArray[i][j].getPosY() + mapArray[i][j].getBLOCKSIZE()) {
-                     x = itemOldX;
-                     acceleration *= Math.pow(0.99f, delta);
-                     break;
+                    float blockRight = mapArray[i][j].getPosX() + mapArray[i][j].getBLOCKSIZE();
+                    float blockLeft = (mapArray[i][j].getPosX());
+                    float dx = x-itemOldX ;
+            
+                    if (dx > 0) {
+                        x = blockLeft - 12f;
+                    } else {
+                        x = blockRight;
+                    }
+                    //x = itemOldX;
+                    acceleration *= Math.pow(0.7f, delta);
+                    break;
                  }
              }
          }

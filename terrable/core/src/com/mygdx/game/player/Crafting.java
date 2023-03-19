@@ -1,12 +1,12 @@
-package com.mygdx.game;
+package com.mygdx.game.player;
 
 import java.util.List;
-import static com.mygdx.game.map.elements.*;
+import static com.mygdx.game.map.Element.*;
 
 public class Crafting {
 
-    public static InventorySlot craft(List<InventorySlot> resources) {
-        InventorySlot result = null;
+    public static Item craft(List<Item> resources) {
+        Item result = null;
 
         // LADDER
         result = craftLadder(resources);
@@ -102,7 +102,7 @@ public class Crafting {
         return null;
     }
 
-    private static InventorySlot craftLadder(List<InventorySlot> resources) {
+    private static Item craftLadder(List<Item> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == STICK
                 && resources.get(1).getElement() == EMPTY
@@ -114,7 +114,7 @@ public class Crafting {
                 && resources.get(7).getElement() == EMPTY
                 && resources.get(8).getElement() == STICK) {
             int amount = 32;
-            for (InventorySlot slot : resources) {
+            for (Item slot : resources) {
                 if (slot.getElement() == STICK && amount > slot.getAmount()) {
                     amount = slot.getAmount();
                 }
@@ -125,7 +125,7 @@ public class Crafting {
             }
             amount *= 4;
             // create new item/s
-            InventorySlot item = new InventorySlot();
+            Item item = new Item();
             item.setElement(LADDER);
             item.setAmount(amount);
             item.setRemoveAmount(amount / 4);
@@ -135,11 +135,11 @@ public class Crafting {
         return null;
     }
 
-    private static InventorySlot craftGrassBlock(List<InventorySlot> resources) {
+    private static Item craftGrassBlock(List<Item> resources) {
         int isGround = 0;
         int isTallGrass = 0;
         // check slots for correct resources
-        for (InventorySlot slot : resources) {
+        for (Item slot : resources) {
             if (slot.getElement() == GROUND) {
                 isGround++;
             }
@@ -154,13 +154,13 @@ public class Crafting {
 
         if (isGround == 1 && isTallGrass == 1) {
             int amount = 32;
-            for (InventorySlot slot : resources) {
+            for (Item slot : resources) {
                 if ((slot.getElement() == GROUND || slot.getElement() == TALLGRASS) && amount > slot.getAmount()) {
                     amount = slot.getAmount();
                 }
             }
             // create new item/s
-            InventorySlot item = new InventorySlot();
+            Item item = new Item();
             item.setElement(GRASS);
             item.setAmount(amount);
             item.setRemoveAmount(amount);
@@ -170,10 +170,10 @@ public class Crafting {
         return null;
     }
 
-    private static InventorySlot craftPlank(List<InventorySlot> resources) {
+    private static Item craftPlank(List<Item> resources) {
         int isWood = 0;
         // check slots for correct resources
-        for (InventorySlot slot : resources) {
+        for (Item slot : resources) {
             if (slot.getElement() == WOOD) {
                 isWood++;
             }
@@ -184,7 +184,7 @@ public class Crafting {
 
         if (isWood == 1) {
             int amount = 32;
-            for (InventorySlot slot : resources) {
+            for (Item slot : resources) {
                 if ((slot.getElement() == WOOD) && amount > slot.getAmount()) {
                     amount = slot.getAmount();
                 }
@@ -195,7 +195,7 @@ public class Crafting {
             }
             amount *= 4;
             // create new item/s
-            InventorySlot item = new InventorySlot();
+            Item item = new Item();
             item.setElement(PLANKS);
             item.setAmount(amount);
             item.setRemoveAmount(amount / 4);
@@ -205,7 +205,7 @@ public class Crafting {
         return null;
     }
 
-    private static InventorySlot craftStonePickaxe(List<InventorySlot> resources) {
+    private static Item craftStonePickaxe(List<Item> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == EMPTY
                 && resources.get(1).getElement() == STICK
@@ -218,7 +218,7 @@ public class Crafting {
                 && resources.get(8).getElement() == STONE) {
             int amount = 1;
            
-            for (InventorySlot slot : resources) {
+            for (Item slot : resources) {
                     if ((slot.getElement() == STICK || slot.getElement() == STONE) && amount > slot.getAmount()) {
                         amount = slot.getAmount();
                     }
@@ -226,7 +226,7 @@ public class Crafting {
 
             amount *= 1;
             // create new item/s
-            InventorySlot item = new InventorySlot();
+            Item item = new Item();
             item.setElement(STONEPICKAXE);
             item.setWeapon(true);
             item.setAmount(amount);
@@ -239,7 +239,7 @@ public class Crafting {
         return null;
     }
 
-    private static InventorySlot craftWoodPickaxe(List<InventorySlot> resources) {
+    private static Item craftWoodPickaxe(List<Item> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == EMPTY
                 && resources.get(1).getElement() == STICK
@@ -252,7 +252,7 @@ public class Crafting {
                 && resources.get(8).getElement() == WOOD) {
             int amount = 1;
            
-            for (InventorySlot slot : resources) {
+            for (Item slot : resources) {
                     if ((slot.getElement() == STICK || slot.getElement() == WOOD) && amount > slot.getAmount()) {
                         amount = slot.getAmount();
                     }
@@ -260,7 +260,7 @@ public class Crafting {
 
             amount *= 1;
             // create new item/s
-            InventorySlot item = new InventorySlot();
+            Item item = new Item();
             item.setElement(WOODPICKAXE);
             item.setWeapon(true);
             item.setAmount(amount);
@@ -273,7 +273,7 @@ public class Crafting {
         return null;
     }
 
-    private static InventorySlot craftIronPickaxe(List<InventorySlot> resources) {
+    private static Item craftIronPickaxe(List<Item> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == EMPTY
                 && resources.get(1).getElement() == STICK
@@ -286,7 +286,7 @@ public class Crafting {
                 && resources.get(8).getElement() == IRONINGOT) {
             int amount = 1;
            
-            for (InventorySlot slot : resources) {
+            for (Item slot : resources) {
                     if ((slot.getElement() == STICK || slot.getElement() == IRONINGOT) && amount > slot.getAmount()) {
                         amount = slot.getAmount();
                     }
@@ -294,7 +294,7 @@ public class Crafting {
 
             amount *= 1;
             // create new item/s
-            InventorySlot item = new InventorySlot();
+            Item item = new Item();
             item.setElement(IRONPICKAXE);
             item.setWeapon(true);
             item.setAmount(amount);
@@ -307,7 +307,7 @@ public class Crafting {
         return null;
     }
 
-    private static InventorySlot craftDiamondPickaxe(List<InventorySlot> resources) {
+    private static Item craftDiamondPickaxe(List<Item> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == EMPTY
                 && resources.get(1).getElement() == STICK
@@ -320,7 +320,7 @@ public class Crafting {
                 && resources.get(8).getElement() == DIAMONDITEM) {
             int amount = 1;
            
-            for (InventorySlot slot : resources) {
+            for (Item slot : resources) {
                     if ((slot.getElement() == STICK || slot.getElement() == DIAMONDITEM) && amount > slot.getAmount()) {
                         amount = slot.getAmount();
                     }
@@ -328,7 +328,7 @@ public class Crafting {
 
             amount *= 1;
             // create new item/s
-            InventorySlot item = new InventorySlot();
+            Item item = new Item();
             item.setElement(DIAMONDPICKAXE);
             item.setWeapon(true);
             item.setAmount(amount);
@@ -341,7 +341,7 @@ public class Crafting {
         return null;
     }
 
-    private static InventorySlot craftStoneAxe(List<InventorySlot> resources) {
+    private static Item craftStoneAxe(List<Item> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == EMPTY
                 && resources.get(1).getElement() == STICK
@@ -354,7 +354,7 @@ public class Crafting {
                 && resources.get(8).getElement() == STONE) {
             int amount = 1;
            
-            for (InventorySlot slot : resources) {
+            for (Item slot : resources) {
                     if ((slot.getElement() == STICK || slot.getElement() == STONE) && amount > slot.getAmount()) {
                         amount = slot.getAmount();
                     }
@@ -362,7 +362,7 @@ public class Crafting {
 
             amount *= 1;
             // create new item/s
-            InventorySlot item = new InventorySlot();
+            Item item = new Item();
             item.setElement(STONEAXE);
             item.setWeapon(true);
             item.setAmount(amount);
@@ -375,7 +375,7 @@ public class Crafting {
         return null;
     }
 
-    private static InventorySlot craftWoodAxe(List<InventorySlot> resources) {
+    private static Item craftWoodAxe(List<Item> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == EMPTY
                 && resources.get(1).getElement() == STICK
@@ -388,7 +388,7 @@ public class Crafting {
                 && resources.get(8).getElement() == WOOD) {
             int amount = 1;
            
-            for (InventorySlot slot : resources) {
+            for (Item slot : resources) {
                     if ((slot.getElement() == STICK || slot.getElement() == WOOD) && amount > slot.getAmount()) {
                         amount = slot.getAmount();
                     }
@@ -396,7 +396,7 @@ public class Crafting {
 
             amount *= 1;
             // create new item/s
-            InventorySlot item = new InventorySlot();
+            Item item = new Item();
             item.setElement(WOODAXE);
             item.setWeapon(true);
             item.setAmount(amount);
@@ -409,7 +409,7 @@ public class Crafting {
         return null;
     }
 
-    private static InventorySlot craftIronAxe(List<InventorySlot> resources) {
+    private static Item craftIronAxe(List<Item> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == EMPTY
                 && resources.get(1).getElement() == STICK
@@ -422,7 +422,7 @@ public class Crafting {
                 && resources.get(8).getElement() == IRONINGOT) {
             int amount = 1;
            
-            for (InventorySlot slot : resources) {
+            for (Item slot : resources) {
                     if ((slot.getElement() == STICK || slot.getElement() == IRONINGOT) && amount > slot.getAmount()) {
                         amount = slot.getAmount();
                     }
@@ -430,7 +430,7 @@ public class Crafting {
 
             amount *= 1;
             // create new item/s
-            InventorySlot item = new InventorySlot();
+            Item item = new Item();
             item.setElement(IRONAXE);
             item.setWeapon(true);
             item.setAmount(amount);
@@ -443,7 +443,7 @@ public class Crafting {
         return null;
     }
 
-    private static InventorySlot craftDiamondAxe(List<InventorySlot> resources) {
+    private static Item craftDiamondAxe(List<Item> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == EMPTY
                 && resources.get(1).getElement() == STICK
@@ -456,7 +456,7 @@ public class Crafting {
                 && resources.get(8).getElement() == DIAMONDITEM) {
             int amount = 1;
            
-            for (InventorySlot slot : resources) {
+            for (Item slot : resources) {
                     if ((slot.getElement() == STICK || slot.getElement() == DIAMONDITEM) && amount > slot.getAmount()) {
                         amount = slot.getAmount();
                     }
@@ -464,7 +464,7 @@ public class Crafting {
 
             amount *= 1;
             // create new item/s
-            InventorySlot item = new InventorySlot();
+            Item item = new Item();
             item.setElement(DIAMONDAXE);
             item.setWeapon(true);
             item.setAmount(amount);
@@ -477,7 +477,7 @@ public class Crafting {
         return null;
     }
 
-    private static InventorySlot craftIronIngot(List<InventorySlot> resources) {
+    private static Item craftIronIngot(List<Item> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == IRON
                 && resources.get(1).getElement() == IRON
@@ -490,7 +490,7 @@ public class Crafting {
                 && resources.get(8).getElement() == EMPTY) {
             int amount = 32;
            
-            for (InventorySlot slot : resources) {
+            for (Item slot : resources) {
                     if ((slot.getElement() == IRON) && amount > slot.getAmount()) {
                         amount = slot.getAmount();
                     }
@@ -498,7 +498,7 @@ public class Crafting {
 
             amount *= 1;
             // create new item/s
-            InventorySlot item = new InventorySlot();
+            Item item = new Item();
             item.setElement(IRONINGOT);
             item.setAmount(amount);
             item.setResource(true);
@@ -509,7 +509,7 @@ public class Crafting {
         return null;
     }
 
-    private static InventorySlot craftDoor(List<InventorySlot> resources) {
+    private static Item craftDoor(List<Item> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == PLANKS
                 && resources.get(1).getElement() == PLANKS
@@ -521,7 +521,7 @@ public class Crafting {
                 && resources.get(7).getElement() == PLANKS
                 && resources.get(8).getElement() == EMPTY) {
             int amount = 32;
-            for (InventorySlot slot : resources) {
+            for (Item slot : resources) {
                 if (slot.getElement() == PLANKS && amount > slot.getAmount()) {
                     amount = slot.getAmount();
                 }
@@ -532,7 +532,7 @@ public class Crafting {
             }
             amount *= 1;
             // create new item/s
-            InventorySlot item = new InventorySlot();
+            Item item = new Item();
             item.setElement(DOOR);
             item.setAmount(amount);
             item.setRemoveAmount(amount);
@@ -542,10 +542,10 @@ public class Crafting {
         return null;
     }
 
-    private static InventorySlot craftStick(List<InventorySlot> resources) {
+    private static Item craftStick(List<Item> resources) {
         int isPlanks = 0;
         // check slots for correct resources
-        for (InventorySlot slot : resources) {
+        for (Item slot : resources) {
             if (slot.getElement() == PLANKS) {
                 isPlanks++;
             }
@@ -556,7 +556,7 @@ public class Crafting {
 
         if (isPlanks == 1) {
             int amount = 32;
-            for (InventorySlot slot : resources) {
+            for (Item slot : resources) {
                 if ((slot.getElement() == PLANKS) && amount > slot.getAmount()) {
                     amount = slot.getAmount();
                 }
@@ -567,7 +567,7 @@ public class Crafting {
             }
             amount *= 4;
             // create new item/s
-            InventorySlot item = new InventorySlot();
+            Item item = new Item();
             item.setElement(STICK);
             item.setAmount(amount);
             item.setResource(true);
@@ -578,7 +578,7 @@ public class Crafting {
         return null;
     }
 
-    private static InventorySlot craftTorch(List<InventorySlot> resources) {
+    private static Item craftTorch(List<Item> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == EMPTY
                 && resources.get(1).getElement() == STICK
@@ -591,7 +591,7 @@ public class Crafting {
                 && resources.get(8).getElement() == EMPTY) {
             int amount = 32;
            
-            for (InventorySlot slot : resources) {
+            for (Item slot : resources) {
                     if ((slot.getElement() == STICK || slot.getElement() == COALITEM) && amount > slot.getAmount()) {
                         amount = slot.getAmount();
                     }
@@ -599,7 +599,7 @@ public class Crafting {
 
             amount *= 1;
             // create new item/s
-            InventorySlot item = new InventorySlot();
+            Item item = new Item();
             item.setElement(TORCH);
             item.setAmount(amount);
             item.setRemoveAmount(amount);
