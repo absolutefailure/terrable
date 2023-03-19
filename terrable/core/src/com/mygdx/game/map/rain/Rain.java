@@ -35,11 +35,11 @@ public class Rain {
         newRaindropTimer -= 1 * delta;
         if (rainTimer < 0 && !isRaining) {
             isRaining = true;
-            rainTimer = rand.nextFloat(9000) + 1000;
+            rainTimer = rand.nextInt(9000) + 1000;
             wind = rand.nextInt(900) - 400;
         } else if (rainTimer < 0) {
             isRaining = false;
-            rainTimer = rand.nextFloat(9000) + 1000;
+            rainTimer = rand.nextInt(9000) + 1000;
         }
         if (!isRaining && rainTimer > 0 && rainTimer < 200 && newRaindropTimer < 0) {
             if (rainDropList.size() < 2000) {
