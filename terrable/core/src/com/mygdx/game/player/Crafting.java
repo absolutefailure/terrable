@@ -82,10 +82,10 @@ public class Crafting {
         }
 
         //IRON INGOT (VERY TEMPORARY BEROFE SMELTING MECHANIC)
-        result = craftIronIngot(resources);
+/*         result = craftIronIngot(resources);
         if (result != null) {
             return result;
-        }
+        } */
 
         //STICK
         result = craftStick(resources);
@@ -95,6 +95,12 @@ public class Crafting {
 
         //TORCH
         result = craftTorch(resources);
+        if (result != null) {
+            return result;
+        }
+
+        //FURNACE
+        result = craftFurnace(resources);
         if (result != null) {
             return result;
         }
@@ -477,7 +483,7 @@ public class Crafting {
         return null;
     }
 
-    private static Item craftIronIngot(List<Item> resources) {
+/*     private static Item craftIronIngot(List<Item> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == IRON
                 && resources.get(1).getElement() == IRON
@@ -507,7 +513,7 @@ public class Crafting {
         }
         // return null if resources are not correct
         return null;
-    }
+    } */
 
     private static Item craftDoor(List<Item> resources) {
         // check slots for correct resources
@@ -601,6 +607,34 @@ public class Crafting {
             // create new item/s
             Item item = new Item();
             item.setElement(TORCH);
+            item.setAmount(amount);
+            item.setRemoveAmount(amount);
+            return item;
+        }
+        // return null if resources are not correct
+        return null;
+    }
+
+    private static Item craftFurnace(List<Item> resources) {
+        // check slots for correct resources
+        if (resources.get(0).getElement() == STONE
+                && resources.get(1).getElement() == STONE
+                && resources.get(2).getElement() == STONE
+                && resources.get(3).getElement() == STONE
+                && resources.get(4).getElement() == EMPTY
+                && resources.get(5).getElement() == STONE
+                && resources.get(6).getElement() == STONE
+                && resources.get(7).getElement() == STONE
+                && resources.get(8).getElement() == STONE) {
+            int amount = 32;
+            for (Item slot : resources) {
+                if (slot.getElement() == STONE && amount > slot.getAmount()) {
+                    amount = slot.getAmount();
+                }
+            }
+            // create new item/s
+            Item item = new Item();
+            item.setElement(FURNACE);
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             return item;
