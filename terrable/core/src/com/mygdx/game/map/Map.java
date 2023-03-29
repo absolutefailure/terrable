@@ -31,7 +31,7 @@ public class Map {
     private TextureRegion[][] blockTextures;
     public static ArrayList<Mob> mobs = new ArrayList<>();
     private Texture sunTexture;
-    // private Texture moonTexture;
+    private Texture moonTexture;
     private int mapSizeX; // map size in blocks
     private int mapSizeY; // map size in blocks
 
@@ -43,9 +43,11 @@ public class Map {
     
     
     private float clock = 2000;
+    private float clock2 = 2000;
     private Boolean timeShift = false;
 
     private float dayTime = 20000;
+    private float nightTime = 6000;
 
     private Rain rain;
 
@@ -63,7 +65,7 @@ public class Map {
         cowTexture = new Texture("cow.png");
         cowTextureRegions = TextureRegion.split(cowTexture, 50, 40);
         chickenTextureRegions = TextureRegion.split(chickenTexture, 16, 18);
-        // moonTexture = new Texture("moon.png");
+        moonTexture = new Texture("moon.png");
         mobSpawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/moaiSpawnSound.mp3"));
         batSpawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/batSpawnSound.mp3"));
 
@@ -103,17 +105,28 @@ public class Map {
         if (green > 0.5f){green = 0.5f;}
         if (blue > 0.9f){blue = 0.9f;}
         ScreenUtils.clear(red, green, blue, 1);
+        System.out.println(clock);
         if(!timeShift){
             if(clock < dayTime) {
                 clock += 1f * delta;
                 batch.draw(sunTexture, (int)player.getX()-800, -(2500)+(clock)/2);
+                if(clock2 > 10) {
+                    clock2 -= 1f * delta;
+                    batch.draw(moonTexture, (int)player.getX()-800, -(2500)+(nightTime-(nightTime-clock2))/2);
+                }
             } else {
                 timeShift = true;
             }
         } else {
-            if(clock > 0) {
+            if(clock > 10) {
                 batch.draw(sunTexture, (int)player.getX()-800, -(2500)+(dayTime-(dayTime-clock))/2);
                 clock -= 1f * delta;
+                if (clock < nightTime) {
+                    if(clock2 < nightTime) {
+                        clock2 += 1f * delta;
+                        batch.draw(moonTexture, (int)player.getX()-800, -(2500)+(clock2)/2);
+                    }
+                }
             } else {
                 timeShift = false;
             }
