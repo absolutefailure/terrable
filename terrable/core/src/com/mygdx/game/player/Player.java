@@ -127,7 +127,7 @@ public class Player {
         float oldY = playerPosY;
 
         // JUMP
-        if (onGround) {
+        if (onGround && !inventory.isFurnaceOpen()) {
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                 gravity = -4.3f;
                 onGroundTimer = 0;
@@ -225,23 +225,26 @@ public class Player {
         Boolean isRunning = false;
 
         // LEFT AND RIGHT MOVEMENT
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-                isRunning = true;
-                acceleration -= 3;
-            } else {
-                acceleration -= 1;
+        if (!inventory.isFurnaceOpen()){
+            if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+                if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+                    isRunning = true;
+                    acceleration -= 3;
+                } else {
+                    acceleration -= 1;
+                }
+            }
+    
+            if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+                if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+                    isRunning = true;
+                    acceleration += 3;
+                } else {
+                    acceleration += 1;
+                }
             }
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-                isRunning = true;
-                acceleration += 3;
-            } else {
-                acceleration += 1;
-            }
-        }
 
         if (acceleration > 3 && isRunning == false) {
             acceleration = 3;
@@ -303,7 +306,15 @@ public class Player {
 
                                     // IF DISTANCE IS < 150 PIXELS DRAW BLOCK OUTLINE
                                     if (distance <= 150) {
+                                        // Right click to open furnace menu
+                                        if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)
+                                            && (mapArray[x][y].getElement() == FURNACE || mapArray[x][y].getElement() == FURNACE2) && !inventory.isInventoryOpen()){
+                                            inventory.setInventoryOpen(true);
+                                            inventory.setFurnaceOpen(true);
+                                            inventory.setOpenFurnaceX(x);
+                                            inventory.setOpenFurnaceY(y);
 
+                                        } 
                                         batch.setColor(1, 1, 1, 0.5f);
                                         // IF LEFT MOUSE BUTTON IS DOWN REDUCE BLOCK HEALTH OR DESTROY IT (CHANGE TO
                                         // EMPTY AND COLLISION OFF)
@@ -519,7 +530,11 @@ public class Player {
 
                                                     }else if (inventory.getSelectedItem().getElement() != DOOR) {
                                                         mapArray[x][y].setElement(inventory.getSelectedItem().getElement());
-
+                                                        if (mapArray[x][y].getElement() == FURNACE){
+                                                            mapArray[x][y].setFurnaceSlot1(new Item());
+                                                            mapArray[x][y].setFurnaceSlot2(new Item());
+                                                            mapArray[x][y].setFurnaceSlot3(new Item());
+                                                        }
                                                         // prevent collision on certain blocks
                                                         switch (inventory.getSelectedItem().getElement()) {
                                                             case LADDER:
@@ -544,6 +559,7 @@ public class Player {
                                                 }
                                             }
                                         }
+
                                         // Right click to open door
                                         if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)
                                         && (mapArray[x][y].getElement()  == DOOR1 || mapArray[x][y].getElement()  == DOOR2)){
@@ -691,7 +707,7 @@ public class Player {
         cam.update();
     }
 
-    public void DrawHud(Batch batch, HudCamera cam) {
+    public void DrawHud(Batch batch, HudCamera cam, Block[][] mapArray, float delta) {
 
      
 
@@ -703,7 +719,7 @@ public class Player {
         // DRAW CURRENT ELEMENT SELECTED
         font.draw(batch, elementString, 10 , 890);
 
-        inventory.Update(batch, this, blockTextures, cam, outlineTexture);
+        inventory.Update(batch, this, blockTextures, cam, outlineTexture, mapArray, delta);
 
     }
 

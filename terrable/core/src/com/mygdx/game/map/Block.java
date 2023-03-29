@@ -1,10 +1,14 @@
 package com.mygdx.game.map;
 import static com.mygdx.game.map.Element.*;
 
+import java.util.Date;
+
+import com.mygdx.game.player.Item;
+
 
 public class Block {
     
-    final int BLOCKSIZE = 25; // block size in pixels
+    private final int BLOCKSIZE = 25; // block size in pixels
 
     private int posX;
     private int posY;
@@ -15,8 +19,8 @@ public class Block {
 
     private float brightness;
 
-    boolean collision;
-    int permanent;
+    private boolean collision;
+    private int permanent;
 
     public float brightnessLevel;
 
@@ -104,6 +108,9 @@ public class Block {
 
     public void setElement(int element) {
         this.element = element;
+        furnaceSlot1 = null;
+        furnaceSlot2 = null;
+        furnaceSlot3 = null;
     }
     
     public int getBLOCKSIZE() {
@@ -187,10 +194,77 @@ public class Block {
             return 10000;
         } else if (element == IRONINGOT){
             return 50;
-        } else{
+        } else if (element == FURNACE || element == FURNACE2){
+            return 300;
+        }else {
             return 1;
         }
         
     }
+
+
+
+    //FURNACE
+    private Item furnaceSlot1;
+    private Item furnaceSlot2;
+    private Item furnaceSlot3;
+
+    private Long furnaceStartTimer;
+    
+    public Long getFurnaceStartTimer() {
+        return furnaceStartTimer;
+    }
+
+    public void setFurnaceStartTimer(Long furnaceStartTimer) {
+        this.furnaceStartTimer = furnaceStartTimer;
+    }
+
+    public Item getFurnaceSlot1() {
+        return furnaceSlot1;
+    }
+
+    public void setFurnaceSlot1(Item furnaceSlot1) {
+        this.furnaceSlot1 = furnaceSlot1;
+    }
+
+    public Item getFurnaceSlot2() {
+        return furnaceSlot2;
+    }
+
+    public void setFurnaceSlot2(Item furnaceSlot2) {
+        this.furnaceSlot2 = furnaceSlot2;
+    }
+
+    public Item getFurnaceSlot3() {
+        return furnaceSlot3;
+    }
+
+    public void setFurnaceSlot3(Item furnaceSlot3) {
+        this.furnaceSlot3 = furnaceSlot3;
+    }
+
+    public void checkFurnace(){
+        if (furnaceSlot1.getAmount() > 0 && furnaceSlot2.getAmount() > 0){
+
+            if (furnaceSlot2.getElement() == COALITEM || furnaceSlot2.getElement() == WOOD || furnaceSlot2.getElement() == PLANKS){
+                int amount = (int) Math.floor((new Date().getTime() - furnaceStartTimer)/5000); 
+                if (amount > furnaceSlot1.getAmount()){amount = furnaceSlot1.getAmount();}
+                if (amount > furnaceSlot2.getAmount()){amount = furnaceSlot2.getAmount();}
+                this.element = FURNACE2;
+                if (amount > 0 && furnaceSlot1.getElement() == IRON && (furnaceSlot3.getElement() == IRONINGOT || furnaceSlot3.getAmount() == 0) && furnaceSlot3.getAmount() + amount <= 32){
+                    furnaceSlot3.setElement(IRONINGOT);
+                    furnaceSlot3.setAmount(furnaceSlot3.getAmount() + amount);
+                    furnaceSlot3.setResource(true);
+                    furnaceSlot1.setAmount(furnaceSlot1.getAmount() - amount);
+                    furnaceSlot2.setAmount(furnaceSlot2.getAmount() - amount);
+                    furnaceStartTimer = new Date().getTime();
+                }
+
+            }
+        }else{
+            this.element = FURNACE;
+        }
+    }
+
 
 }

@@ -35,6 +35,8 @@ public final class Element {
     public static final int SLIMEBALL = 30;
     public static final int STONEBACKGROUND = 31;
     public static final int DIRTBACKGROUND = 32;
+    public static final int FURNACE = 33;
+    public static final int FURNACE2 = 34;
 
 
 }

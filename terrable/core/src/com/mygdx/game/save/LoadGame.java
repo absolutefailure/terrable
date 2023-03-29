@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 import com.mygdx.game.map.Block;
+import com.mygdx.game.map.Element;
 import com.mygdx.game.map.Map;
 import com.mygdx.game.player.Item;
 import com.mygdx.game.player.Player;
@@ -71,6 +72,11 @@ public class LoadGame {
                         mapArray[i][j].setCollision(collision);
                         mapArray[i][j].setPermanent(permanent);
                         mapArray[i][j].brightnessLevel = brightnessLevel;
+                        if (mapArray[i][j].getElement() == Element.FURNACE){
+                            mapArray[i][j].setFurnaceSlot1(new Item());
+                            mapArray[i][j].setFurnaceSlot2(new Item());
+                            mapArray[i][j].setFurnaceSlot3(new Item());
+                        }
                         // mapArray[i][j] = new Block(posX, posY, element, collision, permanent);
                     }
                 }

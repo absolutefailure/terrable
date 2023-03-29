@@ -187,8 +187,8 @@ public class Map {
 
     public void UpdateLighting(Player player){
 
-        int startBlockX = (int)(player.getX() / 25 - 1800 / 25 / 2) +(mapSizeX/2);
-        int endBlockX = (startBlockX + 1800 / 25) ;
+        int startBlockX = (int)(player.getX() / 25 - 2000 / 25 / 2) +(mapSizeX/2);
+        int endBlockX = (startBlockX + 2000 / 25) ;
 
         for (int x = startBlockX; x < endBlockX; x++){
             if (mapArray[x][0].getPosX() > player.getX() - 1200 && mapArray[x][0].getPosX() < player.getX() + 1200 && x > 5 && x < mapSizeX - 5) {

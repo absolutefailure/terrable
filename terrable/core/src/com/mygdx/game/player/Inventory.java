@@ -1,6 +1,7 @@
 package com.mygdx.game.player;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -9,25 +10,33 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.camera.HudCamera;
+import com.mygdx.game.map.Block;
 
 public class Inventory {
     private int grab = -1;
     private boolean isGrabbed;
+    private float grabTimer = 0;
     private int selectedSlot = 0;
     private boolean isInventoryOpen = false;
+    private boolean isFurnaceOpen = false;
     private ArrayList<Integer> usedSlots = new ArrayList<>();
-    BitmapFont font = new BitmapFont();
+    private BitmapFont font = new BitmapFont();
     private ArrayList<Item> items;
 
     private final int INVENTORY_SLOT_MAX = 32;
 
     private Texture hotbarTexture;
     private Texture inventoryTexture;
+    private Texture furnaceMenuTexture;
 
-    public Inventory(){
+    private int openFurnaceX = 0;
+    private int openFurnaceY = 0;
+
+    public Inventory() {
 
         hotbarTexture = new Texture("hotbar.png");
         inventoryTexture = new Texture("crafting.png");
+        furnaceMenuTexture = new Texture("furnacemenu.png");
 
         items = new ArrayList<>();
         for (int i = 0; i < 46; i++) {
@@ -35,7 +44,8 @@ public class Inventory {
         }
     }
 
-    public void Update(Batch batch, Player player, TextureRegion[][] blockTextures, HudCamera cam, Texture outlineTexture){
+    public void Update(Batch batch, Player player, TextureRegion[][] blockTextures, HudCamera cam,
+            Texture outlineTexture, Block[][] mapArray, float delta) {
         // change selected slot
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
             selectedSlot = 0;
@@ -57,16 +67,22 @@ public class Inventory {
             selectedSlot = 8;
         }
 
+        if (grabTimer >= 0) {
+            grabTimer -= 1 * delta;
+        }
+
         // show/hide inventory
         if (!isInventoryOpen) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.TAB) || Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+            if ((Gdx.input.isKeyJustPressed(Input.Keys.TAB) || Gdx.input.isKeyJustPressed(Input.Keys.E))
+                    && !isFurnaceOpen) {
                 isInventoryOpen = true;
             }
 
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.TAB) || Gdx.input.isKeyJustPressed(Input.Keys.E)) {
             isInventoryOpen = false;
-            for (int j = 36; j < 45; j++){
-                for (int i = 0; i < 36; i++){
+            isFurnaceOpen = false;
+            for (int j = 36; j < 45; j++) {
+                for (int i = 0; i < 36; i++) {
                     int slotIndex = -1;
                     for (int o = 0; o < 36; o++) {
                         if (items.get(j).getElement() == items.get(o).getElement()
@@ -81,14 +97,14 @@ public class Inventory {
                     } else {
                         if (!items.get(j).isWeapon() && items.get(i).getElement() == items.get(j).getElement()
                                 && items.get(i).getAmount() + items.get(j).getAmount() <= INVENTORY_SLOT_MAX) {
-                                items.get(i).setAmount(items.get(i).getAmount() + items.get(j).getAmount());
-                                items.get(i).setWeapon(items.get(j).isWeapon());
-                                items.get(i).setFood(items.get(j).isFood());
-                                items.get(i).setResource(items.get(j).isResource());
-                                items.get(i).setDamage(items.get(j).getDamage());
-                                items.get(i).setHealth(items.get(j).getHealth());
+                            items.get(i).setAmount(items.get(i).getAmount() + items.get(j).getAmount());
+                            items.get(i).setWeapon(items.get(j).isWeapon());
+                            items.get(i).setFood(items.get(j).isFood());
+                            items.get(i).setResource(items.get(j).isResource());
+                            items.get(i).setDamage(items.get(j).getDamage());
+                            items.get(i).setHealth(items.get(j).getHealth());
                             break;
-                        }else if (items.get(i).getAmount() == 0) {
+                        } else if (items.get(i).getAmount() == 0) {
                             items.get(i).setAmount(items.get(j).getAmount());
                             items.get(i).setElement(items.get(j).getElement());
                             items.get(i).setWeapon(items.get(j).isWeapon());
@@ -97,123 +113,189 @@ public class Inventory {
                             items.get(i).setDamage(items.get(j).getDamage());
                             items.get(i).setHealth(items.get(j).getHealth());
                             break;
-                        } 
+                        }
                     }
-                
+
                 }
                 items.get(j).setAmount(0);
             }
 
-            
         }
 
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && isGrabbed) {
             isGrabbed = false;
         }
 
-
         // hotbar
         batch.draw(hotbarTexture, 800 - (261 / 2), 0);
+
+        if (isFurnaceOpen) {
+            batch.draw(furnaceMenuTexture, 800 - (271 / 2), 245 - (88 / 2));
+        } else if (isInventoryOpen) {
+            batch.draw(inventoryTexture, 800 - (271 / 2), 245 - (88 / 2));
+        }
 
         for (int i = 0; i < 9; i++) {
             CharSequence str = Integer.toString(items.get(i).getAmount());
             if (items.get(i).getAmount() > 0 && grab != i) {
                 batch.draw(blockTextures[0][items.get(i).getElement() - 1], 802 - (261 / 2) + (29 * i), 2);
-                if (!items.get(i).isWeapon()){
+                if (!items.get(i).isWeapon()) {
                     font.draw(batch, str, 802 - (261 / 2) + (29 * i), 15);
                 }
-                
 
                 if (cam.getInputInGameWorld().x >= 800 - (261 / 2) + (29 * i)
                         && cam.getInputInGameWorld().x <= (800 - (261 / 2) + (29 * i)) + 28
                         && cam.getInputInGameWorld().y >= 0 && cam.getInputInGameWorld().y < 28
-                        && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && grab == -1) {
-                    grab = i;
+                        && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)
+                        && items.get(45).getElement() != items.get(i).getElement()) {
+                    Item reserveSlot = items.get(45);
+                    Item reserveSlot2 = items.get(i);
+                    items.set(i, reserveSlot);
+                    items.set(45, reserveSlot2);
                     isGrabbed = true;
-                }
-            }
-            if (!isGrabbed) {
-
-                if (cam.getInputInGameWorld().x >= 800 - (261 / 2) + (29 * i)
+                } else if (cam.getInputInGameWorld().x >= 800 - (261 / 2) + (29 * i)
                         && cam.getInputInGameWorld().x <= (800 - (261 / 2) + (29 * i)) + 28
-                        && cam.getInputInGameWorld().y >= 0 && cam.getInputInGameWorld().y < 28 && grab > -1
-                        && grab != i) {
-                    if (!items.get(grab).isWeapon() && items.get(grab).getElement() == items.get(i).getElement()
-                            && items.get(i).getAmount() + items.get(grab).getAmount() <= INVENTORY_SLOT_MAX) {
-                                items.get(i).setAmount(items.get(i).getAmount() + items.get(grab).getAmount());
-                                items.get(grab).setAmount(0);
-                                items.get(grab).setElement(0);
-                        grab = -1;
-                    } else {
-                        Item reserveSlot = items.get(grab);
-                        Item reserveSlot2 = items.get(i);
-                        items.set(i, reserveSlot);
-                        items.set(grab, reserveSlot2);
-                        grab = -1;
-                    }
-                }else if (cam.getInputInGameWorld().x >= 800 - (261 / 2) + (29 * i)
-                && cam.getInputInGameWorld().x <= (800 - (261 / 2) + (29 * i)) + 28
-                && cam.getInputInGameWorld().y >= 0 && cam.getInputInGameWorld().y < 28 && grab > -1
-                && grab == i){
-                    grab = -1;
+                        && cam.getInputInGameWorld().y >= 0 && cam.getInputInGameWorld().y < 28
+                        && Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT) && items.get(45).getAmount() == 0) {
+                    int putAmount = (int) Math.ceil(items.get(i).getAmount() / 2f);
+                    items.get(45).setElement(items.get(i).getElement());
+                    items.get(45).setDamage(items.get(i).getDamage());
+                    items.get(45).setHealth(items.get(i).getHealth());
+                    items.get(45).setResource(items.get(i).isResource());
+                    items.get(45).setFood(items.get(i).isFood());
+                    items.get(45).setWeapon(items.get(i).isWeapon());
+                    items.get(45).setAmount(putAmount);
+                    items.get(i).setAmount(items.get(i).getAmount() - putAmount);
+                    isGrabbed = true;
+                    grabTimer = 15;
                 }
             }
+
+            if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)
+                    && cam.getInputInGameWorld().x >= 800 - (261 / 2) + (29 * i)
+                    && cam.getInputInGameWorld().x <= (800 - (261 / 2) + (29 * i)) + 28
+                    && cam.getInputInGameWorld().y >= 0 && cam.getInputInGameWorld().y < 28 && !isGrabbed) {
+
+                if (!items.get(45).isWeapon() && items.get(45).getElement() == items.get(i).getElement()
+                        && items.get(i).getAmount() + items.get(45).getAmount() <= INVENTORY_SLOT_MAX) {
+                    items.get(i).setAmount(items.get(i).getAmount() + items.get(45).getAmount());
+                    items.get(45).setAmount(0);
+                    items.get(45).setElement(0);
+                    isGrabbed = false;
+                } else {
+                    Item reserveSlot = items.get(45);
+                    Item reserveSlot2 = items.get(i);
+                    items.set(i, reserveSlot);
+                    items.set(45, reserveSlot2);
+                    isGrabbed = false;
+                }
+            }
+
             if (i == selectedSlot) {
                 batch.draw(outlineTexture, 802 - (261 / 2) + (29 * i), 2);
             }
         }
         // inventory
         if (isInventoryOpen) {
-            batch.draw(inventoryTexture, 800 - (261 / 2), 250 - (88 / 2));
 
             int invDrawRow = 0;
             int invDrawColumn = 0;
             for (int i = 9; i < 36; i++) {
                 CharSequence str = Integer.toString(items.get(i).getAmount());
-                if (items.get(i).getAmount() > 0 && grab != i) {
-                    batch.draw(blockTextures[0][items.get(i).getElement() - 1], 802 - (261 / 2) + (29 * invDrawRow),250 - (88 / 2) + 2 + (invDrawColumn * 29));
-                    if (!items.get(i).isWeapon()){
-                        font.draw(batch, str, 802 - (261 / 2) + (29 * invDrawRow),250 - (88 / 2) + 15 + (invDrawColumn * 29));
+                if (items.get(i).getAmount() > 0) {
+                    batch.draw(blockTextures[0][items.get(i).getElement() - 1], 802 - (261 / 2) + (29 * invDrawRow),
+                            250 - (88 / 2) + 2 + (invDrawColumn * 29));
+                    if (!items.get(i).isWeapon()) {
+                        font.draw(batch, str, 802 - (261 / 2) + (29 * invDrawRow),
+                                250 - (88 / 2) + 15 + (invDrawColumn * 29));
                     }
 
                     if (cam.getInputInGameWorld().x >= 800 - (261 / 2) + (29 * invDrawRow)
                             && cam.getInputInGameWorld().x <= (800 - (261 / 2) + (29 * invDrawRow)) + 28
                             && cam.getInputInGameWorld().y >= 254 - (90 / 2) + (invDrawColumn * 29)
                             && cam.getInputInGameWorld().y <= 254 - (90 / 2) + 28 + (invDrawColumn * 29)
-                            && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && grab == -1) {
-                        grab = i;
+                            && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)
+                            && items.get(45).getElement() != items.get(i).getElement()) {
+                        Item reserveSlot = items.get(45);
+                        Item reserveSlot2 = items.get(i);
+                        items.set(i, reserveSlot);
+                        items.set(45, reserveSlot2);
                         isGrabbed = true;
+                    } else if (cam.getInputInGameWorld().x >= 800 - (261 / 2) + (29 * invDrawRow)
+                            && cam.getInputInGameWorld().x <= (800 - (261 / 2) + (29 * invDrawRow)) + 28
+                            && cam.getInputInGameWorld().y >= 254 - (90 / 2) + (invDrawColumn * 29)
+                            && cam.getInputInGameWorld().y <= 254 - (90 / 2) + 28 + (invDrawColumn * 29)
+                            && Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT) && items.get(45).getAmount() == 0) {
+                        int putAmount = (int) Math.ceil(items.get(i).getAmount() / 2f);
+                        items.get(45).setElement(items.get(i).getElement());
+                        items.get(45).setDamage(items.get(i).getDamage());
+                        items.get(45).setHealth(items.get(i).getHealth());
+                        items.get(45).setResource(items.get(i).isResource());
+                        items.get(45).setFood(items.get(i).isFood());
+                        items.get(45).setWeapon(items.get(i).isWeapon());
+                        items.get(45).setAmount(putAmount);
+                        items.get(i).setAmount(items.get(i).getAmount() - putAmount);
+                        isGrabbed = true;
+                        grabTimer = 15;
                     }
                 }
-                if (!isGrabbed) {
 
+                if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)
+                        && cam.getInputInGameWorld().x >= 800 - (261 / 2) + (29 * invDrawRow)
+                        && cam.getInputInGameWorld().x <= (800 - (261 / 2) + (29 * invDrawRow)) + 28
+                        && cam.getInputInGameWorld().y >= 254 - (90 / 2) + (invDrawColumn * 29)
+                        && cam.getInputInGameWorld().y <= 254 - (90 / 2) + 29 + (invDrawColumn * 29) && !isGrabbed) {
+
+                    if (!items.get(45).isWeapon() && items.get(45).getElement() == items.get(i).getElement()
+                            && items.get(i).getAmount()
+                                    + items.get(45).getAmount() <= INVENTORY_SLOT_MAX) {
+                        items.get(i).setAmount(items.get(i).getAmount() + items.get(45).getAmount());
+                        items.get(45).setAmount(0);
+                        items.get(45).setElement(0);
+                        isGrabbed = false;
+                    } else {
+                        Item reserveSlot = items.get(45);
+                        Item reserveSlot2 = items.get(i);
+                        items.set(i, reserveSlot);
+                        items.set(45, reserveSlot2);
+                        isGrabbed = false;
+                    }
+                }
+                if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && grabTimer < 0 && items.get(45).getAmount() > 0) {
                     if (cam.getInputInGameWorld().x >= 800 - (261 / 2) + (29 * invDrawRow)
-                    && cam.getInputInGameWorld().x <= (800 - (261 / 2) + (29 * invDrawRow)) + 28
-                    && cam.getInputInGameWorld().y >= 254 - (90 / 2) + (invDrawColumn * 29)
-                    && cam.getInputInGameWorld().y <= 254 - (90 / 2) + 29 + (invDrawColumn * 29) && grab > -1
-                            && grab != i) {
-
-                        if (!items.get(grab).isWeapon() && items.get(grab).getElement() == items.get(i).getElement()
-                                && items.get(i).getAmount()
-                                        + items.get(grab).getAmount() <= INVENTORY_SLOT_MAX) {
-                                items.get(i).setAmount(items.get(i).getAmount() + items.get(grab).getAmount());
-                                items.get(grab).setAmount(0);
-                                items.get(grab).setElement(0);
-                            grab = -1;
-                        } else {
-                            Item reserveSlot = items.get(grab);
-                            Item reserveSlot2 = items.get(i);
-                            items.set(i, reserveSlot);
-                            items.set(grab, reserveSlot2);
-                            grab = -1;
+                            && cam.getInputInGameWorld().x <= (800 - (261 / 2) + (29 * invDrawRow)) + 28
+                            && cam.getInputInGameWorld().y >= 254 - (90 / 2) + (invDrawColumn * 29)
+                            && cam.getInputInGameWorld().y <= 254 - (90 / 2) + 29 + (invDrawColumn * 29)
+                            && !usedSlots.contains(i)) {
+                        int putAmount = 1;
+                        if (!items.get(45).isWeapon() && items.get(45).getElement() == items.get(i).getElement()
+                                && items.get(i).getAmount() + putAmount <= INVENTORY_SLOT_MAX) {
+                            items.get(i).setAmount(items.get(i).getAmount() + putAmount);
+                            items.get(45).removeItem();
+                            usedSlots.add(i);
+                            if (items.get(45).getAmount() <= 0) {
+                                items.get(45).setElement(0);
+                                isGrabbed = false;
+                            }
+                        } else if (items.get(i).getAmount() == 0
+                                && items.get(i).getAmount() + putAmount <= INVENTORY_SLOT_MAX) {
+                            items.get(i).setElement(items.get(45).getElement());
+                            items.get(i).setDamage(items.get(45).getDamage());
+                            items.get(i).setHealth(items.get(45).getHealth());
+                            items.get(i).setResource(items.get(45).isResource());
+                            items.get(i).setFood(items.get(45).isFood());
+                            items.get(i).setWeapon(items.get(45).isWeapon());
+                            items.get(i).setAmount(items.get(i).getAmount() + putAmount);
+                            items.get(45).removeItem();
+                            usedSlots.add(i);
+                            if (items.get(45).getAmount() <= 0) {
+                                items.get(45).setElement(0);
+                                isGrabbed = false;
+                            }
                         }
-                    }else if (cam.getInputInGameWorld().x >= 800 - (261 / 2) + (29 * invDrawRow)
-                    && cam.getInputInGameWorld().x <= (800 - (261 / 2) + (29 * invDrawRow)) + 28
-                    && cam.getInputInGameWorld().y >= 254 - (90 / 2) + (invDrawColumn * 29)
-                    && cam.getInputInGameWorld().y <= 254 - (90 / 2) + 29 + (invDrawColumn * 29) && grab > -1
-                        && grab == i){
-                            grab = -1;
-                        }
+                    }
+                } else {
+                    usedSlots.clear();
                 }
                 invDrawRow++;
                 if (invDrawRow % 9 == 0) {
@@ -222,205 +304,362 @@ public class Inventory {
                 }
             }
 
-            // crafting slots
-            invDrawRow = 0;
-            invDrawColumn = 0;
-            for (int i = 36; i < 45; i++) {
-                CharSequence str = Integer.toString(items.get(i).getAmount());
-                if (items.get(i).getAmount() > 0 && grab != i) {
-                    batch.draw(blockTextures[0][items.get(i).getElement() - 1], 860 - (261 / 2) + (29 * invDrawRow),
-                            363 - (88 / 2) + 2 + (invDrawColumn * 29));
-                    if (!items.get(i).isWeapon()){
-                        font.draw(batch, str, 860 - (261 / 2) + (29 * invDrawRow),363 - (88 / 2) + 15 + (invDrawColumn * 29));
-                    }
+            if (!isFurnaceOpen) {
 
-                    if (cam.getInputInGameWorld().x >= 858 - (261 / 2) + (29 * invDrawRow)
-                        && cam.getInputInGameWorld().x <= (858 - (261 / 2) + (29 * invDrawRow)) + 28
-                        && cam.getInputInGameWorld().y >= 365 - (90 / 2) + (invDrawColumn * 29)
-                        && cam.getInputInGameWorld().y <= 365 - (90 / 2) + 29 + (invDrawColumn * 29)
-                            && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && grab == -1) {
-                        grab = i;
-                        isGrabbed = true;
-                    }
-                }
-                if (!isGrabbed) {
+                // crafting slots
+                invDrawRow = 0;
+                invDrawColumn = 0;
+                for (int i = 36; i < 45; i++) {
+                    CharSequence str = Integer.toString(items.get(i).getAmount());
+                    if (items.get(i).getAmount() > 0) {
+                        batch.draw(blockTextures[0][items.get(i).getElement() - 1], 860 - (261 / 2) + (29 * invDrawRow),
+                                363 - (88 / 2) + 2 + (invDrawColumn * 29));
+                        if (!items.get(i).isWeapon()) {
+                            font.draw(batch, str, 860 - (261 / 2) + (29 * invDrawRow),
+                                    363 - (88 / 2) + 15 + (invDrawColumn * 29));
+                        }
 
-                    if (cam.getInputInGameWorld().x >= 858 - (261 / 2) + (29 * invDrawRow)
-                        && cam.getInputInGameWorld().x <= (858 - (261 / 2) + (29 * invDrawRow)) + 28
-                        && cam.getInputInGameWorld().y >= 365 - (90 / 2) + (invDrawColumn * 29)
-                        && cam.getInputInGameWorld().y <= 365 - (90 / 2) + 29 + (invDrawColumn * 29) && grab > -1
-                        && grab != i) {
-
-                        if (!items.get(grab).isWeapon() && items.get(grab).getElement() == items.get(i).getElement()
-                                && items.get(i).getAmount()
-                                        + items.get(grab).getAmount() <= INVENTORY_SLOT_MAX) {
-                            items.get(i).setAmount(items.get(i).getAmount() + items.get(grab).getAmount());
-                            items.get(grab).setAmount(0);
-                            items.get(grab).setElement(0);
-                            grab = -1;
-                        } else {
-                            Item reserveSlot = items.get(grab);
+                        if (cam.getInputInGameWorld().x >= 858 - (261 / 2) + (29 * invDrawRow)
+                                && cam.getInputInGameWorld().x <= (858 - (261 / 2) + (29 * invDrawRow)) + 28
+                                && cam.getInputInGameWorld().y >= 365 - (90 / 2) + (invDrawColumn * 29)
+                                && cam.getInputInGameWorld().y <= 365 - (90 / 2) + 29 + (invDrawColumn * 29)
+                                && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)
+                                && items.get(45).getElement() != items.get(i).getElement()) {
+                            Item reserveSlot = items.get(45);
                             Item reserveSlot2 = items.get(i);
                             items.set(i, reserveSlot);
-                            items.set(grab, reserveSlot2);
-                            grab = -1;
+                            items.set(45, reserveSlot2);
+                            isGrabbed = true;
+                        } else if (cam.getInputInGameWorld().x >= 858 - (261 / 2) + (29 * invDrawRow)
+                                && cam.getInputInGameWorld().x <= (858 - (261 / 2) + (29 * invDrawRow)) + 28
+                                && cam.getInputInGameWorld().y >= 365 - (90 / 2) + (invDrawColumn * 29)
+                                && cam.getInputInGameWorld().y <= 365 - (90 / 2) + 29 + (invDrawColumn * 29)
+                                && Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)
+                                && items.get(45).getAmount() == 0) {
+                            int putAmount = (int) Math.ceil(items.get(i).getAmount() / 2f);
+                            items.get(45).setElement(items.get(i).getElement());
+                            items.get(45).setDamage(items.get(i).getDamage());
+                            items.get(45).setHealth(items.get(i).getHealth());
+                            items.get(45).setResource(items.get(i).isResource());
+                            items.get(45).setFood(items.get(i).isFood());
+                            items.get(45).setWeapon(items.get(i).isWeapon());
+                            items.get(45).setAmount(putAmount);
+                            items.get(i).setAmount(items.get(i).getAmount() - putAmount);
+                            isGrabbed = true;
+                            grabTimer = 15;
                         }
-                    }else if (cam.getInputInGameWorld().x >= 858 - (261 / 2) + (29 * invDrawRow)
-                    && cam.getInputInGameWorld().x <= (858 - (261 / 2) + (29 * invDrawRow)) + 28
-                    && cam.getInputInGameWorld().y >= 365 - (90 / 2) + (invDrawColumn * 29)
-                    && cam.getInputInGameWorld().y <= 365 - (90 / 2) + 29 + (invDrawColumn * 29) && grab > -1
-                    && grab == i){
-                        grab = -1;
                     }
-                }
-                if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-                    if (cam.getInputInGameWorld().x >= 858 - (261 / 2) + (29 * invDrawRow)
+
+                    if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)
+                            && cam.getInputInGameWorld().x >= 858 - (261 / 2) + (29 * invDrawRow)
                             && cam.getInputInGameWorld().x <= (858 - (261 / 2) + (29 * invDrawRow)) + 28
                             && cam.getInputInGameWorld().y >= 365 - (90 / 2) + (invDrawColumn * 29)
-                            && cam.getInputInGameWorld().y <= 365 - (90 / 2) + 29 + (invDrawColumn * 29) && grab > -1
-                            && grab != i && !usedSlots.contains(i)) {
-                        int putAmount = 1;
-                        if (!items.get(grab).isWeapon() && items.get(grab).getElement() == items.get(i).getElement()
-                                && items.get(i).getAmount() + putAmount <= INVENTORY_SLOT_MAX) {
-                                    items.get(i).setAmount(items.get(i).getAmount() + putAmount);
-                                    items.get(grab).removeItem();
-                            usedSlots.add(i);
-                            if (items.get(grab).getAmount() <= 0) {
-                                items.get(grab).setElement(0);
-                                grab = -1;
-                            }
-                        } else if (items.get(i).getAmount() == 0
-                                && items.get(i).getAmount() + putAmount <= INVENTORY_SLOT_MAX) {
-                            items.get(i).setElement(items.get(grab).getElement());
-                            items.get(i).setDamage(items.get(grab).getDamage());
-                            items.get(i).setHealth(items.get(grab).getHealth());
-                            items.get(i).setResource(items.get(grab).isResource());
-                            items.get(i).setFood(items.get(grab).isFood());
-                            items.get(i).setWeapon(items.get(grab).isWeapon());
-                            items.get(i).setAmount(items.get(i).getAmount() + putAmount);
-                            items.get(grab).removeItem();
-                            usedSlots.add(i);
-                            if (items.get(grab).getAmount() <= 0) {
-                                items.get(grab).setElement(0);
-                                grab = -1;
-                            }
-                        }
-                    }
-                }else{
-                    usedSlots.clear();
-                }
-                invDrawRow++;
-                if (invDrawRow % 3 == 0) {
-                    invDrawColumn++;
-                    invDrawRow = 0;
-                }
-            }
+                            && cam.getInputInGameWorld().y <= 365 - (90 / 2) + 29 + (invDrawColumn * 29)
+                            && !isGrabbed) {
 
-            // crafting
-            Item newItem = Crafting.craft(items.subList(36, 45));
-            if (newItem != null) {
-                CharSequence str = Integer.toString(newItem.getAmount());
-                batch.draw(blockTextures[0][newItem.getElement() - 1], 976 - (261 / 2), 392 - (88 / 2) + 2);
-                if (!newItem.isWeapon()){
-                    font.draw(batch, str, 976 - (261 / 2), 392 - (88 / 2) + 15);
-                }
-                if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && cam.getInputInGameWorld().x > 976 - (261 / 2)
-                        && cam.getInputInGameWorld().x < (976 - (261 / 2) + 25)
-                        && cam.getInputInGameWorld().y > 392 - (88 / 2)
-                        && cam.getInputInGameWorld().y < 392 - (88 / 2) + 27) {
-                    int slotIndex = -1;
-                    boolean craftingSuccess = false;
-                    if (!newItem.isWeapon()){
-                        for (int i = 0; i < 36; i++) {
-                            if (items.get(i).getElement() == newItem.getElement()
-                                    && items.get(i).getAmount() + newItem.getAmount() <= INVENTORY_SLOT_MAX) {
-                                slotIndex = i;
-                                break;
-                            }
+                        if (!items.get(45).isWeapon() && items.get(45).getElement() == items.get(i).getElement()
+                                && items.get(i).getAmount()
+                                        + items.get(45).getAmount() <= INVENTORY_SLOT_MAX) {
+                            items.get(i).setAmount(items.get(i).getAmount() + items.get(45).getAmount());
+                            items.get(45).setAmount(0);
+                            items.get(45).setElement(0);
+                            isGrabbed = false;
+                        } else {
+                            Item reserveSlot = items.get(45);
+                            Item reserveSlot2 = items.get(i);
+                            items.set(i, reserveSlot);
+                            items.set(45, reserveSlot2);
+                            isGrabbed = false;
                         }
                     }
 
-                    if (slotIndex > 0) {
-                        items.get(slotIndex).setAmount(items.get(slotIndex).getAmount() + newItem.getAmount());
-                        craftingSuccess = true;
+                    if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && grabTimer < 0
+                            && items.get(45).getAmount() > 0) {
+                        if (cam.getInputInGameWorld().x >= 858 - (261 / 2) + (29 * invDrawRow)
+                                && cam.getInputInGameWorld().x <= (858 - (261 / 2) + (29 * invDrawRow)) + 28
+                                && cam.getInputInGameWorld().y >= 365 - (90 / 2) + (invDrawColumn * 29)
+                                && cam.getInputInGameWorld().y <= 365 - (90 / 2) + 29 + (invDrawColumn * 29)
+                                && !usedSlots.contains(i)) {
+                            int putAmount = 1;
+                            if (!items.get(45).isWeapon() && items.get(45).getElement() == items.get(i).getElement()
+                                    && items.get(i).getAmount() + putAmount <= INVENTORY_SLOT_MAX) {
+                                items.get(i).setAmount(items.get(i).getAmount() + putAmount);
+                                items.get(45).removeItem();
+                                usedSlots.add(i);
+                                if (items.get(45).getAmount() <= 0) {
+                                    items.get(45).setElement(0);
+                                    isGrabbed = false;
+                                }
+                            } else if (items.get(i).getAmount() == 0
+                                    && items.get(i).getAmount() + putAmount <= INVENTORY_SLOT_MAX) {
+                                items.get(i).setElement(items.get(45).getElement());
+                                items.get(i).setDamage(items.get(45).getDamage());
+                                items.get(i).setHealth(items.get(45).getHealth());
+                                items.get(i).setResource(items.get(45).isResource());
+                                items.get(i).setFood(items.get(45).isFood());
+                                items.get(i).setWeapon(items.get(45).isWeapon());
+                                items.get(i).setAmount(items.get(i).getAmount() + putAmount);
+                                items.get(45).removeItem();
+                                usedSlots.add(i);
+                                if (items.get(45).getAmount() <= 0) {
+                                    items.get(45).setElement(0);
+                                    isGrabbed = false;
+                                }
+                            }
+                        }
                     } else {
-                        for (int i = 0; i < 36; i++) {
-                            if (items.get(i).getAmount() == 0) {
-                                items.get(i).setAmount(newItem.getAmount());
-                                items.get(i).setElement(newItem.getElement());
-                                items.get(i).setWeapon(newItem.isWeapon());
-                                items.get(i).setFood(newItem.isFood());
-                                items.get(i).setResource(newItem.isResource());
-                                items.get(i).setDamage(newItem.getDamage());
-                                items.get(i).setHealth(newItem.getHealth());
-                                craftingSuccess = true;
-                                break;
-                            } else if (!newItem.isWeapon() && items.get(i).getElement() == newItem.getElement()
-                                    && items.get(i).getAmount() + newItem.getAmount() <= INVENTORY_SLOT_MAX) {
-                                items.get(i).setAmount(items.get(i).getAmount() + newItem.getAmount());
-                                items.get(i).setWeapon(newItem.isWeapon());
-                                items.get(i).setFood(newItem.isFood());
-                                items.get(i).setResource(newItem.isResource());
-                                items.get(i).setDamage(newItem.getDamage());
-                                items.get(i).setHealth(newItem.getHealth());
-                                craftingSuccess = true;
-                                break;
-                            }
-                        }
+                        usedSlots.clear();
                     }
-                    if (craftingSuccess) {
-                        for (int i = 36; i < 45; i++) {
-                            items.get(i).setAmount(items.get(i).getAmount() - newItem.getRemoveAmount());
-                            if (items.get(i).getAmount() < 0) {
-                                items.get(i).setAmount(0);
-                                items.get(i).setElement(0);
-                            }
-                        }
+                    invDrawRow++;
+                    if (invDrawRow % 3 == 0) {
+                        invDrawColumn++;
+                        invDrawRow = 0;
                     }
                 }
+                // crafting
+                Item newItem = Crafting.craft(items.subList(36, 45));
+                if (newItem != null) {
+                    CharSequence str = Integer.toString(newItem.getAmount());
+                    batch.draw(blockTextures[0][newItem.getElement() - 1], 976 - (261 / 2), 392 - (88 / 2) + 2);
+                    if (!newItem.isWeapon()) {
+                        font.draw(batch, str, 976 - (261 / 2), 392 - (88 / 2) + 15);
+                    }
+                    if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)
+                            && cam.getInputInGameWorld().x > 976 - (261 / 2)
+                            && cam.getInputInGameWorld().x < (976 - (261 / 2) + 25)
+                            && cam.getInputInGameWorld().y > 392 - (88 / 2)
+                            && cam.getInputInGameWorld().y < 392 - (88 / 2) + 27) {
+                        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+                            int slotIndex = -1;
+                            boolean craftingSuccess = false;
+                            if (!newItem.isWeapon()) {
+                                for (int i = 0; i < 36; i++) {
+                                    if (items.get(i).getElement() == newItem.getElement()
+                                            && items.get(i).getAmount() + newItem.getAmount() <= INVENTORY_SLOT_MAX) {
+                                        slotIndex = i;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (slotIndex > 0) {
+                                items.get(slotIndex).setAmount(items.get(slotIndex).getAmount() + newItem.getAmount());
+                                craftingSuccess = true;
+                            } else {
+                                for (int i = 0; i < 36; i++) {
+                                    if (items.get(i).getAmount() == 0) {
+                                        items.get(i).setAmount(newItem.getAmount());
+                                        items.get(i).setElement(newItem.getElement());
+                                        items.get(i).setWeapon(newItem.isWeapon());
+                                        items.get(i).setFood(newItem.isFood());
+                                        items.get(i).setResource(newItem.isResource());
+                                        items.get(i).setDamage(newItem.getDamage());
+                                        items.get(i).setHealth(newItem.getHealth());
+                                        craftingSuccess = true;
+                                        break;
+                                    } else if (!newItem.isWeapon() && items.get(i).getElement() == newItem.getElement()
+                                            && items.get(i).getAmount() + newItem.getAmount() <= INVENTORY_SLOT_MAX) {
+                                        items.get(i).setAmount(items.get(i).getAmount() + newItem.getAmount());
+                                        items.get(i).setWeapon(newItem.isWeapon());
+                                        items.get(i).setFood(newItem.isFood());
+                                        items.get(i).setResource(newItem.isResource());
+                                        items.get(i).setDamage(newItem.getDamage());
+                                        items.get(i).setHealth(newItem.getHealth());
+                                        craftingSuccess = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (craftingSuccess) {
+                                for (int i = 36; i < 45; i++) {
+                                    items.get(i).setAmount(items.get(i).getAmount() - newItem.getRemoveAmount());
+                                    if (items.get(i).getAmount() < 0) {
+                                        items.get(i).setAmount(0);
+                                        items.get(i).setElement(0);
+                                    }
+                                }
+                            }
+                        } else {
+                            boolean craftingSuccess = false;
+                            if (items.get(45).getAmount() == 0) {
+                                items.get(45).setAmount(newItem.getAmount());
+                                items.get(45).setElement(newItem.getElement());
+                                items.get(45).setWeapon(newItem.isWeapon());
+                                items.get(45).setFood(newItem.isFood());
+                                items.get(45).setResource(newItem.isResource());
+                                items.get(45).setDamage(newItem.getDamage());
+                                items.get(45).setHealth(newItem.getHealth());
+                                craftingSuccess = true;
+                                isGrabbed = true;
+                            }
+                            if (craftingSuccess) {
+                                for (int i = 36; i < 45; i++) {
+                                    items.get(i).setAmount(items.get(i).getAmount() - newItem.getRemoveAmount());
+                                    if (items.get(i).getAmount() < 0) {
+                                        items.get(i).setAmount(0);
+                                        items.get(i).setElement(0);
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+            } else {
+
+                // FURNACE
+                Item furnaceSlot1 = mapArray[openFurnaceX][openFurnaceY].getFurnaceSlot1();
+                Item furnaceSlot2 = mapArray[openFurnaceX][openFurnaceY].getFurnaceSlot2();
+                Item furnaceSlot3 = mapArray[openFurnaceX][openFurnaceY].getFurnaceSlot3();
+
+                if ((furnaceSlot1.getAmount() == 0) && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)
+                        && cam.getInputInGameWorld().x > 860 - (261 / 2) + (29 * 1)
+                        && cam.getInputInGameWorld().x < 860 - (261 / 2) + (29 * 1) + 25
+                        && cam.getInputInGameWorld().y > 363 - (88 / 2) + 2 + (2 * 29)
+                        && cam.getInputInGameWorld().y < 363 - (88 / 2) + 2 + (2 * 29) + 27) {
+                    furnaceSlot1.setAmount(items.get(45).getAmount());
+                    furnaceSlot1.setElement(items.get(45).getElement());
+                    furnaceSlot1.setWeapon(items.get(45).isWeapon());
+                    furnaceSlot1.setFood(items.get(45).isFood());
+                    furnaceSlot1.setResource(items.get(45).isResource());
+                    furnaceSlot1.setDamage(items.get(45).getDamage());
+                    furnaceSlot1.setHealth(items.get(45).getHealth());
+                    if (furnaceSlot1.getAmount() > 0 && furnaceSlot2.getAmount() > 0) {
+                        mapArray[openFurnaceX][openFurnaceY].setFurnaceStartTimer(new Date().getTime());
+                    }
+
+                    items.get(45).setAmount(0);
+                } else if (items.get(45).getAmount() == 0 && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)
+                        && cam.getInputInGameWorld().x > 860 - (261 / 2) + (29 * 1)
+                        && cam.getInputInGameWorld().x < 860 - (261 / 2) + (29 * 1) + 25
+                        && cam.getInputInGameWorld().y > 363 - (88 / 2) + 2 + (2 * 29)
+                        && cam.getInputInGameWorld().y < 363 - (88 / 2) + 2 + (2 * 29) + 27) {
+                    items.get(45).setAmount(furnaceSlot1.getAmount());
+                    items.get(45).setElement(furnaceSlot1.getElement());
+                    items.get(45).setWeapon(furnaceSlot1.isWeapon());
+                    items.get(45).setFood(furnaceSlot1.isFood());
+                    items.get(45).setResource(furnaceSlot1.isResource());
+                    items.get(45).setDamage(furnaceSlot1.getDamage());
+                    items.get(45).setHealth(furnaceSlot1.getHealth());
+                    furnaceSlot1.setAmount(0);
+                    isGrabbed = true;
+                }
+                if ((furnaceSlot2.getAmount() == 0) && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)
+                        && cam.getInputInGameWorld().x > 860 - (261 / 2) + (29 * 1)
+                        && cam.getInputInGameWorld().x < 860 - (261 / 2) + (29 * 1) + 25
+                        && cam.getInputInGameWorld().y > 363 - (88 / 2) + 2 + (0 * 29)
+                        && cam.getInputInGameWorld().y < 363 - (88 / 2) + 2 + (0 * 29) + 27) {
+                    furnaceSlot2.setAmount(items.get(45).getAmount());
+                    furnaceSlot2.setElement(items.get(45).getElement());
+                    furnaceSlot2.setWeapon(items.get(45).isWeapon());
+                    furnaceSlot2.setFood(items.get(45).isFood());
+                    furnaceSlot2.setResource(items.get(45).isResource());
+                    furnaceSlot2.setDamage(items.get(45).getDamage());
+                    furnaceSlot2.setHealth(items.get(45).getHealth());
+                    if (furnaceSlot1.getAmount() > 0 && furnaceSlot2.getAmount() > 0) {
+                        mapArray[openFurnaceX][openFurnaceY].setFurnaceStartTimer(new Date().getTime());
+                    }
+
+                    items.get(45).setAmount(0);
+                } else if (items.get(45).getAmount() == 0 && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)
+                        && cam.getInputInGameWorld().x > 860 - (261 / 2) + (29 * 1)
+                        && cam.getInputInGameWorld().x < 860 - (261 / 2) + (29 * 1) + 25
+                        && cam.getInputInGameWorld().y > 363 - (88 / 2) + 2 + (0 * 29)
+                        && cam.getInputInGameWorld().y < 363 - (88 / 2) + 2 + (0 * 29) + 27) {
+                    items.get(45).setAmount(furnaceSlot2.getAmount());
+                    items.get(45).setElement(furnaceSlot2.getElement());
+                    items.get(45).setWeapon(furnaceSlot2.isWeapon());
+                    items.get(45).setFood(furnaceSlot2.isFood());
+                    items.get(45).setResource(furnaceSlot2.isResource());
+                    items.get(45).setDamage(furnaceSlot2.getDamage());
+                    items.get(45).setHealth(furnaceSlot2.getHealth());
+                    furnaceSlot2.setAmount(0);
+                    isGrabbed = true;
+                }
+                if (items.get(45).getAmount() == 0 && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)
+                        && cam.getInputInGameWorld().x > 860 - (261 / 2) + (29 * 4)
+                        && cam.getInputInGameWorld().x < 860 - (261 / 2) + (29 * 4) + 25
+                        && cam.getInputInGameWorld().y > 363 - (88 / 2) + 2 + (1 * 29)
+                        && cam.getInputInGameWorld().y < 363 - (88 / 2) + 2 + (1 * 29) + 27) {
+                    items.get(45).setAmount(furnaceSlot3.getAmount());
+                    items.get(45).setElement(furnaceSlot3.getElement());
+                    items.get(45).setWeapon(furnaceSlot3.isWeapon());
+                    items.get(45).setFood(furnaceSlot3.isFood());
+                    items.get(45).setResource(furnaceSlot3.isResource());
+                    items.get(45).setDamage(furnaceSlot3.getDamage());
+                    items.get(45).setHealth(furnaceSlot3.getHealth());
+                    furnaceSlot3.setAmount(0);
+                    isGrabbed = true;
+                }
+                if (furnaceSlot1.getAmount() > 0) {
+                    CharSequence str = Integer.toString(furnaceSlot1.getAmount());
+                    batch.draw(blockTextures[0][furnaceSlot1.getElement() - 1], 860 - (261 / 2) + (29 * 1),
+                            363 - (88 / 2) + 2 + (2 * 29));
+                    if (!furnaceSlot1.isWeapon()) {
+                        font.draw(batch, str, 860 - (261 / 2) + (29 * 1),
+                                363 - (88 / 2) + 2 + (2 * 29) + 15);
+                    }
+                }
+                if (furnaceSlot2.getAmount() > 0) {
+                    CharSequence str = Integer.toString(furnaceSlot2.getAmount());
+                    batch.draw(blockTextures[0][furnaceSlot2.getElement() - 1], 860 - (261 / 2) + (29 * 1),
+                            363 - (88 / 2) + 2 + (0 * 29));
+                    if (!furnaceSlot2.isWeapon()) {
+                        font.draw(batch, str, 860 - (261 / 2) + (29 * 1),
+                                363 - (88 / 2) + 2 + (0 * 29) + 15);
+                    }
+                }
+                if (furnaceSlot3.getAmount() > 0) {
+                    CharSequence str = Integer.toString(furnaceSlot3.getAmount());
+                    batch.draw(blockTextures[0][furnaceSlot3.getElement() - 1], 860 - (261 / 2) + (29 * 4),
+                            363 - (88 / 2) + 2 + (1 * 29));
+                    if (!furnaceSlot3.isWeapon()) {
+                        font.draw(batch, str, 860 - (261 / 2) + (29 * 4),
+                                363 - (88 / 2) + 2 + (1 * 29) + 15);
+                    }
+                }
+
+                mapArray[openFurnaceX][openFurnaceY].checkFurnace();
             }
 
         }
 
         // draw grabbed item
-        if (grab > -1 && items.get(grab).getAmount() > 0) {
-            CharSequence str = Integer.toString(items.get(grab).getAmount());
-            batch.draw(blockTextures[0][items.get(grab).getElement() - 1], cam.getInputInGameWorld().x - 12,
+        if (items.get(45).getAmount() > 0) {
+            CharSequence str = Integer.toString(items.get(45).getAmount());
+            batch.draw(blockTextures[0][items.get(45).getElement() - 1], cam.getInputInGameWorld().x - 12,
                     cam.getInputInGameWorld().y - 12);
-            if (!items.get(grab).isWeapon()){
+            if (!items.get(45).isWeapon()) {
                 font.draw(batch, str, cam.getInputInGameWorld().x - 12, cam.getInputInGameWorld().y + 1);
             }
-            
+
         }
-        if(!isGrabbed && grab > -1){
+        if (!isGrabbed && items.get(45).getAmount() > 0) {
 
             Item item = new Item();
 
-            item.setY(player.getY()+player.getPlayerSizeY());
-            if (cam.getInputInGameWorld().x > 800){
+            item.setY(player.getY() + player.getPlayerSizeY());
+            if (cam.getInputInGameWorld().x > 800) {
                 item.setAcceleration(5);
-                item.setX(player.getX()+60);
-            }else{
+                item.setX(player.getX() + 60);
+            } else {
                 item.setAcceleration(-5);
-                item.setX(player.getX()-60);
+                item.setX(player.getX() - 60);
             }
-            item.setAmount(items.get(grab).getAmount());
-            item.setElement(items.get(grab).getElement());
-            item.setDamage(items.get(grab).getDamage());
-            item.setFood(items.get(grab).isFood());
-            item.setResource(items.get(grab).isResource());
-            item.setWeapon(items.get(grab).isWeapon());
-            item.setHealth(items.get(grab).getHealth());
+            item.setAmount(items.get(45).getAmount());
+            item.setElement(items.get(45).getElement());
+            item.setDamage(items.get(45).getDamage());
+            item.setFood(items.get(45).isFood());
+            item.setResource(items.get(45).isResource());
+            item.setWeapon(items.get(45).isWeapon());
+            item.setHealth(items.get(45).getHealth());
             player.addDroppedItem(item);
-            items.get(grab).setAmount(0);
-            grab = -1;
-        }else if (!isGrabbed) {
-            grab = -1;
+            items.get(45).setAmount(0);
         }
     }
 
-    public void addItem(Item item){
-        for (int i = 0; i < 36; i++){
+    public void addItem(Item item) {
+        for (int i = 0; i < 36; i++) {
             int slotIndex = -1;
             for (int o = 0; o < 36; o++) {
                 if (item.getElement() == items.get(o).getElement()
@@ -442,7 +681,7 @@ public class Inventory {
                     items.get(i).setDamage(item.getDamage());
                     items.get(i).setHealth(item.getHealth());
                     break;
-                }else if (items.get(i).getAmount() == 0) {
+                } else if (items.get(i).getAmount() == 0) {
                     items.get(i).setAmount(item.getAmount());
                     items.get(i).setElement(item.getElement());
                     items.get(i).setWeapon(item.isWeapon());
@@ -451,12 +690,11 @@ public class Inventory {
                     items.get(i).setDamage(item.getDamage());
                     items.get(i).setHealth(item.getHealth());
                     break;
-                } 
+                }
             }
-            
+
         }
     }
-
 
     public int getGrab() {
         return grab;
@@ -490,15 +728,37 @@ public class Inventory {
         this.isInventoryOpen = isInventoryOpen;
     }
 
-    public Item getItemByIndex(int index){
+    public Item getItemByIndex(int index) {
         return items.get(index);
     }
 
-    public Item getSelectedItem(){
+    public Item getSelectedItem() {
         return items.get(selectedSlot);
     }
 
-    
+    public int getOpenFurnaceX() {
+        return openFurnaceX;
+    }
+
+    public void setOpenFurnaceX(int openFurnaceX) {
+        this.openFurnaceX = openFurnaceX;
+    }
+
+    public int getOpenFurnaceY() {
+        return openFurnaceY;
+    }
+
+    public void setOpenFurnaceY(int openFurnaceY) {
+        this.openFurnaceY = openFurnaceY;
+    }
+
+    public boolean isFurnaceOpen() {
+        return isFurnaceOpen;
+    }
+
+    public void setFurnaceOpen(boolean isFurnaceOpen) {
+        this.isFurnaceOpen = isFurnaceOpen;
+    }
 
     public ArrayList<Item> getItems() {
         return items;
@@ -512,7 +772,7 @@ public class Inventory {
         return INVENTORY_SLOT_MAX;
     }
 
-    public void reset(){
+    public void reset() {
         items.clear();
         for (int i = 0; i < 46; i++) {
             items.add(new Item());
