@@ -447,7 +447,7 @@ public class Player {
                                             if (mapArray[x][y].getElement() == 0) {
                                                 elementString = "";
                                             }else if (mapArray[x][y].getElement() == 1) {
-                                                elementString = "Ground";
+                                                elementString = "Dirt";
                                             } else if (mapArray[x][y].getElement() == 2) {
                                                 elementString = "Grass";
                                             } else if (mapArray[x][y].getElement() == 3) {
@@ -716,8 +716,13 @@ public class Player {
         }
 
         // DRAW CURRENT ELEMENT SELECTED
-        font.draw(batch, elementString, (1560 - elementString.length() * 4) , 890);
-
+        if (elementString.length() < 10) {
+            font.draw(batch, elementString, (1560 - elementString.length() * 2) , 890);
+        } else if (elementString.length() > 40) {
+            font.draw(batch, elementString, (1560 - elementString.length() * 5) , 890);
+        } else {
+            font.draw(batch, elementString, (1560 - elementString.length() * 4) , 890);
+        }   
         inventory.Update(batch, this, blockTextures, cam, outlineTexture, mapArray, delta);
 
     }
