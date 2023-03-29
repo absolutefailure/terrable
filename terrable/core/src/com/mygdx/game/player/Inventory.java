@@ -23,6 +23,7 @@ public class Inventory {
     private BitmapFont font = new BitmapFont();
     private ArrayList<Item> items;
 
+
     private final int INVENTORY_SLOT_MAX = 32;
 
     private Texture hotbarTexture;
@@ -777,6 +778,51 @@ public class Inventory {
         for (int i = 0; i < 46; i++) {
             items.add(new Item());
         }
+    }
+
+    public int getHover(HudCamera cam){
+
+        for (int i = 0; i < 9; i++) {
+                if (items.get(i).getElement() != 0 && cam.getInputInGameWorld().x >= 800 - (261 / 2) + (29 * i)
+                        && cam.getInputInGameWorld().x <= (800 - (261 / 2) + (29 * i)) + 28
+                        && cam.getInputInGameWorld().y >= 0 && cam.getInputInGameWorld().y < 28) {
+                        return items.get(i).getElement();
+                } 
+        }
+        int invDrawColumn = 0;
+        int invDrawRow = 0;
+        for (int i = 9; i < 36; i++) {
+            if (items.get(i).getElement() != 0 && cam.getInputInGameWorld().x >= 800 - (261 / 2) + (29 * invDrawRow)
+            && cam.getInputInGameWorld().x <= (800 - (261 / 2) + (29 * invDrawRow)) + 28
+            && cam.getInputInGameWorld().y >= 254 - (90 / 2) + (invDrawColumn * 29)
+            && cam.getInputInGameWorld().y <= 254 - (90 / 2) + 28 + (invDrawColumn * 29)) {
+                    return items.get(i).getElement();
+            } 
+            invDrawRow++;
+            if (invDrawRow % 9 == 0) {
+                invDrawColumn++;
+                invDrawRow = 0;
+            }
+        }
+        invDrawColumn = 0;
+        invDrawRow = 0;
+        for (int i = 36; i < 45; i++) {
+            if (items.get(i).getElement() != 0 && cam.getInputInGameWorld().x >= 858 - (261 / 2) + (29 * invDrawRow)
+            && cam.getInputInGameWorld().x <= (858 - (261 / 2) + (29 * invDrawRow)) + 28
+            && cam.getInputInGameWorld().y >= 365 - (90 / 2) + (invDrawColumn * 29)
+            && cam.getInputInGameWorld().y <= 365 - (90 / 2) + 29 + (invDrawColumn * 29)) {
+                    return items.get(i).getElement();
+            } 
+            invDrawRow++;
+            if (invDrawRow % 9 == 0) {
+                invDrawColumn++;
+                invDrawRow = 0;
+            }
+        }
+
+
+
+        return -1;
     }
 
 }
