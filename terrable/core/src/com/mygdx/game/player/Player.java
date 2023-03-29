@@ -444,9 +444,9 @@ public class Player {
 
                                         batch.setColor(1, 1, 1, 1);
                                         batch.draw(outlineTexture, mapArray[x][y].getPosX(), mapArray[x][y].getPosY());
-                                        if (mapArray[x][y].getElement() > 0) {
-                                            
-                                            if (mapArray[x][y].getElement() == 1) {
+                                            if (mapArray[x][y].getElement() == 0) {
+                                                elementString = "";
+                                            }else if (mapArray[x][y].getElement() == 1) {
                                                 elementString = "Ground";
                                             } else if (mapArray[x][y].getElement() == 2) {
                                                 elementString = "Grass";
@@ -504,7 +504,6 @@ public class Player {
                                                 elementString = "Ball of slime";
                                             }
                                         
-                                        }
 
                                         // IF RIGHT MOUSE BUTTON IS DOWN, PLACE BLOCK IN HAND
                                         if  (inventory.getSelectedItem().isPlaceable()
@@ -717,7 +716,7 @@ public class Player {
         }
 
         // DRAW CURRENT ELEMENT SELECTED
-        font.draw(batch, elementString, 10 , 890);
+        font.draw(batch, elementString, (1560 - elementString.length() * 4) , 890);
 
         inventory.Update(batch, this, blockTextures, cam, outlineTexture, mapArray, delta);
 
