@@ -125,6 +125,7 @@ public class Player {
     public void Update(Map map, Camera cam, Batch batch, int volume, float delta) {
         float oldX = playerPosX;
         float oldY = playerPosY;
+        elementString = "";
 
         // JUMP
         if (onGround && !inventory.isFurnaceOpen()) {
@@ -444,65 +445,9 @@ public class Player {
 
                                         batch.setColor(1, 1, 1, 1);
                                         batch.draw(outlineTexture, mapArray[x][y].getPosX(), mapArray[x][y].getPosY());
-                                            if (mapArray[x][y].getElement() == 0) {
-                                                elementString = "";
-                                            }else if (mapArray[x][y].getElement() == 1) {
-                                                elementString = "Dirt";
-                                            } else if (mapArray[x][y].getElement() == 2) {
-                                                elementString = "Grass";
-                                            } else if (mapArray[x][y].getElement() == 3) {
-                                                elementString = "Wood";
-                                            } else if (mapArray[x][y].getElement() == 4) {
-                                                elementString = "Leaves";
-                                            } else if (mapArray[x][y].getElement() == 5) {
-                                                elementString = "Ladder";
-                                            } else if (mapArray[x][y].getElement() == 6) {
-                                                elementString = "Stone";
-                                            } else if (mapArray[x][y].getElement() == 7) {
-                                                elementString = "Coal";
-                                            } else if (mapArray[x][y].getElement() == 8) {
-                                                elementString = "Iron ore";
-                                            } else if (mapArray[x][y].getElement() == 9) {
-                                                elementString = "Diamond ore";
-                                            } else if (mapArray[x][y].getElement() == 10) {
-                                                elementString = "Tall grass";
-                                            } else if (mapArray[x][y].getElement() == 11) {
-                                                elementString = "Red flower";
-                                            } else if (mapArray[x][y].getElement() == 12) {
-                                                elementString = "Wooden planks";
-                                            } else if (mapArray[x][y].getElement() == 13) {
-                                                elementString = "Piece of coal";
-                                            } else if (mapArray[x][y].getElement() == 14) {
-                                                elementString = "Diamond";
-                                            } else if (mapArray[x][y].getElement() == 15) {
-                                                elementString = "Stone pick-axe";
-                                            } else if (mapArray[x][y].getElement() == 16) {
-                                                elementString = "Wooden pick-axe";
-                                            } else if (mapArray[x][y].getElement() == 17) {
-                                                elementString = "Iron pick-axe";
-                                            } else if (mapArray[x][y].getElement() == 18) {
-                                                elementString = "Diamond pick-axe";
-                                            } else if (mapArray[x][y].getElement() == 19) {
-                                                elementString = "Stone axe";
-                                            } else if (mapArray[x][y].getElement() == 20) {
-                                                elementString = "Wooden axe";
-                                            } else if (mapArray[x][y].getElement() == 21) {
-                                                elementString = "Iron axe";
-                                            } else if (mapArray[x][y].getElement() == 22) {
-                                                elementString = "Diamond axe";
-                                            } else if (mapArray[x][y].getElement() == 23) {
-                                                elementString = "Iron ingot";
-                                            } else if (mapArray[x][y].getElement() == 24) {
-                                                elementString = "Door";
-                                            } else if (mapArray[x][y].getElement() == 27) {
-                                                elementString = "Stick";
-                                            } else if (mapArray[x][y].getElement() == 28) {
-                                                elementString = "Torch";
-                                            } else if (mapArray[x][y].getElement() == 29) {
-                                                elementString = "Feather";
-                                            } else if (mapArray[x][y].getElement() == 30) {
-                                                elementString = "Ball of slime";
-                                            }
+                                           
+                                        elementString = elementNames.get(mapArray[x][y].getElement());
+                                            
                                         
 
                                         // IF RIGHT MOUSE BUTTON IS DOWN, PLACE BLOCK IN HAND
@@ -713,6 +658,10 @@ public class Player {
         // DRAW PLAYER HEALTH
         for (int i = 0; i < playerHealth; i++) {
             batch.draw(healthTexture, 32 + 20 * i, 10);
+        }
+
+        if (inventory.getHover(cam) > -1){
+            elementString = elementNames.get(inventory.getHover(cam));
         }
 
         // DRAW CURRENT ELEMENT SELECTED

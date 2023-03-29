@@ -781,6 +781,9 @@ public class Inventory {
     }
 
     public int getHover(HudCamera cam){
+        if (items.get(45).getAmount() > 0){
+            return items.get(45).getElement();
+        }
 
         for (int i = 0; i < 9; i++) {
                 if (items.get(i).getElement() != 0 && cam.getInputInGameWorld().x >= 800 - (261 / 2) + (29 * i)
@@ -789,35 +792,38 @@ public class Inventory {
                         return items.get(i).getElement();
                 } 
         }
-        int invDrawColumn = 0;
-        int invDrawRow = 0;
-        for (int i = 9; i < 36; i++) {
-            if (items.get(i).getElement() != 0 && cam.getInputInGameWorld().x >= 800 - (261 / 2) + (29 * invDrawRow)
-            && cam.getInputInGameWorld().x <= (800 - (261 / 2) + (29 * invDrawRow)) + 28
-            && cam.getInputInGameWorld().y >= 254 - (90 / 2) + (invDrawColumn * 29)
-            && cam.getInputInGameWorld().y <= 254 - (90 / 2) + 28 + (invDrawColumn * 29)) {
-                    return items.get(i).getElement();
-            } 
-            invDrawRow++;
-            if (invDrawRow % 9 == 0) {
-                invDrawColumn++;
-                invDrawRow = 0;
+        if(isInventoryOpen){
+            int invDrawColumn = 0;
+            int invDrawRow = 0;
+            for (int i = 9; i < 36; i++) {
+                if (items.get(i).getElement() != 0 && cam.getInputInGameWorld().x >= 800 - (261 / 2) + (29 * invDrawRow)
+                && cam.getInputInGameWorld().x <= (800 - (261 / 2) + (29 * invDrawRow)) + 28
+                && cam.getInputInGameWorld().y >= 254 - (90 / 2) + (invDrawColumn * 29)
+                && cam.getInputInGameWorld().y <= 254 - (90 / 2) + 28 + (invDrawColumn * 29)) {
+                        return items.get(i).getElement();
+                } 
+                invDrawRow++;
+                if (invDrawRow % 9 == 0) {
+                    invDrawColumn++;
+                    invDrawRow = 0;
+                }
             }
-        }
-        invDrawColumn = 0;
-        invDrawRow = 0;
-        for (int i = 36; i < 45; i++) {
-            if (items.get(i).getElement() != 0 && cam.getInputInGameWorld().x >= 858 - (261 / 2) + (29 * invDrawRow)
-            && cam.getInputInGameWorld().x <= (858 - (261 / 2) + (29 * invDrawRow)) + 28
-            && cam.getInputInGameWorld().y >= 365 - (90 / 2) + (invDrawColumn * 29)
-            && cam.getInputInGameWorld().y <= 365 - (90 / 2) + 29 + (invDrawColumn * 29)) {
-                    return items.get(i).getElement();
-            } 
-            invDrawRow++;
-            if (invDrawRow % 9 == 0) {
-                invDrawColumn++;
-                invDrawRow = 0;
+            invDrawColumn = 0;
+            invDrawRow = 0;
+            for (int i = 36; i < 45; i++) {
+                if (items.get(i).getElement() != 0 && cam.getInputInGameWorld().x >= 858 - (261 / 2) + (29 * invDrawRow)
+                && cam.getInputInGameWorld().x <= (858 - (261 / 2) + (29 * invDrawRow)) + 28
+                && cam.getInputInGameWorld().y >= 365 - (90 / 2) + (invDrawColumn * 29)
+                && cam.getInputInGameWorld().y <= 365 - (90 / 2) + 29 + (invDrawColumn * 29)) {
+                        return items.get(i).getElement();
+                } 
+                invDrawRow++;
+                if (invDrawRow % 9 == 0) {
+                    invDrawColumn++;
+                    invDrawRow = 0;
+                }
             }
+    
         }
 
 
