@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -66,6 +67,8 @@ public class Player {
     private int playerHealth;
     private long lastHitTime;
 
+    private BitmapFont font;
+    private String elementString = "";
 
 
     private ArrayList<Mob> mobs;
@@ -110,6 +113,8 @@ public class Player {
         inventory = new Inventory();
         droppedItems = new ArrayList<>();
 
+        font = new BitmapFont(Gdx.files.internal("fonts/Cambria.fnt"));
+
         mobs = Map.getMobs();
 
         gravity = 0;
@@ -120,7 +125,6 @@ public class Player {
     public void Update(Map map, Camera cam, Batch batch, int volume, float delta) {
         float oldX = playerPosX;
         float oldY = playerPosY;
-
 
         // JUMP
         if (onGround && !inventory.isFurnaceOpen()) {
@@ -440,6 +444,67 @@ public class Player {
 
                                         batch.setColor(1, 1, 1, 1);
                                         batch.draw(outlineTexture, mapArray[x][y].getPosX(), mapArray[x][y].getPosY());
+                                        if (mapArray[x][y].getElement() > 0) {
+                                            
+                                            if (mapArray[x][y].getElement() == 1) {
+                                                elementString = "Ground";
+                                            } else if (mapArray[x][y].getElement() == 2) {
+                                                elementString = "Grass";
+                                            } else if (mapArray[x][y].getElement() == 3) {
+                                                elementString = "Wood";
+                                            } else if (mapArray[x][y].getElement() == 4) {
+                                                elementString = "Leaves";
+                                            } else if (mapArray[x][y].getElement() == 5) {
+                                                elementString = "Ladder";
+                                            } else if (mapArray[x][y].getElement() == 6) {
+                                                elementString = "Stone";
+                                            } else if (mapArray[x][y].getElement() == 7) {
+                                                elementString = "Coal";
+                                            } else if (mapArray[x][y].getElement() == 8) {
+                                                elementString = "Iron ore";
+                                            } else if (mapArray[x][y].getElement() == 9) {
+                                                elementString = "Diamond ore";
+                                            } else if (mapArray[x][y].getElement() == 10) {
+                                                elementString = "Tall grass";
+                                            } else if (mapArray[x][y].getElement() == 11) {
+                                                elementString = "Red flower";
+                                            } else if (mapArray[x][y].getElement() == 12) {
+                                                elementString = "Wooden planks";
+                                            } else if (mapArray[x][y].getElement() == 13) {
+                                                elementString = "Piece of coal";
+                                            } else if (mapArray[x][y].getElement() == 14) {
+                                                elementString = "Diamond";
+                                            } else if (mapArray[x][y].getElement() == 15) {
+                                                elementString = "Stone pick-axe";
+                                            } else if (mapArray[x][y].getElement() == 16) {
+                                                elementString = "Wooden pick-axe";
+                                            } else if (mapArray[x][y].getElement() == 17) {
+                                                elementString = "Iron pick-axe";
+                                            } else if (mapArray[x][y].getElement() == 18) {
+                                                elementString = "Diamond pick-axe";
+                                            } else if (mapArray[x][y].getElement() == 19) {
+                                                elementString = "Stone axe";
+                                            } else if (mapArray[x][y].getElement() == 20) {
+                                                elementString = "Wooden axe";
+                                            } else if (mapArray[x][y].getElement() == 21) {
+                                                elementString = "Iron axe";
+                                            } else if (mapArray[x][y].getElement() == 22) {
+                                                elementString = "Diamond axe";
+                                            } else if (mapArray[x][y].getElement() == 23) {
+                                                elementString = "Iron ingot";
+                                            } else if (mapArray[x][y].getElement() == 24) {
+                                                elementString = "Door";
+                                            } else if (mapArray[x][y].getElement() == 27) {
+                                                elementString = "Stick";
+                                            } else if (mapArray[x][y].getElement() == 28) {
+                                                elementString = "Torch";
+                                            } else if (mapArray[x][y].getElement() == 29) {
+                                                elementString = "Feather";
+                                            } else if (mapArray[x][y].getElement() == 30) {
+                                                elementString = "Ball of slime";
+                                            }
+                                        
+                                        }
 
                                         // IF RIGHT MOUSE BUTTON IS DOWN, PLACE BLOCK IN HAND
                                         if  (inventory.getSelectedItem().isPlaceable()
@@ -567,6 +632,10 @@ public class Player {
                         }
                     }
                 }
+
+                if (distance <= 150) {
+                    elementString = thisMob.getClass().getSimpleName();
+                }
             }
         }
 
@@ -647,6 +716,8 @@ public class Player {
             batch.draw(healthTexture, 32 + 20 * i, 10);
         }
 
+        // DRAW CURRENT ELEMENT SELECTED
+        font.draw(batch, elementString, 10 , 890);
 
         inventory.Update(batch, this, blockTextures, cam, outlineTexture, mapArray, delta);
 
