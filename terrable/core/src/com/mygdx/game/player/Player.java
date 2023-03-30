@@ -77,6 +77,8 @@ public class Player {
 
     private ArrayList<Item> droppedItems;
 
+    private Recipebook recipeBook;
+
 
     public Player(float x, float y) {
         this.playerPosX = x;
@@ -116,6 +118,8 @@ public class Player {
         font = new BitmapFont(Gdx.files.internal("fonts/Cambria.fnt"));
 
         mobs = Map.getMobs();
+
+        recipeBook = new Recipebook();
 
         gravity = 0;
         acceleration = 0;
@@ -674,6 +678,13 @@ public class Player {
         }   
         inventory.Update(batch, this, blockTextures, cam, outlineTexture, mapArray, delta);
 
+
+
+
+
+        if (inventory.isInventoryOpen()){
+            recipeBook.Draw(batch, cam);
+        }
     }
 
     public float getX() {
