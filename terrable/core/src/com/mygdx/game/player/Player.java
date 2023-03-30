@@ -512,30 +512,38 @@ public class Player {
                                         if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)
                                         && (mapArray[x][y].getElement()  == DOOR1 || mapArray[x][y].getElement()  == DOOR2)){
 
-                                            if (mapArray[x][y].getElement() == DOOR1){
-                                                
-                                                if (mapArray[x][y].isCollision() == true){
-                                                    mapArray[x][y].setCollision(false);
-                                                    mapArray[x][y - 1].setCollision(false);
-                                                    doorCloseSound.play(volume/200f, 1.1f, 0);
-                                                }else if (mapArray[x][y].isCollision() == false) {
-                                                    mapArray[x][y].setCollision(true);
-                                                    mapArray[x][y - 1].setCollision(true);
-                                                    doorOpenSound.play(volume/200f, 1f, 0);
-                                                }
-                                            }
+                                            if (!(playerPosX + playerSizeX > mapArray[x][y].getPosX()
+                                            && playerPosX < mapArray[x][y].getPosX()
+                                                    + mapArray[x][y].getBLOCKSIZE()
+                                            && playerPosY + playerSizeY > mapArray[x][y].getPosY()
+                                            && playerPosY < mapArray[x][y].getPosY()
+                                                    + mapArray[x][y].getBLOCKSIZE())){
 
-                                            if (mapArray[x][y].getElement() == DOOR2){
-                                                if (mapArray[x][y].isCollision() == true){
-                                                    mapArray[x][y].setCollision(false);
-                                                    mapArray[x][y + 1].setCollision(false);
-                                                    doorCloseSound.play(volume/200f, 1f, 0);
-                                                }else if (mapArray[x][y].isCollision() == false){
-                                                    mapArray[x][y].setCollision(true);
-                                                    mapArray[x][y + 1].setCollision(true);
-                                                    doorOpenSound.play(volume/200f, 1.1f, 0);
+                                                if (mapArray[x][y].getElement() == DOOR1){
+                                                    
+                                                    if (mapArray[x][y].isCollision() == true){
+                                                        mapArray[x][y].setCollision(false);
+                                                        mapArray[x][y - 1].setCollision(false);
+                                                        doorCloseSound.play(volume/200f, 1.1f, 0);
+                                                    }else if (mapArray[x][y].isCollision() == false) {
+                                                        mapArray[x][y].setCollision(true);
+                                                        mapArray[x][y - 1].setCollision(true);
+                                                        doorOpenSound.play(volume/200f, 1f, 0);
+                                                    }
+                                                }
+
+                                                if (mapArray[x][y].getElement() == DOOR2){
+                                                    if (mapArray[x][y].isCollision() == true){
+                                                        mapArray[x][y].setCollision(false);
+                                                        mapArray[x][y + 1].setCollision(false);
+                                                        doorCloseSound.play(volume/200f, 1f, 0);
+                                                    }else if (mapArray[x][y].isCollision() == false){
+                                                        mapArray[x][y].setCollision(true);
+                                                        mapArray[x][y + 1].setCollision(true);
+                                                        doorOpenSound.play(volume/200f, 1.1f, 0);
+                                                    } 
                                                 } 
-                                            } 
+                                            }
                                         } 
                                     }
                                 }
