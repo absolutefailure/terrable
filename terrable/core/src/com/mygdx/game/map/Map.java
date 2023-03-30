@@ -105,7 +105,7 @@ public class Map {
         if (green > 0.5f){green = 0.5f;}
         if (blue > 0.9f){blue = 0.9f;}
         ScreenUtils.clear(red, green, blue, 1);
-        System.out.println(clock);
+        //System.out.println(clock);
         if(!timeShift){
             if(clock < dayTime) {
                 clock += 1f * delta;
