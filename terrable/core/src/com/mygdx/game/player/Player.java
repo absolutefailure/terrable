@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.camera.HudCamera;
@@ -44,6 +46,10 @@ public class Player {
 
     final float PLAYER_BOUNCINESS = 0f; // 0 = NO BOUNCE
     final float PLAYER_FRICTION = 0.7f; // 1 = NO FRICTION
+
+    private Texture playerArm;
+    private Sprite arm;
+    private float armAngle = 0f;
 
     private Texture playerTexture;
     private Texture outlineTexture;
@@ -101,6 +107,10 @@ public class Player {
 
         soundTimer = 0;
         lastHitTime = 0;
+
+        playerArm = new Texture("playerarm.png");
+        arm = new Sprite(playerArm);
+        arm.setOrigin(2.5f, 17f);
 
         playerTexture = new Texture("jusju.png");
         outlineTexture = new Texture("outline.png");
@@ -656,8 +666,26 @@ public class Player {
             batch.draw(blockTextures[0][item.getElement()-1], item.getX(),item.getY()+item.getShakeTimer(),12,12);
         }
 
-
+        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
+            armAngle -= 6 * delta;
+            if (armAngle < 0){
+                armAngle = 180;
+            }
+        }else{
+            armAngle = 10;
+        }
+        
         // DRAW PLAYER
+        arm.setPosition(cam.position.x+acceleration+15,cam.position.y-gravity+17);
+        arm.setRotation(armAngle);
+        arm.draw(batch);
+        if (inventory.getSelectedItem().getElement() > 0){
+            float angleInRadians = (float)Math.toRadians(270+armAngle);
+
+            float handX = (cam.position.x+acceleration+12) + 20f * MathUtils.cos(angleInRadians);
+            float handY = (cam.position.y-gravity+27) + 20f * MathUtils.sin(angleInRadians);
+            batch.draw(blockTextures[0][inventory.getSelectedItem().getElement()-1], handX,handY, 12.5f/2f, 12.5f/2f, 25/2f, 25/2f, 1f, 1f, 180+armAngle);
+        }
         batch.draw(playerTexture, cam.position.x+acceleration,cam.position.y-gravity);
         cam.position.set( Math.round(playerPosX-acceleration),  Math.round(playerPosY+gravity), 0);
         cam.update();
