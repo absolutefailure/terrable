@@ -54,6 +54,7 @@ public class Player {
     private Texture playerTexture;
     private Texture outlineTexture;
     private Texture healthTexture;
+    private Texture hungerTexture;
     private Texture textures;
     private TextureRegion[][] blockTextures;
 
@@ -69,9 +70,13 @@ public class Player {
     private Sound doorOpenSound;
     private Sound doorCloseSound;
     private int soundEffect; // TEMPORARY
+    private Sound eatingSound;
 
     private int playerHealth;
+    private int playerHunger;
     private long lastHitTime;
+    private long hungerTime;
+    private long lastHungerHit;
 
     private BitmapFont font;
     private String elementString = "";
@@ -99,6 +104,7 @@ public class Player {
         weaponBreakingSound = Gdx.audio.newSound(Gdx.files.internal("sounds/weaponBreakingSound.mp3"));
         doorOpenSound = Gdx.audio.newSound(Gdx.files.internal("sounds/door-close.mp3"));
         doorCloseSound = Gdx.audio.newSound(Gdx.files.internal("sounds/door-open.mp3"));
+        eatingSound = Gdx.audio.newSound(Gdx.files.internal("sounds/eatingSound.mp3"));
 
         playerSizeX = 20;
         playerSizeY = 49;
@@ -108,6 +114,9 @@ public class Player {
 
         soundTimer = 0;
         lastHitTime = 0;
+        hungerTime = 0;
+        lastHungerHit = 0;
+
 
         playerArm = new Texture("playerarm.png");
         arm = new Sprite(playerArm);
@@ -116,6 +125,7 @@ public class Player {
         playerTexture = new Texture("jusju.png");
         outlineTexture = new Texture("outline.png");
         healthTexture = new Texture("heart.png");
+        hungerTexture = new Texture("hunger.png");
         blockBreakingTexture = new Texture("breaktiles.png");
 
         textures = new Texture("tileset2.png");
@@ -621,10 +631,12 @@ public class Player {
                         if (thisMob.getMobPosX() < getX()){
                             int healthWhenHit = getPlayerHealth();
                             setPlayerHealth(healthWhenHit-3);
+                            damageSound.play(volume/200f);
                             lastHitTime = currentTime;
                         }else if (thisMob.getMobPosX() > getX()){
                             int healthWhenHit = getPlayerHealth();
                             setPlayerHealth(healthWhenHit-3);
+                            damageSound.play(volume/200f);
                             lastHitTime = currentTime;
                         }
                     }
@@ -678,6 +690,38 @@ public class Player {
         }else{
             armAngle = 10;
         }
+
+        // DEPLETE HUNGER
+        if (hungerTime < 2000) {
+            hungerTime += 1;
+        } else {
+            if (getPlayerHunger() > 0) {
+                setPlayerHunger(playerHunger-1);
+                hungerTime = 0;
+            }
+        }
+
+        // LOSE HEALTH IF HUNGER BAR IS EMPTY
+        if (getPlayerHunger() == 0) {
+            long currentTime = new Date().getTime();
+            long hungerTimer = (currentTime - lastHungerHit);
+            if (hungerTimer >= 4000) {
+                setPlayerHealth(getPlayerHealth()-1);
+                damageSound.play(volume/200f);
+                lastHungerHit = currentTime;
+            }
+        }
+
+        // RESTORE HEALTH WITH FOOD
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT) && inventory.getSelectedItem().isFood()) {
+            if (getPlayerHunger()+2 > 10) {
+                setPlayerHunger(10);
+            } else {
+                setPlayerHunger(getPlayerHunger()+2);
+            }
+            eatingSound.play(volume/100f);
+            inventory.getSelectedItem().removeItem();
+        }
         
         // DRAW PLAYER
         arm.setPosition(cam.position.x+acceleration+15,cam.position.y-gravity+17);
@@ -702,6 +746,11 @@ public class Player {
         // DRAW PLAYER HEALTH
         for (int i = 0; i < playerHealth; i++) {
             batch.draw(healthTexture, 32 + 20 * i, 10);
+        }
+
+        // DRAW PLAYER HUNGER
+        for (int i = 0; i < playerHunger; i++) {
+            batch.draw(hungerTexture, 32 + 20 * i, 30);
         }
 
         if (inventory.getHover(cam) > -1){
@@ -793,4 +842,12 @@ public class Player {
         this.playerSizeY = playerSizeY;
     }
 
+    public int getPlayerHunger() {
+        return playerHunger;
+    }
+
+    public void setPlayerHunger(int playerHunger) {
+        this.playerHunger = playerHunger;
+    }
+    
 }
