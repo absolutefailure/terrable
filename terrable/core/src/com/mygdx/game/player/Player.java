@@ -83,6 +83,7 @@ public class Player {
 
     private ArrayList<Item> droppedItems;
 
+    public static ArrayList<Achievement> achievements;
     private Recipebook recipeBook;
 
 
@@ -124,6 +125,9 @@ public class Player {
 
         inventory = new Inventory();
         droppedItems = new ArrayList<>();
+        achievements = new ArrayList<>();
+
+        achievements.add(new Achievement("Get stone", "Obtain a piece of stone"));
 
         font = new BitmapFont(Gdx.files.internal("fonts/Cambria.fnt"));
 
@@ -688,7 +692,7 @@ public class Player {
         }
         batch.draw(playerTexture, cam.position.x+acceleration,cam.position.y-gravity);
         cam.position.set( Math.round(playerPosX-acceleration),  Math.round(playerPosY+gravity), 0);
-        cam.update();
+        cam.update();        
     }
 
     public void DrawHud(Batch batch, HudCamera cam, Block[][] mapArray, float delta) {
