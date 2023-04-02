@@ -19,7 +19,8 @@ public class Chicken extends Mob {
     private float acceleration;
     private int mobHealth;
     private String type;
-    private int element;
+    private int element1;
+    private int element2;
     private float moveTimer;
     private int direction = 0;
     public Chicken(float x, float y, TextureRegion[][] texture) {
@@ -37,7 +38,8 @@ public class Chicken extends Mob {
         mobHealth = 5;
         type = "friendly";
 
-        element = Element.FEATHER;
+        element1 = Element.FEATHER;
+        element2 = Element.RAWCHICKENMEAT;
         
     }
 
@@ -155,7 +157,12 @@ public class Chicken extends Mob {
     }
 
     public int getElement() {
-        return element;
+        Random rand = new Random();
+        if (rand.nextInt(2) == 1) {
+            return element1;
+        } else {
+            return element2;
+        }
     }
     
 }
