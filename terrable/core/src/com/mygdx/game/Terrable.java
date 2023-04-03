@@ -6,7 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.camera.GameCamera;
 import com.mygdx.game.camera.HudCamera;
-import com.mygdx.game.player.AchievementManager;
 import com.mygdx.game.screens.AchievementScreen;
 import com.mygdx.game.screens.GameScreen;
 import com.mygdx.game.screens.MainMenuScreen;
@@ -24,8 +23,6 @@ public class Terrable extends Game {
 
 	public GameScreen gameScreen;
 	public MainMenuScreen mainMenuScreen;
-
-	public AchievementManager achievementManager;
 	public AchievementScreen achievementScreen;
 
 	Terrable game = this;
@@ -47,8 +44,7 @@ public int volume;
 		gameScreen = new GameScreen(this, gameVolume);
 		mainMenuScreen = new MainMenuScreen(this, gameVolume);
 
-		achievementManager = new AchievementManager();
-		achievementScreen = new AchievementScreen(this, gameVolume, achievementManager);
+		achievementScreen = new AchievementScreen(this, gameVolume);
 
 		this.setScreen(mainMenuScreen);
 

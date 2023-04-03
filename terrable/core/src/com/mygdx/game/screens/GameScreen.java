@@ -31,9 +31,6 @@ public class GameScreen implements Screen {
 
         this.volume = volume;
 	
-        
-
-
 		// Create player and set starting position
 		player = new Player(0,0); 
 		
@@ -66,7 +63,6 @@ public class GameScreen implements Screen {
     
     
             map.Draw(game.batch, player, volume, delta);
-    
             player.Update(map, game.cam.getCamera(), game.batch, volume, delta);
             
             // draw hud
