@@ -173,15 +173,15 @@ public class Item {
     public void setShakeDirection(boolean shakeDirection) {
         this.shakeDirection = shakeDirection;
     }
-    public void Update(Block[][] mapArray, float playerPosX, float playerPosY, float delta){
+    public void Update(Block[][] mapArray, float playerPosX, float playerPosY, float delta, int mapSizeX, int mapSizeY){
         float itemOldX = x;
         float itemOldY = y;
-        int loopStartX = (int)(((x)-50) / 25) +((5000)/2);
-        int loopStartY = (int)((300)/2 - ((y+50) / 25)) ;
+        int loopStartX = (int)(((x)-50) / 25) +((mapSizeX)/2);
+        int loopStartY = (int)((mapSizeY)/2 - ((y+50) / 25)) ;
         if (loopStartY < 0){loopStartY = 0;}
-        if(loopStartY > 300-5){loopStartY = 300-5;}
+        if(loopStartY > mapSizeY-5){loopStartY = mapSizeY-5;}
         if (loopStartX < 0){loopStartX = 0;}
-        if(loopStartX > 5000-5){loopStartX = 5000-5;}
+        if(loopStartX > mapSizeX-5){loopStartX = mapSizeX-5;}
 
         if (x + 12 >= playerPosX -30
         && x <= playerPosX + 20 +30

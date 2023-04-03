@@ -105,7 +105,6 @@ public class Map {
         if (green > 0.5f){green = 0.5f;}
         if (blue > 0.9f){blue = 0.9f;}
         ScreenUtils.clear(red, green, blue, 1);
-        //System.out.println(clock);
         if(!timeShift){
             if(clock < dayTime) {
                 clock += 1f * delta;
@@ -147,13 +146,10 @@ public class Map {
                 if (block.getPosY() > player.getY() - 1000 && block.getPosY() < player.getY() + 1000 ){ // DRAW BLOCK ONLY IF INSIDE SCREEN
 
                     // DRAW BACKROUND TEXTURE IF BLOCK IS PERMANENT
-                    if(block.getPermanent() == GROUND || block.getPermanent() == GRASS){
+                    if(block.getPermanent() > 0){
                         batch.setColor(block.getBrightness()-block.brightnessLevel, block.getBrightness()-block.brightnessLevel, block.getBrightness()-block.brightnessLevel, 1f);
-                        batch.draw(blockTextures[0][31], block.getPosX(), block.getPosY());
-                    } else if(block.getPermanent() == STONE) {
-                        batch.setColor(block.getBrightness()-block.brightnessLevel, block.getBrightness()-block.brightnessLevel, block.getBrightness()-block.brightnessLevel, 1f);
-                        batch.draw(blockTextures[0][30], block.getPosX(), block.getPosY());
-                    }
+                        batch.draw(blockTextures[0][block.getPermanent()-1], block.getPosX(), block.getPosY());
+                    } 
 
 
                     if (block.getElement() != EMPTY)  {
@@ -184,7 +180,7 @@ public class Map {
 
         // Update all mobs
         for (Mob mob: mobs){ 
-            mob.Update(this, batch, player, volume, delta);
+            mob.Update(this, batch, player, volume, delta, mapSizeX, mapSizeY );
         }
         //mob spawner/despawner
         mobManager.Update(mobs, mapArray, player, mapSizeX, mapSizeY, volume,

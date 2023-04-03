@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.mygdx.game.CustomInputProcessor;
 import com.mygdx.game.camera.HudCamera;
 import com.mygdx.game.map.Block;
 
@@ -34,6 +35,7 @@ public class Inventory {
     private int openFurnaceY = 0;
 
     private ArrayList<Integer> discoveredItems;
+    private AchievementManager achievements;
 
     public Inventory() {
 
@@ -47,11 +49,12 @@ public class Inventory {
         }
 
         discoveredItems = new ArrayList<>();
+        achievements = new AchievementManager();
 
     }
 
     public void Update(Batch batch, Player player, TextureRegion[][] blockTextures, HudCamera cam,
-            Texture outlineTexture, Block[][] mapArray, float delta) {
+            Texture outlineTexture, Block[][] mapArray, float delta, CustomInputProcessor customInputProcessor) {
         // change selected slot
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
             selectedSlot = 0;
@@ -72,6 +75,17 @@ public class Inventory {
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_9)) {
             selectedSlot = 8;
         }
+
+        
+        if (customInputProcessor.wasScrolledUp()) {
+            selectedSlot--;
+            if (selectedSlot < 0){selectedSlot = 0;}
+        }else if(customInputProcessor.wasScrolledDown()){
+            selectedSlot++;
+            if (selectedSlot > 8){selectedSlot = 8;}
+        }
+   
+        
 
         if (grabTimer >= 0) {
             grabTimer -= 1 * delta;
@@ -499,12 +513,6 @@ public class Inventory {
                                 isGrabbed = true;
                             }
                             if (craftingSuccess) {
-                                if (!(discoveredItems.contains(newItem.getElement()))){
-
-                                    System.out.println("New Item discovered " + newItem.getElement());
-                                    discoveredItems.add(newItem.getElement());
-                                    System.out.println(discoveredItems);
-                                }
                                 for (int i = 36; i < 45; i++) {
                                     items.get(i).setAmount(items.get(i).getAmount() - newItem.getRemoveAmount());
                                     if (items.get(i).getAmount() < 0) {
@@ -668,7 +676,65 @@ public class Inventory {
             player.addDroppedItem(item);
             items.get(45).setAmount(0);
         }
+
+        //Update list of discovered items for achievements
+        int discoveredItem = 0;
+        for (int i = 0; i < 36; i++){
+            discoveredItem = items.get(i).getElement();
+            if (!(discoveredItems.contains(discoveredItem))){
+
+                System.out.println("New Item discovered " + discoveredItem);
+                discoveredItems.add(discoveredItem);
+                System.out.println(discoveredItems);
+
+                int obtainedItem = discoveredItem;
+                switch(obtainedItem){
+                    case 3:
+                        achievements.unlockAchievement("TIMBER");
+                        break;
+                    case 6:
+                        achievements.unlockAchievement("Rock solid");
+                        break;
+                    case 15:
+                        achievements.unlockAchievement("Stone age");
+                        break;
+                    case 16:
+                        achievements.unlockAchievement("Toy or tool?");
+                        break;
+                    case 23:
+                        achievements.unlockAchievement("Ironworks");
+                        break;
+                    case 28:
+                        achievements.unlockAchievement("Let there be light!");
+                        break;
+                }
+            }
+        }
+        
+        if (Gdx.input.isKeyJustPressed(Input.Keys.Q) && items.get(selectedSlot).getAmount() > 0) {
+
+            Item item = new Item();
+    
+            item.setY(player.getY() + player.getPlayerSizeY());
+            if (cam.getInputInGameWorld().x > 800) {
+                item.setAcceleration(5);
+                item.setX(player.getX() + 60);
+            } else {
+                item.setAcceleration(-5);
+                item.setX(player.getX() - 60);
+            }
+            item.setAmount(items.get(selectedSlot).getAmount());
+            item.setElement(items.get(selectedSlot).getElement());
+            item.setDamage(items.get(selectedSlot).getDamage());
+            item.setFood(items.get(selectedSlot).isFood());
+            item.setResource(items.get(selectedSlot).isResource());
+            item.setWeapon(items.get(selectedSlot).isWeapon());
+            item.setHealth(items.get(selectedSlot).getHealth());
+            player.addDroppedItem(item);
+            items.get(selectedSlot).setAmount(0);
+        }
     }
+    
 
     public void addItem(Item item) {
         for (int i = 0; i < 36; i++) {
@@ -701,12 +767,6 @@ public class Inventory {
                     items.get(i).setResource(item.isResource());
                     items.get(i).setDamage(item.getDamage());
                     items.get(i).setHealth(item.getHealth());
-                    if (!(discoveredItems.contains(item.getElement()))){
-
-                                System.out.println("New Item discovered " + item.getElement());
-                                discoveredItems.add(item.getElement());
-                                System.out.println(discoveredItems);
-                            }
                     break;
                 }
             }

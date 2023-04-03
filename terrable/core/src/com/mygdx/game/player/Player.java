@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.mygdx.game.CustomInputProcessor;
 import com.mygdx.game.camera.HudCamera;
 import com.mygdx.game.map.Block;
 import com.mygdx.game.map.Map;
@@ -89,10 +90,9 @@ public class Player {
     private Inventory inventory;
 
     private ArrayList<Item> droppedItems;
-
-    public static ArrayList<Achievement> achievements;
     private Recipebook recipeBook;
 
+    private float cactusTimer;
 
     public Player(float x, float y) {
         this.playerPosX = x;
@@ -119,6 +119,8 @@ public class Player {
         hungerTime = 0;
         lastHungerHit = 0;
 
+        cactusTimer = 0;
+
 
         playerArm = new Texture("playerarm.png");
         arm = new Sprite(playerArm);
@@ -137,9 +139,6 @@ public class Player {
 
         inventory = new Inventory();
         droppedItems = new ArrayList<>();
-        achievements = new ArrayList<>();
-
-        achievements.add(new Achievement("Get stone", "Obtain a piece of stone"));
 
         font = new BitmapFont(Gdx.files.internal("fonts/Cambria.fnt"));
 
@@ -152,7 +151,7 @@ public class Player {
     }
     
     // UPDATE AND DRAW PLAYER
-    public void Update(Map map, Camera cam, Batch batch, int volume, float delta) {
+    public void Update(Map map, Camera cam, Batch batch, int volume, float delta, int mapSizeX, int mapSizeY) {
         float oldX = playerPosX;
         float oldY = playerPosY;
         elementString = "";
@@ -179,9 +178,16 @@ public class Player {
             gravity += 0.25 * delta;
         }
         
+        if (cactusTimer > 400){
+            playerHealth--;
+            damageSound.play(volume/400f);
+            cactusTimer = 0;
+        }
+
+
         // APPLY GRAVITY TO PLAYER
         playerPosY -= gravity * delta;
-        int startBlockX = (int)(playerPosX / 25 - 1600 / 25 / 2) +2500;
+        int startBlockX = (int)(playerPosX / 25 - 1600 / 25 / 2) +(mapSizeX/2);
         int endBlockX = (startBlockX + 1600 / 25) ;
 
         Block[][] mapArray = map.getMapArray();
@@ -195,6 +201,10 @@ public class Player {
                             && playerPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
                             && playerPosY + playerSizeY > mapArray[x][y].getPosY()
                             && playerPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
+
+                        if (mapArray[x][y].getElement() == CACTUS){
+                            cactusTimer += 1*delta;
+                        }
                         if (mapArray[x][y].isCollision()) {
 
                             if (gravity > 13) {
@@ -677,7 +687,7 @@ public class Player {
             Item item = droppedItems.get(a);
             
 
-            item.Update(mapArray, playerPosX, playerPosY, delta);
+            item.Update(mapArray, playerPosX, playerPosY, delta, mapSizeX, mapSizeY);
             if (item.getX() + 12 >= playerPosX 
             && item.getX() <= playerPosX + playerSizeX
             && item.getY() + 12 >= playerPosY 
@@ -748,7 +758,7 @@ public class Player {
         cam.update();        
     }
 
-    public void DrawHud(Batch batch, HudCamera cam, Block[][] mapArray, float delta) {
+    public void DrawHud(Batch batch, HudCamera cam, Block[][] mapArray, float delta, CustomInputProcessor customInputProcessor, int mapSizeX, int mapSizeY) {
 
      
 
@@ -781,7 +791,7 @@ public class Player {
         } else {
             font.draw(batch, elementString, (1560 - elementString.length() * 4) , 890);
         }   
-        inventory.Update(batch, this, blockTextures, cam, outlineTexture, mapArray, delta);
+        inventory.Update(batch, this, blockTextures, cam, outlineTexture, mapArray, delta, customInputProcessor);
 
 
 
