@@ -10,13 +10,13 @@ import com.mygdx.game.player.Item;
 import com.mygdx.game.player.Player;
 
 public class LoadGame {
-    public static void Load(Map map, Player player) {
+    public static void Load(Map map, Player player, String fileName) {
 
         if (player.getPlayerHealth() > 0) {
             try {
                 Block[][] mapArray = map.getMapArray();
                 // Create file reader and buffered reader
-                FileReader fr = new FileReader("terrable/assets/saves/savegame.trbl");
+                FileReader fr = new FileReader(fileName);
                 BufferedReader br = new BufferedReader(fr);
 
                 // Read player data from file and construct new player object
