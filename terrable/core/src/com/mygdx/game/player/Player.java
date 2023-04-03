@@ -153,7 +153,7 @@ public class Player {
     }
     
     // UPDATE AND DRAW PLAYER
-    public void Update(Map map, Camera cam, Batch batch, int volume, float delta) {
+    public void Update(Map map, Camera cam, Batch batch, int volume, float delta, int mapSizeX, int mapSizeY) {
         float oldX = playerPosX;
         float oldY = playerPosY;
         elementString = "";
@@ -182,7 +182,7 @@ public class Player {
         
         // APPLY GRAVITY TO PLAYER
         playerPosY -= gravity * delta;
-        int startBlockX = (int)(playerPosX / 25 - 1600 / 25 / 2) +2500;
+        int startBlockX = (int)(playerPosX / 25 - 1600 / 25 / 2) +(mapSizeX/2);
         int endBlockX = (startBlockX + 1600 / 25) ;
 
         Block[][] mapArray = map.getMapArray();
@@ -678,7 +678,7 @@ public class Player {
             Item item = droppedItems.get(a);
             
 
-            item.Update(mapArray, playerPosX, playerPosY, delta);
+            item.Update(mapArray, playerPosX, playerPosY, delta, mapSizeX, mapSizeY);
             if (item.getX() + 12 >= playerPosX 
             && item.getX() <= playerPosX + playerSizeX
             && item.getY() + 12 >= playerPosY 
@@ -751,7 +751,7 @@ public class Player {
         cam.update();        
     }
 
-    public void DrawHud(Batch batch, HudCamera cam, Block[][] mapArray, float delta, CustomInputProcessor customInputProcessor) {
+    public void DrawHud(Batch batch, HudCamera cam, Block[][] mapArray, float delta, CustomInputProcessor customInputProcessor, int mapSizeX, int mapSizeY) {
 
      
 

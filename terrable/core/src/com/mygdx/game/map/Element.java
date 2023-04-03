@@ -45,6 +45,14 @@ public final class Element {
     public static final int STEAK = 36;
     public static final int RAWCHICKENMEAT = 37;
     public static final int CHICKENMEAT = 38;
+    public static final int SAND = 39;
+    public static final int CACTUS = 40;
+    public static final int SANDSTONE = 41;
+    public static final int GLASS = 42;
+    public static final int SANDBACKGROUND = 43;
+    public static final int SANDSTONEBACKGROUND = 44;
+
+
 
     public static final Map<Integer, String> elementNames;
     
@@ -89,6 +97,12 @@ public final class Element {
         map.put(36, "Steak");
         map.put(37, "Raw Chicken");
         map.put(38, "Chicken");
+        map.put(39, "Sand");
+        map.put(40, "Cactus");
+        map.put(41, "Sandstone");
+        map.put(42, "Glass");
+        map.put(43, "");
+        map.put(44, "");
 
         elementNames = Collections.unmodifiableMap(map);
     }

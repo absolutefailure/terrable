@@ -196,9 +196,20 @@ public class Block {
             return 50;
         } else if (element == FURNACE || element == FURNACE2){
             return 300;
+        }else if (element == SAND ){
+            return 40;
+        }else if (element == CACTUS){
+            return 30;
+        }else if (element == SANDSTONE){
+            return 200;
+        }else if (element == GLASS){
+            return 10;
         }else {
             return 1;
         }
+        
+        
+
         
     }
 
@@ -269,6 +280,12 @@ public class Block {
                     furnaceSlot3.setElement(CHICKENMEAT);
                     furnaceSlot3.setAmount(furnaceSlot3.getAmount() + amount);
                     furnaceSlot3.setFood(true);
+                    furnaceSlot1.setAmount(furnaceSlot1.getAmount() - amount);
+                    furnaceSlot2.setAmount(furnaceSlot2.getAmount() - amount);
+                    furnaceStartTimer = new Date().getTime();
+                }else if (amount > 0 && furnaceSlot1.getElement() == SAND && (furnaceSlot3.getElement() == GLASS || furnaceSlot3.getAmount() == 0) && furnaceSlot3.getAmount() + amount <= 32) {
+                    furnaceSlot3.setElement(GLASS);
+                    furnaceSlot3.setAmount(furnaceSlot3.getAmount() + amount);
                     furnaceSlot1.setAmount(furnaceSlot1.getAmount() - amount);
                     furnaceSlot2.setAmount(furnaceSlot2.getAmount() - amount);
                     furnaceStartTimer = new Date().getTime();
