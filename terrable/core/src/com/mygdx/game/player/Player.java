@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.mygdx.game.CustomInputProcessor;
 import com.mygdx.game.camera.HudCamera;
 import com.mygdx.game.map.Block;
 import com.mygdx.game.map.Map;
@@ -739,7 +740,7 @@ public class Player {
         cam.update();        
     }
 
-    public void DrawHud(Batch batch, HudCamera cam, Block[][] mapArray, float delta) {
+    public void DrawHud(Batch batch, HudCamera cam, Block[][] mapArray, float delta, CustomInputProcessor customInputProcessor) {
 
      
 
@@ -765,7 +766,7 @@ public class Player {
         } else {
             font.draw(batch, elementString, (1560 - elementString.length() * 4) , 890);
         }   
-        inventory.Update(batch, this, blockTextures, cam, outlineTexture, mapArray, delta);
+        inventory.Update(batch, this, blockTextures, cam, outlineTexture, mapArray, delta, customInputProcessor);
 
 
 
