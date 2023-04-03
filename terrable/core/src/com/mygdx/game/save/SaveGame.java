@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class SaveGame {
-    private static final int maxFileCount = 5;
+    private static final int maxFileCount = 4;
     private static int saveCounter = 1;
 
     public static void Save(Map map, Player player) {
@@ -23,7 +23,6 @@ public class SaveGame {
         String fileNameSuffix = ".trbl";
         String fileName = fileNamePrefix + String.format("%02d", saveCounter) + fileNameSuffix;
         int saveNumber = MainMenuScreen.saveNumber;
-        System.out.println(saveNumber);
         Block[][] mapArray = map.getMapArray();
         if (player.getPlayerHealth() > 0) {
             try {
@@ -39,6 +38,10 @@ public class SaveGame {
                         }
                     }
                 }   
+                
+                if(fileCount > saveNumber) {
+                    fileName = files[saveNumber].getName();
+                }
                 // Create file writer and buffered writer
                 FileWriter fw = new FileWriter(new File(folder, fileName));
                 BufferedWriter bw = new BufferedWriter(fw);

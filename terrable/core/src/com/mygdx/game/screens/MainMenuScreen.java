@@ -34,7 +34,7 @@ public class MainMenuScreen implements Screen {
 
     private Boolean isGameLoaded;
     private Boolean isLoadPressed;
-
+    private Boolean isNewPressed;
     private Vector2 mouseInWorld2D = new Vector2();
     private Vector3 mouseInWorld3D = new Vector3();
 
@@ -45,6 +45,7 @@ public class MainMenuScreen implements Screen {
         this.game = game;
         isGameLoaded = false;
         isLoadPressed = false;
+        isNewPressed = false;
         newButton = new Texture("menubuttons/newbutton.png");
         saveButton = new Texture("menubuttons/savebutton.png");
         quitButton = new Texture("menubuttons/quitbutton.png");
@@ -107,87 +108,108 @@ public class MainMenuScreen implements Screen {
 
         // MAIN MENU BUTTONS
         if (!isGameLoaded) {
-            if (!isLoadPressed) {
-                if (button(550, 600, 500, 150, playButton)) {
-                    if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                        isLoadPressed = true;
+            if (!isNewPressed) {
+                if (!isLoadPressed) {
+                    if (button(550, 600, 500, 150, playButton)) {
+                            isLoadPressed = true;
+                    } else if (button(550, 450, 500, 150, newButton)) {
+                        isNewPressed = true;
+                    } else if (button(550, 300, 500, 150, saveButton)) {
+                            SaveGame.Save(game.gameScreen.map, game.gameScreen.player);
+                    } else if (button(550, 150, 500, 150, quitButton)) {
+                        Gdx.app.exit();
+                        game.batch.draw(quitButton, 550, 150);
                     }
-                    game.batch.draw(playButton, 550, 600);
-                } else if (button(550, 450, 500, 150, newButton)) {
-                    menuSound.stop();
-                     // reset game if player is dead
-                     if (game.gameScreen.player.getPlayerHealth() <= 0) {
-                        game.gameScreen.map.reset();
-                        game.gameScreen.player.resetInventory();
-                        System.gc();
-                        game.gameScreen.player.setPlayerHealth(10);
-                        game.gameScreen.player.setPlayerHunger(10);
-                        game.gameScreen.map.GenerateNewMap(game.gameScreen.player);
+                } else {
+                    File path = new File("terrable/assets/saves");
+                    File[] files = path.listFiles();
+                    String fileName = "";
+                    if (button(550, 600, 500, 150, load1)) {
+                        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                            saveNumber = 1;
+                            fileName = files[1].toString();
+                            isGameLoaded = true;
+                            // game.gameScreen.map.dispose();
+                            game.gameScreen.map.clearMap();
+                            game.gameScreen.player.resetInventory();
+                            LoadGame.Load(game.gameScreen.map, game.gameScreen.player, fileName);
+                            System.gc();
+                        }
+                    } else if (button(550, 450, 500, 150, load2)) {
+                        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                            saveNumber = 2;
+                            fileName = files[2].toString();
+                            isGameLoaded = true;
+                            // game.gameScreen.map.dispose();
+                            game.gameScreen.map.clearMap();
+                            game.gameScreen.player.resetInventory();
+                            LoadGame.Load(game.gameScreen.map, game.gameScreen.player, fileName);
+                            System.gc();
+                        }
+                    } else if (button(550, 300, 500, 150, load3)) {
+                        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                            saveNumber = 3;
+                            fileName = files[3].toString();
+                            isGameLoaded = true;
+                            // game.gameScreen.map.dispose();
+                            game.gameScreen.map.clearMap();
+                            game.gameScreen.player.resetInventory();
+                            LoadGame.Load(game.gameScreen.map, game.gameScreen.player, fileName);
+                            System.gc();
+                        }
+                    } else if (button(550, 150, 500, 150, backArrow)) {
+                        isLoadPressed = false;
                     }
-                    game.setScreen(game.gameScreen);
-                    game.batch.draw(newButton, 550, 450);
-                } else if (button(550, 300, 500, 150, saveButton)) {
-                    if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                        SaveGame.Save(game.gameScreen.map, game.gameScreen.player);
-                    }
-                    game.batch.draw(saveButton, 550, 300);
-                } else if (button(550, 150, 500, 150, quitButton)) {
-                    Gdx.app.exit();
-                    game.batch.draw(quitButton, 550, 150);
                 }
             } else {
-                File path = new File("terrable/assets/saves");
-                File[] files = path.listFiles();
-                String fileName = "";
                 if (button(550, 600, 500, 150, load1)) {
                     if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                        isNewPressed = false;
                         saveNumber = 1;
-                        fileName = files[1].toString();
-                        isGameLoaded = true;
-                        // game.gameScreen.map.dispose();
-                        game.gameScreen.map.clearMap();
-                        game.gameScreen.player.resetInventory();
-                        LoadGame.Load(game.gameScreen.map, game.gameScreen.player, fileName);
-                        System.gc();
+                        menuSound.stop();
+                        // reset game if player is dead
+                            game.gameScreen.map.reset();
+                            game.gameScreen.player.resetInventory();
+                            System.gc();
+                            game.gameScreen.player.setPlayerHealth(10);
+                            game.gameScreen.player.setPlayerHunger(10);
+                            game.gameScreen.map.GenerateNewMap(game.gameScreen.player);
+                        game.setScreen(game.gameScreen);
                     }
                 } else if (button(550, 450, 500, 150, load2)) {
                     if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                        isNewPressed = false;
                         saveNumber = 2;
-                        fileName = files[2].toString();
-                        isGameLoaded = true;
-                        // game.gameScreen.map.dispose();
-                        game.gameScreen.map.clearMap();
-                        game.gameScreen.player.resetInventory();
-                        LoadGame.Load(game.gameScreen.map, game.gameScreen.player, fileName);
-                        System.gc();
+                        menuSound.stop();
+                        // reset game if player is dead
+                            game.gameScreen.map.reset();
+                            game.gameScreen.player.resetInventory();
+                            System.gc();
+                            game.gameScreen.player.setPlayerHealth(10);
+                            game.gameScreen.player.setPlayerHunger(10);
+                            game.gameScreen.map.GenerateNewMap(game.gameScreen.player);
+                        game.setScreen(game.gameScreen);
                     }
                 } else if (button(550, 300, 500, 150, load3)) {
                     if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                        isNewPressed = false;
                         saveNumber = 3;
-                        fileName = files[3].toString();
-                        isGameLoaded = true;
-                        // game.gameScreen.map.dispose();
-                        game.gameScreen.map.clearMap();
-                        game.gameScreen.player.resetInventory();
-                        LoadGame.Load(game.gameScreen.map, game.gameScreen.player, fileName);
-                        System.gc();
+                        menuSound.stop();
+                        // reset game if player is dead
+                            game.gameScreen.map.reset();
+                            game.gameScreen.player.resetInventory();
+                            System.gc();
+                            game.gameScreen.player.setPlayerHealth(10);
+                            game.gameScreen.player.setPlayerHunger(10);
+                            game.gameScreen.map.GenerateNewMap(game.gameScreen.player);
+                        game.setScreen(game.gameScreen);
                     }
-                } else if (button(550, 150, 500, 150, load4)) {
-                    if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                        saveNumber = 4;
-                        fileName = files[4].toString();
-                        isGameLoaded = true;
-                        // game.gameScreen.map.dispose();
-                        game.gameScreen.map.clearMap();
-                        game.gameScreen.player.resetInventory();
-                        LoadGame.Load(game.gameScreen.map, game.gameScreen.player, fileName);
-                        System.gc();
-                    }
+                } else if (button(550, 150, 500, 150, backArrow)) {
+                    isGameLoaded = false;
                 }
             }
 
         } else {
-            if (button(550, 450, 500, 150, playButton)) {
                 menuSound.stop();
                 isGameLoaded = false;
                 isLoadPressed = false;
@@ -202,10 +224,6 @@ public class MainMenuScreen implements Screen {
                 }
                 game.setScreen(game.gameScreen);
                 game.batch.draw(playButton, 550, 600);
-            } else if (button(550, 300, 500, 150, backArrow)) {
-                isGameLoaded = false;
-                game.batch.draw(backArrow, 550, 150);
-            }
         }
         game.batch.setColor(0.5f, 0.5f, 0.5f, 1);
 
