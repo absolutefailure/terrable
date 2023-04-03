@@ -17,7 +17,7 @@ import com.mygdx.game.player.Player;
 
 public class Map {
 
-    Block[][] mapArray;
+    private Block[][] mapArray;
 
 
     private Texture textures;
