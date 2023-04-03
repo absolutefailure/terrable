@@ -34,6 +34,7 @@ public class Inventory {
     private int openFurnaceY = 0;
 
     private ArrayList<Integer> discoveredItems;
+    private AchievementManager achievements;
 
     public Inventory() {
 
@@ -47,6 +48,7 @@ public class Inventory {
         }
 
         discoveredItems = new ArrayList<>();
+        achievements = new AchievementManager();
 
     }
 
@@ -499,12 +501,6 @@ public class Inventory {
                                 isGrabbed = true;
                             }
                             if (craftingSuccess) {
-                                if (!(discoveredItems.contains(newItem.getElement()))){
-
-                                    System.out.println("New Item discovered " + newItem.getElement());
-                                    discoveredItems.add(newItem.getElement());
-                                    System.out.println(discoveredItems);
-                                }
                                 for (int i = 36; i < 45; i++) {
                                     items.get(i).setAmount(items.get(i).getAmount() - newItem.getRemoveAmount());
                                     if (items.get(i).getAmount() < 0) {
@@ -668,6 +664,40 @@ public class Inventory {
             player.addDroppedItem(item);
             items.get(45).setAmount(0);
         }
+
+        //Update list of discovered items for achievements
+        int discoveredItem = 0;
+        for (int i = 0; i < 36; i++){
+            discoveredItem = items.get(i).getElement();
+            if (!(discoveredItems.contains(discoveredItem))){
+
+                System.out.println("New Item discovered " + discoveredItem);
+                discoveredItems.add(discoveredItem);
+                System.out.println(discoveredItems);
+
+                int obtainedItem = discoveredItem;
+                switch(obtainedItem){
+                    case 3:
+                        achievements.unlockAchievement("TIMBER");
+                        break;
+                    case 6:
+                        achievements.unlockAchievement("Rock solid");
+                        break;
+                    case 15:
+                        achievements.unlockAchievement("Stone age");
+                        break;
+                    case 16:
+                        achievements.unlockAchievement("Toy or tool?");
+                        break;
+                    case 23:
+                        achievements.unlockAchievement("Ironworks");
+                        break;
+                    case 28:
+                        achievements.unlockAchievement("Let there be light!");
+                        break;
+                }
+            }
+        }
     }
 
     public void addItem(Item item) {
@@ -701,12 +731,6 @@ public class Inventory {
                     items.get(i).setResource(item.isResource());
                     items.get(i).setDamage(item.getDamage());
                     items.get(i).setHealth(item.getHealth());
-                    if (!(discoveredItems.contains(item.getElement()))){
-
-                                System.out.println("New Item discovered " + item.getElement());
-                                discoveredItems.add(item.getElement());
-                                System.out.println(discoveredItems);
-                            }
                     break;
                 }
             }

@@ -89,8 +89,6 @@ public class Player {
     private Inventory inventory;
 
     private ArrayList<Item> droppedItems;
-
-    public static ArrayList<Achievement> achievements;
     private Recipebook recipeBook;
 
 
@@ -137,9 +135,6 @@ public class Player {
 
         inventory = new Inventory();
         droppedItems = new ArrayList<>();
-        achievements = new ArrayList<>();
-
-        achievements.add(new Achievement("Get stone", "Obtain a piece of stone"));
 
         font = new BitmapFont(Gdx.files.internal("fonts/Cambria.fnt"));
 
