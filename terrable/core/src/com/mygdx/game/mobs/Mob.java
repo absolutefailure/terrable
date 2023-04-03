@@ -45,7 +45,7 @@ public class Mob {
 
     }
     
-    public void Update(Map map, Batch batch, Player player, int volume, float delta) {
+    public void Update(Map map, Batch batch, Player player, int volume, float delta, int mapSizeX, int mapSizeY) {
         float oldMobX = mobPosX;
         float oldMobY = mobPosY;
 
@@ -59,7 +59,7 @@ public class Mob {
         mobPosY += gravity * delta;
 
 
-        int startBlockX = (int)(mobPosX / 25 - 200 / 25 / 2) +2500;
+        int startBlockX = (int)(mobPosX / 25 - 200 / 25 / 2) +(mapSizeX/2);
         int endBlockX = (startBlockX + 400 / 25) ;
 
 

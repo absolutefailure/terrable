@@ -39,7 +39,7 @@ public class SaveGame {
                     }
                 }   
                 
-                if(fileCount > saveNumber) {
+                if(fileCount > saveNumber && saveNumber > 0) {
                     fileName = files[saveNumber].getName();
                 }
                 // Create file writer and buffered writer

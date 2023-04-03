@@ -63,13 +63,14 @@ public class GameScreen implements Screen {
     
     
             map.Draw(game.batch, player, volume, delta);
-            player.Update(map, game.cam.getCamera(), game.batch, volume, delta);
+    
+            player.Update(map, game.cam.getCamera(), game.batch, volume, delta, MAP_SIZE_X, MAP_SIZE_Y);
             
             // draw hud
             game.batch.setProjectionMatrix(game.hudCam.combined());
     
     
-            player.DrawHud(game.batch, game.hudCam, map.getMapArray(), delta, customInputProcessor);
+            player.DrawHud(game.batch, game.hudCam, map.getMapArray(), delta, customInputProcessor, MAP_SIZE_X, MAP_SIZE_Y);
         
             game.batch.end();
         }else{

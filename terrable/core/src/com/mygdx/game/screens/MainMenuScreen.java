@@ -204,7 +204,7 @@ public class MainMenuScreen implements Screen {
                         game.setScreen(game.gameScreen);
                     }
                 } else if (button(550, 150, 500, 150, backArrow)) {
-                    isGameLoaded = false;
+                    isNewPressed = false;
                 }
             }
 
