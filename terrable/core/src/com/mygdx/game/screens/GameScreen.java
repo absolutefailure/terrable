@@ -2,8 +2,10 @@ package com.mygdx.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.mygdx.game.CustomInputProcessor;
 import com.mygdx.game.Terrable;
 import com.mygdx.game.map.Map;
 import com.mygdx.game.player.Player;
@@ -21,6 +23,8 @@ public class GameScreen implements Screen {
 
     final Terrable game;
 
+    CustomInputProcessor customInputProcessor;
+
     public int volume;
     public GameScreen(final Terrable game, int volume){
         this.game = game;
@@ -32,7 +36,10 @@ public class GameScreen implements Screen {
 		
         map = new Map(MAP_SIZE_X, MAP_SIZE_Y);
 
-        
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+		customInputProcessor = new CustomInputProcessor();
+		inputMultiplexer.addProcessor(customInputProcessor);
+		Gdx.input.setInputProcessor(inputMultiplexer);
 
     }
 
@@ -62,7 +69,7 @@ public class GameScreen implements Screen {
             game.batch.setProjectionMatrix(game.hudCam.combined());
     
     
-            player.DrawHud(game.batch, game.hudCam, map.getMapArray(), delta);
+            player.DrawHud(game.batch, game.hudCam, map.getMapArray(), delta, customInputProcessor);
         
             game.batch.end();
         }else{
