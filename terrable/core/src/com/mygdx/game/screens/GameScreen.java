@@ -97,6 +97,12 @@ public class GameScreen implements Screen {
             
 		}
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
+
+			game.setScreen(game.achievementScreen);
+
+            
+		}
     }
 
 

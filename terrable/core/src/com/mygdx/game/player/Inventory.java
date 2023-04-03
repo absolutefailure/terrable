@@ -33,6 +33,8 @@ public class Inventory {
     private int openFurnaceX = 0;
     private int openFurnaceY = 0;
 
+    private ArrayList<Integer> discoveredItems;
+
     public Inventory() {
 
         hotbarTexture = new Texture("hotbar.png");
@@ -43,6 +45,9 @@ public class Inventory {
         for (int i = 0; i < 46; i++) {
             items.add(new Item());
         }
+
+        discoveredItems = new ArrayList<>();
+
     }
 
     public void Update(Batch batch, Player player, TextureRegion[][] blockTextures, HudCamera cam,
@@ -494,6 +499,12 @@ public class Inventory {
                                 isGrabbed = true;
                             }
                             if (craftingSuccess) {
+                                if (!(discoveredItems.contains(newItem.getElement()))){
+
+                                    System.out.println("New Item discovered " + newItem.getElement());
+                                    discoveredItems.add(newItem.getElement());
+                                    System.out.println(discoveredItems);
+                                }
                                 for (int i = 36; i < 45; i++) {
                                     items.get(i).setAmount(items.get(i).getAmount() - newItem.getRemoveAmount());
                                     if (items.get(i).getAmount() < 0) {
@@ -690,6 +701,12 @@ public class Inventory {
                     items.get(i).setResource(item.isResource());
                     items.get(i).setDamage(item.getDamage());
                     items.get(i).setHealth(item.getHealth());
+                    if (!(discoveredItems.contains(item.getElement()))){
+
+                                System.out.println("New Item discovered " + item.getElement());
+                                discoveredItems.add(item.getElement());
+                                System.out.println(discoveredItems);
+                            }
                     break;
                 }
             }

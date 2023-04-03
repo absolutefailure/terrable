@@ -21,6 +21,7 @@ public class Cow extends Mob {
     private int element;
     private float moveTimer;
     private int direction = 0;
+    
     public Cow(float x, float y, TextureRegion[][] texture) {
         super();
         this.mobPosX = x;
@@ -36,7 +37,7 @@ public class Cow extends Mob {
         mobHealth = 5;
         type = "friendly";
 
-        element = Element.FEATHER;
+        element = Element.RAWSTEAK;
         
     }
 

@@ -258,8 +258,21 @@ public class Block {
                     furnaceSlot1.setAmount(furnaceSlot1.getAmount() - amount);
                     furnaceSlot2.setAmount(furnaceSlot2.getAmount() - amount);
                     furnaceStartTimer = new Date().getTime();
+                } else if (amount > 0 && furnaceSlot1.getElement() == RAWSTEAK && (furnaceSlot3.getElement() == STEAK || furnaceSlot3.getAmount() == 0) && furnaceSlot3.getAmount() + amount <= 32) {
+                    furnaceSlot3.setElement(STEAK);
+                    furnaceSlot3.setAmount(furnaceSlot3.getAmount() + amount);
+                    furnaceSlot3.setFood(true);
+                    furnaceSlot1.setAmount(furnaceSlot1.getAmount() - amount);
+                    furnaceSlot2.setAmount(furnaceSlot2.getAmount() - amount);
+                    furnaceStartTimer = new Date().getTime();
+                } else if (amount > 0 && furnaceSlot1.getElement() == RAWCHICKENMEAT && (furnaceSlot3.getElement() == CHICKENMEAT || furnaceSlot3.getAmount() == 0) && furnaceSlot3.getAmount() + amount <= 32) {
+                    furnaceSlot3.setElement(CHICKENMEAT);
+                    furnaceSlot3.setAmount(furnaceSlot3.getAmount() + amount);
+                    furnaceSlot3.setFood(true);
+                    furnaceSlot1.setAmount(furnaceSlot1.getAmount() - amount);
+                    furnaceSlot2.setAmount(furnaceSlot2.getAmount() - amount);
+                    furnaceStartTimer = new Date().getTime();
                 }
-
             }
         }else{
             this.element = FURNACE;
