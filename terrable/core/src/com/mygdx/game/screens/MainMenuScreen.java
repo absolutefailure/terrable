@@ -28,7 +28,7 @@ public class MainMenuScreen implements Screen {
     private Texture volumeSlider, volumeBar;
     private Sound menuSound;
 
-    private Texture load1, load2, load3, load4;
+    private Texture load1, load2, load3;
     public static int saveNumber;
     private boolean volumeGrab = false;
 
@@ -59,7 +59,6 @@ public class MainMenuScreen implements Screen {
         load1 = new Texture("menubuttons/load1.png");
         load2 = new Texture("menubuttons/load2.png");
         load3 = new Texture("menubuttons/load3.png");
-        load4 = new Texture("menubuttons/load4.png");
         game.cam.setPosition(game.WIDTH / 2, game.HEIGHT / 2);
         game.cam.update();
 
