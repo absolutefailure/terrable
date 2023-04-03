@@ -703,20 +703,18 @@ public class Player {
         }
 
         // DEPLETE HUNGER
-        if (hungerTime < 2000) {
-            hungerTime += 1;
-        } else {
-            if (getPlayerHunger() > 0) {
+        if (getPlayerHunger() > 0) {
+            long currentTime = new Date().getTime();
+            if (currentTime - hungerTime >= 90000) {
                 setPlayerHunger(playerHunger-1);
-                hungerTime = 0;
+                hungerTime = currentTime;
             }
         }
 
         // LOSE HEALTH IF HUNGER BAR IS EMPTY
         if (getPlayerHunger() == 0) {
             long currentTime = new Date().getTime();
-            long hungerTimer = (currentTime - lastHungerHit);
-            if (hungerTimer >= 4000) {
+            if (currentTime - lastHungerHit >= 5000) {
                 setPlayerHealth(getPlayerHealth()-1);
                 damageSound.play(volume/200f);
                 lastHungerHit = currentTime;
