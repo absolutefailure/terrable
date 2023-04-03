@@ -80,6 +80,8 @@ public class Player {
 
     private BitmapFont font;
     private String elementString = "";
+    private String tutorialString = " A: to move left,\n D: to move right,\n W or Space: to jump / go up ladder,\n S: to go down ladder";
+    private boolean tutorialOn = false;
 
 
     private ArrayList<Mob> mobs;
@@ -577,6 +579,15 @@ public class Player {
                 }
             }
         }
+        // SHOW / HIDE TUTORIAL
+        if(!tutorialOn) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
+            tutorialOn = true;
+            }
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
+            tutorialOn = false;
+        }
+        
 
         // check if mouse is inside mob
         for(int i = 0; i < mobs.size(); i++) {
@@ -755,6 +766,13 @@ public class Player {
 
         if (inventory.getHover(cam) > -1){
             elementString = elementNames.get(inventory.getHover(cam));
+        }
+
+        // DRAW TUTORIAL
+        if(tutorialOn) {
+            font.draw(batch, tutorialString, 750, 600);
+        } else {
+            font.draw(batch, "press F1 for tutorial", 10, 890);
         }
 
         // DRAW CURRENT ELEMENT SELECTED
