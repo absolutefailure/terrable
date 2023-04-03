@@ -31,9 +31,6 @@ public class GameScreen implements Screen {
 
         this.volume = volume;
 	
-        
-
-
 		// Create player and set starting position
 		player = new Player(0,0); 
 		

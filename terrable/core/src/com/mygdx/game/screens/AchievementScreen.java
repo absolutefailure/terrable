@@ -1,5 +1,7 @@
 package com.mygdx.game.screens;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -8,7 +10,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Terrable;
 import com.mygdx.game.player.Achievement;
 import com.mygdx.game.player.AchievementManager;
@@ -16,15 +17,14 @@ import com.mygdx.game.player.AchievementManager;
 public class AchievementScreen implements Screen {
     private  SpriteBatch batch;
     private  BitmapFont font;
-    private final AchievementManager achievementManager;
     final Terrable game;
+    ArrayList<Achievement> achievementlist = AchievementManager.getAchievements();
 
-    public AchievementScreen(final Terrable game, int volume, AchievementManager achievementManager) {
+    public AchievementScreen(final Terrable game, int volume) {
         this.game = game;
         batch = new SpriteBatch();
         font = new BitmapFont();
         font.getData().setScale(2);
-        this.achievementManager = achievementManager;
     }
 
     @Override
@@ -40,9 +40,8 @@ public class AchievementScreen implements Screen {
         font.draw(batch, "Achievements", 0, Gdx.graphics.getHeight() - 50, Gdx.graphics.getWidth(), Align.center, false);
         
         // Draw the list of achievements
-        Array<Achievement> achievements = achievementManager.getAchievements();
         float y = Gdx.graphics.getHeight() - 150;
-        for (Achievement achievement : achievements) {
+        for (Achievement achievement : achievementlist) {
             font.setColor(achievement.isUnlocked() ? Color.GREEN : Color.RED);
             font.draw(batch, achievement.getName(), 50, y, Gdx.graphics.getWidth() - 100, Align.left, false);
             font.setColor(Color.WHITE);

@@ -90,10 +90,9 @@ public class Player {
     private Inventory inventory;
 
     private ArrayList<Item> droppedItems;
-
-    public static ArrayList<Achievement> achievements;
     private Recipebook recipeBook;
 
+    private float cactusTimer;
 
     public Player(float x, float y) {
         this.playerPosX = x;
@@ -120,6 +119,8 @@ public class Player {
         hungerTime = 0;
         lastHungerHit = 0;
 
+        cactusTimer = 0;
+
 
         playerArm = new Texture("playerarm.png");
         arm = new Sprite(playerArm);
@@ -138,9 +139,6 @@ public class Player {
 
         inventory = new Inventory();
         droppedItems = new ArrayList<>();
-        achievements = new ArrayList<>();
-
-        achievements.add(new Achievement("Get stone", "Obtain a piece of stone"));
 
         font = new BitmapFont(Gdx.files.internal("fonts/Cambria.fnt"));
 
@@ -180,6 +178,13 @@ public class Player {
             gravity += 0.25 * delta;
         }
         
+        if (cactusTimer > 400){
+            playerHealth--;
+            damageSound.play(volume/400f);
+            cactusTimer = 0;
+        }
+
+
         // APPLY GRAVITY TO PLAYER
         playerPosY -= gravity * delta;
         int startBlockX = (int)(playerPosX / 25 - 1600 / 25 / 2) +(mapSizeX/2);
@@ -196,6 +201,10 @@ public class Player {
                             && playerPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
                             && playerPosY + playerSizeY > mapArray[x][y].getPosY()
                             && playerPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
+
+                        if (mapArray[x][y].getElement() == CACTUS){
+                            cactusTimer += 1*delta;
+                        }
                         if (mapArray[x][y].isCollision()) {
 
                             if (gravity > 13) {

@@ -241,7 +241,48 @@ public class mapGenerator {
                         }
                         
 
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, SAND, true, SANDBACKGROUND);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, SAND, true, EMPTY);
+                        
+                    }else if (rand.nextInt(400) == 1 && x > 5 && x < mapSizeX-5){ // GENERATE TREE
+
+                        for (int i = x-4; i < x; i++){
+                            mapArray[i][y-1] = null;
+                        }
+                        for (int i = x-4; i < x; i++){
+                            mapArray[i][y-2] = null;
+                        }
+                        for (int i = x-4; i < x; i++){
+                            mapArray[i][y].setElement(PLANKS);
+                            mapArray[i][y].setCollision(true);
+                        }
+                        
+                        mapArray[x][y-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, DOOR1, false, EMPTY);
+                        mapArray[x][y-2] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-2) * 25, DOOR2, false, EMPTY);
+                        mapArray[x][y-3] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-3) * 25, WOOD, true, EMPTY);
+                        mapArray[x][y-4] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, EMPTY, false, EMPTY);
+
+                        mapArray[x-1][y-1] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, PLANKS, false, EMPTY);
+                        mapArray[x-1][y-2] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-2) * 25, EMPTY, false, EMPTY);
+                        mapArray[x-1][y-3] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-3) * 25, PLANKS, false, EMPTY);
+                        mapArray[x-1][y-4] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, WOOD, true, EMPTY);
+
+                        mapArray[x-2][y-1] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, PLANKS, false, EMPTY);
+                        mapArray[x-2][y-2] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-2) * 25, GLASS, false, EMPTY);
+                        mapArray[x-2][y-3] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-3) * 25, PLANKS, false, EMPTY);
+                        mapArray[x-2][y-4] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, PLANKS, false, EMPTY);
+                        mapArray[x-2][y-5] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-5) * 25, WOOD, true, EMPTY);
+
+                        mapArray[x-3][y-1] = new Block((-mapSizeX  * 25 / 2) + (x-3) * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, EMPTY, false, EMPTY);
+                        mapArray[x-3][y-2] = new Block((-mapSizeX  * 25 / 2) + (x-3) * 25,(mapSizeY  * 25/ 2) - (y-2) * 25, PLANKS, false, EMPTY);
+                        mapArray[x-3][y-3] = new Block((-mapSizeX  * 25 / 2) + (x-3) * 25,(mapSizeY  * 25/ 2) - (y-3) * 25, PLANKS, false, EMPTY);
+                        mapArray[x-3][y-4] = new Block((-mapSizeX  * 25 / 2) + (x-3) * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, WOOD, true, EMPTY);
+
+                        mapArray[x-4][y-1] = new Block((-mapSizeX  * 25 / 2) + (x-4) * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, DOOR1, false, EMPTY);
+                        mapArray[x-4][y-2] = new Block((-mapSizeX  * 25 / 2) + (x-4) * 25,(mapSizeY  * 25/ 2) - (y-2) * 25, DOOR2, false, EMPTY);
+                        mapArray[x-4][y-3] = new Block((-mapSizeX  * 25 / 2) + (x-4) * 25,(mapSizeY  * 25/ 2) - (y-3) * 25, WOOD, true, EMPTY);
+                        mapArray[x-4][y-4] = new Block((-mapSizeX  * 25 / 2) + (x-4) * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, EMPTY, false, EMPTY);
+
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, PLANKS, true, EMPTY);
                         
                     }else{
                         if(rand.nextInt(100) < 60) {
