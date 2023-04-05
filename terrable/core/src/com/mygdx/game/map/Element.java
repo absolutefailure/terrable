@@ -51,7 +51,11 @@ public final class Element {
     public static final int GLASS = 42;
     public static final int SANDBACKGROUND = 43;
     public static final int SANDSTONEBACKGROUND = 44;
-
+    public static final int WATER1 = 45;
+    public static final int WATER2 = 46;
+    public static final int WATER3 = 47;
+    public static final int WATER4 = 48;
+    public static final int WATER5 = 49;
 
 
     public static final Map<Integer, String> elementNames;
@@ -103,6 +107,11 @@ public final class Element {
         map.put(42, "Glass");
         map.put(43, "");
         map.put(44, "");
+        map.put(45, "Water");
+        map.put(46, "Water");
+        map.put(47, "Water");
+        map.put(48, "Water");
+        map.put(49, "Water");
 
         elementNames = Collections.unmodifiableMap(map);
     }

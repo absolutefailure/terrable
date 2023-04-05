@@ -86,7 +86,7 @@ public class Rain {
             raindrop.Update(batch, wind / 100f, delta);
             for (int x = raindropX; x < raindropX + 3; x++) {
                 for (int y = raindropY; y < raindropY + 4; y++) {
-                    if ((mapArray[x][y].isCollision() || mapArray[x][y].getElement() == Element.LEAVES)
+                    if ((mapArray[x][y].isCollision() || mapArray[x][y].getElement() == Element.LEAVES || mapArray[x][y].getElement() == Element.WATER3)
                             && raindrop.getX() >= mapArray[x][y].getPosX()
                             && raindrop.getX() <= mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
                             && raindrop.getY() >= mapArray[x][y].getPosY()

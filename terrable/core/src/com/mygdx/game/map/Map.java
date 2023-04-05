@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.map.rain.Rain;
 import com.mygdx.game.mobs.Mob;
 import com.mygdx.game.mobs.mobManager;
+import com.mygdx.game.player.Item;
 import com.mygdx.game.player.Player;
 
 public class Map {
@@ -50,6 +51,7 @@ public class Map {
     private float nightTime = 6000;
 
     private Rain rain;
+
 
     public Map(int sizeX, int sizeY) {
         this.mapSizeX = sizeX;
@@ -152,7 +154,7 @@ public class Map {
                     } 
 
 
-                    if (block.getElement() != EMPTY)  {
+                    if (block.getElement() != EMPTY && block.getElement() != WATER1 && block.getElement() != WATER2 && block.getElement() != WATER3 && block.getElement() != WATER4 && block.getElement() != WATER5)  {
                         if (block.getBrightness() <= 0.1f){
                             batch.setColor(block.getBrightness()-block.brightnessLevel-(dayBrightness/7f), block.getBrightness()-block.brightnessLevel-(dayBrightness/7f), block.getBrightness()-block.brightnessLevel-(dayBrightness/7f), 1f);
                         }else if(block.getBrightness() <= 0.3f){
@@ -167,13 +169,14 @@ public class Map {
 
                         batch.setColor(1,1,1,1);
                     } 
-                    block.setBrightness(0f);                    
-
+                    block.setBrightness(0f);      
                 }      
                 
             }
             
         }
+    
+
 
 
 
@@ -192,6 +195,126 @@ public class Map {
 
 
 
+    }
+
+    public void UpdateWater(Batch batch, Player player, float delta){
+        float dayBrightness = 800f/clock;
+        int startBlockX = (int)(player.getX() / 25 - 2000 / 25 / 2) +(mapSizeX/2);
+        int endBlockX = (startBlockX + 2000 / 25) ;
+        batch.setColor(1,1,1,1);
+        for (int x = startBlockX; x < endBlockX; x++){ 
+            
+            for (int y = 0; y < mapArray[x].length; y++){
+                Block block = mapArray[x][y];
+                if (block.getElement() == WATER1 || block.getElement() == WATER2 || block.getElement() == WATER3 || block.getElement() == WATER4 || block.getElement() == WATER5)  {
+
+
+                        batch.setColor(0.5f-block.brightnessLevel-dayBrightness, 0.5f-block.brightnessLevel-dayBrightness, 0.5f-block.brightnessLevel-dayBrightness, 1f);
+                    
+                    
+                    batch.draw(blockTextures[0][block.getElement()-1], block.getPosX(), block.getPosY(), 25 , 25); // blockTextures[ROW][COLUMN]
+                    batch.setColor(1,1,1,1);
+                }
+                
+                if (block.getPosY() > player.getY() - 1000 && block.getPosY() < player.getY() + 1000 ){
+                    if (block.getWaterTimer() > 50){
+                        if (block.getElement() == WATER2 && (mapArray[x][y+1].getElement() == EMPTY || mapArray[x][y+1].getElement() == WATER1 || mapArray[x][y+1].getElement() == WATER2 || mapArray[x][y+1].getElement() == WATER4 || mapArray[x][y+1].getElement() == WATER5)){
+                            mapArray[x][y+1].setElement(WATER3);
+                            y++;
+                        }
+                        if (block.getElement() == WATER4 && (mapArray[x][y+1].getElement() == EMPTY || mapArray[x][y+1].getElement() == WATER1 || mapArray[x][y+1].getElement() == WATER2 || mapArray[x][y+1].getElement() == WATER4 || mapArray[x][y+1].getElement() == WATER5)){
+                            mapArray[x][y+1].setElement(WATER3);
+                            y++;
+                        }
+                        if (block.getElement() == WATER1 && (mapArray[x][y+1].getElement() == EMPTY || mapArray[x][y+1].getElement() == WATER1 || mapArray[x][y+1].getElement() == WATER2 || mapArray[x][y+1].getElement() == WATER4 || mapArray[x][y+1].getElement() == WATER5)){
+                            mapArray[x][y+1].setElement(WATER3);
+                            y++;
+                        }
+                        if (block.getElement() == WATER5 && (mapArray[x][y+1].getElement() == EMPTY || mapArray[x][y+1].getElement() == WATER1 || mapArray[x][y+1].getElement() == WATER2 || mapArray[x][y+1].getElement() == WATER4 || mapArray[x][y+1].getElement() == WATER5)){
+                            mapArray[x][y+1].setElement(WATER3);
+                            y++;
+                        }
+                        if(block.getElement() == WATER2 && (mapArray[x-1][y].getElement() == EMPTY|| mapArray[x-1][y].getElement() == TALLGRASS || mapArray[x-1][y].getElement() == REDFLOWER || mapArray[x-1][y].getElement() == TORCH) && mapArray[x][y+1].getElement() != EMPTY && mapArray[x][y+1].getElement() != WATER3){
+                            if(mapArray[x-1][y].getElement() > 0){
+                                Item item = new Item();
+                                item.setElement(mapArray[x-1][y].getElement());
+                                item.setAmount(1);
+                                item.setX(mapArray[x-1][y].getPosX()+12);
+                                item.setY(mapArray[x-1][y].getPosY()+12);
+                                player.addDroppedItem(item);
+                            }
+                            mapArray[x-1][y].setElement(WATER1);
+                        }else if(block.getElement() == WATER2 && (mapArray[x-1][y].getElement() == WATER4 || mapArray[x-1][y].getElement() == WATER5)){
+                            mapArray[x-1][y].setElement(WATER3);
+                        }
+                        if(block.getElement() == WATER4 && (mapArray[x+1][y].getElement() == EMPTY|| mapArray[x+1][y].getElement() == TALLGRASS || mapArray[x+1][y].getElement() == REDFLOWER || mapArray[x+1][y].getElement() == TORCH) && mapArray[x][y+1].getElement() != EMPTY && mapArray[x][y+1].getElement() != WATER3){
+                            if(mapArray[x+1][y].getElement() > 0){
+                                Item item = new Item();
+                                item.setElement(mapArray[x+1][y].getElement());
+                                item.setAmount(1);
+                                item.setX(mapArray[x+1][y].getPosX()+12);
+                                item.setY(mapArray[x+1][y].getPosY()+12);
+                                player.addDroppedItem(item);
+                            }
+                            mapArray[x+1][y].setElement(WATER5);
+                        }else if(block.getElement() == WATER4 && (mapArray[x+1][y].getElement() == WATER2 || mapArray[x+1][y].getElement() == WATER1)){
+                            mapArray[x+1][y].setElement(WATER3);
+                        }
+
+                        if (block.getElement() == WATER3 && !mapArray[x][y+1].isCollision()){
+                            if(mapArray[x][y+1].getElement() == EMPTY || mapArray[x][y+1].getElement() == WATER1 || mapArray[x][y+1].getElement() == WATER2 || mapArray[x][y+1].getElement() == WATER4 || mapArray[x][y+1].getElement() == WATER5){
+                                mapArray[x][y+1].setElement(WATER3);
+                                y++;
+                            }else if(mapArray[x][y+1].getElement() == TALLGRASS || mapArray[x][y+1].getElement() == REDFLOWER || mapArray[x][y+1].getElement() == TORCH){
+                                Item item = new Item();
+                                item.setElement(mapArray[x][y+1].getElement());
+                                item.setAmount(1);
+                                item.setX(mapArray[x][y+1].getPosX()+12);
+                                item.setY(mapArray[x][y+1].getPosY()+12);
+                                player.addDroppedItem(item);
+                                mapArray[x][y+1].setElement(WATER3);
+                                y++;
+                            }
+
+                            
+                        }
+                        if(block.getElement() == WATER3 && mapArray[x][y+1].getElement() != EMPTY  && mapArray[x][y+1].getElement() != WATER2 && mapArray[x][y+1].getElement() != WATER1 && mapArray[x][y+1].getElement() != WATER4 && mapArray[x][y+1].getElement() != WATER5){
+
+                            if (mapArray[x+1][y].getElement() == EMPTY || mapArray[x+1][y].getElement() == TALLGRASS || mapArray[x+1][y].getElement() == REDFLOWER || mapArray[x+1][y].getElement() == TORCH){
+                                if(mapArray[x+1][y].getElement() > 0){
+                                    Item item = new Item();
+                                    item.setElement(mapArray[x+1][y].getElement());
+                                    item.setAmount(1);
+                                    item.setX(mapArray[x+1][y].getPosX()+12);
+                                    item.setY(mapArray[x+1][y].getPosY()+12);
+                                    player.addDroppedItem(item);
+                                }
+                                mapArray[x+1][y].setElement(WATER4);
+                            }else if(mapArray[x+1][y].getElement() == WATER2 || mapArray[x+1][y].getElement() == WATER1){
+                                mapArray[x+1][y].setElement(WATER3);
+                            }
+                            if (mapArray[x-1][y].getElement() == EMPTY || mapArray[x-1][y].getElement() == TALLGRASS || mapArray[x-1][y].getElement() == REDFLOWER || mapArray[x-1][y].getElement() == TORCH){
+                                if(mapArray[x-1][y].getElement() > 0){
+                                    Item item = new Item();
+                                    item.setElement(mapArray[x-1][y].getElement());
+                                    item.setAmount(1);
+                                    item.setX(mapArray[x-1][y].getPosX()+12);
+                                    item.setY(mapArray[x-1][y].getPosY()+12);
+                                    player.addDroppedItem(item);
+                                }
+                                mapArray[x-1][y].setElement(WATER2);
+                            }else if(mapArray[x-1][y].getElement() == WATER4 || mapArray[x-1][y].getElement() == WATER5){
+                                mapArray[x-1][y].setElement(WATER3);
+                            }
+                        }
+                        
+                        block.setWaterTimer(0);
+                    }
+                    block.setWaterTimer(block.getWaterTimer() + 1 * delta);
+                    
+                }
+            }
+        }
     }
 
     public void UpdateLighting(Player player){
@@ -269,6 +392,9 @@ public class Map {
                             }
                             
                         }
+                    }
+                    if(mapArray[x][y].getElement() == EMPTY || mapArray[x][y].getElement() == WATER1 || mapArray[x][y].getElement() == WATER2 || mapArray[x][y].getElement() == WATER3 || mapArray[x][y].getElement() == WATER4 || mapArray[x][y].getElement() == WATER5){
+                        mapArray[x][y].setBrightness(0.25f);
                     }
                 }
             }

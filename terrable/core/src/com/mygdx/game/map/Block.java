@@ -24,6 +24,8 @@ public class Block {
 
     public float brightnessLevel;
 
+    private float waterTimer = 0;
+
     public Block(int x, int y, int element, boolean collision, int permanent){
         this.posX = x;
         this.posY = y;
@@ -147,6 +149,15 @@ public class Block {
 
     public void setPermanent(int permanent) {
         this.permanent = permanent;
+    }
+    
+
+    public float getWaterTimer() {
+        return waterTimer;
+    }
+
+    public void setWaterTimer(float waterTimer) {
+        this.waterTimer = waterTimer;
     }
 
     public int getMaxhealth(){
