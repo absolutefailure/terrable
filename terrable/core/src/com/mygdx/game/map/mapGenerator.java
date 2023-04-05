@@ -203,6 +203,8 @@ public class mapGenerator {
             if (height > 175) height = 175;
             if (height < 125) height = 125;
         }
+
+
         for (int i = startX; i < endX; i++){
             boolean isAirBlock = true;
             int start = 9999;
@@ -210,17 +212,102 @@ public class mapGenerator {
                 if (isAirBlock && mapArray[i][j].isCollision()){
                     isAirBlock = false;
                     start = j;
+               
                 }
                 mapArray[i][j].brightnessLevel = 0f;
                 
 
                 if (j > start && 0.01f*(j-start) < 1f){
                     mapArray[i][j].brightnessLevel = 0.01f*(j-start);
+
                 }else if(j > start ){
                     mapArray[i][j].brightnessLevel = 1f;
                 }
             }
         }
+        int sea = 0;
+        int length = 0;
+        for (int i = startX; i < endX; i++){
+            boolean isAirBlock = true;
+            sea--;
+            for(int j = 0; j < 300; j++){
+                if (isAirBlock && mapArray[i][j].isCollision()){
+                    isAirBlock = false;
+                    if (i < endX-190 && rand.nextInt(100) < 2 && sea < 0){
+                        sea = 250;
+                        int seaDepth = 1;
+                        boolean seaTurn = false;
+                        int seaLength = rand.nextInt(150)+40;
+                        int maxSeaDepth = seaLength/5;
+                        for (int s = 0; s < seaLength; s++){
+                            for (int s2 = -25; s2 < seaDepth; s2++){
+                                if(s < seaLength){
+                                    if(s2 >= 1){
+                                        mapArray[i+s][j+s2].setElement(WATER3);
+                                        mapArray[i+s][j+s2].setCollision(false);
+                                        length = s;
+                                    }else{
+                                        if (s>0 && s < seaLength){
+                                            mapArray[i+s][j+s2].setElement(EMPTY);
+                                            mapArray[i+s][j+s2].setCollision(false);
+                                        }  
+                                    }
+                                    if(s2 < 5){
+                                        mapArray[i+s][j+s2].setPermanent(0);
+                                    }
+                                }else if(s2 == 0 ){
+                                    if(mapArray[i+s][j+s2-1].getElement() == EMPTY){
+                                        mapArray[i+s][j+s2].setElement(GRASS);
+                                        mapArray[i+s][j+s2].setCollision(true);
+                                    }else{
+                                        mapArray[i+s][j+s2].setElement(GROUND);
+                                        mapArray[i+s][j+s2].setCollision(true);
+                                    }
+
+                                }else if(s2 > 0 && s2 < 7){
+                                    mapArray[i+s][j+s2].setElement(GROUND);
+                                    mapArray[i+s][j+s2].setCollision(true);
+                                }
+                            }
+                            if(s > seaLength-maxSeaDepth){
+                                seaTurn = true;
+                            }
+                            if(seaDepth > maxSeaDepth-2){
+                                seaDepth -= rand.nextInt(2);
+                            }
+                            if(seaDepth < maxSeaDepth+2){
+                                seaDepth += rand.nextInt(2);
+                            }
+                            if ( seaDepth < maxSeaDepth && seaTurn == false){
+                                seaDepth += 2;
+                            }else if(seaTurn){
+                                seaDepth -= 2;
+                            }
+                            
+                        }
+                        seaDepth = 15;
+                        for (int s = length; s < length+15; s++){
+                            for (int s2 = seaDepth-15; s2 > -15; s2--){
+                                if (s2 == seaDepth-15){
+                                    mapArray[i+s][j-s2].setElement(GRASS);
+                                    mapArray[i+s][j-s2].setCollision(true);
+                                }else{
+                                    mapArray[i+s][j-s2].setElement(GROUND);
+                                    mapArray[i+s][j-s2].setCollision(true);
+                                }
+
+                            }
+                            seaDepth--;
+                        }
+                    }
+                }
+ 
+            }
+        }
+
+
+
+
         return height;
     }
 

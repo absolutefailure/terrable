@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.map.Block;
+import com.mygdx.game.map.Element;
 import com.mygdx.game.player.Player;
 
 public class mobManager {
@@ -24,16 +25,16 @@ public class mobManager {
             int startY = (int) (mapSizeY / 2 - ((player.getY() + 500) / 25));
             ArrayList<int[]> noCollisionList = new ArrayList<>();
 
-            if (startX < 0) {startX = 0;}
-            if (startX > mapSizeX - 112) {startX = mapSizeX - 112;}
-            if (startY < 1) {startY = 1;}
-            if (startY > mapSizeY - 70) {startY = mapSizeY - 70;}
+            if (startX < 2) {startX = 2;}
+            if (startX > mapSizeX - 113) {startX = mapSizeX - 113;}
+            if (startY < 2) {startY = 2;}
+            if (startY > mapSizeY - 71) {startY = mapSizeY - 71;}
 
             switch (spawn) {
                 case 1:
                     for (int x = startX; x < startX + 112; x++) {
                         for (int y = startY; y < startY + 70; y++) {
-                            if (mapArray[x][y].isCollision() == false && mapArray[x][y-1].isCollision() == false && mapArray[x][y-1].getPermanent() > 0 &&
+                            if (mapArray[x][y].isCollision() == false && mapArray[x][y-1].isCollision() == false && mapArray[x][y-1].getPermanent() > 0 && mapArray[x][y-1].getElement() != Element.WATER3 &&
                                 (mapArray[x][y].getPosX() < player.getX() - 700 || mapArray[x][y].getPosX() > player.getX() + 700) 
                                 && (mapArray[x][y].getPosY() < player.getY() - 300 || mapArray[x][y].getPosY() > player.getY() + 500)) {
                                 int[] pos = {x, y};
@@ -53,7 +54,7 @@ public class mobManager {
                 case 2:
                     for (int x = startX; x < startX + 112; x++) {
                         for (int y = startY; y < startY + 70; y++) {
-                            if (mapArray[x][y].isCollision() == false && mapArray[x][y-1].getPermanent() > 0 &&
+                            if (mapArray[x][y].isCollision() == false && mapArray[x][y-1].getPermanent() > 0 && mapArray[x][y-1].getElement() != Element.WATER3 &&
                                 (mapArray[x][y].getPosX() < player.getX() - 700 || mapArray[x][y].getPosX() > player.getX() + 700) 
                                 && (mapArray[x][y].getPosY() < player.getY() - 300 || mapArray[x][y].getPosY() > player.getY() + 500)) {
                                 int[] pos = {x, y};

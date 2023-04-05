@@ -1,6 +1,7 @@
 package com.mygdx.game.player;
 
 import com.mygdx.game.map.Block;
+import static com.mygdx.game.map.Element.*;
 
 public class Item {
 
@@ -202,22 +203,29 @@ public class Item {
          
         for (int i = loopStartX; i < loopStartX + 4; i++){
             for (int j = loopStartY; j < loopStartY+4; j++){
-                if (mapArray[i][j].isCollision() && x+12 > mapArray[i][j].getPosX()
+                if ( x+12 > mapArray[i][j].getPosX()
                 && x < mapArray[i][j].getPosX() + mapArray[i][j].getBLOCKSIZE()
                 && y + 12 > mapArray[i][j].getPosY()
                 && y < mapArray[i][j].getPosY() + mapArray[i][j].getBLOCKSIZE()) {
-                    float blockTop = mapArray[i][j].getPosY() + mapArray[i][j].getBLOCKSIZE();
-                    float blockBottom = (mapArray[i][j].getPosY());
-                    float dy = y-itemOldY ;
-            
-                    if (dy > 0) {
-                        y = blockBottom - 12f;
-                    } else {
-                        y = blockTop;
+                    if(mapArray[i][j].isCollision()){
+                        float blockTop = mapArray[i][j].getPosY() + mapArray[i][j].getBLOCKSIZE();
+                        float blockBottom = (mapArray[i][j].getPosY());
+                        float dy = y-itemOldY ;
+                
+                        if (dy > 0) {
+                            y = blockBottom - 12f;
+                        } else {
+                            y = blockTop;
+                        }
+                        //y = itemOldY;
+                        gravity *= Math.pow(0.7f, delta);
+                        break;
+                    }else if(mapArray[i][j].getElement() == WATER3){
+                        gravity *= Math.pow(0.9f, delta);
+                        gravity += 0.2f * delta;
+                        break;
                     }
-                    //y = itemOldY;
-                    gravity *= Math.pow(0.7f, delta);
-                    break;
+
                 }
             }
         }

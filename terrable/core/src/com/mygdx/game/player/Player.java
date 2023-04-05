@@ -169,10 +169,10 @@ public class Player {
             }
             if (Gdx.input.isKeyPressed(Input.Keys.S)) {
 
-                if (onLadder) {
+                
                     gravity = +4.3f;
                     onGroundTimer = 0;
-                }
+                
             }
             if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                 gravity = -5.3f;
@@ -247,10 +247,14 @@ public class Player {
 
                             //playerPosY = oldY;
                             gravity = -gravity * PLAYER_BOUNCINESS * delta ;
-                        } else if (mapArray[x][y].getElement() == LADDER) {
+                        } else if (mapArray[x][y].getElement() == LADDER ) {
                             gravity *= Math.pow(0.8f, delta);
                             onGround = true;
                             onLadder = true;
+                            onGroundTimer = 5;
+                        }else if(mapArray[x][y].getElement() == WATER1 || mapArray[x][y].getElement() == WATER2 || mapArray[x][y].getElement() == WATER3 || mapArray[x][y].getElement() == WATER4 || mapArray[x][y].getElement() == WATER5){
+                            gravity *= Math.pow(0.9f, delta);
+                            onGround = true;
                             onGroundTimer = 5;
                         }
 
@@ -365,7 +369,12 @@ public class Player {
                                         // IF LEFT MOUSE BUTTON IS DOWN REDUCE BLOCK HEALTH OR DESTROY IT (CHANGE TO
                                         // EMPTY AND COLLISION OFF)
                                         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)
-                                                && mapArray[x][y].getElement() != EMPTY) {
+                                                && mapArray[x][y].getElement() != EMPTY
+                                                && mapArray[x][y].getElement() != WATER1
+                                                && mapArray[x][y].getElement() != WATER2
+                                                && mapArray[x][y].getElement() != WATER3
+                                                && mapArray[x][y].getElement() != WATER4
+                                                && mapArray[x][y].getElement() != WATER5) {
                                             if (mapArray[x][y].getBlockHealth() > 0) {
 
                                                 if (mapArray[x][y].getBlockHealth() * 100
@@ -497,7 +506,12 @@ public class Player {
 
                                         // IF RIGHT MOUSE BUTTON IS DOWN, PLACE BLOCK IN HAND
                                         if  (inventory.getSelectedItem().isPlaceable()
-                                                && mapArray[x][y].getElement() == EMPTY
+                                                && (mapArray[x][y].getElement() == EMPTY 
+                                                || mapArray[x][y].getElement() == WATER1
+                                                || mapArray[x][y].getElement() == WATER2
+                                                || mapArray[x][y].getElement() == WATER3
+                                                || mapArray[x][y].getElement() == WATER4
+                                                || mapArray[x][y].getElement() == WATER5)
                                                 && Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
                                             if (!(playerPosX + playerSizeX > mapArray[x][y].getPosX()
                                                     && playerPosX < mapArray[x][y].getPosX()

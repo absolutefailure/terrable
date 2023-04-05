@@ -72,7 +72,7 @@ public class LoadGame {
                         mapArray[i][j].setCollision(collision);
                         mapArray[i][j].setPermanent(permanent);
                         mapArray[i][j].brightnessLevel = brightnessLevel;
-                        if (mapArray[i][j].getElement() == Element.FURNACE){
+                        if (mapArray[i][j].getElement() == Element.FURNACE || mapArray[i][j].getElement() == Element.FURNACE2){
                             mapArray[i][j].setFurnaceSlot1(new Item());
                             mapArray[i][j].setFurnaceSlot2(new Item());
                             mapArray[i][j].setFurnaceSlot3(new Item());
