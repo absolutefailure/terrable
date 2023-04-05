@@ -78,12 +78,14 @@ public class Player {
     private long lastHitTime;
     private long hungerTime;
     private long lastHungerHit;
+    private float hudMessageTimer;
 
     private BitmapFont font;
+    private BitmapFont redFont;
     private String elementString = "";
     private String tutorialString = " A: to move left,\n D: to move right,\n W or Space: to jump / go up ladder,\n S: to go down ladder";
     private boolean tutorialOn = false;
-
+    private HudMessage message;
 
     private ArrayList<Mob> mobs;
 
@@ -118,6 +120,7 @@ public class Player {
         lastHitTime = 0;
         hungerTime = 0;
         lastHungerHit = 0;
+        hudMessageTimer = 0;
 
         cactusTimer = 0;
 
@@ -141,6 +144,8 @@ public class Player {
         droppedItems = new ArrayList<>();
 
         font = new BitmapFont(Gdx.files.internal("fonts/Cambria.fnt"));
+        redFont = new BitmapFont(Gdx.files.internal("fonts/RedCambria.fnt"));
+        message = new HudMessage("");
 
         mobs = Map.getMobs();
 
@@ -781,6 +786,23 @@ public class Player {
             font.draw(batch, tutorialString, 750, 600);
         } else {
             font.draw(batch, "press F1 for tutorial", 10, 890);
+        }
+
+        // DRAW HUNGER ALERT
+        if(getPlayerHunger() == 0) {
+            redFont.draw(batch, "You are starving! Eat something or you are going to die.", 10, 60);
+        }
+
+        //DRAW HUD MESSAGE
+        if(message.getMessage() != "") {
+            hudMessageTimer += 1 * delta;
+        }
+        if (hudMessageTimer < 300) {
+            font.draw(batch, message.getMessage(), 750, 600);
+        }
+        if (hudMessageTimer > 300) {
+            message.setMessage("");
+            hudMessageTimer = 0;
         }
 
         // DRAW CURRENT ELEMENT SELECTED
