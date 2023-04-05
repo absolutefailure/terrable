@@ -36,6 +36,7 @@ public class Inventory {
 
     private ArrayList<Integer> discoveredItems;
     private AchievementManager achievements;
+    private HudMessage message;
 
     public Inventory() {
 
@@ -50,6 +51,7 @@ public class Inventory {
 
         discoveredItems = new ArrayList<>();
         achievements = new AchievementManager();
+        message = new HudMessage();
 
     }
 
@@ -691,21 +693,27 @@ public class Inventory {
                 switch(obtainedItem){
                     case 3:
                         achievements.unlockAchievement("TIMBER");
+                        message.setMessage("New achievement unlocked: TIMBER");
                         break;
                     case 6:
                         achievements.unlockAchievement("Rock solid");
+                        message.setMessage("New achievement unlocked: Rock solid");
                         break;
                     case 15:
                         achievements.unlockAchievement("Stone age");
+                        message.setMessage("New achievement unlocked: Stone age");
                         break;
                     case 16:
                         achievements.unlockAchievement("Toy or tool?");
+                        message.setMessage("New achievement unlocked: Toy or tool?");
                         break;
                     case 23:
                         achievements.unlockAchievement("Ironworks");
+                        message.setMessage("New achievement unlocked: Ironworks");
                         break;
                     case 28:
                         achievements.unlockAchievement("Let there be light!");
+                        message.setMessage("New achievement unlocked: Let there be light!");
                         break;
                 }
             }
