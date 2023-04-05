@@ -66,6 +66,7 @@ public class GameScreen implements Screen {
     
             player.Update(map, game.cam.getCamera(), game.batch, volume, delta, MAP_SIZE_X, MAP_SIZE_Y);
             
+            map.UpdateWater(game.batch, player, delta);
             // draw hud
             game.batch.setProjectionMatrix(game.hudCam.combined());
     
@@ -80,7 +81,7 @@ public class GameScreen implements Screen {
             game.batch.begin();
     
             map.Draw(game.batch, player, volume, delta);
-            
+            map.UpdateWater(game.batch, player, delta);
             // draw hud
             game.batch.setProjectionMatrix(game.hudCam.combined());
     

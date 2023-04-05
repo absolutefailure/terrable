@@ -8,6 +8,7 @@ import com.mygdx.game.map.Block;
 import com.mygdx.game.map.Map;
 import com.mygdx.game.map.Element;
 import com.mygdx.game.player.Player;
+import static com.mygdx.game.map.Element.*;
 
 public class Chicken extends Mob {
     private TextureRegion[][] mobTexture;
@@ -68,16 +69,26 @@ public class Chicken extends Mob {
         for (int x = startBlockX; x < endBlockX; x++){
             if (mapArray[x][0].getPosX() > mobPosX - 100 && mapArray[x][0].getPosX() < mobPosX + 100) {
                 for (int y = 0; y < mapArray[x].length; y++){
-                    if (mapArray[x][y].isCollision() && mobPosX + mobSizeX > mapArray[x][y].getPosX()
+                    if ( mobPosX + mobSizeX > mapArray[x][y].getPosX()
                     && mobPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
                     && mobPosY + mobSizeY > mapArray[x][y].getPosY()
                     && mobPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
-                        mobPosY = oldMobY;
-                        if (Math.abs(acceleration) > 0.1f && mapArray[x-1][y-1].isCollision() || mapArray[x+1][y-1].isCollision()) {
-                            gravity = 4;
-                        }else{
-                            gravity = 0;
+                        if(mapArray[x][y].isCollision()){
+                            mobPosY = oldMobY;
+                            if (Math.abs(acceleration) > 0.1f && mapArray[x-1][y-1].isCollision() || mapArray[x+1][y-1].isCollision()) {
+                                gravity = 4;
+                            }else{
+                                gravity = 0;
+                            }
+                        }else if(mapArray[x][y].getElement() == WATER1
+                        || mapArray[x][y].getElement() == WATER2
+                        || mapArray[x][y].getElement() == WATER3
+                        || mapArray[x][y].getElement() == WATER4
+                        || mapArray[x][y].getElement() == WATER5){
+                            gravity *= Math.pow(0.99f, delta);
+                            gravity += 0.1f * delta;
                         }
+
                     }
                 }
             }
