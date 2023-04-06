@@ -50,7 +50,7 @@ public class AchievementScreen implements Screen {
         }
         batch.end();
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 
             game.setScreen(game.gameScreen);
     
