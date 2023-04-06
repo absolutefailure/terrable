@@ -137,7 +137,7 @@ public class Player {
         hungerTexture = new Texture("hunger.png");
         blockBreakingTexture = new Texture("breaktiles.png");
 
-        textures = new Texture("tileset2.png");
+        textures = new Texture("tileset.png");
         blockTextures = TextureRegion.split(textures, 25, 25);
 
         blockBreakingAnimation = TextureRegion.split(blockBreakingTexture, 25, 25);

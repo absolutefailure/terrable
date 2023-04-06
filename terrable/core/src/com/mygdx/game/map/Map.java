@@ -57,7 +57,7 @@ public class Map {
         this.mapSizeX = sizeX;
         this.mapSizeY = sizeY;
 
-        textures = new Texture("tileset2.png");
+        textures = new Texture("tileset.png");
         kivimiesTexture = new Texture("kaapo.png");
         batTexture = new Texture("bat.png");
         chickenTexture = new Texture("chicken.png");
