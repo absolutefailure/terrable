@@ -21,8 +21,8 @@ public final class Element {
     public static final int PLANKS = 12;
     public static final int COALITEM = 13;
     public static final int DIAMONDITEM = 14;
-    public static final int STONEPICKAXE = 15;
-    public static final int WOODPICKAXE = 16;
+    public static final int WOODPICKAXE = 15;
+    public static final int STONEPICKAXE = 16;
     public static final int IRONPICKAXE = 17;
     public static final int DIAMONDPICKAXE = 18;
     public static final int STONEAXE = 19;
