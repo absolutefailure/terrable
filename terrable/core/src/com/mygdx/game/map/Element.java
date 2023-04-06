@@ -56,6 +56,12 @@ public final class Element {
     public static final int WATER3 = 47;
     public static final int WATER4 = 48;
     public static final int WATER5 = 49;
+    public static final int IRONPLATE = 50;
+    public static final int LWING = 51;
+    public static final int RWING = 52;
+    public static final int SPACESHIPBODY = 53;
+    public static final int COCKPIT = 54;
+    public static final int ENGINE = 55;
 
 
     public static final Map<Integer, String> elementNames;
@@ -112,6 +118,12 @@ public final class Element {
         map.put(47, "Water");
         map.put(48, "Water");
         map.put(49, "Water");
+        map.put(50, "Iron Plate");
+        map.put(51, "Left Wing");
+        map.put(52, "Right Wing");
+        map.put(53, "Space Ship Body");
+        map.put(54, "Cockpit");
+        map.put(55, "Engine");
 
         elementNames = Collections.unmodifiableMap(map);
     }
