@@ -622,24 +622,37 @@ public class Crafting {
 
     private static Item craftTorch(List<Item> resources) {
         // check slots for correct resources
-        if (resources.get(0).getElement() == EMPTY
-                && resources.get(1).getElement() == STICK
-                && resources.get(2).getElement() == EMPTY
-                && resources.get(3).getElement() == EMPTY
-                && resources.get(4).getElement() == COALITEM
-                && resources.get(5).getElement() == EMPTY
-                && resources.get(6).getElement() == EMPTY
-                && resources.get(7).getElement() == EMPTY
-                && resources.get(8).getElement() == EMPTY) {
+        if ((resources.get(0).getElement() == STICK
+            && resources.get(3).getElement() == COALITEM) ||
+            (resources.get(1).getElement() == STICK
+            && resources.get(4).getElement() == COALITEM) ||
+            (resources.get(2).getElement() == STICK
+            && resources.get(5).getElement() == COALITEM) ||
+            (resources.get(3).getElement() == STICK
+            && resources.get(6).getElement() == COALITEM) ||
+            (resources.get(4).getElement() == STICK
+            && resources.get(7).getElement() == COALITEM) ||
+            (resources.get(5).getElement() == STICK
+            && resources.get(8).getElement() == COALITEM) 
+               ) {
             int amount = 32;
-           
+            for(Item slot: resources){
+                // return null if slots have something else than ground or tall grass
+                if (slot.getElement() != STICK && slot.getElement() != COALITEM && slot.getElement() != EMPTY) {
+                    return null;
+                }
+            }
+
             for (Item slot : resources) {
                     if ((slot.getElement() == STICK || slot.getElement() == COALITEM) && amount > slot.getAmount()) {
                         amount = slot.getAmount();
                     }
                 }
-
-            amount *= 1;
+            // check for max slot size
+            if (amount > 8) {
+            amount = 8;
+            }
+            amount *= 4;
             // create new item/s
             Item item = new Item();
             item.setElement(TORCH);

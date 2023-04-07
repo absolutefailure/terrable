@@ -98,6 +98,8 @@ public class Player {
 
     private boolean isGamePaused = false;
 
+    private float brightness = 1f;
+
     public Player(float x, float y) {
         this.playerPosX = x;
         this.playerPosY = y;
@@ -208,12 +210,20 @@ public class Player {
                             && playerPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
                             && playerPosY + playerSizeY > mapArray[x][y].getPosY()
                             && playerPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
-
+                        if(!mapArray[x][y].isCollision()){
+                            if(mapArray[x][y].getBrightness() > brightness){
+                                brightness += 0.01f * delta;
+                            }else{
+                                brightness -= 0.01f * delta;
+                            }
+                            
+                        }
+                        
                         if (mapArray[x][y].getElement() == CACTUS){
                             cactusTimer += 1*delta;
                         }
                         if (mapArray[x][y].isCollision()) {
-
+                            
                             if (gravity > 13) {
                                 // Gdx.app.exit();
                                 playerHealth -= 5;
@@ -767,6 +777,8 @@ public class Player {
         }
         
         // DRAW PLAYER
+        batch.setColor(brightness,brightness,brightness,1f);
+        arm.setColor(brightness,brightness,brightness,1f);
         arm.setPosition(cam.position.x+acceleration+15,cam.position.y-gravity+17);
         arm.setRotation(armAngle);
         arm.draw(batch);
@@ -777,7 +789,10 @@ public class Player {
             float handY = (cam.position.y-gravity+27) + 20f * MathUtils.sin(angleInRadians);
             batch.draw(blockTextures[0][inventory.getSelectedItem().getElement()-1], handX,handY, 12.5f/2f, 12.5f/2f, 25/2f, 25/2f, 1f, 1f, 180+armAngle);
         }
+        
         batch.draw(playerTexture, cam.position.x+acceleration,cam.position.y-gravity);
+        batch.setColor(1f,1f,1f,1f);
+        
         cam.position.set( Math.round(playerPosX-acceleration),  Math.round(playerPosY+gravity), 0);
         cam.update();        
     }

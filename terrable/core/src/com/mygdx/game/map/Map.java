@@ -49,7 +49,7 @@ public class Map {
 
     private float dayTime = 20000;
     private float nightTime = 6000;
-
+    private float dayBrightness = 0f;
     private Rain rain;
 
 
@@ -96,7 +96,7 @@ public class Map {
    // DRAW MAP
    public void Draw(Batch batch, Player player, int volume, float delta){
         
-        float dayBrightness = 800f/clock;
+        dayBrightness = 800f/clock;
         if(dayBrightness >= 0.7f) {
             dayBrightness = 0.7f;
         }
@@ -147,21 +147,38 @@ public class Map {
 
                 if (block.getPosY() > player.getY() - 1000 && block.getPosY() < player.getY() + 1000 ){ // DRAW BLOCK ONLY IF INSIDE SCREEN
 
+
                     // DRAW BACKROUND TEXTURE IF BLOCK IS PERMANENT
                     if(block.getPermanent() > 0){
-                        batch.setColor(block.getBrightness()-block.brightnessLevel, block.getBrightness()-block.brightnessLevel, block.getBrightness()-block.brightnessLevel, 1f);
+                        if(block.getBrightness() >= 0.8f ){
+                            batch.setColor(0.8f-block.brightnessLevel, 0.8f-block.brightnessLevel, 0.8f-block.brightnessLevel, 1f);
+                        }else{
+                            batch.setColor(block.getBrightness()-block.brightnessLevel, block.getBrightness()-block.brightnessLevel, block.getBrightness()-block.brightnessLevel, 1f);
+                        }
+                        
                         batch.draw(blockTextures[0][block.getPermanent()-1], block.getPosX(), block.getPosY());
                     } 
 
 
                     if (block.getElement() != EMPTY && block.getElement() != WATER1 && block.getElement() != WATER2 && block.getElement() != WATER3 && block.getElement() != WATER4 && block.getElement() != WATER5)  {
-                        if (block.getBrightness() <= 0.1f){
-                            batch.setColor(block.getBrightness()-block.brightnessLevel-(dayBrightness/7f), block.getBrightness()-block.brightnessLevel-(dayBrightness/7f), block.getBrightness()-block.brightnessLevel-(dayBrightness/7f), 1f);
-                        }else if(block.getBrightness() <= 0.3f){
-                            batch.setColor(block.getBrightness()-block.brightnessLevel-(dayBrightness/2f), block.getBrightness()-block.brightnessLevel-(dayBrightness/2f), block.getBrightness()-block.brightnessLevel-(dayBrightness/2f), 1f);
+                        if(block.isCollision() || block.getBrightness() <= 0.8f || block.getElement() == TORCH ){
+                            if (block.getBrightness() <= 0.1f){
+                                batch.setColor(block.getBrightness()-block.brightnessLevel-(dayBrightness/7f), block.getBrightness()-block.brightnessLevel-(dayBrightness/7f), block.getBrightness()-block.brightnessLevel-(dayBrightness/7f), 1f);
+                            }else if(block.getBrightness() <= 0.3f){
+                                batch.setColor(block.getBrightness()-block.brightnessLevel-(dayBrightness/2f), block.getBrightness()-block.brightnessLevel-(dayBrightness/2f), block.getBrightness()-block.brightnessLevel-(dayBrightness/2f), 1f);
+                            }else{
+                                batch.setColor(block.getBrightness()-block.brightnessLevel-dayBrightness, block.getBrightness()-block.brightnessLevel-dayBrightness, block.getBrightness()-block.brightnessLevel-dayBrightness, 1f);
+                            }
                         }else{
-                            batch.setColor(block.getBrightness()-block.brightnessLevel-dayBrightness, block.getBrightness()-block.brightnessLevel-dayBrightness, block.getBrightness()-block.brightnessLevel-dayBrightness, 1f);
+                            if (block.getBrightness() <= 0.1f){
+                                batch.setColor(0.8f-block.brightnessLevel-(dayBrightness/7f), 0.8f-block.brightnessLevel-(dayBrightness/7f), 0.8f-block.brightnessLevel-(dayBrightness/7f), 1f);
+                            }else if(block.getBrightness() <= 0.3f){
+                                batch.setColor(0.8f-block.brightnessLevel-(dayBrightness/2f), 0.8f-block.brightnessLevel-(dayBrightness/2f), 0.8f-block.brightnessLevel-(dayBrightness/2f), 1f);
+                            }else{
+                                batch.setColor(0.8f-block.brightnessLevel-dayBrightness, 0.8f-block.brightnessLevel-dayBrightness, 0.8f-block.brightnessLevel-dayBrightness, 1f);
+                            }
                         }
+
                         
                     
                         // DRAW CORRECT TEXTURE BASED ON BLOCKS ELEMENT
@@ -169,7 +186,7 @@ public class Map {
 
                         batch.setColor(1,1,1,1);
                     } 
-                    block.setBrightness(0f);      
+                          
                 }      
                 
             }
@@ -198,7 +215,7 @@ public class Map {
     }
 
     public void UpdateWater(Batch batch, Player player, float delta){
-        float dayBrightness = 800f/clock;
+        dayBrightness = 800f/clock;
         int startBlockX = (int)(player.getX() / 25 - 2000 / 25 / 2) +(mapSizeX/2);
         int endBlockX = (startBlockX + 2000 / 25) ;
         batch.setColor(1,1,1,1);
@@ -325,6 +342,8 @@ public class Map {
         for (int x = startBlockX; x < endBlockX; x++){
             if (mapArray[x][0].getPosX() > player.getX() - 1200 && mapArray[x][0].getPosX() < player.getX() + 1200 && x > 5 && x < mapSizeX - 5) {
                 for (int y = 0; y < mapArray[x].length; y++){
+                    mapArray[x][y].setBrightness(0f);
+
                     if (mapArray[x][y].isCollision() && mapArray[x][y].getPosY() > player.getY() - 1200 && mapArray[x][y].getPosY() < player.getY() + 1200 && y > 5 && y < mapSizeY - 5) {
 
                         if(!mapArray[x-1][y].isCollision() || !mapArray[x+1][y].isCollision() || !mapArray[x][y-1].isCollision() || !mapArray[x][y+1].isCollision() ){
@@ -385,15 +404,15 @@ public class Map {
                     if (mapArray[x][y].getElement() != EMPTY && mapArray[x][y].getPosY() > player.getY() - 1200 && mapArray[x][y].getPosY() < player.getY() + 1200 && x > 3 && x < mapSizeX-3 && y > 3 && y < mapSizeY-3) {
 
                         if(!mapArray[x-1][y].isCollision() || !mapArray[x+1][y].isCollision() || !mapArray[x][y-1].isCollision() || !mapArray[x][y+1].isCollision() || !mapArray[x][y].isCollision()){
-                            if(mapArray[x][y].isCollision() || mapArray[x][y].getElement() == REDFLOWER || mapArray[x][y].getElement() == TALLGRASS || mapArray[x][y].getElement() == LADDER){
+                            if(mapArray[x][y].isCollision() ){
                                 mapArray[x][y].setBrightness(0.8f);
                             } else{
-                                mapArray[x][y].setBrightness(0.7f);
+                                mapArray[x][y].setBrightness(0.4f);
                             }
                             
                         }
                     }
-                    if(mapArray[x][y].getElement() == EMPTY || mapArray[x][y].getElement() == WATER1 || mapArray[x][y].getElement() == WATER2 || mapArray[x][y].getElement() == WATER3 || mapArray[x][y].getElement() == WATER4 || mapArray[x][y].getElement() == WATER5){
+                    if((mapArray[x][y].getBrightness() < 0.25f && !mapArray[x][y].isCollision() )|| mapArray[x][y].getElement() == WATER1 || mapArray[x][y].getElement() == WATER2 || mapArray[x][y].getElement() == WATER3 || mapArray[x][y].getElement() == WATER4 || mapArray[x][y].getElement() == WATER5){
                         mapArray[x][y].setBrightness(0.25f);
                     }
                 }
@@ -404,6 +423,9 @@ public class Map {
         for (int x = startBlockX; x < endBlockX; x++){
             if (mapArray[x][0].getPosX() > player.getX() - 1200 && mapArray[x][0].getPosX() < player.getX() + 1200) {
                 for (int y = 0; y < mapArray[x].length; y++){
+                    if(mapArray[x][y].getPermanent() == EMPTY && !mapArray[x][y].isCollision()){
+                        mapArray[x][y].setBrightness(1f-dayBrightness);
+                    }
                     if (mapArray[x][y].getElement() == TORCH){
                         mapArray[x][y].setCollision(false);
                         float brightness = 1.1f;
@@ -471,7 +493,9 @@ public class Map {
                             mapArray[x-i][y+i].setBrightness(mapArray[x-i][y+i].getBrightness() + brightness);
                             mapArray[x-i][y-i].setBrightness(mapArray[x-i][y-i].getBrightness() + brightness);
                         }
+
                     }
+
                 }
             }
         }
