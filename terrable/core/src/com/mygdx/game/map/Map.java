@@ -109,10 +109,10 @@ public class Map {
         ScreenUtils.clear(red, green, blue, 1);
         if(!timeShift){
             if(clock < dayTime) {
-                clock += 10f * delta;
+                clock += 1f * delta;
                 batch.draw(sunTexture, (int)player.getX()-800, -(2500)+(clock)/2);
                 if(clock2 > 10) {
-                    clock2 -= 10f * delta;
+                    clock2 -= 1f * delta;
                     batch.draw(moonTexture, (int)player.getX()-800, -(2500)+(nightTime-(nightTime-clock2))/2);
                 }
             } else {
@@ -121,10 +121,10 @@ public class Map {
         } else {
             if(clock > 10) {
                 batch.draw(sunTexture, (int)player.getX()-800, -(2500)+(dayTime-(dayTime-clock))/2);
-                clock -= 10f * delta;
+                clock -= 1f * delta;
                 if (clock < nightTime) {
                     if(clock2 < nightTime) {
-                        clock2 += 10f * delta;
+                        clock2 += 1f * delta;
                         batch.draw(moonTexture, (int)player.getX()-800, -(2500)+(clock2)/2);
                     }
                 }
