@@ -83,7 +83,7 @@ public class Player {
     private BitmapFont font;
     private BitmapFont redFont;
     private String elementString = "";
-    private String tutorialString = " A: to move left,\n D: to move right,\n W or Space: to jump / go up ladder,\n S: to go down ladder";
+    private String tutorialString = " A: to move left,\n D: to move right,\n W or Space: to jump / go up ladder,\n S: to go down ladder,\n E / Tab: to open Inventory,\n Esc: to Pause / open Menu,\n Q: to drop item,\n Shift: to Sprint,\n Right Click: to place Block,\n 1 - 10: to change selected Hotbar slot,\n Hold Ctrl when placing a block: to disable Block collision";
     private boolean tutorialOn = false;
     private HudMessage message;
 
@@ -797,7 +797,7 @@ public class Player {
 
         // DRAW TUTORIAL
         if(tutorialOn) {
-            font.draw(batch, tutorialString, 750, 600);
+            font.draw(batch, tutorialString, 750, 700);
         } else {
             font.draw(batch, "press F1 for tutorial", 10, 890);
         }
