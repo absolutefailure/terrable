@@ -702,12 +702,12 @@ public class Inventory {
                             message.setMessage("New achievement unlocked: Rock solid");
                             break;
                         case 15:
-                            achievements.unlockAchievement("Stone age");
-                            message.setMessage("New achievement unlocked: Stone age");
-                            break;
-                        case 16:
                             achievements.unlockAchievement("Toy or tool?");
                             message.setMessage("New achievement unlocked: Toy or tool?");
+                            break;
+                        case 16:
+                            achievements.unlockAchievement("Stone age");
+                            message.setMessage("New achievement unlocked: Stone age");
                             break;
                         case 23:
                             achievements.unlockAchievement("Ironworks");
