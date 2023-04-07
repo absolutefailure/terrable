@@ -79,6 +79,7 @@ public class Player {
     private long hungerTime;
     private long lastHungerHit;
     private float hudMessageTimer;
+    private float healthRegenerateTimer;
 
     private BitmapFont font;
     private BitmapFont redFont;
@@ -125,6 +126,7 @@ public class Player {
         hungerTime = 0;
         lastHungerHit = 0;
         hudMessageTimer = 0;
+        healthRegenerateTimer = 0;
 
         cactusTimer = 0;
 
@@ -749,7 +751,7 @@ public class Player {
         // DEPLETE HUNGER
         if (getPlayerHunger() > 0) {
             long currentTime = new Date().getTime();
-            if (currentTime - hungerTime >= 90000) {
+            if (currentTime - hungerTime >= 32000) {
                 setPlayerHunger(playerHunger-1);
                 hungerTime = currentTime;
             }
@@ -765,15 +767,29 @@ public class Player {
             }
         }
 
-        // RESTORE HEALTH WITH FOOD
+        // RESTORE HUNGER WITH FOOD
         if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT) && inventory.getSelectedItem().isFood()) {
-            if (getPlayerHunger()+2 > 10) {
+            if (getPlayerHunger()+5 > 10) {
                 setPlayerHunger(10);
             } else {
-                setPlayerHunger(getPlayerHunger()+2);
+                setPlayerHunger(getPlayerHunger()+5);
             }
             eatingSound.play(volume/100f);
             inventory.getSelectedItem().removeItem();
+        }
+
+        // RESTORE HEALTH WHEN HUNGER BAR IS FULL-ish
+        if (getPlayerHunger() >= 8) {
+            healthRegenerateTimer += 1 * delta;
+        }
+
+        if (healthRegenerateTimer > 300) {
+            healthRegenerateTimer = 0;
+            setPlayerHealth(getPlayerHealth()+1);
+        }
+
+        if (getPlayerHealth() > 10) {
+            setPlayerHealth(10);
         }
         
         // DRAW PLAYER
