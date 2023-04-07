@@ -24,6 +24,7 @@ public class Chicken extends Mob {
     private int element2;
     private float moveTimer;
     private int direction = 0;
+    private float brightness = 1f;
     public Chicken(float x, float y, TextureRegion[][] texture) {
         super();
         this.mobPosX = x;
@@ -73,6 +74,11 @@ public class Chicken extends Mob {
                     && mobPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
                     && mobPosY + mobSizeY > mapArray[x][y].getPosY()
                     && mobPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
+                        if(mapArray[x][y].getBrightness() > brightness){
+                            brightness += 0.01f * delta;
+                        }else{
+                            brightness -= 0.01f * delta;
+                        }
                         if(mapArray[x][y].isCollision()){
                             mobPosY = oldMobY;
                             if (Math.abs(acceleration) > 0.1f && mapArray[x-1][y-1].isCollision() || mapArray[x+1][y-1].isCollision()) {
@@ -127,8 +133,10 @@ public class Chicken extends Mob {
             }
         }
 
-
+        batch.setColor(brightness,brightness,brightness,1f);
         batch.draw(mobTexture[direction][0], mobPosX, mobPosY);
+        batch.setColor(1f,1f,1f,1f);
+        
     }
 
     public float getMobPosX() {

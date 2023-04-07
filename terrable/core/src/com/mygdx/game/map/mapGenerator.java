@@ -116,7 +116,7 @@ public class mapGenerator {
                     && x > 15 
                     && x < mapSizeX -15 
                     && y < mapSizeY - 5 
-                    && y > height + 20) {
+                    && y > height + 40) {
                         int caveRandomX = rand.nextInt(6);
                         int caveRandomY = rand.nextInt(3);
                         int caveY = caveRandomY + 1;
@@ -217,11 +217,11 @@ public class mapGenerator {
                 mapArray[i][j].brightnessLevel = 0f;
                 
 
-                if (j > start && 0.01f*(j-start) < 1f){
+                if (j > start && 0.01f*(j-start) < 0.5f){
                     mapArray[i][j].brightnessLevel = 0.01f*(j-start);
 
                 }else if(j > start ){
-                    mapArray[i][j].brightnessLevel = 1f;
+                    mapArray[i][j].brightnessLevel = 0.5f;
                 }
             }
         }
@@ -400,7 +400,7 @@ public class mapGenerator {
                     && x > 15 
                     && x < mapSizeX -15 
                     && y < mapSizeY - 5 
-                    && y > height + 20) {
+                    && y > height + 40) {
                         int caveRandomX = rand.nextInt(6);
                         int caveRandomY = rand.nextInt(3);
                         int caveY = caveRandomY + 1;
@@ -498,10 +498,10 @@ public class mapGenerator {
                 mapArray[i][j].brightnessLevel = 0f;
                 
 
-                if (j > start && 0.01f*(j-start) < 1f){
+                if (j > start && 0.01f*(j-start) < 0.5f){
                     mapArray[i][j].brightnessLevel = 0.01f*(j-start);
                 }else if(j > start ){
-                    mapArray[i][j].brightnessLevel = 1f;
+                    mapArray[i][j].brightnessLevel = 0.5f;
                 }
             }
         }
@@ -571,7 +571,7 @@ public class mapGenerator {
                     && x > 15 
                     && x < mapSizeX -15 
                     && y < mapSizeY - 5 
-                    && y > height + 20) {
+                    && y > height + 40) {
                         int caveRandomX = rand.nextInt(6);
                         int caveRandomY = rand.nextInt(3);
                         int caveY = caveRandomY + 1;
@@ -689,10 +689,10 @@ public class mapGenerator {
                 mapArray[i][j].brightnessLevel = 0f;
                 
 
-                if (j > start && 0.01f*(j-start) < 1f){
+                if (j > start && 0.01f*(j-start) < 0.5f){
                     mapArray[i][j].brightnessLevel = 0.01f*(j-start);
                 }else if(j > start ){
-                    mapArray[i][j].brightnessLevel = 1f;
+                    mapArray[i][j].brightnessLevel = 0.5f;
                 }
             }
         }

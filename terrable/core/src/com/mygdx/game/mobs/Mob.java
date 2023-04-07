@@ -20,6 +20,7 @@ public class Mob {
     private int mobHealth;
     private String type;
     private int element;
+    private float brightness = 1f;
 
     // private Sound mobScreamSound;
   
@@ -68,16 +69,24 @@ public class Mob {
         for (int x = startBlockX; x < endBlockX; x++){
             if (mapArray[x][0].getPosX() > mobPosX - 100 && mapArray[x][0].getPosX() < mobPosX + 100) {
                 for (int y = 0; y < mapArray[x].length; y++){
-                    if (mapArray[x][y].isCollision() && mobPosX + mobSizeX > mapArray[x][y].getPosX()
+                    if (mobPosX + mobSizeX > mapArray[x][y].getPosX()
                     && mobPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
                     && mobPosY + mobSizeY > mapArray[x][y].getPosY()
                     && mobPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
-                        mobPosY = oldMobY;
-                        if (Math.abs(acceleration) > 0.1f && mapArray[x-1][y-1].isCollision() || mapArray[x+1][y-1].isCollision()) {
-                            gravity = 4;
+                        if(mapArray[x][y].getBrightness() > brightness){
+                            brightness += 0.01f * delta;
                         }else{
-                            gravity = 0;
+                            brightness -= 0.01f * delta;
                         }
+                        if(mapArray[x][y].isCollision() ){
+                            mobPosY = oldMobY;
+                            if (Math.abs(acceleration) > 0.1f && mapArray[x-1][y-1].isCollision() || mapArray[x+1][y-1].isCollision()) {
+                                gravity = 4;
+                            }else{
+                                gravity = 0;
+                            }
+                        }
+
                     }
                 }
             }
@@ -121,8 +130,10 @@ public class Mob {
             }
         }
 
-
+        batch.setColor(brightness,brightness,brightness,1f);
         batch.draw(mobTexture, mobPosX, mobPosY);
+        batch.setColor(1f,1f,1f,1f);
+        
     }
 
     public float getMobPosX() {
