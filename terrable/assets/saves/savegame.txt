@@ -1,1 +1,1 @@
-This folder contains local save games.
+This folder contains game save files.

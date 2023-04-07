@@ -96,6 +96,10 @@ public class Player {
 
     private float cactusTimer;
 
+    private boolean isGamePaused = false;
+
+    private float brightness = 1f;
+
     public Player(float x, float y) {
         this.playerPosX = x;
         this.playerPosY = y;
@@ -135,7 +139,7 @@ public class Player {
         hungerTexture = new Texture("hunger.png");
         blockBreakingTexture = new Texture("breaktiles.png");
 
-        textures = new Texture("tileset2.png");
+        textures = new Texture("tileset.png");
         blockTextures = TextureRegion.split(textures, 25, 25);
 
         blockBreakingAnimation = TextureRegion.split(blockBreakingTexture, 25, 25);
@@ -162,7 +166,7 @@ public class Player {
         elementString = "";
 
         // JUMP
-        if (onGround && !inventory.isFurnaceOpen()) {
+        if (!isGamePaused && onGround && !inventory.isFurnaceOpen()) {
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                 gravity = -4.3f;
                 onGroundTimer = 0;
@@ -206,12 +210,20 @@ public class Player {
                             && playerPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
                             && playerPosY + playerSizeY > mapArray[x][y].getPosY()
                             && playerPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
-
+                        if(!mapArray[x][y].isCollision()){
+                            if(mapArray[x][y].getBrightness() > brightness){
+                                brightness += 0.01f * delta;
+                            }else{
+                                brightness -= 0.01f * delta;
+                            }
+                            
+                        }
+                        
                         if (mapArray[x][y].getElement() == CACTUS){
                             cactusTimer += 1*delta;
                         }
                         if (mapArray[x][y].isCollision()) {
-
+                            
                             if (gravity > 13) {
                                 // Gdx.app.exit();
                                 playerHealth -= 5;
@@ -275,25 +287,28 @@ public class Player {
         Boolean isRunning = false;
 
         // LEFT AND RIGHT MOVEMENT
-        if (!inventory.isFurnaceOpen()){
-            if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-                if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-                    isRunning = true;
-                    acceleration -= 3;
-                } else {
-                    acceleration -= 1;
+        if(!isGamePaused){
+            if (!inventory.isFurnaceOpen()){
+                if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+                    if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+                        isRunning = true;
+                        acceleration -= 3;
+                    } else {
+                        acceleration -= 1;
+                    }
                 }
-            }
-    
-            if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-                if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-                    isRunning = true;
-                    acceleration += 3;
-                } else {
-                    acceleration += 1;
+        
+                if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+                    if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+                        isRunning = true;
+                        acceleration += 3;
+                    } else {
+                        acceleration += 1;
+                    }
                 }
             }
         }
+
 
 
         if (acceleration > 3 && isRunning == false) {
@@ -357,7 +372,7 @@ public class Player {
                                     // IF DISTANCE IS < 150 PIXELS DRAW BLOCK OUTLINE
                                     if (distance <= 150) {
                                         // Right click to open furnace menu
-                                        if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)
+                                        if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT) && !isGamePaused
                                             && (mapArray[x][y].getElement() == FURNACE || mapArray[x][y].getElement() == FURNACE2) && !inventory.isInventoryOpen()){
                                             inventory.setInventoryOpen(true);
                                             inventory.setFurnaceOpen(true);
@@ -660,7 +675,7 @@ public class Player {
         }
 
         // Hit damage to player when mob is close
-        if (mobs.size() > 0) {
+        if (mobs.size() > 0 && !isGamePaused) {
             for(int i = 0; i < mobs.size(); i++) {
                 Mob thisMob = mobs.get(i);
                 long currentTime = new Date().getTime();
@@ -762,6 +777,8 @@ public class Player {
         }
         
         // DRAW PLAYER
+        batch.setColor(brightness,brightness,brightness,1f);
+        arm.setColor(brightness,brightness,brightness,1f);
         arm.setPosition(cam.position.x+acceleration+15,cam.position.y-gravity+17);
         arm.setRotation(armAngle);
         arm.draw(batch);
@@ -772,7 +789,10 @@ public class Player {
             float handY = (cam.position.y-gravity+27) + 20f * MathUtils.sin(angleInRadians);
             batch.draw(blockTextures[0][inventory.getSelectedItem().getElement()-1], handX,handY, 12.5f/2f, 12.5f/2f, 25/2f, 25/2f, 1f, 1f, 180+armAngle);
         }
+        
         batch.draw(playerTexture, cam.position.x+acceleration,cam.position.y-gravity);
+        batch.setColor(1f,1f,1f,1f);
+        
         cam.position.set( Math.round(playerPosX-acceleration),  Math.round(playerPosY+gravity), 0);
         cam.update();        
     }
@@ -836,6 +856,16 @@ public class Player {
         if (inventory.isInventoryOpen()){
             recipeBook.Draw(batch, cam);
         }
+    }
+
+    public void setPaused(boolean pause){
+        isGamePaused = pause;
+        inventory.setInventoryOpen(false);
+        inventory.setFurnaceOpen(false);
+    }
+
+    public boolean isPaused(){
+        return isGamePaused;
     }
 
     public float getX() {

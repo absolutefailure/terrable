@@ -4,11 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.CustomInputProcessor;
 import com.mygdx.game.Terrable;
 import com.mygdx.game.map.Map;
 import com.mygdx.game.player.Player;
+import com.mygdx.game.save.SaveGame;
 
 public class GameScreen implements Screen {
    
@@ -21,6 +25,14 @@ public class GameScreen implements Screen {
 	final int MAP_SIZE_X = 5000; // blocks
 	final int MAP_SIZE_Y = 300; // blocks
 
+    private Boolean isPaused = false;
+    private Vector2 mouseInWorld2D = new Vector2();
+    private Vector3 mouseInWorld3D = new Vector3();
+
+    private Texture resumeTexture;
+    private Texture achievementsTexture;
+    private Texture exitsaveTexture;
+    
     final Terrable game;
 
     CustomInputProcessor customInputProcessor;
@@ -36,6 +48,10 @@ public class GameScreen implements Screen {
 		
         map = new Map(MAP_SIZE_X, MAP_SIZE_Y);
 
+        resumeTexture = new Texture("menubuttons/resume.png");
+        achievementsTexture = new Texture("menubuttons/achievements.png");
+        exitsaveTexture = new Texture("menubuttons/saveexit.png");
+
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
 		customInputProcessor = new CustomInputProcessor();
 		inputMultiplexer.addProcessor(customInputProcessor);
@@ -49,17 +65,21 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
- 	// CLEAR SCREEN WITH SKY COLOR
 
         Gdx.graphics.setTitle(""+Gdx.graphics.getFramesPerSecond());
-        delta *= 60;
+        if (!isPaused){
+            delta *= 60;
+        }else{
+            delta = 0;
+        }
+        
         if (delta > 2f){delta = 2f;}
-
+        game.batch.begin();
         if (player.getPlayerHealth() > 0){
             game.batch.setProjectionMatrix(game.cam.combined());
 
             // draw world 
-            game.batch.begin();
+            
     
     
             map.Draw(game.batch, player, volume, delta);
@@ -73,12 +93,12 @@ public class GameScreen implements Screen {
     
             player.DrawHud(game.batch, game.hudCam, map.getMapArray(), delta, customInputProcessor, MAP_SIZE_X, MAP_SIZE_Y);
         
-            game.batch.end();
+            
         }else{
             game.batch.setProjectionMatrix(game.cam.combined());
 
             // draw world 
-            game.batch.begin();
+
     
             map.Draw(game.batch, player, volume, delta);
             map.UpdateWater(game.batch, player, delta);
@@ -86,31 +106,66 @@ public class GameScreen implements Screen {
             game.batch.setProjectionMatrix(game.hudCam.combined());
     
             font.draw(game.batch, "You died", 780, 450);
+
         
-            game.batch.end();
+            
         }
 
-
+        if(isPaused){
+            if(button(1600 / 2 - 100, 900 / 2 +50, 200,50,resumeTexture)){
+                isPaused = false;
+                player.setPaused(false);
+            }
+            if(button(1600 / 2 - 100, 900 / 2 -50, 200,50,achievementsTexture)){
+                game.setScreen(game.achievementScreen);
+            }
+            if(button(1600 / 2 - 100, 900 / 2 - 150, 200,50,exitsaveTexture)){
+                isPaused = false;
+                player.setPaused(false);
+                SaveGame.Save(map, player);
+                game.setScreen(game.mainMenuScreen);
+            }
+        }
         
         
-
+        game.batch.end();
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-
-			game.setScreen(game.mainMenuScreen);
-
-            
+            if(isPaused){
+                isPaused = false;
+                player.setPaused(false);
+            }else{
+                isPaused = true;
+                player.setPaused(true);
+            }
+			//game.setScreen(game.mainMenuScreen);
 		}
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
-
-			game.setScreen(game.achievementScreen);
-
-            
-		}
     }
 
+    public boolean button(int x, int y, int buttonSizeX, int buttonSizeY, Texture t) {
 
+        mouseInWorld3D.x = Gdx.input.getX();
+        mouseInWorld3D.y = Gdx.input.getY();
+        mouseInWorld3D.z = 0;
+        game.hudCam.getCamera().unproject(mouseInWorld3D);
+        mouseInWorld2D.x = mouseInWorld3D.x;
+        mouseInWorld2D.y = mouseInWorld3D.y;
+        game.batch.setColor(0.5f, 0.5f, 0.5f, 1);
+        if (mouseInWorld2D.x > x && mouseInWorld2D.x < x + buttonSizeX && mouseInWorld2D.y > y
+                && mouseInWorld2D.y < y + buttonSizeY) {
+            if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+                return true;
+            }
+            game.batch.setColor(1, 1, 1, 1);
+            game.batch.draw(t, x, y);
+        } else {
+            game.batch.draw(t, x, y);
+        }
+        
+        game.batch.setColor(1, 1, 1, 1);
+        return false;
+    }
 
     @Override
     public void show() {
