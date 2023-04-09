@@ -511,6 +511,9 @@ public class Player {
                                                 newItem.setX(mapArray[x][y].getPosX()+6);
                                                 newItem.setY(mapArray[x][y].getPosY()+6);
                                                 newItem.setAcceleration(rand.nextFloat() * 2 - 1);
+                                                if(mapArray[x][y].getElement() == COALITEM ||mapArray[x][y].getElement() == DIAMONDITEM){
+                                                    newItem.setResource(true);
+                                                }
                                                 droppedItems.add(newItem);
                                                 mapArray[x][y].setElement(EMPTY);
                                                 mapArray[x][y].setCollision(false);
