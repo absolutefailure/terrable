@@ -657,7 +657,7 @@ public class Crafting {
             Item item = new Item();
             item.setElement(TORCH);
             item.setAmount(amount);
-            item.setRemoveAmount(amount);
+            item.setRemoveAmount(amount / 4);
             return item;
         }
         // return null if resources are not correct
