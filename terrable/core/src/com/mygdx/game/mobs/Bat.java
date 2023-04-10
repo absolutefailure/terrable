@@ -42,7 +42,7 @@ public class Bat extends Mob{
 
         gravity = 0;
         mobHealth = 5;
-        type = "harmful";
+        type = "hostile";
         element = Element.FEATHER;
     
         rand = new Random();

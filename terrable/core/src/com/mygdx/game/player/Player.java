@@ -684,7 +684,9 @@ public class Player {
                             newItem.setResource(true);
                             newItem.setAcceleration(rand.nextFloat() * 2 - 1);
                             droppedItems.add(newItem);
-
+                            if(rand.nextInt(2) == 1) {
+                                Mob.setBlueprint(true);
+                            }
                             mobs.remove(i);
                         } else {
                             thisMob.setMobHealth(thisMob.getMobHealth() - inventory.getSelectedItem().getDamage());
@@ -704,7 +706,7 @@ public class Player {
                 Mob thisMob = mobs.get(i);
                 long currentTime = new Date().getTime();
                 long timeSinceLastHit = (currentTime - lastHitTime);
-                if (thisMob.getType() == "harmful") {
+                if (thisMob.getType() == "hostile") {
                     if(20 >= (Math.sqrt((thisMob.getMobPosX() - getX()) * (thisMob.getMobPosX() - getX()) + (thisMob.getMobPosY() - getY()) * (thisMob.getMobPosY() - getY()))) && timeSinceLastHit > 2000) {
                         // Add knockback left and right
                         if (thisMob.getMobPosX() < getX()){

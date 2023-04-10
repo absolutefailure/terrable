@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.camera.HudCamera;
+import com.mygdx.game.mobs.Mob;
 
 public class Recipebook {
     private int pageNumber = 0;
@@ -16,7 +17,7 @@ public class Recipebook {
     private Texture arrowLeft;
 
     private Texture backgroundTexture;
-    private Texture[] pages = new Texture[8];
+    private Texture[] pages = new Texture[10];
 
     private Texture recipeButtonTexture;
 
@@ -28,8 +29,8 @@ public class Recipebook {
         arrowRight = new Texture("arrowright.png");
         arrowLeft = new Texture("arrowleft.png");
         recipeButtonTexture = new Texture("recipeButton.png");
-        backgroundTexture = new Texture("recipes/recipeBook.png");
-        pages[0] = new Texture("recipes/page1.png");
+        backgroundTexture = new Texture("recipes/recipeBook2.png");
+        pages[0] = new Texture("recipes/page0.png");
         pages[1] = new Texture("recipes/page2.png");
         pages[2] = new Texture("recipes/page3.png");
         pages[3] = new Texture("recipes/page4.png");
@@ -38,6 +39,8 @@ public class Recipebook {
         pages[6] = new Texture("recipes/page7.png");
         pages[7] = new Texture("recipes/page8.png");
 
+        pages[8] = new Texture("recipes/page0.png");
+        pages[9] = new Texture("recipes/page0.png");
 
     }
 
@@ -52,16 +55,24 @@ public class Recipebook {
 
         if (isOpen){
             batch.draw(backgroundTexture,1081 - (271 / 2), 245 - (88 / 2));
-            batch.draw(pages[pageNumber], 1106 - (271 / 2), 275 - (88 / 2));
+            batch.draw(pages[pageNumber], 1081 - (271 / 2), 245 - (88 / 2));
 
             if (pageNumber > 0 && button(batch,cam,1085 - (271 / 2), 250 - (88 / 2), 25, 25, arrowLeft)){
                 if(pageNumber > 0){
                     pageNumber--;
                 }
             }
-            if (pageNumber < 7 && button(batch,cam,1251 - (271 / 2), 250 - (88 / 2), 25, 25, arrowRight)){
-                if(pageNumber < 7){
-                    pageNumber++;
+            if(Mob.isBlueprint() == true) {
+                if(pageNumber < 9 && button(batch,cam,1251 - (271 / 2), 250 - (88 / 2), 25, 25, arrowRight)){
+                    if(pageNumber < 9){
+                        pageNumber++;
+                    }
+                }
+            } else {
+                if (pageNumber < 7 && button(batch,cam,1251 - (271 / 2), 250 - (88 / 2), 25, 25, arrowRight)){
+                    if(pageNumber < 7){
+                        pageNumber++;
+                    }
                 }
             }
         }

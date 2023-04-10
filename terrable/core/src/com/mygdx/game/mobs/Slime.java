@@ -37,7 +37,7 @@ public class Slime extends Mob{
 
         gravity = 0;
         mobHealth = 10;
-        type = "harmful";
+        type = "hostile";
         element = Element.SLIMEBALL;
         
     }
