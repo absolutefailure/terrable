@@ -751,7 +751,7 @@ public class Inventory {
         for (int i = 0; i < 36; i++) {
             int slotIndex = -1;
             for (int o = 0; o < 36; o++) {
-                if (item.getElement() == items.get(o).getElement()
+                if (!item.isWeapon() && item.getElement() == items.get(o).getElement()
                         && item.getAmount() + items.get(o).getAmount() <= INVENTORY_SLOT_MAX) {
                     slotIndex = o;
                     break;

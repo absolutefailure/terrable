@@ -62,7 +62,9 @@ public final class Element {
     public static final int SPACESHIPBODY = 53;
     public static final int COCKPIT = 54;
     public static final int ENGINE = 55;
-
+    public static final int OIL = 56;
+    public static final int BUCKET = 57;
+    public static final int OILBUCKET = 58;
 
     public static final Map<Integer, String> elementNames;
     
@@ -124,6 +126,9 @@ public final class Element {
         map.put(53, "Space Ship Body");
         map.put(54, "Cockpit");
         map.put(55, "Engine");
+        map.put(56, "Oil");
+        map.put(57, "Bucket");
+        map.put(58, "Bucket of oil");
 
         elementNames = Collections.unmodifiableMap(map);
     }
