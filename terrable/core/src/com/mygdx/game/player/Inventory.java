@@ -687,9 +687,9 @@ public class Inventory {
                 discoveredItem = items.get(i).getElement();
                 if (!(discoveredItems.contains(discoveredItem))){
 
-                    System.out.println("New Item discovered " + discoveredItem);
+                    //System.out.println("New Item discovered " + discoveredItem);
                     discoveredItems.add(discoveredItem);
-                    System.out.println(discoveredItems);
+                    //System.out.println(discoveredItems);
 
                     int obtainedItem = discoveredItem;
                     switch(obtainedItem){
