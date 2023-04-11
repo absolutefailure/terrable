@@ -54,6 +54,9 @@ public class Block {
         }else if(element == DIAMOND) {
             this.blockHealth = 300;
             this.permanent = STONE;
+        }else if(element == COPPER) {
+            this.blockHealth = 250;
+            this.permanent = STONE;
         }else if(element == TALLGRASS) {
             this.blockHealth = 1;
         }else if(element == REDFLOWER) {
@@ -181,6 +184,8 @@ public class Block {
             return 250;
         } else if (element == DIAMOND){
             return 300;
+        }else if (element == COPPER){
+            return 250;
         } else if (element == PLANKS){
             return 75;
         } else if (element == STONEPICKAXE){
@@ -296,6 +301,12 @@ public class Block {
                     furnaceStartTimer = new Date().getTime();
                 }else if (amount > 0 && furnaceSlot1.getElement() == SAND && (furnaceSlot3.getElement() == GLASS || furnaceSlot3.getAmount() == 0) && furnaceSlot3.getAmount() + amount <= 32) {
                     furnaceSlot3.setElement(GLASS);
+                    furnaceSlot3.setAmount(furnaceSlot3.getAmount() + amount);
+                    furnaceSlot1.setAmount(furnaceSlot1.getAmount() - amount);
+                    furnaceSlot2.setAmount(furnaceSlot2.getAmount() - amount);
+                    furnaceStartTimer = new Date().getTime();
+                }else if (amount > 0 && furnaceSlot1.getElement() == COPPER && (furnaceSlot3.getElement() == COPPERINGOT || furnaceSlot3.getAmount() == 0) && furnaceSlot3.getAmount() + amount <= 32) {
+                    furnaceSlot3.setElement(COPPERINGOT);
                     furnaceSlot3.setAmount(furnaceSlot3.getAmount() + amount);
                     furnaceSlot1.setAmount(furnaceSlot1.getAmount() - amount);
                     furnaceSlot2.setAmount(furnaceSlot2.getAmount() - amount);

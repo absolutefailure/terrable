@@ -565,6 +565,8 @@ public class mapGenerator {
                         block = 8;
                     }else if (oreChance < 20) {
                         block = 7;
+                    }else if (oreChance < 30) {
+                        block = 61;
                     }else if (oreChance == 69) {
                         block = 0;
                     }
