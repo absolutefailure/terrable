@@ -69,6 +69,7 @@ public final class Element {
     public static final int OILBUCKET = 60;
     public static final int COPPER = 61;
     public static final int COPPERINGOT = 62;
+    public static final int COPPERWIRE = 63;
 
 
     public static final Map<Integer, String> elementNames;
@@ -138,6 +139,7 @@ public final class Element {
         map.put(60, "Bucket of oil");
         map.put(61, "Copper Ore");
         map.put(62, "Copper Ingot");
+        map.put(63, "Copper Wire");
 
         elementNames = Collections.unmodifiableMap(map);
     }

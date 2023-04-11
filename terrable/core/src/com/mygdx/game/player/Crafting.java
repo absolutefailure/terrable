@@ -136,13 +136,19 @@ public class Crafting {
         }
 
         //ENGINE
-        /*result = craftEngine(resources);
+        result = craftEngine(resources);
         if (result != null) {
             return result;
-        }*/
+        }
 
         //BUCKET
         result = craftBucket(resources);
+        if (result != null) {
+            return result;
+        }
+
+        //COPPER WIRE
+        result = craftCopperWire(resources);
         if (result != null) {
             return result;
         }
@@ -842,7 +848,7 @@ public class Crafting {
     }
 
     // (WIP - requires oil and copper to be implemented)
-    /*private static Item craftEngine(List<Item> resources) {
+    private static Item craftEngine(List<Item> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == IRONPLATE
                 && resources.get(1).getElement() == IRONPLATE
@@ -868,7 +874,7 @@ public class Crafting {
         }
         // return null if resources are not correct
         return null;
-    }*/
+    }
 
     private static Item craftBucket(List<Item> resources) {
         // check slots for correct resources
@@ -889,6 +895,41 @@ public class Crafting {
             item.setWeapon(true);
             item.setAmount(amount);
             item.setRemoveAmount(amount);
+            return item;
+        }
+        // return null if resources are not correct
+        return null;
+    }
+
+    private static Item craftCopperWire(List<Item> resources) {
+        int isCopper = 0;
+        // check slots for correct resources
+        for (Item slot : resources) {
+            if (slot.getElement() == COPPERINGOT) {
+                isCopper++;
+            }
+            if (slot.getElement() != COPPERINGOT && slot.getElement() != EMPTY) {
+                return null;
+            }
+        }
+
+        if (isCopper == 1) {
+            int amount = 32;
+            for (Item slot : resources) {
+                if ((slot.getElement() == COPPERINGOT) && amount > slot.getAmount()) {
+                    amount = slot.getAmount();
+                }
+            }
+            // check for max slot size
+            if (amount > 8) {
+                amount = 8;
+            }
+            amount *= 2;
+            // create new item/s
+            Item item = new Item();
+            item.setElement(COPPERWIRE);
+            item.setAmount(amount);
+            item.setRemoveAmount(amount / 2);
             return item;
         }
         // return null if resources are not correct

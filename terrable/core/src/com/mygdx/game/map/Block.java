@@ -85,6 +85,8 @@ public class Block {
             this.blockHealth = 1;
         }else if(element == TORCH) {
             this.blockHealth = 1;
+        }else if(element == COPPERWIRE) {
+            this.blockHealth = 1;
         }
 
         this.collision = collision;
