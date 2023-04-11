@@ -39,7 +39,7 @@ public class Mob {
         gravity = 0;
         mobHealth = 10;
         type = "hostile";
-        element = Element.FEATHER;
+        element = Element.BLUEPRINT;
         blueprint = false;
     }
 
