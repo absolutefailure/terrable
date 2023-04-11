@@ -141,6 +141,12 @@ public class Crafting {
             return result;
         }*/
 
+        //BUCKET
+        result = craftBucket(resources);
+        if (result != null) {
+            return result;
+        }
+
         return null;
     }
 
@@ -842,7 +848,7 @@ public class Crafting {
                 && resources.get(1).getElement() == IRONPLATE
                 && resources.get(2).getElement() == IRONPLATE
                 && resources.get(3).getElement() == COPPERWIRE
-                && resources.get(4).getElement() == OIL
+                && resources.get(4).getElement() == OILBUCKET
                 && resources.get(5).getElement() == COPPERWIRE
                 && resources.get(6).getElement() == IRONPLATE
                 && resources.get(7).getElement() == IRONPLATE
@@ -863,4 +869,29 @@ public class Crafting {
         // return null if resources are not correct
         return null;
     }*/
+
+    private static Item craftBucket(List<Item> resources) {
+        // check slots for correct resources
+        if (resources.get(0).getElement() == EMPTY
+                && resources.get(1).getElement() == IRONINGOT
+                && resources.get(2).getElement() == EMPTY
+                && resources.get(3).getElement() == IRONINGOT
+                && resources.get(4).getElement() == EMPTY
+                && resources.get(5).getElement() == IRONINGOT
+                && resources.get(6).getElement() == EMPTY
+                && resources.get(7).getElement() == EMPTY
+                && resources.get(8).getElement() == EMPTY) {
+            int amount = 1;
+
+            // create new item/s
+            Item item = new Item();
+            item.setElement(BUCKET);
+            item.setWeapon(true);
+            item.setAmount(amount);
+            item.setRemoveAmount(amount);
+            return item;
+        }
+        // return null if resources are not correct
+        return null;
+    }
 }

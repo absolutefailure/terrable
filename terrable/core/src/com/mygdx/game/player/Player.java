@@ -373,6 +373,8 @@ public class Player {
 
                                 // IF DISTANCE IS < 150 PIXELS DRAW BLOCK OUTLINE
                                 if (distance <= 150) {
+                                    batch.setColor(1, 1, 1, 0.5f);
+                                    boolean drawOutline = false;
                                     // Right click to open furnace menu
                                     if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT) && !isGamePaused
                                         && (mapArray[x][y].getElement() == FURNACE || mapArray[x][y].getElement() == FURNACE2) && !inventory.isInventoryOpen()){
@@ -382,8 +384,14 @@ public class Player {
                                         inventory.setOpenFurnaceY(y);
 
                                     } 
-                                    batch.setColor(1, 1, 1, 0.5f);
-                                    boolean drawOutline = false;
+                                    if(inventory.getSelectedItem().getElement() == BUCKET && mapArray[x][y].getElement() == OIL){
+                                        if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)){
+                                            inventory.getSelectedItem().setElement(OILBUCKET);
+                                            mapArray[x][y].setElement(EMPTY);
+                                        }
+                                        drawOutline = true;
+                                    }
+
                                     // IF LEFT MOUSE BUTTON IS DOWN REDUCE BLOCK HEALTH OR DESTROY IT (CHANGE TO
                                     // EMPTY AND COLLISION OFF)
                                     if ((!mapArray[x - 1][y].isCollision() 
@@ -395,7 +403,8 @@ public class Player {
                                             && mapArray[x][y].getElement() != WATER2
                                             && mapArray[x][y].getElement() != WATER3
                                             && mapArray[x][y].getElement() != WATER4
-                                            && mapArray[x][y].getElement() != WATER5) {
+                                            && mapArray[x][y].getElement() != WATER5
+                                            && mapArray[x][y].getElement() != OIL) {
                                         drawOutline = true;
                                         if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
                                             if (mapArray[x][y].getBlockHealth() > 0) {

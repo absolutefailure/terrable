@@ -394,6 +394,8 @@ public class mapGenerator {
                         block = 7;
                     }else if (oreChance == 69) {
                         block = 0;
+                    }else if(oreChance == 100){
+                        block = OIL;
                     }
 
                     if (oreChance > 660 
