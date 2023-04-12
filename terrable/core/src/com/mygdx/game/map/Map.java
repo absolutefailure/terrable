@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.map.rain.Rain;
 import com.mygdx.game.mobs.Mob;
-import com.mygdx.game.mobs.mobManager;
+import com.mygdx.game.mobs.MobManager;
 import com.mygdx.game.player.Item;
 import com.mygdx.game.player.Player;
 
@@ -203,7 +203,7 @@ public class Map {
             mob.Update(this, batch, player, volume, delta, mapSizeX, mapSizeY );
         }
         //mob spawner/despawner
-        mobManager.Update(mobs, mapArray, player, mapSizeX, mapSizeY, volume,
+        MobManager.Update(mobs, mapArray, player, mapSizeX, mapSizeY, volume,
             kivimiesTexture, batTexture, chickenTextureRegions, slimeTexture,
             mobSpawnSound, mobScreamSound, batScreamSound,batSpawnSound,slimeSound,cowTextureRegions);
 

@@ -10,7 +10,7 @@ import com.mygdx.game.map.Block;
 import com.mygdx.game.map.Element;
 import com.mygdx.game.player.Player;
 
-public class mobManager {
+public class MobManager {
     public static void Update(ArrayList<Mob> mobs, Block[][] mapArray, Player player, int mapSizeX, int mapSizeY,
             int volume,
             Texture kivimiesTexture, Texture batTexture, TextureRegion[][] chickenTexture, Texture slimeTexture,

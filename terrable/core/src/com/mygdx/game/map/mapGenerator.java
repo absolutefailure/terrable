@@ -8,7 +8,7 @@ import com.mygdx.game.player.Player;
 
 import static com.mygdx.game.map.Element.*;
 
-public class mapGenerator {
+public class MapGenerator {
     public static void newMap(Block[][] mapArray, Player player, int mapSizeX, int mapSizeY){
         
         
