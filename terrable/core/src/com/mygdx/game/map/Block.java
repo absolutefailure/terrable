@@ -310,6 +310,7 @@ public class Block {
                 }else if (amount > 0 && furnaceSlot1.getElement() == COPPER && (furnaceSlot3.getElement() == COPPERINGOT || furnaceSlot3.getAmount() == 0) && furnaceSlot3.getAmount() + amount <= 32) {
                     furnaceSlot3.setElement(COPPERINGOT);
                     furnaceSlot3.setAmount(furnaceSlot3.getAmount() + amount);
+                    furnaceSlot3.setResource(true);
                     furnaceSlot1.setAmount(furnaceSlot1.getAmount() - amount);
                     furnaceSlot2.setAmount(furnaceSlot2.getAmount() - amount);
                     furnaceStartTimer = new Date().getTime();
