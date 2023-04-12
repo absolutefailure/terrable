@@ -693,9 +693,6 @@ public class Player {
                             newItem.setResource(true);
                             newItem.setAcceleration(rand.nextFloat() * 2 - 1);
                             droppedItems.add(newItem);
-                            if(rand.nextInt(2) == 1) {
-                                Mob.setBlueprint(true);
-                            }
                             mobs.remove(i);
                         } else {
                             thisMob.setMobHealth(thisMob.getMobHealth() - inventory.getSelectedItem().getDamage());
@@ -896,7 +893,7 @@ public class Player {
         } else {
             font.draw(batch, elementString, (1560 - elementString.length() * 4) , 890);
         }   
-        inventory.Update(batch, this, blockTextures, cam, outlineTexture, mapArray, delta, customInputProcessor);
+        inventory.Update(batch, this, blockTextures, cam, outlineTexture, mapArray, delta, customInputProcessor, recipeBook);
 
 
 

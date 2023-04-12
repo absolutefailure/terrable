@@ -7,11 +7,11 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.camera.HudCamera;
-import com.mygdx.game.mobs.Mob;
 
 public class Recipebook {
     private int pageNumber = 0;
     private boolean isOpen = false;
+    private boolean isBlueprint = false;
 
     private Texture arrowRight;
     private Texture arrowLeft;
@@ -42,6 +42,11 @@ public class Recipebook {
 
     public void Draw(Batch batch, HudCamera cam) {
 
+        if(isBlueprint) {
+            pages[8] = new Texture("recipes/page10.png");
+            pages[9] = new Texture("recipes/page10.png");
+        }
+
         if (button(batch, cam, 900, 400, 25, 25, recipeButtonTexture) && !isOpen) {
             isOpen = true;
         } else if (button(batch, cam, 900, 400, 25, 25, recipeButtonTexture)) {
@@ -71,6 +76,14 @@ public class Recipebook {
 
     public boolean isOpen() {
         return isOpen;
+    }
+
+    public boolean isBlueprint() {
+        return isBlueprint;
+    }
+
+    public void setBlueprint(boolean isBlueprint) {
+        this.isBlueprint = isBlueprint;
     }
 
     private boolean button(Batch batch, HudCamera cam, int x, int y, int buttonSizeX, int buttonSizeY, Texture t) {

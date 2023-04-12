@@ -20,6 +20,7 @@ public class AchievementManager {
         achievements.add(new Achievement("Stone age", "Craft a stone pickaxe."));
         achievements.add(new Achievement("Let there be light!", "Craft a torch."));
         achievements.add(new Achievement("Ironworks", "Smelt iron in a furnace."));
+        achievements.add(new Achievement("What is this sorcery?", "Discover the blueprints for the rocket."));
         achievements.add(new Achievement("To the moon", "Build a rocketship."));
         
         // Load the unlocked status of each achievement from preferences

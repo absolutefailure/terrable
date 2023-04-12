@@ -20,7 +20,6 @@ public class Mob {
     private int mobHealth;
     private String type;
     private int element;
-    private static boolean blueprint;
     private float brightness = 1f;
 
     // private Sound mobScreamSound;
@@ -40,7 +39,6 @@ public class Mob {
         mobHealth = 10;
         type = "hostile";
         element = Element.BLUEPRINT;
-        blueprint = false;
     }
 
     public Mob() {
@@ -184,14 +182,4 @@ public class Mob {
     public int getElement() {
         return element;
     }
-
-    public static boolean isBlueprint() {
-        return blueprint;
-    }
-
-    public static void setBlueprint(boolean blueprint) {
-        Mob.blueprint = blueprint;
-    }
-    
-
 }
