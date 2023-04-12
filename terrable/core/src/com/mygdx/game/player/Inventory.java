@@ -23,7 +23,6 @@ public class Inventory {
     private ArrayList<Integer> usedSlots = new ArrayList<>();
     private BitmapFont font = new BitmapFont();
     private ArrayList<Item> items;
-    private Recipebook recipebook;
 
     private final int INVENTORY_SLOT_MAX = 32;
 
