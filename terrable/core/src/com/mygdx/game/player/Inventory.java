@@ -23,7 +23,7 @@ public class Inventory {
     private ArrayList<Integer> usedSlots = new ArrayList<>();
     private BitmapFont font = new BitmapFont();
     private ArrayList<Item> items;
-
+    private Recipebook recipebook;
 
     private final int INVENTORY_SLOT_MAX = 32;
 
@@ -56,7 +56,7 @@ public class Inventory {
     }
 
     public void Update(Batch batch, Player player, TextureRegion[][] blockTextures, HudCamera cam,
-            Texture outlineTexture, Block[][] mapArray, float delta, CustomInputProcessor customInputProcessor) {
+            Texture outlineTexture, Block[][] mapArray, float delta, CustomInputProcessor customInputProcessor, Recipebook recipebook) {
         if(!player.isPaused()){
             // change selected slot
             if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
@@ -716,6 +716,11 @@ public class Inventory {
                         case 28:
                             achievements.unlockAchievement("Let there be light!");
                             message.setMessage("New achievement unlocked: Let there be light!");
+                            break;
+                        case 57:
+                            achievements.unlockAchievement("What is this sorcery?");
+                            message.setMessage("New achievement unlocked: What is this sorcery?");
+                            recipebook.setBlueprint(true);
                             break;
                     }
                 }
