@@ -85,7 +85,7 @@ public class Map {
     public void GenerateNewMap(Player player) {
 
         mapArray = new Block[mapSizeX][mapSizeY];
-        mapGenerator.newMap(mapArray,player,mapSizeX,mapSizeY);
+        MapGenerator.newMap(mapArray,player,mapSizeX,mapSizeY);
     }
 
     // UPDATE MAP
