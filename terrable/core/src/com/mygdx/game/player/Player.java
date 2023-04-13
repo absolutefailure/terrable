@@ -59,6 +59,8 @@ public class Player {
     private Texture hungerTexture;
     private Texture oxygenTexture;
     private Texture textures;
+    private Texture tooltipTexture;
+    private Texture tutorialTexture;
     private TextureRegion[][] blockTextures;
 
     private Texture blockBreakingTexture;
@@ -154,6 +156,8 @@ public class Player {
         hungerTexture = new Texture("hunger.png");
         blockBreakingTexture = new Texture("breaktiles.png");
         oxygenTexture = new Texture("bubble.png");
+        tooltipTexture = new Texture("tooltipbg.png");
+        tutorialTexture = new Texture("tutorialbg.png");
 
         textures = new Texture("tileset.png");
         blockTextures = TextureRegion.split(textures, 25, 25);
@@ -163,7 +167,7 @@ public class Player {
         inventory = new Inventory();
         droppedItems = new ArrayList<>();
 
-        font = new BitmapFont(Gdx.files.internal("fonts/Cambria.fnt"));
+        font = new BitmapFont(Gdx.files.internal("fonts/Cambria18.fnt"));
         redFont = new BitmapFont(Gdx.files.internal("fonts/RedCambria.fnt"));
         message = new HudMessage("");
 
@@ -940,6 +944,7 @@ public class Player {
         if(tutorialOn) {
             font.draw(batch, tutorialString, 750, 700);
         } else {
+            batch.draw(tutorialTexture, 0, 870);
             font.draw(batch, "press F1 for tutorial", 10, 890);
         }
 
@@ -961,12 +966,15 @@ public class Player {
         }
 
         // DRAW CURRENT ELEMENT SELECTED
-        if (elementString.length() < 10) {
-            font.draw(batch, elementString, (1560 - elementString.length() * 2) , 890);
+        if (elementString.length() < 11) {
+            batch.draw(tooltipTexture, 1400, 870);
+            font.draw(batch, elementString, (1550 - elementString.length() * 4) , 890);
         } else if (elementString.length() > 40) {
-            font.draw(batch, elementString, (1560 - elementString.length() * 5) , 890);
+            batch.draw(tooltipTexture, 1400, 870);
+            font.draw(batch, elementString, (1550 - elementString.length() * 5) , 890);
         } else {
-            font.draw(batch, elementString, (1560 - elementString.length() * 4) , 890);
+            batch.draw(tooltipTexture, 1400, 870);
+            font.draw(batch, elementString, (1550 - elementString.length() * 6) , 890);
         }   
         inventory.Update(batch, this, blockTextures, cam, outlineTexture, mapArray, delta, customInputProcessor, recipeBook);
 
