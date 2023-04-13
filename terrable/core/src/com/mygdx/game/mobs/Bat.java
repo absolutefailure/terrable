@@ -22,6 +22,7 @@ public class Bat extends Mob{
     private int mobHealth;
     private String type;
     private int element;
+    private String hit;
 
     private Random rand;
     private Sound batScreamSound;
@@ -44,6 +45,7 @@ public class Bat extends Mob{
         mobHealth = 5;
         type = "hostile";
         element = Element.FEATHER;
+        hit = "not";
     
         rand = new Random();
     }
@@ -132,6 +134,21 @@ public class Bat extends Mob{
             }
         }
 
+        //knockback
+        if (hit == "left") {
+            if (gravity > 0) {
+                acceleration = 1f;
+            } else {
+                hit = "not";
+            }
+        } else if (hit == "right") {
+            if (gravity > 0) {
+                acceleration = -1f;
+            } else {
+                hit = "not";
+            }
+        }
+
         batch.setColor(brightness,brightness,brightness,1f);
         batch.draw(mobTexture, mobPosX, mobPosY);
         batch.setColor(1f,1f,1f,1f);
@@ -176,6 +193,18 @@ public class Bat extends Mob{
 
     public int getElement() {
         return element;
+    }
+
+    public void setGravity(float gravity) {
+        this.gravity = gravity;
+    }
+
+    public void setAcceleration(float acceleration) {
+        this.acceleration = acceleration;
+    }
+
+    public void setHit(String hit) {
+        this.hit = hit;
     }
     
 }

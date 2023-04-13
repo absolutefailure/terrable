@@ -23,6 +23,8 @@ public class Cow extends Mob {
     private float moveTimer;
     private int direction = 0;
     private float brightness = 1f;
+    private String hit;
+    private boolean onGround;
     
     public Cow(float x, float y, TextureRegion[][] texture) {
         super();
@@ -38,6 +40,8 @@ public class Cow extends Mob {
         gravity = 0;
         mobHealth = 5;
         type = "friendly";
+        hit = "not";
+        onGround = true;
 
         element = Element.RAWSTEAK;
         
@@ -79,25 +83,25 @@ public class Cow extends Mob {
                         }
                         if(mapArray[x][y].isCollision()){
                             mobPosY = oldMobY;
-                            if (Math.abs(acceleration) > 0.1f && mapArray[x-1][y-1].isCollision() || mapArray[x+1][y-1].isCollision() || mapArray[x+2][y-1].isCollision()) {
+                            onGround = true;
+                            if (Math.abs(acceleration) > 0.1f && mapArray[x-1][y-1].isCollision() || mapArray[x+1][y-1].isCollision()) {
                                 gravity = 4;
                             }else{
                                 gravity = 0;
                             }
-                        }else if(mapArray[x][y].getElement() == WATER1
+                        } else if(mapArray[x][y].getElement() == WATER1
                         || mapArray[x][y].getElement() == WATER2
                         || mapArray[x][y].getElement() == WATER3
                         || mapArray[x][y].getElement() == WATER4
                         || mapArray[x][y].getElement() == WATER5){
                             gravity *= Math.pow(0.99f, delta);
-                            gravity += ((mapArray[x][y].getPosY() +mapArray[x][y].getBLOCKSIZE()) - mobPosY)/100 * delta;
+                            gravity += 0.1f * delta;
                         }
-
                     }
                 }
             }
         }
-
+        
         moveTimer -= 1 * delta;
         if (moveTimer < 0){
             moveTimer = rand.nextInt(1000);
@@ -105,13 +109,13 @@ public class Cow extends Mob {
         }
 
         //mob left right movement
-        if(moveTimer >= 20){
+        if(moveTimer < 10000 && moveTimer >= 20){
             if (direction == 0){
                 acceleration =0.5f;
             }else{
                 acceleration = -0.5f;
             }
-        } else{
+        } else if (moveTimer < 20) {
             acceleration = 0;
         }      
         
@@ -128,6 +132,27 @@ public class Cow extends Mob {
                         mobPosX = oldMobX;
                     }
                 }
+            }
+        }
+        
+        //knockback
+        if (hit == "left") {
+            moveTimer = 100000;
+            if (!onGround) {
+                acceleration = 1f;
+            } else {
+                hit = "not";
+                moveTimer = 20;
+                acceleration = 0;
+            }
+        } else if (hit == "right") {
+            moveTimer = 100000;
+            if (!onGround) {
+                acceleration = -1f;
+            } else {
+                hit = "not";
+                moveTimer = 20;
+                acceleration = 0;
             }
         }
 
@@ -174,6 +199,22 @@ public class Cow extends Mob {
 
     public int getElement() {
         return element;
+    }
+
+    public void setGravity(float gravity) {
+        this.gravity = gravity;
+    }
+
+    public void setAcceleration(float acceleration) {
+        this.acceleration = acceleration;
+    }
+
+    public void setHit(String hit) {
+        this.hit = hit;
+    }
+
+    public void setOnGround(boolean onGround) {
+        this.onGround = onGround;
     }
     
 }

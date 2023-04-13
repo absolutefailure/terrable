@@ -56,6 +56,7 @@ public class Player {
     private Texture outlineTexture;
     private Texture healthTexture;
     private Texture hungerTexture;
+    private Texture oxygenTexture;
     private Texture textures;
     private TextureRegion[][] blockTextures;
 
@@ -80,6 +81,10 @@ public class Player {
     private long lastHungerHit;
     private float hudMessageTimer;
     private float healthRegenerateTimer;
+    private int playerOxygen;
+    private long lastDrowningHit;
+    private long drowningTime;
+    private boolean diving;
 
     private BitmapFont font;
     private BitmapFont redFont;
@@ -127,6 +132,9 @@ public class Player {
         lastHungerHit = 0;
         hudMessageTimer = 0;
         healthRegenerateTimer = 0;
+        lastDrowningHit = 0;
+        drowningTime = 0;
+        diving = false;
 
         cactusTimer = 0;
 
@@ -140,6 +148,7 @@ public class Player {
         healthTexture = new Texture("heart.png");
         hungerTexture = new Texture("hunger.png");
         blockBreakingTexture = new Texture("breaktiles.png");
+        oxygenTexture = new Texture("bubble.png");
 
         textures = new Texture("tileset.png");
         blockTextures = TextureRegion.split(textures, 25, 25);
@@ -271,11 +280,48 @@ public class Player {
                             onGround = true;
                             onGroundTimer = 5;
                         }
-
                     }
+
+                    // CHECK IF PLAYER IS INSIDE WATER
+                    float blockTop = mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE();
+                    float blockBottom = (mapArray[x][y].getPosY());
+                    if ((playerPosY + 40) > blockBottom && (playerPosY + 40) < blockTop) {
+                        if (mapArray[x][y].getElement() == WATER1 || mapArray[x][y].getElement() == WATER2 || mapArray[x][y].getElement() == WATER3 || mapArray[x][y].getElement() == WATER4 || mapArray[x][y].getElement() == WATER5) {
+                            diving = true;
+                        } else {
+                            diving = false;
+                        }
+                    } 
                 }
             }
 
+        }
+        
+        if (diving) {
+            for (int i = 0; i < playerOxygen; i++) {
+                batch.draw(oxygenTexture, (playerPosX - 88) + 20 * i, (playerPosY + 50));
+            }
+            
+            // DEPLETE OXYGEN
+            if (getPlayerOxygen() > 0) {
+                long currentTime = new Date().getTime();
+                if (currentTime - drowningTime >= 3000) {
+                    setPlayerOxygen(getPlayerOxygen()-1);
+                    drowningTime = currentTime;
+                }
+            }
+
+            // LOSE HEALTH WHEN OXYGEN IS 0
+            if (getPlayerOxygen() == 0) {
+                long currentTime = new Date().getTime();
+                if (currentTime - lastDrowningHit >= 2000) {
+                    setPlayerHealth(getPlayerHealth()-1);
+                    lastDrowningHit = currentTime;
+                }
+            }
+        } else {
+            // RESTORE OXYGEN
+            setPlayerOxygen(10);
         }
 
         // GET MOUSE WORLD COORDINATES
@@ -695,6 +741,15 @@ public class Player {
                             droppedItems.add(newItem);
                             mobs.remove(i);
                         } else {
+                            if (thisMob.getMobPosX() < getX()) {
+                                thisMob.setGravity(4f);
+                                thisMob.setOnGround(false);
+                                thisMob.setHit("right");
+                            } else {
+                                thisMob.setGravity(4f);
+                                thisMob.setOnGround(false);
+                                thisMob.setHit("left");
+                            }
                             thisMob.setMobHealth(thisMob.getMobHealth() - inventory.getSelectedItem().getDamage());
                         }
                     }
@@ -986,6 +1041,14 @@ public class Player {
 
     public void setPlayerHunger(int playerHunger) {
         this.playerHunger = playerHunger;
+    }
+
+    public int getPlayerOxygen() {
+        return playerOxygen;
+    }
+
+    public void setPlayerOxygen(int playerOxygen) {
+        this.playerOxygen = playerOxygen;
     }
     
 }

@@ -161,6 +161,7 @@ public class MainMenuScreen implements Screen {
                         System.gc();
                         game.gameScreen.player.setPlayerHealth(10);
                         game.gameScreen.player.setPlayerHunger(10);
+                        game.gameScreen.player.setPlayerOxygen(10);
                         game.gameScreen.map.GenerateNewMap(game.gameScreen.player);
                     game.setScreen(game.gameScreen);
                 
@@ -175,6 +176,7 @@ public class MainMenuScreen implements Screen {
                         System.gc();
                         game.gameScreen.player.setPlayerHealth(10);
                         game.gameScreen.player.setPlayerHunger(10);
+                        game.gameScreen.player.setPlayerOxygen(10);
                         game.gameScreen.map.GenerateNewMap(game.gameScreen.player);
                     game.setScreen(game.gameScreen);
                 
@@ -189,6 +191,7 @@ public class MainMenuScreen implements Screen {
                         System.gc();
                         game.gameScreen.player.setPlayerHealth(10);
                         game.gameScreen.player.setPlayerHunger(10);
+                        game.gameScreen.player.setPlayerOxygen(10);
                         game.gameScreen.map.GenerateNewMap(game.gameScreen.player);
                     game.setScreen(game.gameScreen);
                 
@@ -208,6 +211,7 @@ public class MainMenuScreen implements Screen {
                     System.gc();
                     game.gameScreen.player.setPlayerHealth(10);
                     game.gameScreen.player.setPlayerHunger(10);
+                    game.gameScreen.player.setPlayerOxygen(10);
                     game.gameScreen.map.GenerateNewMap(game.gameScreen.player);
                 }
                 game.setScreen(game.gameScreen);
