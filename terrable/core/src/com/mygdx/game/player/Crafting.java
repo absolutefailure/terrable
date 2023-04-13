@@ -765,6 +765,7 @@ public class Crafting {
             // create new item/s
             Item item = new Item();
             item.setElement(IRONPLATE);
+            item.setResource(true);
             item.setAmount(amount);
             item.setRemoveAmount(amount / 4);
             return item;
