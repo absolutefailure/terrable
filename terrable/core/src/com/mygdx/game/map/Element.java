@@ -144,4 +144,76 @@ public final class Element {
         elementNames = Collections.unmodifiableMap(map);
     }
 
+    public static final Map<Integer, Integer> BLOCKMAXHP;
+    
+    static {
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        map.put(0,0);
+        map.put(1, 50);
+        map.put(2, 50);
+        map.put(3, 100);
+        map.put(4, 25);
+        map.put(5, 25);
+        map.put(6, 250);
+        map.put(7, 200);
+        map.put(8, 250);
+        map.put(9, 300);
+        map.put(10, 10);
+        map.put(11, 25);
+        map.put(12, 75);
+        map.put(13, 0);
+        map.put(14, 0);
+        map.put(15, 0);
+        map.put(16, 0);
+        map.put(17, 0);
+        map.put(18, 0);
+        map.put(19, 0);
+        map.put(20, 0);
+        map.put(21, 0);
+        map.put(22, 0);
+        map.put(23, 0);
+        map.put(24, 75);
+        map.put(25, 75);
+        map.put(26, 75);
+        map.put(27, 0);
+        map.put(28, 10);
+        map.put(29, 0);
+        map.put(30, 0);
+        map.put(31, 0);
+        map.put(32, 0);
+        map.put(33, 200);
+        map.put(34, 200);
+        map.put(35, 0);
+        map.put(36, 0);
+        map.put(37, 0);
+        map.put(38, 0);
+        map.put(39, 40);
+        map.put(40, 30);
+        map.put(41, 200);
+        map.put(42, 25);
+        map.put(43, 0);
+        map.put(44, 0);
+        map.put(45, 0);
+        map.put(46, 0);
+        map.put(47, 0);
+        map.put(48, 0);
+        map.put(49, 0);
+        map.put(50, 0);
+        map.put(51, 0);
+        map.put(52, 0);
+        map.put(53, 0);
+        map.put(54, 0);
+        map.put(55, 0);
+        map.put(56, 0);
+        map.put(57, 0);
+        map.put(58, 0);
+        map.put(59, 0);
+        map.put(60, 0);
+        map.put(61, 200);
+        map.put(62, 0);
+        map.put(63, 0);
+
+        BLOCKMAXHP = Collections.unmodifiableMap(map);
+    }
+
 }

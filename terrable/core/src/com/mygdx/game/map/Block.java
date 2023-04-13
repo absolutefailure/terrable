@@ -31,63 +31,7 @@ public class Block {
         this.posY = y;
         this.element = element;
         this.permanent = permanent;
-        if (element == EMPTY){
-            this.blockHealth = 0;
-        }else if(element == GROUND){
-            this.blockHealth = 50;
-        }else if(element == GRASS){
-            this.blockHealth = 50;
-        }else if(element == WOOD){
-            this.blockHealth = 100;
-        }else if(element == STONE){
-            this.blockHealth = 200;
-        }else if(element == LEAVES){
-            this.blockHealth = 25;
-        }else if(element == LADDER) {
-            this.blockHealth = 25;
-        }else if(element == IRON) {
-            this.blockHealth = 250;
-            this.permanent = STONE;
-        }else if(element == COAL) {
-            this.blockHealth = 200;
-            this.permanent = STONE;
-        }else if(element == DIAMOND) {
-            this.blockHealth = 300;
-            this.permanent = STONE;
-        }else if(element == COPPER) {
-            this.blockHealth = 250;
-            this.permanent = STONE;
-        }else if(element == TALLGRASS) {
-            this.blockHealth = 1;
-        }else if(element == REDFLOWER) {
-            this.blockHealth = 1;
-        }else if(element == STONEPICKAXE) {
-            this.blockHealth = 2500;
-        }else if(element == DOOR1) {
-            this.blockHealth = 75;
-        }else if(element == DOOR2) {
-            this.blockHealth = 75;
-        }else if(element == WOODPICKAXE) {
-            this.blockHealth = 500;
-        }else if(element == IRONPICKAXE) {
-            this.blockHealth = 5000;
-        }else if(element == DIAMONDPICKAXE) {
-            this.blockHealth = 10000;
-        }else if(element == STONEAXE) {
-            this.blockHealth = 2500;
-        }else if(element == WOODAXE) {
-            this.blockHealth = 500;
-        }else if(element == IRONAXE) {
-            this.blockHealth = 5000;
-        }else if(element == DIAMONDAXE) {
-            this.blockHealth = 10000;
-        }else if(element == STICK) {
-            this.blockHealth = 1;
-        }else if(element == TORCH) {
-            this.blockHealth = 1;
-        }else if(element == COPPERWIRE) {
-            this.blockHealth = 1;
-        }
+        this.blockHealth = BLOCKMAXHP.get(element);
 
         this.collision = collision;
         brightness = 0;
@@ -166,68 +110,7 @@ public class Block {
     }
 
     public int getMaxhealth(){
-        if (element == GROUND){
-            return 50;
-        } else if (element == GROUND){
-            return 50;
-        } else if (element == GRASS){
-            return 50;
-        } else if (element == WOOD){
-            return 100;
-        } else if (element == LEAVES){
-            return 25;
-        } else if (element == LADDER){
-            return 25;
-        } else if (element == STONE){
-            return 200;
-        } else if (element == COAL){
-            return 200;
-        } else if (element == IRON){
-            return 250;
-        } else if (element == DIAMOND){
-            return 300;
-        }else if (element == COPPER){
-            return 250;
-        } else if (element == PLANKS){
-            return 75;
-        } else if (element == STONEPICKAXE){
-            return 2500;
-        }else if (element == DOOR1){
-            return 75;
-        }else if (element == DOOR2){
-            return 75;
-        } else if (element == WOODPICKAXE){
-            return 500;
-        } else if (element == IRONPICKAXE){
-            return 5000;
-        } else if (element == DIAMONDPICKAXE){
-            return 10000;
-        } else if (element == STONEAXE){
-            return 2500;
-        } else if (element == WOODAXE){
-            return 500;
-        } else if (element == IRONAXE){
-            return 5000;
-        } else if (element == DIAMONDAXE){
-            return 10000;
-        } else if (element == IRONINGOT){
-            return 50;
-        } else if (element == FURNACE || element == FURNACE2){
-            return 300;
-        }else if (element == SAND ){
-            return 40;
-        }else if (element == CACTUS){
-            return 30;
-        }else if (element == SANDSTONE){
-            return 200;
-        }else if (element == GLASS){
-            return 10;
-        }else {
-            return 1;
-        }
-        
-        
-
+       return BLOCKMAXHP.get(element);
         
     }
 
