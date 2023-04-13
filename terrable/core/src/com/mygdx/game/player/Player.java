@@ -53,6 +53,7 @@ public class Player {
     private float armAngle = 0f;
 
     private Texture playerTexture;
+    private TextureRegion[][] playerAnimation;
     private Texture outlineTexture;
     private Texture healthTexture;
     private Texture hungerTexture;
@@ -76,6 +77,9 @@ public class Player {
 
     private int playerHealth;
     private int playerHunger;
+    private float walkAnimationTimer;
+
+
     private long lastHitTime;
     private long hungerTime;
     private long lastHungerHit;
@@ -120,7 +124,7 @@ public class Player {
         doorCloseSound = Gdx.audio.newSound(Gdx.files.internal("sounds/door-open.mp3"));
         eatingSound = Gdx.audio.newSound(Gdx.files.internal("sounds/eatingSound.mp3"));
 
-        playerSizeX = 20;
+        playerSizeX = 23;
         playerSizeY = 49;
 
         onGround = false;
@@ -144,6 +148,7 @@ public class Player {
         arm.setOrigin(2.5f, 17f);
 
         playerTexture = new Texture("jusju.png");
+        playerAnimation = TextureRegion.split(playerTexture,25,50);
         outlineTexture = new Texture("outline.png");
         healthTexture = new Texture("heart.png");
         hungerTexture = new Texture("hunger.png");
@@ -180,6 +185,7 @@ public class Player {
         if (!isGamePaused && onGround && !inventory.isFurnaceOpen()) {
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                 gravity = -4.3f;
+                acceleration *= 1.4f;
                 onGroundTimer = 0;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.S)) {
@@ -191,6 +197,7 @@ public class Player {
             }
             if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                 gravity = -5.3f;
+                acceleration *= 1.4f;
                 onGroundTimer = 0;
             }
         }
@@ -338,20 +345,20 @@ public class Player {
         if(!isGamePaused){
             if (!inventory.isFurnaceOpen()){
                 if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-                    if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+                    if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)&& acceleration < 4) {
                         isRunning = true;
-                        acceleration -= 3;
-                    } else {
-                        acceleration -= 1;
+                        acceleration -= 1.5 * delta;
+                    } else if(acceleration < 3){
+                        acceleration -= 1.1f * delta;
                     }
                 }
         
                 if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-                    if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+                    if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && acceleration > -4) {
                         isRunning = true;
-                        acceleration += 3;
-                    } else {
-                        acceleration += 1;
+                        acceleration += 1.5 * delta;
+                    } else if(acceleration > -3){
+                        acceleration += 1.1f * delta;
                     }
                 }
             }
@@ -359,16 +366,7 @@ public class Player {
 
 
 
-        if (acceleration > 3 && isRunning == false) {
-            acceleration = 3;
-        } else if (acceleration > 4 && isRunning == true) {
-            acceleration = 4;
-        }
-        if (acceleration < -3 && isRunning == false) {
-            acceleration = -3;
-        } else if (acceleration < -4 && isRunning == true) {
-            acceleration = -4;
-        }
+
 
         playerPosX += acceleration * delta;
         // FRICTION
@@ -824,7 +822,7 @@ public class Player {
             batch.draw(blockTextures[0][item.getElement()-1], item.getX(),item.getY()+item.getShakeTimer(),12,12);
         }
 
-        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
+        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && !inventory.isInventoryOpen()){
             armAngle -= 6 * delta;
             if (armAngle < 0){
                 armAngle = 180;
@@ -880,18 +878,40 @@ public class Player {
         // DRAW PLAYER
         batch.setColor(brightness,brightness,brightness,1f);
         arm.setColor(brightness,brightness,brightness,1f);
-        arm.setPosition(cam.position.x+acceleration+15,cam.position.y-gravity+17);
+        arm.setPosition(cam.position.x+acceleration+16.5f,cam.position.y-gravity+17);
         arm.setRotation(armAngle);
         arm.draw(batch);
         if (inventory.getSelectedItem().getElement() > 0){
             float angleInRadians = (float)Math.toRadians(270+armAngle);
 
-            float handX = (cam.position.x+acceleration+12) + 20f * MathUtils.cos(angleInRadians);
+            float handX = (cam.position.x+acceleration+14) + 20f * MathUtils.cos(angleInRadians);
             float handY = (cam.position.y-gravity+27) + 20f * MathUtils.sin(angleInRadians);
             batch.draw(blockTextures[0][inventory.getSelectedItem().getElement()-1], handX,handY, 12.5f/2f, 12.5f/2f, 25/2f, 25/2f, 1f, 1f, 180+armAngle);
         }
+        if(Math.abs(acceleration) > 0.1f){
+            if(!isRunning){
+                walkAnimationTimer += 1*delta;
+            }else{
+                walkAnimationTimer += 1.5f*delta;
+            }
+            
+        }else{
+            walkAnimationTimer = 0;
+        }
+        if(walkAnimationTimer > 20){walkAnimationTimer = 1;}
+        if(onGround){
+            if(walkAnimationTimer > 10){
+                batch.draw(playerAnimation[0][1], cam.position.x+acceleration,cam.position.y-gravity);
+            }else if(walkAnimationTimer > 0){
+                batch.draw(playerAnimation[0][2], cam.position.x+acceleration,cam.position.y-gravity);
+            }else if(walkAnimationTimer == 0){
+                batch.draw(playerAnimation[0][0], cam.position.x+acceleration,cam.position.y-gravity);
+            }
+        }else{
+            batch.draw(playerAnimation[0][3], cam.position.x+acceleration,cam.position.y-gravity);
+        }
+
         
-        batch.draw(playerTexture, cam.position.x+acceleration,cam.position.y-gravity);
         batch.setColor(1f,1f,1f,1f);
         
         cam.position.set( Math.round(playerPosX-acceleration),  Math.round(playerPosY+gravity), 0);
