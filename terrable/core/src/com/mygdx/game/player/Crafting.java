@@ -633,6 +633,8 @@ public class Crafting {
     }
 
     private static Item craftTorch(List<Item> resources) {
+        int stickAmount = 0;
+        int coalItemAmount = 0;
         // check slots for correct resources
         if ((resources.get(0).getElement() == STICK
             && resources.get(3).getElement() == COALITEM) ||
@@ -652,6 +654,18 @@ public class Crafting {
                 // return null if slots have something else than ground or tall grass
                 if (slot.getElement() != STICK && slot.getElement() != COALITEM && slot.getElement() != EMPTY) {
                     return null;
+                }
+                if(slot.getElement() == STICK){
+                    stickAmount++;
+                    if(stickAmount > 1){
+                        return null;
+                    }
+                }
+                if(slot.getElement() == COALITEM){
+                    coalItemAmount++;
+                    if(coalItemAmount > 1){
+                        return null;
+                    }
                 }
             }
 
@@ -705,28 +719,55 @@ public class Crafting {
     }
 
     private static Item craftIronPlate(List<Item> resources) {
+        int ironIngotAmount = 0;
         // check slots for correct resources
-        if (resources.get(0).getElement() == EMPTY
-                && resources.get(1).getElement() == IRONINGOT
-                && resources.get(2).getElement() == IRONINGOT
-                && resources.get(3).getElement() == EMPTY
-                && resources.get(4).getElement() == IRONINGOT
-                && resources.get(5).getElement() == IRONINGOT
-                && resources.get(6).getElement() == EMPTY
-                && resources.get(7).getElement() == EMPTY
-                && resources.get(8).getElement() == EMPTY) {
+        if ((resources.get(0).getElement() == IRONINGOT
+            && resources.get(1).getElement() == IRONINGOT
+            && resources.get(3).getElement() == IRONINGOT
+            && resources.get(4).getElement() == IRONINGOT) ||
+            (resources.get(1).getElement() == IRONINGOT
+            && resources.get(2).getElement() == IRONINGOT
+            && resources.get(4).getElement() == IRONINGOT
+            && resources.get(5).getElement() == IRONINGOT) ||
+            (resources.get(3).getElement() == IRONINGOT
+            && resources.get(4).getElement() == IRONINGOT
+            && resources.get(6).getElement() == IRONINGOT
+            && resources.get(7).getElement() == IRONINGOT)||
+            (resources.get(4).getElement() == IRONINGOT
+            && resources.get(5).getElement() == IRONINGOT
+            && resources.get(7).getElement() == IRONINGOT
+            && resources.get(8).getElement() == IRONINGOT)
+            ) {
             int amount = 32;
-            for (Item slot : resources) {
-                if (slot.getElement() == IRONINGOT && amount > slot.getAmount()) {
-                    amount = slot.getAmount();
+            for(Item slot: resources){
+                // return null if slots have something else than ground or tall grass
+                if (slot.getElement() != IRONINGOT && slot.getElement() != EMPTY) {
+                    return null;
+                }
+                if(slot.getElement() == IRONINGOT){
+                    ironIngotAmount++;
+                    if(ironIngotAmount > 4){
+                        return null;
+                    }
                 }
             }
+
+            for (Item slot : resources) {
+                    if (slot.getElement() == IRONINGOT  && amount > slot.getAmount()) {
+                        amount = slot.getAmount();
+                    }
+                }
+            // check for max slot size
+            if (amount > 8) {
+            amount = 8;
+            }
+            amount *= 4;
             // create new item/s
             Item item = new Item();
             item.setElement(IRONPLATE);
             item.setResource(true);
             item.setAmount(amount);
-            item.setRemoveAmount(amount);
+            item.setRemoveAmount(amount / 4);
             return item;
         }
         // return null if resources are not correct
