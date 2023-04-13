@@ -60,6 +60,7 @@ public class Player {
     private Texture oxygenTexture;
     private Texture textures;
     private Texture tooltipTexture;
+    private Texture tutorialTexture;
     private TextureRegion[][] blockTextures;
 
     private Texture blockBreakingTexture;
@@ -156,6 +157,7 @@ public class Player {
         blockBreakingTexture = new Texture("breaktiles.png");
         oxygenTexture = new Texture("bubble.png");
         tooltipTexture = new Texture("tooltipbg.png");
+        tutorialTexture = new Texture("tutorialbg.png");
 
         textures = new Texture("tileset.png");
         blockTextures = TextureRegion.split(textures, 25, 25);
@@ -942,6 +944,7 @@ public class Player {
         if(tutorialOn) {
             font.draw(batch, tutorialString, 750, 700);
         } else {
+            batch.draw(tutorialTexture, 0, 870);
             font.draw(batch, "press F1 for tutorial", 10, 890);
         }
 
