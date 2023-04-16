@@ -1,5 +1,7 @@
 package com.mygdx.game.player;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,7 +13,8 @@ import com.mygdx.game.camera.HudCamera;
 public class Recipebook {
     private int pageNumber = 0;
     private boolean isOpen = false;
-    private boolean isBlueprint = false;
+    private boolean isUnlocked = false;
+    private ArrayList<Integer> unlockedPages = new ArrayList<>();
 
     private Texture arrowRight;
     private Texture arrowLeft;
@@ -27,14 +30,14 @@ public class Recipebook {
         arrowRight = new Texture("arrowright.png");
         arrowLeft = new Texture("arrowleft.png");
         recipeButtonTexture = new Texture("recipeButton.png");
-        pages[0] = new Texture("recipes/page0.png");
-        pages[1] = new Texture("recipes/page2.png");
-        pages[2] = new Texture("recipes/page3.png");
-        pages[3] = new Texture("recipes/page4.png");
-        pages[4] = new Texture("recipes/page5.png");
-        pages[5] = new Texture("recipes/page6.png");
-        pages[6] = new Texture("recipes/page7.png");
-        pages[7] = new Texture("recipes/page8.png");
+        pages[0] = new Texture("recipes/page9.png");
+        pages[1] = new Texture("recipes/page9.png");
+        pages[2] = new Texture("recipes/page9.png");
+        pages[3] = new Texture("recipes/page9.png");
+        pages[4] = new Texture("recipes/page9.png");
+        pages[5] = new Texture("recipes/page9.png");
+        pages[6] = new Texture("recipes/page9.png");
+        pages[7] = new Texture("recipes/page9.png");
         pages[8] = new Texture("recipes/page9.png");
         pages[9] = new Texture("recipes/page9.png");
 
@@ -42,9 +45,36 @@ public class Recipebook {
 
     public void Draw(Batch batch, HudCamera cam) {
 
-        if(isBlueprint) {
-            pages[8] = new Texture("recipes/page10.png");
-            pages[9] = new Texture("recipes/page10.png");
+        if(isUnlocked) {
+            // Unlock pages based on unlocked achievements
+            for (int i = 0; i < unlockedPages.size(); i++){
+
+                // TIMBER
+                if (unlockedPages.contains(0)){
+                    pages[0] = new Texture("recipes/page0.png");
+                    pages[1] = new Texture("recipes/page1.png");
+                    pages[2] = new Texture("recipes/page2.png");
+                    pages[5] = new Texture("recipes/page5.png");
+                    pages[6] = new Texture("recipes/page6.png");
+                    pages[7] = new Texture("recipes/page7.png");
+                }   
+
+                // Rock solid
+                if (unlockedPages.contains(1)){
+                    pages[4] = new Texture("recipes/page4.png");
+                }
+
+                // Ironworks
+                if (unlockedPages.contains(2)){
+                    pages[3] = new Texture("recipes/page3.png");
+                    pages[8] = new Texture("recipes/page8.png");
+                }
+
+                // What is this sorcery?
+                if (unlockedPages.contains(3)){
+                    pages[9] = new Texture("recipes/page9.png");
+                }
+            }
         }
 
         if (button(batch, cam, 900, 400, 25, 25, recipeButtonTexture) && !isOpen) {
@@ -61,8 +91,8 @@ public class Recipebook {
                     pageNumber--;
                 }
             }
-            if (pageNumber < 10 && button(batch, cam, 1251 - (271 / 2), 250 - (88 / 2), 25, 25, arrowRight)) {
-                if (pageNumber < 10) {
+            if (pageNumber < 9 && button(batch, cam, 1251 - (271 / 2), 250 - (88 / 2), 25, 25, arrowRight)) {
+                if (pageNumber < 9) {
                     pageNumber++;
                 }
             }
@@ -78,12 +108,13 @@ public class Recipebook {
         return isOpen;
     }
 
-    public boolean isBlueprint() {
-        return isBlueprint;
+    public boolean isUnlocked() {
+        return isUnlocked;
     }
 
-    public void setBlueprint(boolean isBlueprint) {
-        this.isBlueprint = isBlueprint;
+    public void setUnlocked(boolean isUnlocked, int unlockedPage) {
+        this.isUnlocked = isUnlocked;
+        unlockedPages.add(unlockedPage);
     }
 
     private boolean button(Batch batch, HudCamera cam, int x, int y, int buttonSizeX, int buttonSizeY, Texture t) {

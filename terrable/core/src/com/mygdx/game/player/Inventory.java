@@ -695,10 +695,12 @@ public class Inventory {
                         case 3:
                             achievements.unlockAchievement("TIMBER");
                             message.setMessage("New achievement unlocked: TIMBER");
+                            recipebook.setUnlocked(true, 0);
                             break;
                         case 6:
                             achievements.unlockAchievement("Rock solid");
                             message.setMessage("New achievement unlocked: Rock solid");
+                            recipebook.setUnlocked(true, 1);
                             break;
                         case 15:
                             achievements.unlockAchievement("Toy or tool?");
@@ -711,6 +713,7 @@ public class Inventory {
                         case 23:
                             achievements.unlockAchievement("Ironworks");
                             message.setMessage("New achievement unlocked: Ironworks");
+                            recipebook.setUnlocked(true, 2);
                             break;
                         case 28:
                             achievements.unlockAchievement("Let there be light!");
@@ -719,7 +722,7 @@ public class Inventory {
                         case 57:
                             achievements.unlockAchievement("What is this sorcery?");
                             message.setMessage("New achievement unlocked: What is this sorcery?");
-                            recipebook.setBlueprint(true);
+                            recipebook.setUnlocked(true, 3);
                             break;
                     }
                 }
