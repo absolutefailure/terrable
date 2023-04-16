@@ -154,7 +154,7 @@ public final class Element {
         map.put(3, 100);
         map.put(4, 25);
         map.put(5, 25);
-        map.put(6, 250);
+        map.put(6, 200);
         map.put(7, 200);
         map.put(8, 250);
         map.put(9, 300);
@@ -209,7 +209,7 @@ public final class Element {
         map.put(58, 0);
         map.put(59, 0);
         map.put(60, 0);
-        map.put(61, 200);
+        map.put(61, 250);
         map.put(62, 0);
         map.put(63, 0);
 
