@@ -837,7 +837,7 @@ public class Player {
         // DEPLETE HUNGER
         if (getPlayerHunger() > 0 && !isGamePaused) {
             long currentTime = new Date().getTime();
-            if (currentTime - hungerTime >= 320) {
+            if (currentTime - hungerTime >= 32000) {
                 setPlayerHunger(playerHunger-1);
                 hungerTime = currentTime;
             }

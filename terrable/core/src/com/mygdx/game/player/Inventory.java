@@ -724,6 +724,10 @@ public class Inventory {
                             message.setMessage("New achievement unlocked: What is this sorcery?");
                             recipebook.setUnlocked(true, 3);
                             break;
+                        case 56:
+                            achievements.unlockAchievement("To the moon!");
+                            message.setMessage("New achievement unlocked: To the moon!");
+                            break;
                     }
                 }
             }
