@@ -159,6 +159,12 @@ public class Crafting {
             return result;
         }
 
+        //SLIME PUDDING
+        result = craftSlimePudding(resources);
+        if (result != null) {
+            return result;
+        }
+
         return null;
     }
 
@@ -938,7 +944,6 @@ public class Crafting {
             // create new item/s
             Item item = new Item();
             item.setElement(ROCKET);
-            item.setWeapon(false);
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             return item;
@@ -1002,6 +1007,31 @@ public class Crafting {
             item.setElement(COPPERWIRE);
             item.setAmount(amount);
             item.setRemoveAmount(amount / 2);
+            return item;
+        }
+        // return null if resources are not correct
+        return null;
+    }
+
+    private static Item craftSlimePudding(List<Item> resources) {
+        // check slots for correct resources
+        if (resources.get(0).getElement() == EMPTY
+                && resources.get(1).getElement() == GLASS
+                && resources.get(2).getElement() == EMPTY
+                && resources.get(3).getElement() == EMPTY
+                && resources.get(4).getElement() == SLIMEBALL
+                && resources.get(5).getElement() == EMPTY
+                && resources.get(6).getElement() == EMPTY
+                && resources.get(7).getElement() == EMPTY
+                && resources.get(8).getElement() == EMPTY) {
+            int amount = 1;
+
+            // create new item/s
+            Item item = new Item();
+            item.setElement(SLIMEPUDDING);
+            item.setFood(true);
+            item.setAmount(amount);
+            item.setRemoveAmount(amount);
             return item;
         }
         // return null if resources are not correct
