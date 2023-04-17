@@ -25,8 +25,8 @@ public final class Element {
     public static final int STONEPICKAXE = 16;
     public static final int IRONPICKAXE = 17;
     public static final int DIAMONDPICKAXE = 18;
-    public static final int STONEAXE = 19;
-    public static final int WOODAXE = 20;
+    public static final int WOODAXE = 19;
+    public static final int STONEAXE = 20;
     public static final int IRONAXE = 21;
     public static final int DIAMONDAXE = 22;
     public static final int IRONINGOT = 23;
@@ -95,8 +95,8 @@ public final class Element {
         map.put(16, "Wooden pick-axe");
         map.put(17, "Iron pick-axe");
         map.put(18, "Diamond pick-axe");
-        map.put(19, "Stone axe");
-        map.put(20, "Wooden axe");
+        map.put(19, "Wooden axe");
+        map.put(20, "Stone axe");
         map.put(21, "Iron axe");
         map.put(22, "Diamond axe");
         map.put(23, "Iron ingot");
