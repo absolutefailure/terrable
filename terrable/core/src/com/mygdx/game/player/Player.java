@@ -311,12 +311,9 @@ public class Player {
         }
         
         if (diving) {
-            for (int i = 0; i < playerOxygen; i++) {
-                batch.draw(oxygenTexture, (playerPosX - 88) + 20 * i, (playerPosY + 50));
-            }
             
             // DEPLETE OXYGEN
-            if (getPlayerOxygen() > 0) {
+            if (getPlayerOxygen() > 0 && !isGamePaused) {
                 long currentTime = new Date().getTime();
                 if (currentTime - drowningTime >= 3000) {
                     setPlayerOxygen(getPlayerOxygen()-1);
@@ -325,7 +322,7 @@ public class Player {
             }
 
             // LOSE HEALTH WHEN OXYGEN IS 0
-            if (getPlayerOxygen() == 0) {
+            if (getPlayerOxygen() == 0 && !isGamePaused) {
                 long currentTime = new Date().getTime();
                 if (currentTime - lastDrowningHit >= 2000) {
                     setPlayerHealth(getPlayerHealth()-1);
@@ -838,16 +835,16 @@ public class Player {
         }
 
         // DEPLETE HUNGER
-        if (getPlayerHunger() > 0) {
+        if (getPlayerHunger() > 0 && !isGamePaused) {
             long currentTime = new Date().getTime();
-            if (currentTime - hungerTime >= 32000) {
+            if (currentTime - hungerTime >= 320) {
                 setPlayerHunger(playerHunger-1);
                 hungerTime = currentTime;
             }
         }
 
         // LOSE HEALTH IF HUNGER BAR IS EMPTY
-        if (getPlayerHunger() == 0) {
+        if (getPlayerHunger() == 0 && !isGamePaused) {
             long currentTime = new Date().getTime();
             if (currentTime - lastHungerHit >= 5000) {
                 setPlayerHealth(getPlayerHealth()-1);
@@ -868,7 +865,7 @@ public class Player {
         }
 
         // RESTORE HEALTH WHEN HUNGER BAR IS FULL-ish
-        if (getPlayerHunger() >= 8) {
+        if (getPlayerHunger() >= 8 && !isGamePaused) {
             healthRegenerateTimer += 1 * delta;
         }
 
@@ -942,6 +939,13 @@ public class Player {
             elementString = elementNames.get(inventory.getHover(cam));
         }
 
+        // DRAW OXYGEN BAR WHEN DIVING
+        if (diving) {
+            for (int i = 0; i < playerOxygen; i++) {
+                batch.draw(oxygenTexture, 32 + 20 * i, 50);
+            }
+        }
+
         // DRAW TUTORIAL
         if(tutorialOn) {
             batch.draw(tutorialScreenTexture, 400, 150);
@@ -953,7 +957,7 @@ public class Player {
 
         // DRAW HUNGER ALERT
         if(getPlayerHunger() == 0) {
-            redFont.draw(batch, "You are starving! Eat something or you are going to die.", 10, 60);
+            redFont.draw(batch, "You are starving! Eat something or you are going to die.", 10, 36);
         }
 
         //DRAW HUD MESSAGE
