@@ -72,7 +72,7 @@ public class Recipebook {
 
                 // What is this sorcery?
                 if (unlockedPages.contains(3)){
-                    pages[9] = new Texture("recipes/page9.png");
+                    pages[9] = new Texture("recipes/page10.png");
                 }
             }
         }
