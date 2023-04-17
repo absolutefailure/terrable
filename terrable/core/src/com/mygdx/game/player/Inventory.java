@@ -724,6 +724,11 @@ public class Inventory {
                             message.setMessage("New achievement unlocked: What is this sorcery?");
                             recipebook.setUnlocked(true, 3);
                             break;
+                        case 64:
+                            achievements.unlockAchievement("A magical stick?");
+                            message.setMessage("New achievement unlocked: A magical stick?");
+                            recipebook.setUnlocked(true, 3);
+                        break;
                     }
                 }
             }
@@ -749,6 +754,16 @@ public class Inventory {
                 item.setHealth(items.get(selectedSlot).getHealth());
                 player.addDroppedItem(item);
                 items.get(selectedSlot).setAmount(0);
+            }
+
+            if (items.get(selectedSlot).getElement() == 64){
+                int x = 2500 + ((int) player.getX() / 25);
+                int y = 150 - ((int) player.getY() / 25);
+                for (int i = 0; i < 40; i++){
+                    if (mapArray[x][y + i].getElement() == 58){
+                        message.setMessage("You sense oil underground");
+                    }
+                }
             }
         }
     }
