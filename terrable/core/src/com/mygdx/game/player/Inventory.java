@@ -728,7 +728,7 @@ public class Inventory {
                             achievements.unlockAchievement("To the moon!");
                             message.setMessage("New achievement unlocked: To the moon!");
                             break;
-                        case 64:
+                        case 65:
                             achievements.unlockAchievement("A magical stick?");
                             message.setMessage("New achievement unlocked: A magical stick?");
                             break;
@@ -759,7 +759,7 @@ public class Inventory {
                 items.get(selectedSlot).setAmount(0);
             }
 
-            if (items.get(selectedSlot).getElement() == 64){
+            if (items.get(selectedSlot).getElement() == 65){
                 int x = 2500 + ((int) player.getX() / 25);
                 int y = 150 - ((int) player.getY() / 25);
                 for (int i = 0; i < 40; i++){
