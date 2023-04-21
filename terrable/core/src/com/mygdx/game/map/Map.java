@@ -27,8 +27,12 @@ public class Map {
     private Texture chickenTexture;
     private Texture slimeTexture;
     private Texture cowTexture;
+    private Texture camelTexture;
+    private Texture sandratTexture;
     private TextureRegion[][] cowTextureRegions;
+    private TextureRegion[][] camelTextureRegions;
     private TextureRegion[][] chickenTextureRegions;
+    private TextureRegion[][] sandratTextureRegions;
     private TextureRegion[][] blockTextures;
     public static ArrayList<Mob> mobs = new ArrayList<>();
     private Texture sunTexture;
@@ -41,6 +45,7 @@ public class Map {
     private Sound batScreamSound;
     private Sound slimeSound;
     private Sound mobScreamSound;
+    private Sound sandratSqueakSound;
     
     
     private float clock = 2000;
@@ -64,13 +69,18 @@ public class Map {
         slimeTexture = new Texture("slime.png");
         sunTexture = new Texture("sun.png");
 
+        sandratTexture = new Texture("sandrat.png");
         cowTexture = new Texture("cow.png");
+        camelTexture = new Texture("camel.png");
         cowTextureRegions = TextureRegion.split(cowTexture, 50, 40);
         chickenTextureRegions = TextureRegion.split(chickenTexture, 16, 18);
+        sandratTextureRegions = TextureRegion.split(sandratTexture, 25, 25);
+        camelTextureRegions = TextureRegion.split(camelTexture, 63, 47);
         moonTexture = new Texture("moon.png");
         mobSpawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/moaiSpawnSound.mp3"));
         batSpawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/batSpawnSound.mp3"));
 
+        sandratSqueakSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sandratSqueakSound.mp3"));
         batScreamSound = Gdx.audio.newSound(Gdx.files.internal("sounds/batScreamSound.mp3"));
         slimeSound =  Gdx.audio.newSound(Gdx.files.internal("sounds/slimeSound.mp3"));
         mobScreamSound =  Gdx.audio.newSound(Gdx.files.internal("sounds/mobScreamSound.mp3"));
@@ -205,7 +215,7 @@ public class Map {
         //mob spawner/despawner
         MobManager.Update(mobs, mapArray, player, mapSizeX, mapSizeY, volume,
             kivimiesTexture, batTexture, chickenTextureRegions, slimeTexture,
-            mobSpawnSound, mobScreamSound, batScreamSound,batSpawnSound,slimeSound,cowTextureRegions);
+            mobSpawnSound, mobScreamSound, batScreamSound,batSpawnSound,slimeSound,cowTextureRegions,sandratTextureRegions,sandratSqueakSound,camelTextureRegions);
 
 
 
