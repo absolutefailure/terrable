@@ -17,14 +17,17 @@ import com.mygdx.game.player.AchievementManager;
 public class AchievementScreen implements Screen {
     private  SpriteBatch batch;
     private  BitmapFont font;
+    private  BitmapFont nameFont;
     final Terrable game;
     ArrayList<Achievement> achievementlist = AchievementManager.getAchievements();
 
     public AchievementScreen(final Terrable game, int volume) {
         this.game = game;
         batch = new SpriteBatch();
-        font = new BitmapFont();
-        font.getData().setScale(2);
+        font = new BitmapFont(Gdx.files.internal("fonts/Cambria18.fnt"));
+        nameFont = new BitmapFont(Gdx.files.internal("fonts/Cambria18.fnt"));
+        font.getData().setScale((float) 1.5);
+        nameFont.getData().setScale(2);
     }
 
     @Override
@@ -41,12 +44,19 @@ public class AchievementScreen implements Screen {
         
         // Draw the list of achievements
         float y = Gdx.graphics.getHeight() - 150;
+        int split = 0;
         for (Achievement achievement : achievementlist) {
-            font.setColor(achievement.isUnlocked() ? Color.GREEN : Color.RED);
-            font.draw(batch, achievement.getName(), 50, y, Gdx.graphics.getWidth() - 100, Align.left, false);
+            nameFont.setColor(achievement.isUnlocked() ? Color.GREEN : Color.RED);
+            if (split % 2 == 0){
+                nameFont.draw(batch, achievement.getName(), 50, y, Gdx.graphics.getWidth() - 100, Align.left, false);
+                font.draw(batch, achievement.getDescription(), 50, y - 50, Gdx.graphics.getWidth() - 100, Align.left, false);
+            }else {
+                nameFont.draw(batch, achievement.getName(), 50, y, Gdx.graphics.getWidth() - 100, Align.center, false);
+                font.draw(batch, achievement.getDescription(), 50, y - 50, Gdx.graphics.getWidth() - 100, Align.center + 4, false);
+                y -= 100;
+            }
             font.setColor(Color.WHITE);
-            font.draw(batch, achievement.getDescription(), 50, y - 50, Gdx.graphics.getWidth() - 100, Align.left, false);
-            y -= 100;
+            split++;
         }
         batch.end();
 
