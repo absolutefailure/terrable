@@ -74,6 +74,12 @@ public class GameScreen implements Screen {
         }
         
         if (delta > 2f){delta = 2f;}
+
+        //victory screen?????? emt 
+        if(player.getY() > 10000){
+            game.setScreen(game.achievementScreen);
+        }
+
         game.batch.begin();
         if (player.getPlayerHealth() > 0){
             game.batch.setProjectionMatrix(game.cam.combined());

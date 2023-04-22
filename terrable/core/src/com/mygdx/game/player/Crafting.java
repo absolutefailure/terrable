@@ -938,7 +938,7 @@ public class Crafting {
             // create new item/s
             Item item = new Item();
             item.setElement(ROCKET);
-            item.setWeapon(false);
+            item.setResource(true);
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             return item;
