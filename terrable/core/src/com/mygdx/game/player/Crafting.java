@@ -950,6 +950,7 @@ public class Crafting {
             // create new item/s
             Item item = new Item();
             item.setElement(ROCKET);
+            item.setResource(true);
             item.setAmount(amount);
             item.setRemoveAmount(amount);
             return item;

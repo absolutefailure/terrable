@@ -105,7 +105,10 @@ public class Bat extends Mob{
                 acceleration -= 0.5f * delta;
             }
         }
-        if(mobPosX + 1 > player.getX() && mobPosX - 1 < player.getX()) {
+        if(mobPosX + 10 > player.getX() 
+        && mobPosX - 10 < player.getX()
+        && mobPosY + 10 > player.getY()
+        && mobPosY - 10 < player.getY()) {
             soundTimer += 1 * delta;
             if(soundTimer >= 100) {
                 batScreamSound.play(volume/200f);

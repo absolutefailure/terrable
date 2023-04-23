@@ -99,6 +99,12 @@ public class Player {
 
     private ArrayList<Mob> mobs;
 
+    private ArrayList<Rocket> rockets;
+    private Texture rocketTexture;
+    private Texture rocketFlameTexture;
+    private TextureRegion[][] rocketFlame;
+    private int rocketNumber = -1;
+
     private Inventory inventory;
 
     private ArrayList<Item> droppedItems;
@@ -162,6 +168,10 @@ public class Player {
 
         blockBreakingAnimation = TextureRegion.split(blockBreakingTexture, 25, 25);
 
+        rocketTexture = new Texture("rocket.png");
+        rocketFlameTexture = new Texture("rocketflame.png");
+        rocketFlame = TextureRegion.split(rocketFlameTexture,20,40);
+
         inventory = new Inventory();
         droppedItems = new ArrayList<>();
 
@@ -175,6 +185,8 @@ public class Player {
 
         gravity = 0;
         acceleration = 0;
+
+        rockets = new ArrayList<>();
     }
 
     // UPDATE AND DRAW PLAYER
@@ -187,18 +199,22 @@ public class Player {
         if (!isGamePaused && onGround && !inventory.isFurnaceOpen()) {
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                 gravity = -4.3f;
-                acceleration *= 1.4f;
+                if(!onLadder){
+                    acceleration *= 1.4f;
+                }
                 onGroundTimer = 0;
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.S) && onLadder) {
 
+                
                 gravity = +4.3f;
                 onGroundTimer = 0;
-
             }
             if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                 gravity = -5.3f;
-                acceleration *= 1.4f;
+                if(!onLadder){
+                    acceleration *= 1.4f;
+                }
                 onGroundTimer = 0;
             }
         }
@@ -286,6 +302,7 @@ public class Player {
                                 || mapArray[x][y].getElement() == WATER5) {
                             gravity *= Math.pow(0.9f, delta);
                             onGround = true;
+                            onLadder = true;
                             onGroundTimer = 5;
                         }
                     }
@@ -677,6 +694,21 @@ public class Player {
                                     if (drawOutline) {
                                         batch.draw(outlineTexture, mapArray[x][y].getPosX(), mapArray[x][y].getPosY());
                                     }
+                                    
+                                    if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)
+                                    && !mapArray[x-1][y].isCollision()
+                                    && !mapArray[x-2][y].isCollision()
+                                    && !mapArray[x+1][y].isCollision()
+                                    && !mapArray[x+1][y].isCollision()
+                                    && !mapArray[x][y+1].isCollision()
+                                    && !mapArray[x][y-1].isCollision()){
+                                        if(inventory.getSelectedItem().getElement() == ROCKET){
+                                            inventory.getSelectedItem().setAmount(0);
+                                            rockets.add(new Rocket(mapArray[x][y].getPosX()-30, mapArray[x][y].getPosY(), rocketTexture, rocketFlame));
+                                        }
+                                    }
+
+
                                     // Right click to open door
                                     if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)
                                             && (mapArray[x][y].getElement() == DOOR1
@@ -896,49 +928,79 @@ public class Player {
             setPlayerHealth(10);
         }
 
-        // DRAW PLAYER
-        batch.setColor(brightness, brightness, brightness, 1f);
-        arm.setColor(brightness, brightness, brightness, 1f);
-        arm.setPosition(cam.position.x + acceleration + 16.5f, cam.position.y - gravity + 17);
-        arm.setRotation(armAngle);
-        arm.draw(batch);
-        if (inventory.getSelectedItem().getElement() > 0) {
-            float angleInRadians = (float) Math.toRadians(270 + armAngle);
 
-            float handX = (cam.position.x + acceleration + 14) + 20f * MathUtils.cos(angleInRadians);
-            float handY = (cam.position.y - gravity + 27) + 20f * MathUtils.sin(angleInRadians);
-            batch.draw(blockTextures[0][inventory.getSelectedItem().getElement() - 1], handX, handY, 12.5f / 2f,
-                    12.5f / 2f, 25 / 2f, 25 / 2f, 1f, 1f, 180 + armAngle);
+
+        //rocket
+        for(int i = 0; i < rockets.size(); i++){
+            Rocket rocket = rockets.get(i);
+            rocket.update(map, batch, this, volume, delta, mapSizeX,mapSizeY);
+            if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)
+            && mouseInWorld2D.x > rocket.getPosX()
+            && mouseInWorld2D.x < rocket.getPosX() + rocket.getSizeX()
+            && mouseInWorld2D.y > rocket.getPosY()
+            && mouseInWorld2D.y < rocket.getPosY() + rocket.getSizeY()){
+                rocketNumber = i;
+                break;
+            }else if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)){
+                rocketNumber = -1;
+            }
+            rocket.setEngineOn(false);
         }
-        if (Math.abs(acceleration) > 0.1f) {
-            if (!isRunning) {
-                walkAnimationTimer += 1 * delta;
-            } else {
-                walkAnimationTimer += 1.5f * delta;
+
+        if(rocketNumber > -1){
+            gravity = 0;
+            acceleration = 0;
+            playerPosX = rockets.get(rocketNumber).getPosX()+30;
+            playerPosY = rockets.get(rocketNumber).getPosY();
+            if(Gdx.input.isKeyPressed(Input.Keys.W)){
+                rockets.get(rocketNumber).setEngineOn(true);
+                rockets.get(rocketNumber).addSpeed(0.3f * delta);
             }
 
-        } else {
-            walkAnimationTimer = 0;
-        }
-        if (walkAnimationTimer > 20) {
-            walkAnimationTimer = 1;
-        }
-        if (onGround) {
-            if (walkAnimationTimer > 10) {
-                batch.draw(playerAnimation[0][1], cam.position.x + acceleration, cam.position.y - gravity);
-            } else if (walkAnimationTimer > 0) {
-                batch.draw(playerAnimation[0][2], cam.position.x + acceleration, cam.position.y - gravity);
-            } else if (walkAnimationTimer == 0) {
-                batch.draw(playerAnimation[0][0], cam.position.x + acceleration, cam.position.y - gravity);
+        }else{
+            // DRAW PLAYER
+            batch.setColor(brightness,brightness,brightness,1f);
+            arm.setColor(brightness,brightness,brightness,1f);
+            arm.setPosition(cam.position.x+acceleration+16.5f,cam.position.y-gravity+17);
+            arm.setRotation(armAngle);
+            arm.draw(batch);
+            if (inventory.getSelectedItem().getElement() > 0){
+                float angleInRadians = (float)Math.toRadians(270+armAngle);
+
+                float handX = (cam.position.x+acceleration+14) + 20f * MathUtils.cos(angleInRadians);
+                float handY = (cam.position.y-gravity+27) + 20f * MathUtils.sin(angleInRadians);
+                batch.draw(blockTextures[0][inventory.getSelectedItem().getElement()-1], handX,handY, 12.5f/2f, 12.5f/2f, 25/2f, 25/2f, 1f, 1f, 180+armAngle);
             }
-        } else {
-            batch.draw(playerAnimation[0][3], cam.position.x + acceleration, cam.position.y - gravity);
+            if(Math.abs(acceleration) > 0.1f){
+                if(!isRunning){
+                    walkAnimationTimer += 1*delta;
+                }else{
+                    walkAnimationTimer += 1.5f*delta;
+                }
+                
+            }else{
+                walkAnimationTimer = 0;
+            }
+            if(walkAnimationTimer > 20){walkAnimationTimer = 1;}
+            if(onGround){
+                if(walkAnimationTimer > 10){
+                    batch.draw(playerAnimation[0][1], cam.position.x+acceleration,cam.position.y-gravity);
+                }else if(walkAnimationTimer > 0){
+                    batch.draw(playerAnimation[0][2], cam.position.x+acceleration,cam.position.y-gravity);
+                }else if(walkAnimationTimer == 0){
+                    batch.draw(playerAnimation[0][0], cam.position.x+acceleration,cam.position.y-gravity);
+                }
+            }else{
+                batch.draw(playerAnimation[0][3], cam.position.x+acceleration,cam.position.y-gravity);
+            }
+            batch.setColor(1f,1f,1f,1f);
         }
-
-        batch.setColor(1f, 1f, 1f, 1f);
-
-        cam.position.set(Math.round(playerPosX - acceleration), Math.round(playerPosY + gravity), 0);
-        cam.update();
+    
+    
+        batch.setColor(1f,1f,1f,1f);
+        
+        cam.position.set( Math.round(playerPosX-acceleration),  Math.round(playerPosY+gravity), 0);
+        cam.update();    
     }
 
     public void DrawHud(Batch batch, HudCamera cam, Block[][] mapArray, float delta,
@@ -1067,7 +1129,7 @@ public class Player {
     public void resetInventory() {
         inventory.reset();
         droppedItems.clear();
-
+        rockets.clear();
     }
 
     public int getPlayerSizeX() {
