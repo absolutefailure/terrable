@@ -22,11 +22,13 @@ public class Block {
     private boolean collision;
     private int permanent;
 
+    private int biome = 0;
+
     public float brightnessLevel;
 
     private float waterTimer = 0;
 
-    public Block(int x, int y, int element, boolean collision, int permanent){
+    public Block(int x, int y, int element, boolean collision, int permanent, int biome){
         this.posX = x;
         this.posY = y;
         this.element = element;
@@ -35,6 +37,7 @@ public class Block {
 
         this.collision = collision;
         brightness = 0;
+        this.biome = biome;
     }
 
     public int getPosX() {
@@ -62,6 +65,14 @@ public class Block {
         furnaceSlot1 = null;
         furnaceSlot2 = null;
         furnaceSlot3 = null;
+    }
+
+    public int getBiome() {
+        return biome;
+    }
+
+    public void setBiome(int biome) {
+        this.biome = biome;
     }
     
     public int getBLOCKSIZE() {

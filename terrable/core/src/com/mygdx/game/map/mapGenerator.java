@@ -7,6 +7,7 @@ import java.util.Random;
 import com.mygdx.game.player.Player;
 
 import static com.mygdx.game.map.Element.*;
+import static com.mygdx.game.map.Biome.*;
 
 public class MapGenerator {
     public static void newMap(Block[][] mapArray, Player player, int mapSizeX, int mapSizeY){
@@ -70,32 +71,32 @@ public class MapGenerator {
                     if (rand.nextInt(10) == 1 && x > 5 && x < mapSizeX-5){ // GENERATE TREE
                         int treeHeight = rand.nextInt(5) + 3;
                         for (int t = 1; t < treeHeight; t++){
-                            mapArray[x][y-t] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-t) * 25, WOOD, false, EMPTY);
+                            mapArray[x][y-t] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-t) * 25, WOOD, false, EMPTY, FOREST);
                         }
                         
-                        mapArray[x][y-treeHeight] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-treeHeight) * 25, LEAVES, false, EMPTY);
-                        mapArray[x][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY);
-                        mapArray[x-1][y-treeHeight] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight) * 25, LEAVES,  false, EMPTY);
-                        mapArray[x+1][y-treeHeight] = new Block((-mapSizeX  * 25 / 2) + (x+1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight) * 25, LEAVES, false, EMPTY);
-                        mapArray[x-1][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY);
-                        mapArray[x+1][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + (x+1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY);
-                        mapArray[x-2][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY);
-                        mapArray[x+2][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + (x+2) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY);
-                        mapArray[x][y-treeHeight-2] = new Block((-mapSizeX  * 25 / 2) + (x) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-2) * 25, LEAVES, false, EMPTY);
-                        mapArray[x-1][y-treeHeight-2] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-2) * 25, LEAVES, false, EMPTY);
-                        mapArray[x+1][y-treeHeight-2] = new Block((-mapSizeX  * 25 / 2) + (x+1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-2) * 25, LEAVES, false, EMPTY);
+                        mapArray[x][y-treeHeight] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-treeHeight) * 25, LEAVES, false, EMPTY, FOREST);
+                        mapArray[x][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY, FOREST);
+                        mapArray[x-1][y-treeHeight] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight) * 25, LEAVES,  false, EMPTY, FOREST);
+                        mapArray[x+1][y-treeHeight] = new Block((-mapSizeX  * 25 / 2) + (x+1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight) * 25, LEAVES, false, EMPTY, FOREST);
+                        mapArray[x-1][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY, FOREST);
+                        mapArray[x+1][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + (x+1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY, FOREST);
+                        mapArray[x-2][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY, FOREST);
+                        mapArray[x+2][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + (x+2) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY, FOREST);
+                        mapArray[x][y-treeHeight-2] = new Block((-mapSizeX  * 25 / 2) + (x) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-2) * 25, LEAVES, false, EMPTY, FOREST);
+                        mapArray[x-1][y-treeHeight-2] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-2) * 25, LEAVES, false, EMPTY, FOREST);
+                        mapArray[x+1][y-treeHeight-2] = new Block((-mapSizeX  * 25 / 2) + (x+1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-2) * 25, LEAVES, false, EMPTY, FOREST);
 
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true, EMPTY);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true, EMPTY, FOREST);
                         
                     }else{
                         if(rand.nextInt(100) < 60) {
-                            mapArray[x][y-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, TALLGRASS, false, EMPTY);    
+                            mapArray[x][y-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, TALLGRASS, false, EMPTY, FOREST);    
                         }
                         if(rand.nextInt(100) < 10){
-                            mapArray[x][y-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, REDFLOWER, false, EMPTY);
+                            mapArray[x][y-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, REDFLOWER, false, EMPTY, FOREST);
                         }
                         // GENERATE GRASS BLOCK
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GRASS, true, EMPTY);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GRASS, true, EMPTY, FOREST);
                     }
                 } else if ( y > height + 15){ //only stone and ores from depth 15
                     int oreChance = rand.nextInt(1000);
@@ -126,7 +127,7 @@ public class MapGenerator {
                             if (mapArray[x - 2][y].getElement() == EMPTY 
                             || mapArray[x][y - 1].getElement() == EMPTY ){
                                 for (int a = 0; a <= caveY; a++){
-                                    mapArray[x - i][y - a] = new Block((-mapSizeX  * 25 / 2) + (x - i) * 25,(mapSizeY  * 25/ 2) - (y - a) * 25, EMPTY, false, STONE);
+                                    mapArray[x - i][y - a] = new Block((-mapSizeX  * 25 / 2) + (x - i) * 25,(mapSizeY  * 25/ 2) - (y - a) * 25, EMPTY, false, STONE, FOREST);
                                 }
                             }
                         }
@@ -137,62 +138,62 @@ public class MapGenerator {
 
                         // Determine the size of the ore vein from 1 to 4 blocks
                         if (vein <= 25){
-                            mapArray[x - 1][y] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE);
-                            mapArray[x - 1][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE);
-                            mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE);
-                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y) * 25, block, true, STONE);
+                            mapArray[x - 1][y] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE, FOREST);
+                            mapArray[x - 1][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE, FOREST);
+                            mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE, FOREST);
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y) * 25, block, true, STONE, FOREST);
                         }else  if (vein <= 50){
-                            mapArray[x - 1][y] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE);
-                            mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE);
-                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y) * 25, block, true, STONE);
+                            mapArray[x - 1][y] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE, FOREST);
+                            mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE, FOREST);
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y) * 25, block, true, STONE, FOREST);
                         }else  if (vein <= 75){
-                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE);
-                            mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE);
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE, FOREST);
+                            mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE, FOREST);
                         }else{
-                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE);
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE, FOREST);
                         }
                     } else if (block == 0 
                     && x > 3 
                     && x < mapSizeX - 3 
                     && y < mapSizeY -1
                     && y > height + 20) {
-                        mapArray[x - 1][y] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - y * 25, block, false, STONE);
-                        mapArray[x - 1][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, false, STONE);
-                        mapArray[x - 1][y - 2] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 2) * 25, block, false, STONE);
-                        mapArray[x - 1][y - 3] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 3) * 25, block, false, STONE);
-                        mapArray[x - 2][y - 3] = new Block((-mapSizeX  * 25 / 2) + (x - 2) * 25,(mapSizeY  * 25/ 2) - (y - 3) * 25, block, false, STONE);
-                        mapArray[x - 2][y - 2] = new Block((-mapSizeX  * 25 / 2) + (x - 2) * 25,(mapSizeY  * 25/ 2) - (y - 2) * 25, block, false, STONE);
-                        mapArray[x - 2][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 2) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, false, STONE);
-                        mapArray[x - 3][y -2] = new Block((-mapSizeX  * 25 / 2) + (x - 3) * 25,(mapSizeY  * 25/ 2) - (y -2) * 25, block, false, STONE);
-                        mapArray[x - 3][y -1] = new Block((-mapSizeX  * 25 / 2) + (x - 3) * 25,(mapSizeY  * 25/ 2) - (y -1) * 25, block, false, STONE);
-                        mapArray[x][y - 2] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 2) * 25, block, false, STONE);
-                        mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, false, STONE);
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y) * 25, block, false, STONE);
+                        mapArray[x - 1][y] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - y * 25, block, false, STONE, FOREST);
+                        mapArray[x - 1][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, false, STONE, FOREST);
+                        mapArray[x - 1][y - 2] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 2) * 25, block, false, STONE, FOREST);
+                        mapArray[x - 1][y - 3] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 3) * 25, block, false, STONE, FOREST);
+                        mapArray[x - 2][y - 3] = new Block((-mapSizeX  * 25 / 2) + (x - 2) * 25,(mapSizeY  * 25/ 2) - (y - 3) * 25, block, false, STONE, FOREST);
+                        mapArray[x - 2][y - 2] = new Block((-mapSizeX  * 25 / 2) + (x - 2) * 25,(mapSizeY  * 25/ 2) - (y - 2) * 25, block, false, STONE, FOREST);
+                        mapArray[x - 2][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 2) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, false, STONE, FOREST);
+                        mapArray[x - 3][y -2] = new Block((-mapSizeX  * 25 / 2) + (x - 3) * 25,(mapSizeY  * 25/ 2) - (y -2) * 25, block, false, STONE, FOREST);
+                        mapArray[x - 3][y -1] = new Block((-mapSizeX  * 25 / 2) + (x - 3) * 25,(mapSizeY  * 25/ 2) - (y -1) * 25, block, false, STONE, FOREST);
+                        mapArray[x][y - 2] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 2) * 25, block, false, STONE, FOREST);
+                        mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, false, STONE, FOREST);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y) * 25, block, false, STONE, FOREST);
                     } else {
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, STONE, true, STONE);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, STONE, true, STONE, FOREST);
                     }
 
                 } else if ( y > height + 2){
                     if (rand.nextInt(100) < 66 ) {//66% chance for stone, else spawning ground from depth 3
                         if (y > height + 3){
-                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, STONE, true, STONE);
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, STONE, true, STONE, FOREST);
                         }else{
-                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true, GROUND);
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true, GROUND, FOREST);
                         }
                           
                     } else {
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true, GROUND);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true, GROUND, FOREST);
                     }
                 } else if ( y > height){
                     if(y > height + 10){
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true, GROUND);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true, GROUND, FOREST);
                     }else{
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true, EMPTY);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true, EMPTY, FOREST);
                     }
                     
                 }
                 else if(mapArray[x][y] == null){
-                    mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, EMPTY, false, EMPTY);
+                    mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, EMPTY, false, EMPTY, FOREST);
                     mapArray[x][y].setBrightness(0.5f);
                 }
             }
@@ -324,11 +325,11 @@ public class MapGenerator {
                     if (rand.nextInt(15) == 1 && x > 5 && x < mapSizeX-5){ // GENERATE TREE
                         int cactusHeight = rand.nextInt(3) + 3;
                         for (int t = 1; t < cactusHeight; t++){
-                            mapArray[x][y-t] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-t) * 25, CACTUS, false, EMPTY);
+                            mapArray[x][y-t] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-t) * 25, CACTUS, false, EMPTY, DESERT);
                         }
                         
 
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, SAND, true, EMPTY);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, SAND, true, EMPTY, DESERT);
                         
                     }else if (rand.nextInt(400) == 1 && x > 5 && x < mapSizeX-5){ // GENERATE TREE
 
@@ -343,43 +344,43 @@ public class MapGenerator {
                             mapArray[i][y].setCollision(true);
                         }
                         
-                        mapArray[x][y-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, DOOR1, false, EMPTY);
-                        mapArray[x][y-2] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-2) * 25, DOOR2, false, EMPTY);
-                        mapArray[x][y-3] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-3) * 25, WOOD, true, EMPTY);
-                        mapArray[x][y-4] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, EMPTY, false, EMPTY);
+                        mapArray[x][y-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, DOOR1, false, EMPTY, DESERT);
+                        mapArray[x][y-2] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-2) * 25, DOOR2, false, EMPTY, DESERT);
+                        mapArray[x][y-3] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-3) * 25, WOOD, true, EMPTY, DESERT);
+                        mapArray[x][y-4] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, EMPTY, false, EMPTY, DESERT);
 
-                        mapArray[x-1][y-1] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, PLANKS, false, EMPTY);
-                        mapArray[x-1][y-2] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-2) * 25, EMPTY, false, EMPTY);
-                        mapArray[x-1][y-3] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-3) * 25, PLANKS, false, EMPTY);
-                        mapArray[x-1][y-4] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, WOOD, true, EMPTY);
+                        mapArray[x-1][y-1] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, PLANKS, false, EMPTY, DESERT);
+                        mapArray[x-1][y-2] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-2) * 25, EMPTY, false, EMPTY, DESERT);
+                        mapArray[x-1][y-3] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-3) * 25, PLANKS, false, EMPTY, DESERT);
+                        mapArray[x-1][y-4] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, WOOD, true, EMPTY, DESERT);
 
-                        mapArray[x-2][y-1] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, PLANKS, false, EMPTY);
-                        mapArray[x-2][y-2] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-2) * 25, GLASS, false, EMPTY);
-                        mapArray[x-2][y-3] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-3) * 25, PLANKS, false, EMPTY);
-                        mapArray[x-2][y-4] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, PLANKS, false, EMPTY);
-                        mapArray[x-2][y-5] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-5) * 25, WOOD, true, EMPTY);
+                        mapArray[x-2][y-1] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, PLANKS, false, EMPTY, DESERT);
+                        mapArray[x-2][y-2] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-2) * 25, GLASS, false, EMPTY, DESERT);
+                        mapArray[x-2][y-3] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-3) * 25, PLANKS, false, EMPTY, DESERT);
+                        mapArray[x-2][y-4] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, PLANKS, false, EMPTY, DESERT);
+                        mapArray[x-2][y-5] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-5) * 25, WOOD, true, EMPTY, DESERT);
 
-                        mapArray[x-3][y-1] = new Block((-mapSizeX  * 25 / 2) + (x-3) * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, EMPTY, false, EMPTY);
-                        mapArray[x-3][y-2] = new Block((-mapSizeX  * 25 / 2) + (x-3) * 25,(mapSizeY  * 25/ 2) - (y-2) * 25, PLANKS, false, EMPTY);
-                        mapArray[x-3][y-3] = new Block((-mapSizeX  * 25 / 2) + (x-3) * 25,(mapSizeY  * 25/ 2) - (y-3) * 25, PLANKS, false, EMPTY);
-                        mapArray[x-3][y-4] = new Block((-mapSizeX  * 25 / 2) + (x-3) * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, WOOD, true, EMPTY);
+                        mapArray[x-3][y-1] = new Block((-mapSizeX  * 25 / 2) + (x-3) * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, EMPTY, false, EMPTY, DESERT);
+                        mapArray[x-3][y-2] = new Block((-mapSizeX  * 25 / 2) + (x-3) * 25,(mapSizeY  * 25/ 2) - (y-2) * 25, PLANKS, false, EMPTY, DESERT);
+                        mapArray[x-3][y-3] = new Block((-mapSizeX  * 25 / 2) + (x-3) * 25,(mapSizeY  * 25/ 2) - (y-3) * 25, PLANKS, false, EMPTY, DESERT);
+                        mapArray[x-3][y-4] = new Block((-mapSizeX  * 25 / 2) + (x-3) * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, WOOD, true, EMPTY, DESERT);
 
-                        mapArray[x-4][y-1] = new Block((-mapSizeX  * 25 / 2) + (x-4) * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, DOOR1, false, EMPTY);
-                        mapArray[x-4][y-2] = new Block((-mapSizeX  * 25 / 2) + (x-4) * 25,(mapSizeY  * 25/ 2) - (y-2) * 25, DOOR2, false, EMPTY);
-                        mapArray[x-4][y-3] = new Block((-mapSizeX  * 25 / 2) + (x-4) * 25,(mapSizeY  * 25/ 2) - (y-3) * 25, WOOD, true, EMPTY);
-                        mapArray[x-4][y-4] = new Block((-mapSizeX  * 25 / 2) + (x-4) * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, EMPTY, false, EMPTY);
+                        mapArray[x-4][y-1] = new Block((-mapSizeX  * 25 / 2) + (x-4) * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, DOOR1, false, EMPTY, DESERT);
+                        mapArray[x-4][y-2] = new Block((-mapSizeX  * 25 / 2) + (x-4) * 25,(mapSizeY  * 25/ 2) - (y-2) * 25, DOOR2, false, EMPTY, DESERT);
+                        mapArray[x-4][y-3] = new Block((-mapSizeX  * 25 / 2) + (x-4) * 25,(mapSizeY  * 25/ 2) - (y-3) * 25, WOOD, true, EMPTY, DESERT);
+                        mapArray[x-4][y-4] = new Block((-mapSizeX  * 25 / 2) + (x-4) * 25,(mapSizeY  * 25/ 2) - (y-4) * 25, EMPTY, false, EMPTY, DESERT);
 
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, PLANKS, true, EMPTY);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, PLANKS, true, EMPTY, DESERT);
                         
                     }else{
                         if(rand.nextInt(100) < 60) {
-                            //mapArray[x][y-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, TALLGRASS, false, EMPTY);    
+                            //mapArray[x][y-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, TALLGRASS, false, EMPTY, DESERT);    
                         }
                         if(rand.nextInt(100) < 10){
-                           // mapArray[x][y-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, REDFLOWER, false, EMPTY);
+                           // mapArray[x][y-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, REDFLOWER, false, EMPTY, DESERT);
                         }
                         // GENERATE GRASS BLOCK
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, SAND, true, EMPTY);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, SAND, true, EMPTY, DESERT);
                     }
                 } else if ( y > height + 15){ //only stone and ores from depth 15
                     int oreChance = rand.nextInt(1000);
@@ -412,7 +413,7 @@ public class MapGenerator {
                             if (mapArray[x - 2][y].getElement() == EMPTY 
                             || mapArray[x][y - 1].getElement() == EMPTY ){
                                 for (int a = 0; a <= caveY; a++){
-                                    mapArray[x - i][y - a] = new Block((-mapSizeX  * 25 / 2) + (x - i) * 25,(mapSizeY  * 25/ 2) - (y - a) * 25, EMPTY, false, STONE);
+                                    mapArray[x - i][y - a] = new Block((-mapSizeX  * 25 / 2) + (x - i) * 25,(mapSizeY  * 25/ 2) - (y - a) * 25, EMPTY, false, STONE, DESERT);
                                 }
                             }
                         }
@@ -423,62 +424,62 @@ public class MapGenerator {
 
                         // Determine the size of the ore vein from 1 to 4 blocks
                         if (vein <= 25){
-                            mapArray[x - 1][y] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE);
-                            mapArray[x - 1][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE);
-                            mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE);
-                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y) * 25, block, true, STONE);
+                            mapArray[x - 1][y] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE, DESERT);
+                            mapArray[x - 1][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE, DESERT);
+                            mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE, DESERT);
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y) * 25, block, true, STONE, DESERT);
                         }else  if (vein <= 50){
-                            mapArray[x - 1][y] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE);
-                            mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE);
-                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y) * 25, block, true, STONE);
+                            mapArray[x - 1][y] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE, DESERT);
+                            mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE, DESERT);
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y) * 25, block, true, STONE, DESERT);
                         }else  if (vein <= 75){
-                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE);
-                            mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE);
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE, DESERT);
+                            mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE, DESERT);
                         }else{
-                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE);
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE, DESERT);
                         }
                     } else if (block == 0 
                     && x > 3 
                     && x < mapSizeX - 3 
                     && y < mapSizeY -1
                     && y > height + 20) {
-                        mapArray[x - 1][y] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - y * 25, block, false, STONE);
-                        mapArray[x - 1][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, false, STONE);
-                        mapArray[x - 1][y - 2] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 2) * 25, block, false, STONE);
-                        mapArray[x - 1][y - 3] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 3) * 25, block, false, STONE);
-                        mapArray[x - 2][y - 3] = new Block((-mapSizeX  * 25 / 2) + (x - 2) * 25,(mapSizeY  * 25/ 2) - (y - 3) * 25, block, false, STONE);
-                        mapArray[x - 2][y - 2] = new Block((-mapSizeX  * 25 / 2) + (x - 2) * 25,(mapSizeY  * 25/ 2) - (y - 2) * 25, block, false, STONE);
-                        mapArray[x - 2][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 2) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, false, STONE);
-                        mapArray[x - 3][y -2] = new Block((-mapSizeX  * 25 / 2) + (x - 3) * 25,(mapSizeY  * 25/ 2) - (y -2) * 25, block, false, STONE);
-                        mapArray[x - 3][y -1] = new Block((-mapSizeX  * 25 / 2) + (x - 3) * 25,(mapSizeY  * 25/ 2) - (y -1) * 25, block, false, STONE);
-                        mapArray[x][y - 2] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 2) * 25, block, false, STONE);
-                        mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, false, STONE);
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y) * 25, block, false, STONE);
+                        mapArray[x - 1][y] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - y * 25, block, false, STONE, DESERT);
+                        mapArray[x - 1][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, false, STONE, DESERT);
+                        mapArray[x - 1][y - 2] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 2) * 25, block, false, STONE, DESERT);
+                        mapArray[x - 1][y - 3] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 3) * 25, block, false, STONE, DESERT);
+                        mapArray[x - 2][y - 3] = new Block((-mapSizeX  * 25 / 2) + (x - 2) * 25,(mapSizeY  * 25/ 2) - (y - 3) * 25, block, false, STONE, DESERT);
+                        mapArray[x - 2][y - 2] = new Block((-mapSizeX  * 25 / 2) + (x - 2) * 25,(mapSizeY  * 25/ 2) - (y - 2) * 25, block, false, STONE, DESERT);
+                        mapArray[x - 2][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 2) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, false, STONE, DESERT);
+                        mapArray[x - 3][y -2] = new Block((-mapSizeX  * 25 / 2) + (x - 3) * 25,(mapSizeY  * 25/ 2) - (y -2) * 25, block, false, STONE, DESERT);
+                        mapArray[x - 3][y -1] = new Block((-mapSizeX  * 25 / 2) + (x - 3) * 25,(mapSizeY  * 25/ 2) - (y -1) * 25, block, false, STONE, DESERT);
+                        mapArray[x][y - 2] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 2) * 25, block, false, STONE, DESERT);
+                        mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, false, STONE, DESERT);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y) * 25, block, false, STONE, DESERT);
                     } else {
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, STONE, true, STONE);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, STONE, true, STONE, DESERT);
                     }
 
                 } else if ( y > height + 2){
                     if (rand.nextInt(100) < 66 ) {//66% chance for stone, else spawning ground from depth 3
                         if (y > height + 3){
-                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, SANDSTONE, true, SANDSTONEBACKGROUND);
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, SANDSTONE, true, SANDSTONEBACKGROUND, DESERT);
                         }else{
-                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, SAND, true, SANDBACKGROUND);
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, SAND, true, SANDBACKGROUND, DESERT);
                         }
                           
                     } else {
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, SAND, true, SANDBACKGROUND);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, SAND, true, SANDBACKGROUND, DESERT);
                     }
                 } else if ( y > height){
                     if(y > height + 10){
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, SAND, true, SANDBACKGROUND);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, SAND, true, SANDBACKGROUND, DESERT);
                     }else{
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, SAND, true, EMPTY);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, SAND, true, EMPTY, DESERT);
                     }
                     
                 }
                 else if(mapArray[x][y] == null){
-                    mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, EMPTY, false, EMPTY);
+                    mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, EMPTY, false, EMPTY, DESERT);
                     mapArray[x][y].setBrightness(0.5f);
                 }
             }
@@ -527,32 +528,32 @@ public class MapGenerator {
                     if (rand.nextInt(20) == 1 && x > 5 && x < mapSizeX-5){ // GENERATE TREE
                         int treeHeight = rand.nextInt(5) + 3;
                         for (int t = 1; t < treeHeight; t++){
-                            mapArray[x][y-t] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-t) * 25, WOOD, false, EMPTY);
+                            mapArray[x][y-t] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-t) * 25, WOOD, false, EMPTY, MOUNTAIN);
                         }
                         
-                        mapArray[x][y-treeHeight] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-treeHeight) * 25, LEAVES, false, EMPTY);
-                        mapArray[x][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY);
-                        mapArray[x-1][y-treeHeight] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight) * 25, LEAVES,  false, EMPTY);
-                        mapArray[x+1][y-treeHeight] = new Block((-mapSizeX  * 25 / 2) + (x+1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight) * 25, LEAVES, false, EMPTY);
-                        mapArray[x-1][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY);
-                        mapArray[x+1][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + (x+1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY);
-                        mapArray[x-2][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY);
-                        mapArray[x+2][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + (x+2) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY);
-                        mapArray[x][y-treeHeight-2] = new Block((-mapSizeX  * 25 / 2) + (x) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-2) * 25, LEAVES, false, EMPTY);
-                        mapArray[x-1][y-treeHeight-2] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-2) * 25, LEAVES, false, EMPTY);
-                        mapArray[x+1][y-treeHeight-2] = new Block((-mapSizeX  * 25 / 2) + (x+1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-2) * 25, LEAVES, false, EMPTY);
+                        mapArray[x][y-treeHeight] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-treeHeight) * 25, LEAVES, false, EMPTY, MOUNTAIN);
+                        mapArray[x][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY, MOUNTAIN);
+                        mapArray[x-1][y-treeHeight] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight) * 25, LEAVES,  false, EMPTY, MOUNTAIN);
+                        mapArray[x+1][y-treeHeight] = new Block((-mapSizeX  * 25 / 2) + (x+1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight) * 25, LEAVES, false, EMPTY, MOUNTAIN);
+                        mapArray[x-1][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY, MOUNTAIN);
+                        mapArray[x+1][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + (x+1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY, MOUNTAIN);
+                        mapArray[x-2][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + (x-2) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY, MOUNTAIN);
+                        mapArray[x+2][y-treeHeight-1] = new Block((-mapSizeX  * 25 / 2) + (x+2) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-1) * 25, LEAVES, false, EMPTY, MOUNTAIN);
+                        mapArray[x][y-treeHeight-2] = new Block((-mapSizeX  * 25 / 2) + (x) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-2) * 25, LEAVES, false, EMPTY, MOUNTAIN);
+                        mapArray[x-1][y-treeHeight-2] = new Block((-mapSizeX  * 25 / 2) + (x-1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-2) * 25, LEAVES, false, EMPTY, MOUNTAIN);
+                        mapArray[x+1][y-treeHeight-2] = new Block((-mapSizeX  * 25 / 2) + (x+1) * 25,(mapSizeY  * 25/ 2) - (y-treeHeight-2) * 25, LEAVES, false, EMPTY, MOUNTAIN);
 
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true, EMPTY);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true, EMPTY, MOUNTAIN);
                         
                     }else{
                         if(rand.nextInt(100) < 60) {
-                            mapArray[x][y-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, TALLGRASS, false, EMPTY);    
+                            mapArray[x][y-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, TALLGRASS, false, EMPTY, MOUNTAIN);    
                         }
                         if(rand.nextInt(100) < 10){
-                            mapArray[x][y-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, REDFLOWER, false, EMPTY);
+                            mapArray[x][y-1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y-1) * 25, REDFLOWER, false, EMPTY, MOUNTAIN);
                         }
                         // GENERATE GRASS BLOCK
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GRASS, true, EMPTY);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GRASS, true, EMPTY, MOUNTAIN);
                     }
                 } else if ( y > height + 15){ //only stone and ores from depth 15
                     int oreChance = rand.nextInt(1000);
@@ -585,7 +586,7 @@ public class MapGenerator {
                             if (mapArray[x - 2][y].getElement() == EMPTY 
                             || mapArray[x][y - 1].getElement() == EMPTY ){
                                 for (int a = 0; a <= caveY; a++){
-                                    mapArray[x - i][y - a] = new Block((-mapSizeX  * 25 / 2) + (x - i) * 25,(mapSizeY  * 25/ 2) - (y - a) * 25, EMPTY, false, STONE);
+                                    mapArray[x - i][y - a] = new Block((-mapSizeX  * 25 / 2) + (x - i) * 25,(mapSizeY  * 25/ 2) - (y - a) * 25, EMPTY, false, STONE, MOUNTAIN);
                                 }
                             }
                         }
@@ -596,62 +597,62 @@ public class MapGenerator {
 
                         // Determine the size of the ore vein from 1 to 4 blocks
                         if (vein <= 25){
-                            mapArray[x - 1][y] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE);
-                            mapArray[x - 1][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE);
-                            mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE);
-                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y) * 25, block, true, STONE);
+                            mapArray[x - 1][y] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE, MOUNTAIN);
+                            mapArray[x - 1][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE, MOUNTAIN);
+                            mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE, MOUNTAIN);
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y) * 25, block, true, STONE, MOUNTAIN);
                         }else  if (vein <= 50){
-                            mapArray[x - 1][y] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE);
-                            mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE);
-                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y) * 25, block, true, STONE);
+                            mapArray[x - 1][y] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE, MOUNTAIN);
+                            mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE, MOUNTAIN);
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y) * 25, block, true, STONE, MOUNTAIN);
                         }else  if (vein <= 75){
-                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE);
-                            mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE);
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE, MOUNTAIN);
+                            mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, true, STONE, MOUNTAIN);
                         }else{
-                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE);
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, block, true, STONE, MOUNTAIN);
                         }
                     } else if (block == 0 
                     && x > 3 
                     && x < mapSizeX - 3 
                     && y < mapSizeY -1
                     && y > height + 20) {
-                        mapArray[x - 1][y] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - y * 25, block, false, STONE);
-                        mapArray[x - 1][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, false, STONE);
-                        mapArray[x - 1][y - 2] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 2) * 25, block, false, STONE);
-                        mapArray[x - 1][y - 3] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 3) * 25, block, false, STONE);
-                        mapArray[x - 2][y - 3] = new Block((-mapSizeX  * 25 / 2) + (x - 2) * 25,(mapSizeY  * 25/ 2) - (y - 3) * 25, block, false, STONE);
-                        mapArray[x - 2][y - 2] = new Block((-mapSizeX  * 25 / 2) + (x - 2) * 25,(mapSizeY  * 25/ 2) - (y - 2) * 25, block, false, STONE);
-                        mapArray[x - 2][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 2) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, false, STONE);
-                        mapArray[x - 3][y -2] = new Block((-mapSizeX  * 25 / 2) + (x - 3) * 25,(mapSizeY  * 25/ 2) - (y -2) * 25, block, false, STONE);
-                        mapArray[x - 3][y -1] = new Block((-mapSizeX  * 25 / 2) + (x - 3) * 25,(mapSizeY  * 25/ 2) - (y -1) * 25, block, false, STONE);
-                        mapArray[x][y - 2] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 2) * 25, block, false, STONE);
-                        mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, false, STONE);
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y) * 25, block, false, STONE);
+                        mapArray[x - 1][y] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - y * 25, block, false, STONE, MOUNTAIN);
+                        mapArray[x - 1][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, false, STONE, MOUNTAIN);
+                        mapArray[x - 1][y - 2] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 2) * 25, block, false, STONE, MOUNTAIN);
+                        mapArray[x - 1][y - 3] = new Block((-mapSizeX  * 25 / 2) + (x - 1) * 25,(mapSizeY  * 25/ 2) - (y - 3) * 25, block, false, STONE, MOUNTAIN);
+                        mapArray[x - 2][y - 3] = new Block((-mapSizeX  * 25 / 2) + (x - 2) * 25,(mapSizeY  * 25/ 2) - (y - 3) * 25, block, false, STONE, MOUNTAIN);
+                        mapArray[x - 2][y - 2] = new Block((-mapSizeX  * 25 / 2) + (x - 2) * 25,(mapSizeY  * 25/ 2) - (y - 2) * 25, block, false, STONE, MOUNTAIN);
+                        mapArray[x - 2][y - 1] = new Block((-mapSizeX  * 25 / 2) + (x - 2) * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, false, STONE, MOUNTAIN);
+                        mapArray[x - 3][y -2] = new Block((-mapSizeX  * 25 / 2) + (x - 3) * 25,(mapSizeY  * 25/ 2) - (y -2) * 25, block, false, STONE, MOUNTAIN);
+                        mapArray[x - 3][y -1] = new Block((-mapSizeX  * 25 / 2) + (x - 3) * 25,(mapSizeY  * 25/ 2) - (y -1) * 25, block, false, STONE, MOUNTAIN);
+                        mapArray[x][y - 2] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 2) * 25, block, false, STONE, MOUNTAIN);
+                        mapArray[x][y - 1] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y - 1) * 25, block, false, STONE, MOUNTAIN);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - (y) * 25, block, false, STONE, MOUNTAIN);
                     } else {
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, STONE, true, STONE);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, STONE, true, STONE, MOUNTAIN);
                     }
 
                 } else if ( y > height + 2){
                     if (rand.nextInt(100) < 66 ) {//66% chance for stone, else spawning ground from depth 3
                         if (y > height + 3){
-                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, STONE, true, STONE);
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, STONE, true, STONE, MOUNTAIN);
                         }else{
-                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true, GROUND);
+                            mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true, GROUND, MOUNTAIN);
                         }
                           
                     } else {
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true, GROUND);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true, GROUND, MOUNTAIN);
                     }
                 } else if ( y > height){
                     if(y > height + 10){
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true, GROUND);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true, GROUND, MOUNTAIN);
                     }else{
-                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true, EMPTY);
+                        mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, GROUND, true, EMPTY, MOUNTAIN);
                     }
                     
                 }
                 else if(mapArray[x][y] == null){
-                    mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, EMPTY, false, EMPTY);
+                    mapArray[x][y] = new Block((-mapSizeX  * 25 / 2) + x * 25,(mapSizeY  * 25/ 2) - y * 25, EMPTY, false, EMPTY, MOUNTAIN);
                     mapArray[x][y].setBrightness(0.5f);
                 }
             }
