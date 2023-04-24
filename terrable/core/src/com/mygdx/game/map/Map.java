@@ -574,9 +574,19 @@ public class Map {
     public void setClock(float clock) {
         this.clock = clock;
     }
+    public float getClock2() {
+        return clock2;
+    }
 
+    public void setClock2(float clock2) {
+        this.clock2 = clock2;
+    }
     public void reset(){
         mapArray = null;
         mobs.clear();
+        clock = 2000;
+        clock2 = 2000;
+        rain.setRainTimer(0);
+        rain.clear();
     }
 }

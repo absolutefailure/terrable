@@ -689,7 +689,6 @@ public class Inventory {
                     //System.out.println("New Item discovered " + discoveredItem);
                     discoveredItems.add(discoveredItem);
                     //System.out.println(discoveredItems);
-
                     int obtainedItem = discoveredItem;
                     switch(obtainedItem){
                         case 3:
@@ -733,6 +732,7 @@ public class Inventory {
                             message.setMessage("New achievement unlocked: A magical stick?");
                             break;
                     }
+                 
                 }
             }
             
@@ -771,6 +771,42 @@ public class Inventory {
         }
     }
     
+    public void unlockRecipeBook(Recipebook recipebook, int discoveredItem){
+        int obtainedItem = discoveredItem;
+        switch(obtainedItem){
+            case 3:
+                achievements.unlockAchievement("TIMBER");
+                recipebook.setUnlocked(true, 0);
+                break;
+            case 6:
+                achievements.unlockAchievement("Rock solid");
+                recipebook.setUnlocked(true, 1);
+                break;
+            case 15:
+                achievements.unlockAchievement("Toy or tool?");
+                break;
+            case 16:
+                achievements.unlockAchievement("Stone age");
+                break;
+            case 8:
+                achievements.unlockAchievement("Ironworks");
+                recipebook.setUnlocked(true, 2);
+                break;
+            case 28:
+                achievements.unlockAchievement("Let there be light!");
+                break;
+            case 57:
+                achievements.unlockAchievement("What is this sorcery?");
+                recipebook.setUnlocked(true, 3);
+                break;
+            case 56:
+                achievements.unlockAchievement("To the moon!");
+                break;
+            case 65:
+                achievements.unlockAchievement("A magical stick?");
+                break;
+        }
+    }
 
     public void addItem(Item item) {
         for (int i = 0; i < 36; i++) {
@@ -891,6 +927,10 @@ public class Inventory {
         for (int i = 0; i < 46; i++) {
             items.add(new Item());
         }
+        discoveredItems.clear();
+        for (Achievement a: achievements.getAchievements2()){
+            a.setUnlocked(false);
+        }
     }
 
     public int getHover(HudCamera cam){
@@ -942,6 +982,16 @@ public class Inventory {
 
 
         return -1;
+    }
+
+    public AchievementManager getAchievementManager(){
+        return achievements;
+    }
+    public ArrayList<Integer> getDiscoveredItems(){
+        return discoveredItems;
+    }
+    public void setDiscoveredItems(ArrayList<Integer> discoveredItems){
+        this.discoveredItems = discoveredItems;
     }
 
 }
