@@ -710,7 +710,7 @@ public class Inventory {
                             achievements.unlockAchievement("Stone age");
                             message.setMessage("New achievement unlocked: Stone age");
                             break;
-                        case 23:
+                        case 8:
                             achievements.unlockAchievement("Ironworks");
                             message.setMessage("New achievement unlocked: Ironworks");
                             recipebook.setUnlocked(true, 2);
