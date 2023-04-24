@@ -46,4 +46,7 @@ public class AchievementManager {
     public static ArrayList<Achievement> getAchievements() {
         return achievements;
     }
+    public ArrayList<Achievement> getAchievements2() {
+        return achievements;
+    }
 }

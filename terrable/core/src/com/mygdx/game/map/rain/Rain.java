@@ -119,5 +119,8 @@ public class Rain {
     public void setRaining(boolean isRaining) {
         this.isRaining = isRaining;
     }
+    public void clear(){
+        rainDropList.clear();
+    }
 
 }

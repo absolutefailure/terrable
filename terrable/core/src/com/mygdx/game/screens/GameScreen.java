@@ -32,7 +32,8 @@ public class GameScreen implements Screen {
     private Texture resumeTexture;
     private Texture achievementsTexture;
     private Texture exitsaveTexture;
-    
+    private Texture volumeSlider, volumeBar;
+    private boolean volumeGrab = false;
     final Terrable game;
 
     CustomInputProcessor customInputProcessor;
@@ -52,6 +53,8 @@ public class GameScreen implements Screen {
         achievementsTexture = new Texture("menubuttons/achievements.png");
         exitsaveTexture = new Texture("menubuttons/saveexit.png");
 
+        volumeSlider = new Texture("menubuttons/volume2.png");
+        volumeBar = new Texture("menubuttons/volume.png");
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
 		customInputProcessor = new CustomInputProcessor();
 		inputMultiplexer.addProcessor(customInputProcessor);
@@ -131,6 +134,29 @@ public class GameScreen implements Screen {
                 SaveGame.Save(map, player);
                 game.setScreen(game.mainMenuScreen);
             }
+
+            game.batch.draw(volumeBar, 1300f, 110f);
+            game.batch.draw(volumeSlider, 1300 + volume, 100);
+    
+            if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                if (mouseInWorld2D.x > 1300 + volume && mouseInWorld2D.x < 1300 + volume + 25 && mouseInWorld2D.y > 100
+                        && mouseInWorld2D.y < 120) {
+                    volumeGrab = true;
+                }
+            } else {
+                volumeGrab = false;
+            }
+  
+            if (volumeGrab) {
+                volume = (int) mouseInWorld2D.x - 1310;
+            }
+            if (volume > 175) {
+                volume = 175;
+            }
+            if (volume < 0) {
+                volume = 0;
+            }
+            game.mainMenuScreen.setVolume(volume);
         }
         
         

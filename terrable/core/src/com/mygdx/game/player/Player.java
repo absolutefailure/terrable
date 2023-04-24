@@ -1117,6 +1117,9 @@ public class Player {
     public ArrayList<Item> getInventory() {
         return inventory.getItems();
     }
+    public Inventory getInventoryObject(){
+        return inventory;
+    }
 
     public void setInventory(ArrayList<Item> items) {
         inventory.setItems(items);
@@ -1162,6 +1165,9 @@ public class Player {
 
     public void setPlayerOxygen(int playerOxygen) {
         this.playerOxygen = playerOxygen;
+    }
+    public Recipebook getRecipebook(){
+        return recipeBook;
     }
 
 }

@@ -280,4 +280,7 @@ public class MainMenuScreen implements Screen {
     public void dispose() {
 
     }
+    public void setVolume(int volume){
+        this.volume = volume;
+    }
 }
