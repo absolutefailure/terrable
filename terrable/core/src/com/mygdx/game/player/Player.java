@@ -1133,6 +1133,7 @@ public class Player {
         inventory.reset();
         droppedItems.clear();
         rockets.clear();
+        recipeBook.reset();
     }
 
     public int getPlayerSizeX() {
