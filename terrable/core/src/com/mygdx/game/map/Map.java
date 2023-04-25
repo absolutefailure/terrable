@@ -15,6 +15,7 @@ import com.mygdx.game.mobs.Mob;
 import com.mygdx.game.mobs.MobManager;
 import com.mygdx.game.player.Item;
 import com.mygdx.game.player.Player;
+import java.util.Random;
 
 public class Map {
 
@@ -153,6 +154,7 @@ public class Map {
             
             for (int y = 0; y < mapArray[x].length; y++){
                 Block block = mapArray[x][y];
+                Random rand = new Random();
                 batch.setColor(1, 1, 1, 1);
 
                 if (block.getPosY() > player.getY() - 1000 && block.getPosY() < player.getY() + 1000 ){ // DRAW BLOCK ONLY IF INSIDE SCREEN
@@ -198,7 +200,58 @@ public class Map {
                     } 
                           
                 }      
-                
+
+                // Check for leaves without wood nearby then checks the blocks around them
+                if (mapArray[x][y].getElement() == LEAVES
+                && mapArray[x][y + 1].getElement() != WOOD
+                && mapArray[x][y - 1].getElement() != WOOD
+                && mapArray[x + 1][y].getElement() != WOOD
+                && mapArray[x - 1][y].getElement() != WOOD){
+
+                    ArrayList<Integer> nearbyblocks = new ArrayList<>();
+                    int decaytimer = rand.nextInt(1000);
+
+                    // Left
+                    if (mapArray[x - 1][y].getElement() == LEAVES){
+                        nearbyblocks.add(mapArray[x - 2][y].getElement());
+                        nearbyblocks.add(mapArray[x - 2][y - 1].getElement());
+                        nearbyblocks.add(mapArray[x - 2][y + 1].getElement());
+                        nearbyblocks.add(mapArray[x - 1][y + 1].getElement());
+                    }
+
+                    // Right
+                    if(mapArray[x + 1][y].getElement() == LEAVES){
+                        nearbyblocks.add(mapArray[x + 2][y].getElement());
+                        nearbyblocks.add(mapArray[x + 2][y - 1].getElement());
+                        nearbyblocks.add(mapArray[x + 2][y + 1].getElement());
+                        nearbyblocks.add(mapArray[x + 1][y - 1].getElement());
+                    }
+                    
+                    // Up
+                    if(mapArray[x][y - 1].getElement() == LEAVES){
+                        nearbyblocks.add(mapArray[x][y - 2].getElement());
+                        nearbyblocks.add(mapArray[x + 1][y - 2].getElement());
+                        nearbyblocks.add(mapArray[x - 1][y - 2].getElement());
+                        nearbyblocks.add(mapArray[x - 1][y - 1].getElement());
+                    }
+
+                    // Down
+                    if(mapArray[x][y + 1].getElement() == LEAVES){
+                        nearbyblocks.add(mapArray[x][y + 2].getElement());
+                        nearbyblocks.add(mapArray[x + 1][y + 2].getElement());
+                        nearbyblocks.add(mapArray[x - 1][y + 2].getElement());
+                        nearbyblocks.add(mapArray[x + 1][y + 1].getElement());
+                    }
+
+                    // Removes the leaf if no wood is nearby with a random delay
+                    if (!(nearbyblocks.contains(3))){
+
+                        if (decaytimer < 10){
+                            block.setElement(EMPTY);
+                        }
+                    }
+                    nearbyblocks.clear();
+                }
             }
             
         }
