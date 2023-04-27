@@ -18,6 +18,7 @@ public class Recipebook {
 
     private Texture arrowRight;
     private Texture arrowLeft;
+    private Texture brokenPage = new Texture("recipes/brokenpage.png");
 
     private Texture[] pages = new Texture[17];
     private Texture[] pages2 = new Texture[17];
@@ -50,7 +51,7 @@ public class Recipebook {
         pages[16] = new Texture("recipes/rocketpage3.png");
 
         for (int i = 0; i < 17; i++){
-            pages2[i] = new Texture("recipes/brokenpage.png");
+            pages2[i] = brokenPage;
         }
     }
 
@@ -133,6 +134,13 @@ public class Recipebook {
     public void setUnlocked(boolean isUnlocked, int unlockedPage) {
         this.isUnlocked = isUnlocked;
         unlockedPages.add(unlockedPage);
+    }
+    public void reset(){
+        isUnlocked = false;
+        unlockedPages.clear();
+        for (int i = 0; i < 17; i++){
+            pages2[i] = brokenPage;
+        }
     }
 
     private boolean button(Batch batch, HudCamera cam, int x, int y, int buttonSizeX, int buttonSizeY, Texture t) {

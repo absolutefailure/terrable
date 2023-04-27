@@ -26,13 +26,16 @@ public class GameScreen implements Screen {
 	final int MAP_SIZE_Y = 300; // blocks
 
     private Boolean isPaused = false;
+    private Boolean isOver = false;
     private Vector2 mouseInWorld2D = new Vector2();
     private Vector3 mouseInWorld3D = new Vector3();
 
+    private Texture victoryScreen;
     private Texture resumeTexture;
     private Texture achievementsTexture;
     private Texture exitsaveTexture;
-    
+    private Texture volumeSlider, volumeBar;
+    private boolean volumeGrab = false;
     final Terrable game;
 
     CustomInputProcessor customInputProcessor;
@@ -48,10 +51,13 @@ public class GameScreen implements Screen {
 		
         map = new Map(MAP_SIZE_X, MAP_SIZE_Y);
 
-        resumeTexture = new Texture("menubuttons/resume.png");
+        resumeTexture = new Texture("menubuttons/Resume.png");
         achievementsTexture = new Texture("menubuttons/achievements.png");
         exitsaveTexture = new Texture("menubuttons/saveexit.png");
+        victoryScreen = new Texture("victoryscreen.png");
 
+        volumeSlider = new Texture("menubuttons/volume2.png");
+        volumeBar = new Texture("menubuttons/volume.png");
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
 		customInputProcessor = new CustomInputProcessor();
 		inputMultiplexer.addProcessor(customInputProcessor);
@@ -67,7 +73,7 @@ public class GameScreen implements Screen {
     public void render(float delta) {
 
         Gdx.graphics.setTitle(""+Gdx.graphics.getFramesPerSecond());
-        if (!isPaused){
+        if (!isPaused && !isOver){
             delta *= 60;
         }else{
             delta = 0;
@@ -75,9 +81,8 @@ public class GameScreen implements Screen {
         
         if (delta > 2f){delta = 2f;}
 
-        //victory screen?????? emt 
         if(player.getY() > 10000){
-            game.setScreen(game.achievementScreen);
+            isOver = true;
         }
 
         game.batch.begin();
@@ -117,6 +122,10 @@ public class GameScreen implements Screen {
             
         }
 
+        if(isOver) {
+            game.batch.draw(victoryScreen, 0, 0);
+        }
+
         if(isPaused){
             if(button(1600 / 2 - 100, 900 / 2 +50, 200,50,resumeTexture)){
                 isPaused = false;
@@ -131,6 +140,29 @@ public class GameScreen implements Screen {
                 SaveGame.Save(map, player);
                 game.setScreen(game.mainMenuScreen);
             }
+
+            game.batch.draw(volumeBar, 1300f, 110f);
+            game.batch.draw(volumeSlider, 1300 + volume, 100);
+    
+            if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                if (mouseInWorld2D.x > 1300 + volume && mouseInWorld2D.x < 1300 + volume + 25 && mouseInWorld2D.y > 100
+                        && mouseInWorld2D.y < 120) {
+                    volumeGrab = true;
+                }
+            } else {
+                volumeGrab = false;
+            }
+  
+            if (volumeGrab) {
+                volume = (int) mouseInWorld2D.x - 1310;
+            }
+            if (volume > 175) {
+                volume = 175;
+            }
+            if (volume < 0) {
+                volume = 0;
+            }
+            game.mainMenuScreen.setVolume(volume);
         }
         
         

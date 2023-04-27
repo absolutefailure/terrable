@@ -446,6 +446,7 @@ public class Player {
                                         if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
                                             inventory.getSelectedItem().setElement(OILBUCKET);
                                             mapArray[x][y].setElement(EMPTY);
+                                            mapArray[x][y].setCollision(false);
                                         }
                                         drawOutline = true;
                                     }
@@ -868,8 +869,10 @@ public class Player {
                     && item.getY() + 12 >= playerPosY
                     && item.getY() <= playerPosY + playerSizeY) {
 
-                inventory.addItem(item);
-                droppedItems.remove(item);
+                if(inventory.addItem(item)){
+                    droppedItems.remove(item);
+                }
+                
 
             }
 
@@ -906,7 +909,7 @@ public class Player {
         }
 
         // RESTORE HUNGER WITH FOOD
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT) && inventory.getSelectedItem().isFood()) {
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT) && inventory.getSelectedItem().isFood() && !inventory.isInventoryOpen()) {
             if (getPlayerHunger() + 5 > 10) {
                 setPlayerHunger(10);
             } else {
@@ -1119,6 +1122,9 @@ public class Player {
     public ArrayList<Item> getInventory() {
         return inventory.getItems();
     }
+    public Inventory getInventoryObject(){
+        return inventory;
+    }
 
     public void setInventory(ArrayList<Item> items) {
         inventory.setItems(items);
@@ -1132,6 +1138,7 @@ public class Player {
         inventory.reset();
         droppedItems.clear();
         rockets.clear();
+        recipeBook.reset();
     }
 
     public int getPlayerSizeX() {
@@ -1164,6 +1171,15 @@ public class Player {
 
     public void setPlayerOxygen(int playerOxygen) {
         this.playerOxygen = playerOxygen;
+    }
+    public Recipebook getRecipebook(){
+        return recipeBook;
+    }
+    public void addRockets(float x, float y){
+        rockets.add(new Rocket(x, y, rocketTexture, rocketFlame));
+    }
+    public ArrayList<Rocket> getRockets(){
+        return rockets;
     }
 
 }
