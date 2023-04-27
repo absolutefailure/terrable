@@ -1,15 +1,16 @@
 package com.mygdx.game.mobs;
+
 import java.util.Random;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.map.Block;
 import com.mygdx.game.map.Map;
 import com.mygdx.game.map.Element;
 import com.mygdx.game.player.Player;
-import static com.mygdx.game.map.Element.*;
 
-public class Cow extends Mob {
+public class Shark extends Mob{
     private TextureRegion[][] mobTexture;
     private float mobPosX;
     private float mobPosY;
@@ -17,34 +18,37 @@ public class Cow extends Mob {
     private int mobSizeY;
     private float gravity;
     private float acceleration;
+    private float soundTimer;
     private int mobHealth;
     private String type;
     private int element;
-    private float moveTimer;
-    private int direction = 0;
-    private float brightness = 1f;
     private String hit;
-    private boolean onGround;
+    private int direction = 0;
+
+    private Random rand;
+    private Sound sharkBiteSound;
+
+    private float brightness = 1f;
     
-    public Cow(float x, float y, TextureRegion[][] texture) {
+    public Shark(float x, float y, TextureRegion[][] texture, Sound sound) {
         super();
         this.mobPosX = x;
         this.mobPosY = y;
 
         mobTexture = texture;
 
+        sharkBiteSound= sound;
+
         mobSizeX = 50;
-        mobSizeY = 40;
+        mobSizeY = 30;
 
-        moveTimer = 0;
         gravity = 0;
-        mobHealth = 5;
-        type = "friendly";
+        mobHealth = 10;
+        type = "hostile";
+        element = Element.RAWFISH;
         hit = "not";
-        onGround = true;
-
-        element = Element.RAWSTEAK;
-        
+    
+        rand = new Random();
     }
 
     @Override
@@ -52,27 +56,17 @@ public class Cow extends Mob {
         float oldMobX = mobPosX;
         float oldMobY = mobPosY;
 
-        Random rand = new Random();
-
-
-
-
-        //mob up down movement
-        gravity -= 0.25 * delta;
-
         mobPosY += gravity * delta;
-
 
         int startBlockX = (int)(mobPosX / 25 - 200 / 25 / 2) +(mapSizeX/2);
         int endBlockX = (startBlockX + 400 / 25) ;
-
 
         Block[][] mapArray = map.getMapArray();
 
         for (int x = startBlockX; x < endBlockX; x++){
             if (mapArray[x][0].getPosX() > mobPosX - 100 && mapArray[x][0].getPosX() < mobPosX + 100) {
                 for (int y = 0; y < mapArray[x].length; y++){
-                    if (mobPosX + mobSizeX > mapArray[x][y].getPosX()
+                    if ( mobPosX + mobSizeX > mapArray[x][y].getPosX()
                     && mobPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
                     && mobPosY + mobSizeY > mapArray[x][y].getPosY()
                     && mobPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
@@ -81,43 +75,71 @@ public class Cow extends Mob {
                         }else{
                             brightness -= 0.01f * delta;
                         }
-                        if(mapArray[x][y].isCollision()){
-                            mobPosY = oldMobY;
-                            onGround = true;
-                            if (Math.abs(acceleration) > 0.1f && mapArray[x-1][y-1].isCollision() || mapArray[x+1][y-1].isCollision()) {
-                                gravity = 4;
-                            }else{
-                                gravity = 0;
+                        if(mapArray[x][y].getElement() == Element.WATER3 || mapArray[x][y].getElement() == Element.WATER1 || mapArray[x][y].getElement() == Element.WATER2 || mapArray[x][y].getElement() == Element.WATER4 || mapArray[x][y].getElement() == Element.WATER5){
+                            if(250 > Math.sqrt((player.getY() - mobPosY) * (player.getY() - mobPosY) + (player.getX() - mobPosX) * (player.getX() - mobPosX))){
+                                if (mobPosY < player.getY()){
+                                    gravity = 1.5f;
+                                }else if (mobPosY > player.getY()){
+                                    gravity = -1.5f;
+                                }
+                            } else {
+                                gravity -= ((rand.nextFloat() * 0.2f) - 0.1f) * delta;
                             }
-                        } else if(mapArray[x][y].getElement() == WATER1
-                        || mapArray[x][y].getElement() == WATER2
-                        || mapArray[x][y].getElement() == WATER3
-                        || mapArray[x][y].getElement() == WATER4
-                        || mapArray[x][y].getElement() == WATER5){
-                            gravity *= Math.pow(0.99f, delta);
-                            gravity += 0.1f * delta;
+                        } else {
+                            mobPosY = oldMobY;
                         }
                     }
                 }
             }
         }
-        
-        moveTimer -= 1 * delta;
-        if (moveTimer < 0){
-            moveTimer = rand.nextInt(1000);
-            direction = rand.nextInt(2);
-        }
 
         //mob left right movement
-        if(moveTimer < 10000 && moveTimer >= 20){
-            if (direction == 0){
-                acceleration = 0.5f;
-            }else{
-                acceleration = -0.5f;
+        if (40 > Math.sqrt((player.getY() - mobPosY) * (player.getY() - mobPosY) + (player.getX() - mobPosX) * (player.getX() - mobPosX))) {
+            if (mobPosX < player.getX()){
+                acceleration = 1.5f;
+                direction = 3;
+                soundTimer += 1 * delta;
+                if(soundTimer >= 120) {
+                    sharkBiteSound.play(volume/100f);
+                    soundTimer = 0;
+                }
+            }else if (mobPosX > player.getX()){
+                acceleration = -1.5f;
+                direction = 2;
+                soundTimer += 1 * delta;
+                if(soundTimer >= 120) {
+                    sharkBiteSound.play(volume/100f);
+                    soundTimer = 0;
+                }
             }
-        } else if (moveTimer < 20) {
-            acceleration = 0;
-        }      
+        } else if (90 > Math.sqrt((player.getY() - mobPosY) * (player.getY() - mobPosY) + (player.getX() - mobPosX) * (player.getX() - mobPosX))) {
+            if (mobPosX < player.getX()){
+                acceleration = 1.5f;
+                direction = 3;
+                soundTimer += 1 * delta;
+            }else if (mobPosX > player.getX()){
+                acceleration = -1.5f;
+                direction = 2;
+                soundTimer += 1 * delta;
+            }
+        } else if(250 > Math.sqrt((player.getY() - mobPosY) * (player.getY() - mobPosY) + (player.getX() - mobPosX) * (player.getX() - mobPosX))){
+            if (mobPosX < player.getX()){
+                acceleration = 1.5f;
+                direction = 1;
+                soundTimer += 1 * delta;
+            }else if (mobPosX > player.getX()){
+                acceleration = -1.5f;
+                direction = 0;
+                soundTimer += 1 * delta;
+            }
+        } else {
+            acceleration -= ((rand.nextFloat() * 0.6f) - 0.3f) * delta;
+            if (acceleration > 0) {
+                direction = 1;
+            } else {
+                direction = 0;
+            }
+        }
         
         mobPosX += acceleration * delta;
 
@@ -128,37 +150,33 @@ public class Cow extends Mob {
                     && mobPosX < mapArray[x][y].getPosX() + mapArray[x][y].getBLOCKSIZE()
                     && mobPosY + mobSizeY > mapArray[x][y].getPosY()
                     && mobPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
-                       
-                        mobPosX = oldMobX;
+                        if(mapArray[x][y].getElement() != Element.WATER3 ){
+                            mobPosX = oldMobX;
+                        }
                     }
                 }
             }
         }
-        
+
         //knockback
         if (hit == "left") {
-            moveTimer = 100000;
-            if (!onGround) {
+            if (gravity > 0) {
                 acceleration = 1f;
             } else {
                 hit = "not";
-                moveTimer = 20;
-                acceleration = 0;
             }
         } else if (hit == "right") {
-            moveTimer = 100000;
-            if (!onGround) {
+            if (gravity > 0) {
                 acceleration = -1f;
             } else {
                 hit = "not";
-                moveTimer = 20;
-                acceleration = 0;
             }
         }
 
         batch.setColor(brightness,brightness,brightness,1f);
-        batch.draw(mobTexture[direction][0], mobPosX, mobPosY);
+        batch.draw(mobTexture[0][direction], mobPosX, mobPosY);
         batch.setColor(1f,1f,1f,1f);
+        
     }
 
     public float getMobPosX() {
@@ -211,10 +229,6 @@ public class Cow extends Mob {
 
     public void setHit(String hit) {
         this.hit = hit;
-    }
-
-    public void setOnGround(boolean onGround) {
-        this.onGround = onGround;
     }
     
 }

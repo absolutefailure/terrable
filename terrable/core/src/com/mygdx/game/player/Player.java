@@ -308,12 +308,10 @@ public class Player {
                     }
 
                     // CHECK IF PLAYER IS INSIDE WATER
-                    float blockTop = mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE();
-                    float blockBottom = (mapArray[x][y].getPosY());
+                    float blockTop = mapArray[x-15][y].getPosY() + mapArray[x][y].getBLOCKSIZE();
+                    float blockBottom = (mapArray[x-15][y].getPosY());
                     if ((playerPosY + 40) > blockBottom && (playerPosY + 40) < blockTop) {
-                        if (mapArray[x][y].getElement() == WATER1 || mapArray[x][y].getElement() == WATER2
-                                || mapArray[x][y].getElement() == WATER3 || mapArray[x][y].getElement() == WATER4
-                                || mapArray[x][y].getElement() == WATER5) {
+                        if (mapArray[x-15][y].getElement() == WATER1 || mapArray[x-15][y].getElement() == WATER2 || mapArray[x-15][y].getElement() == WATER3 || mapArray[x-15][y].getElement() == WATER4 || mapArray[x-15][y].getElement() == WATER5) {
                             diving = true;
                         } else {
                             diving = false;

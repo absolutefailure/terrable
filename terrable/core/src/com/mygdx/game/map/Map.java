@@ -30,11 +30,13 @@ public class Map {
     private Texture cowTexture;
     private Texture camelTexture;
     private Texture sandratTexture;
+    private Texture sharkTexture;
     private TextureRegion[][] cowTextureRegions;
     private TextureRegion[][] camelTextureRegions;
     private TextureRegion[][] chickenTextureRegions;
     private TextureRegion[][] sandratTextureRegions;
     private TextureRegion[][] blockTextures;
+    private TextureRegion[][] sharkTextureRegions;
     public static ArrayList<Mob> mobs = new ArrayList<>();
     private Texture sunTexture;
     private Texture moonTexture;
@@ -47,6 +49,7 @@ public class Map {
     private Sound slimeSound;
     private Sound mobScreamSound;
     private Sound sandratSqueakSound;
+    private Sound sharkBiteSound;
     
     
     private float clock = 2000;
@@ -69,7 +72,7 @@ public class Map {
         chickenTexture = new Texture("chicken.png");
         slimeTexture = new Texture("slime.png");
         sunTexture = new Texture("sun.png");
-
+        sharkTexture = new Texture("shark.png");
         sandratTexture = new Texture("sandrat.png");
         cowTexture = new Texture("cow.png");
         camelTexture = new Texture("camel.png");
@@ -77,6 +80,7 @@ public class Map {
         chickenTextureRegions = TextureRegion.split(chickenTexture, 16, 18);
         sandratTextureRegions = TextureRegion.split(sandratTexture, 25, 25);
         camelTextureRegions = TextureRegion.split(camelTexture, 63, 47);
+        sharkTextureRegions = TextureRegion.split(sharkTexture, 50, 30);
         moonTexture = new Texture("moon.png");
         mobSpawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/moaiSpawnSound.mp3"));
         batSpawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/batSpawnSound.mp3"));
@@ -85,6 +89,7 @@ public class Map {
         batScreamSound = Gdx.audio.newSound(Gdx.files.internal("sounds/batScreamSound.mp3"));
         slimeSound =  Gdx.audio.newSound(Gdx.files.internal("sounds/slimeSound.mp3"));
         mobScreamSound =  Gdx.audio.newSound(Gdx.files.internal("sounds/mobScreamSound.mp3"));
+        sharkBiteSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sharkBiteSound.mp3"));
         
         blockTextures = TextureRegion.split(textures, 25, 25); 
         
@@ -268,7 +273,7 @@ public class Map {
         //mob spawner/despawner
         MobManager.Update(mobs, mapArray, player, mapSizeX, mapSizeY, volume,
             kivimiesTexture, batTexture, chickenTextureRegions, slimeTexture,
-            mobSpawnSound, mobScreamSound, batScreamSound,batSpawnSound,slimeSound,cowTextureRegions,sandratTextureRegions,sandratSqueakSound,camelTextureRegions);
+            mobSpawnSound, mobScreamSound, batScreamSound,batSpawnSound,slimeSound,cowTextureRegions,sandratTextureRegions,sandratSqueakSound,camelTextureRegions, sharkTextureRegions, sharkBiteSound);
 
 
 
