@@ -1173,5 +1173,11 @@ public class Player {
     public Recipebook getRecipebook(){
         return recipeBook;
     }
+    public void addRockets(float x, float y){
+        rockets.add(new Rocket(x, y, rocketTexture, rocketFlame));
+    }
+    public ArrayList<Rocket> getRockets(){
+        return rockets;
+    }
 
 }

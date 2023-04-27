@@ -125,7 +125,14 @@ public class LoadGame {
                     player.getInventoryObject().unlockRecipeBook(player.getRecipebook(), Integer.parseInt(token));
                 }
                 player.getInventoryObject().setDiscoveredItems(discoveredItems);
+                int rocketSize = Integer.parseInt(br.readLine());
+
+                for (int i = 0; i < rocketSize; i++){
+                    tokens = br.readLine().split(",");
+                    player.addRockets(Float.parseFloat(tokens[0]), Float.parseFloat(tokens[1]));
+                }
                 
+
                 // Close readers
                 br.close();
                 fr.close();
