@@ -1031,7 +1031,7 @@ public class Crafting {
                 && resources.get(6).getElement() == EMPTY
                 && resources.get(7).getElement() == EMPTY
                 && resources.get(8).getElement() == EMPTY) {
-            int amount = 1;
+            int amount = 32;
 
             // create new item/s
             Item item = new Item();

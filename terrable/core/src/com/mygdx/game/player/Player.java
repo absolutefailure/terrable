@@ -446,6 +446,7 @@ public class Player {
                                         if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
                                             inventory.getSelectedItem().setElement(OILBUCKET);
                                             mapArray[x][y].setElement(EMPTY);
+                                            mapArray[x][y].setCollision(false);
                                         }
                                         drawOutline = true;
                                     }
