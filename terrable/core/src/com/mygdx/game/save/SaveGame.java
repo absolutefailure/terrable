@@ -6,6 +6,7 @@ import com.mygdx.game.map.Map;
 import com.mygdx.game.player.Achievement;
 import com.mygdx.game.player.Item;
 import com.mygdx.game.player.Player;
+import com.mygdx.game.player.Rocket;
 import com.mygdx.game.screens.MainMenuScreen;
 
 import java.io.File;
@@ -84,6 +85,16 @@ public class SaveGame {
             ArrayList<Integer> discoveredItems = player.getInventoryObject().getDiscoveredItems();
             for (Integer integer: discoveredItems){
                 bw.write(integer + ",");
+            }
+            bw.newLine();
+            ArrayList<Rocket> rockets = player.getRockets();
+
+            bw.write("" + rockets.size());
+            bw.newLine();
+            
+            for (Rocket rocket : rockets){
+                bw.write(rocket.getPosX() + "," + rocket.getPosY());
+                bw.newLine();
             }
             // Close writers
             bw.close();
