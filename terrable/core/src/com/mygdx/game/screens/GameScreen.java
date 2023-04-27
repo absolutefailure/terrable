@@ -26,9 +26,11 @@ public class GameScreen implements Screen {
 	final int MAP_SIZE_Y = 300; // blocks
 
     private Boolean isPaused = false;
+    private Boolean isOver = false;
     private Vector2 mouseInWorld2D = new Vector2();
     private Vector3 mouseInWorld3D = new Vector3();
 
+    private Texture victoryScreen;
     private Texture resumeTexture;
     private Texture achievementsTexture;
     private Texture exitsaveTexture;
@@ -52,6 +54,7 @@ public class GameScreen implements Screen {
         resumeTexture = new Texture("menubuttons/Resume.png");
         achievementsTexture = new Texture("menubuttons/achievements.png");
         exitsaveTexture = new Texture("menubuttons/saveexit.png");
+        victoryScreen = new Texture("victoryscreen.png");
 
         volumeSlider = new Texture("menubuttons/volume2.png");
         volumeBar = new Texture("menubuttons/volume.png");
@@ -70,7 +73,7 @@ public class GameScreen implements Screen {
     public void render(float delta) {
 
         Gdx.graphics.setTitle(""+Gdx.graphics.getFramesPerSecond());
-        if (!isPaused){
+        if (!isPaused && !isOver){
             delta *= 60;
         }else{
             delta = 0;
@@ -78,9 +81,8 @@ public class GameScreen implements Screen {
         
         if (delta > 2f){delta = 2f;}
 
-        //victory screen?????? emt 
         if(player.getY() > 10000){
-            game.setScreen(game.achievementScreen);
+            isOver = true;
         }
 
         game.batch.begin();
@@ -118,6 +120,10 @@ public class GameScreen implements Screen {
 
         
             
+        }
+
+        if(isOver) {
+            game.batch.draw(victoryScreen, 0, 0);
         }
 
         if(isPaused){
