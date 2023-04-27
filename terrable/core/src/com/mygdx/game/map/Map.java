@@ -15,6 +15,7 @@ import com.mygdx.game.mobs.Mob;
 import com.mygdx.game.mobs.MobManager;
 import com.mygdx.game.player.Item;
 import com.mygdx.game.player.Player;
+import java.util.Random;
 
 public class Map {
 
@@ -27,9 +28,13 @@ public class Map {
     private Texture chickenTexture;
     private Texture slimeTexture;
     private Texture cowTexture;
+    private Texture camelTexture;
+    private Texture sandratTexture;
     private Texture sharkTexture;
     private TextureRegion[][] cowTextureRegions;
+    private TextureRegion[][] camelTextureRegions;
     private TextureRegion[][] chickenTextureRegions;
+    private TextureRegion[][] sandratTextureRegions;
     private TextureRegion[][] blockTextures;
     private TextureRegion[][] sharkTextureRegions;
     public static ArrayList<Mob> mobs = new ArrayList<>();
@@ -43,6 +48,7 @@ public class Map {
     private Sound batScreamSound;
     private Sound slimeSound;
     private Sound mobScreamSound;
+    private Sound sandratSqueakSound;
     private Sound sharkBiteSound;
     
     
@@ -67,15 +73,19 @@ public class Map {
         slimeTexture = new Texture("slime.png");
         sunTexture = new Texture("sun.png");
 
+        sandratTexture = new Texture("sandrat.png");
         cowTexture = new Texture("cow.png");
+        camelTexture = new Texture("camel.png");
         cowTextureRegions = TextureRegion.split(cowTexture, 50, 40);
         chickenTextureRegions = TextureRegion.split(chickenTexture, 16, 18);
-        sharkTexture = new Texture("shark.png");
+        sandratTextureRegions = TextureRegion.split(sandratTexture, 25, 25);
+        camelTextureRegions = TextureRegion.split(camelTexture, 63, 47);
         sharkTextureRegions = TextureRegion.split(sharkTexture, 50, 30);
         moonTexture = new Texture("moon.png");
         mobSpawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/moaiSpawnSound.mp3"));
         batSpawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/batSpawnSound.mp3"));
 
+        sandratSqueakSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sandratSqueakSound.mp3"));
         batScreamSound = Gdx.audio.newSound(Gdx.files.internal("sounds/batScreamSound.mp3"));
         slimeSound =  Gdx.audio.newSound(Gdx.files.internal("sounds/slimeSound.mp3"));
         mobScreamSound =  Gdx.audio.newSound(Gdx.files.internal("sounds/mobScreamSound.mp3"));
@@ -149,6 +159,7 @@ public class Map {
             
             for (int y = 0; y < mapArray[x].length; y++){
                 Block block = mapArray[x][y];
+                Random rand = new Random();
                 batch.setColor(1, 1, 1, 1);
 
                 if (block.getPosY() > player.getY() - 1000 && block.getPosY() < player.getY() + 1000 ){ // DRAW BLOCK ONLY IF INSIDE SCREEN
@@ -194,7 +205,58 @@ public class Map {
                     } 
                           
                 }      
-                
+
+                // Check for leaves without wood nearby then checks the blocks around them
+                if (mapArray[x][y].getElement() == LEAVES
+                && mapArray[x][y + 1].getElement() != WOOD
+                && mapArray[x][y - 1].getElement() != WOOD
+                && mapArray[x + 1][y].getElement() != WOOD
+                && mapArray[x - 1][y].getElement() != WOOD){
+
+                    ArrayList<Integer> nearbyblocks = new ArrayList<>();
+                    int decaytimer = rand.nextInt(1000);
+
+                    // Left
+                    if (mapArray[x - 1][y].getElement() == LEAVES){
+                        nearbyblocks.add(mapArray[x - 2][y].getElement());
+                        nearbyblocks.add(mapArray[x - 2][y - 1].getElement());
+                        nearbyblocks.add(mapArray[x - 2][y + 1].getElement());
+                        nearbyblocks.add(mapArray[x - 1][y + 1].getElement());
+                    }
+
+                    // Right
+                    if(mapArray[x + 1][y].getElement() == LEAVES){
+                        nearbyblocks.add(mapArray[x + 2][y].getElement());
+                        nearbyblocks.add(mapArray[x + 2][y - 1].getElement());
+                        nearbyblocks.add(mapArray[x + 2][y + 1].getElement());
+                        nearbyblocks.add(mapArray[x + 1][y - 1].getElement());
+                    }
+                    
+                    // Up
+                    if(mapArray[x][y - 1].getElement() == LEAVES){
+                        nearbyblocks.add(mapArray[x][y - 2].getElement());
+                        nearbyblocks.add(mapArray[x + 1][y - 2].getElement());
+                        nearbyblocks.add(mapArray[x - 1][y - 2].getElement());
+                        nearbyblocks.add(mapArray[x - 1][y - 1].getElement());
+                    }
+
+                    // Down
+                    if(mapArray[x][y + 1].getElement() == LEAVES){
+                        nearbyblocks.add(mapArray[x][y + 2].getElement());
+                        nearbyblocks.add(mapArray[x + 1][y + 2].getElement());
+                        nearbyblocks.add(mapArray[x - 1][y + 2].getElement());
+                        nearbyblocks.add(mapArray[x + 1][y + 1].getElement());
+                    }
+
+                    // Removes the leaf if no wood is nearby with a random delay
+                    if (!(nearbyblocks.contains(3))){
+
+                        if (decaytimer < 10){
+                            block.setElement(EMPTY);
+                        }
+                    }
+                    nearbyblocks.clear();
+                }
             }
             
         }
@@ -211,7 +273,7 @@ public class Map {
         //mob spawner/despawner
         MobManager.Update(mobs, mapArray, player, mapSizeX, mapSizeY, volume,
             kivimiesTexture, batTexture, chickenTextureRegions, slimeTexture,
-            mobSpawnSound, mobScreamSound, batScreamSound,batSpawnSound,slimeSound,cowTextureRegions, sharkTextureRegions, sharkBiteSound);
+            mobSpawnSound, mobScreamSound, batScreamSound,batSpawnSound,slimeSound,cowTextureRegions,sandratTextureRegions,sandratSqueakSound,camelTextureRegions, sharkTextureRegions, sharkBiteSound);
 
 
 
@@ -570,9 +632,19 @@ public class Map {
     public void setClock(float clock) {
         this.clock = clock;
     }
+    public float getClock2() {
+        return clock2;
+    }
 
+    public void setClock2(float clock2) {
+        this.clock2 = clock2;
+    }
     public void reset(){
         mapArray = null;
         mobs.clear();
+        clock = 2000;
+        clock2 = 2000;
+        rain.setRainTimer(0);
+        rain.clear();
     }
 }

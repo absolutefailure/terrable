@@ -70,7 +70,10 @@ public final class Element {
     public static final int COPPER = 61;
     public static final int COPPERINGOT = 62;
     public static final int COPPERWIRE = 63;
-
+    public static final int SLIMEPUDDING = 64;
+    public static final int DOWSINGROD = 65;
+    public static final int RAWFISH = 66;
+    public static final int COOKEDFISH = 67;
 
     public static final Map<Integer, String> elementNames;
     
@@ -140,6 +143,10 @@ public final class Element {
         map.put(61, "Copper Ore");
         map.put(62, "Copper Ingot");
         map.put(63, "Copper Wire");
+        map.put(64, "Slime Pudding");
+        map.put(65, "Dowsing rod");
+        map.put(66, "Raw fish");
+        map.put(67, "Cooked fish");
 
         elementNames = Collections.unmodifiableMap(map);
     }
@@ -212,6 +219,10 @@ public final class Element {
         map.put(61, 250);
         map.put(62, 0);
         map.put(63, 0);
+        map.put(64, 0);
+        map.put(65, 0);
+        map.put(66, 0);
+        map.put(67, 0);
 
         BLOCKMAXHP = Collections.unmodifiableMap(map);
     }

@@ -21,6 +21,7 @@ public class AchievementManager {
         achievements.add(new Achievement("Let there be light!", "Craft a torch."));
         achievements.add(new Achievement("Ironworks", "Smelt iron in a furnace."));
         achievements.add(new Achievement("What is this sorcery?", "Discover the blueprints for the rocket."));
+        achievements.add(new Achievement("A magical stick?", "Craft a dowsing rod to locate oil in the desert."));
         achievements.add(new Achievement("To the moon", "Build a rocketship."));
         
         // Load the unlocked status of each achievement from preferences
@@ -43,6 +44,9 @@ public class AchievementManager {
     }
     
     public static ArrayList<Achievement> getAchievements() {
+        return achievements;
+    }
+    public ArrayList<Achievement> getAchievements2() {
         return achievements;
     }
 }

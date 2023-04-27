@@ -689,7 +689,6 @@ public class Inventory {
                     //System.out.println("New Item discovered " + discoveredItem);
                     discoveredItems.add(discoveredItem);
                     //System.out.println(discoveredItems);
-
                     int obtainedItem = discoveredItem;
                     switch(obtainedItem){
                         case 3:
@@ -710,7 +709,7 @@ public class Inventory {
                             achievements.unlockAchievement("Stone age");
                             message.setMessage("New achievement unlocked: Stone age");
                             break;
-                        case 23:
+                        case 8:
                             achievements.unlockAchievement("Ironworks");
                             message.setMessage("New achievement unlocked: Ironworks");
                             recipebook.setUnlocked(true, 2);
@@ -724,7 +723,16 @@ public class Inventory {
                             message.setMessage("New achievement unlocked: What is this sorcery?");
                             recipebook.setUnlocked(true, 3);
                             break;
+                        case 56:
+                            achievements.unlockAchievement("To the moon!");
+                            message.setMessage("New achievement unlocked: To the moon!");
+                            break;
+                        case 65:
+                            achievements.unlockAchievement("A magical stick?");
+                            message.setMessage("New achievement unlocked: A magical stick?");
+                            break;
                     }
+                 
                 }
             }
             
@@ -750,11 +758,57 @@ public class Inventory {
                 player.addDroppedItem(item);
                 items.get(selectedSlot).setAmount(0);
             }
+
+            if (items.get(selectedSlot).getElement() == 65){
+                int x = 2500 + ((int) player.getX() / 25);
+                int y = 150 - ((int) player.getY() / 25);
+                for (int i = 0; i < 40; i++){
+                    if (mapArray[x][y + i].getElement() == 58){
+                        message.setMessage("You sense oil underground");
+                    }
+                }
+            }
         }
     }
     
+    public void unlockRecipeBook(Recipebook recipebook, int discoveredItem){
+        int obtainedItem = discoveredItem;
+        switch(obtainedItem){
+            case 3:
+                achievements.unlockAchievement("TIMBER");
+                recipebook.setUnlocked(true, 0);
+                break;
+            case 6:
+                achievements.unlockAchievement("Rock solid");
+                recipebook.setUnlocked(true, 1);
+                break;
+            case 15:
+                achievements.unlockAchievement("Toy or tool?");
+                break;
+            case 16:
+                achievements.unlockAchievement("Stone age");
+                break;
+            case 8:
+                achievements.unlockAchievement("Ironworks");
+                recipebook.setUnlocked(true, 2);
+                break;
+            case 28:
+                achievements.unlockAchievement("Let there be light!");
+                break;
+            case 57:
+                achievements.unlockAchievement("What is this sorcery?");
+                recipebook.setUnlocked(true, 3);
+                break;
+            case 56:
+                achievements.unlockAchievement("To the moon!");
+                break;
+            case 65:
+                achievements.unlockAchievement("A magical stick?");
+                break;
+        }
+    }
 
-    public void addItem(Item item) {
+    public boolean addItem(Item item) {
         for (int i = 0; i < 36; i++) {
             int slotIndex = -1;
             for (int o = 0; o < 36; o++) {
@@ -766,7 +820,7 @@ public class Inventory {
             }
             if (slotIndex > 0) {
                 items.get(slotIndex).setAmount(items.get(slotIndex).getAmount() + item.getAmount());
-                break;
+                return true;
             } else {
                 if (!item.isWeapon() && items.get(i).getElement() == item.getElement()
                         && items.get(i).getAmount() + item.getAmount() <= INVENTORY_SLOT_MAX) {
@@ -776,7 +830,7 @@ public class Inventory {
                     items.get(i).setResource(item.isResource());
                     items.get(i).setDamage(item.getDamage());
                     items.get(i).setHealth(item.getHealth());
-                    break;
+                    return true;
                 } else if (items.get(i).getAmount() == 0) {
                     items.get(i).setAmount(item.getAmount());
                     items.get(i).setElement(item.getElement());
@@ -785,11 +839,12 @@ public class Inventory {
                     items.get(i).setResource(item.isResource());
                     items.get(i).setDamage(item.getDamage());
                     items.get(i).setHealth(item.getHealth());
-                    break;
+                    return true;
                 }
             }
 
         }
+        return false;
     }
 
     public int getGrab() {
@@ -873,6 +928,10 @@ public class Inventory {
         for (int i = 0; i < 46; i++) {
             items.add(new Item());
         }
+        discoveredItems.clear();
+        for (Achievement a: achievements.getAchievements2()){
+            a.setUnlocked(false);
+        }
     }
 
     public int getHover(HudCamera cam){
@@ -924,6 +983,16 @@ public class Inventory {
 
 
         return -1;
+    }
+
+    public AchievementManager getAchievementManager(){
+        return achievements;
+    }
+    public ArrayList<Integer> getDiscoveredItems(){
+        return discoveredItems;
+    }
+    public void setDiscoveredItems(ArrayList<Integer> discoveredItems){
+        this.discoveredItems = discoveredItems;
     }
 
 }

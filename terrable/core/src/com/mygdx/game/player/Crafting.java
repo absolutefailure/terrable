@@ -141,6 +141,12 @@ public class Crafting {
             return result;
         }
 
+        //ROCKET
+        result = craftRocket(resources);
+        if (result != null) {
+            return result;
+        }
+
         //BUCKET
         result = craftBucket(resources);
         if (result != null) {
@@ -149,6 +155,18 @@ public class Crafting {
 
         //COPPER WIRE
         result = craftCopperWire(resources);
+        if (result != null) {
+            return result;
+        }
+
+        //SLIME PUDDING
+        result = craftSlimePudding(resources);
+        if (result != null) {
+            return result;
+        }
+
+        //DOWSING ROD
+        result = craftDowsingRod(resources);
         if (result != null) {
             return result;
         }
@@ -888,7 +906,6 @@ public class Crafting {
         return null;
     }
 
-    // (WIP - requires oil and copper to be implemented)
     private static Item craftEngine(List<Item> resources) {
         // check slots for correct resources
         if (resources.get(0).getElement() == IRONPLATE
@@ -916,6 +933,32 @@ public class Crafting {
         // return null if resources are not correct
         return null;
     }
+
+    private static Item craftRocket(List<Item> resources) {
+        // check slots for correct resources
+        if (resources.get(0).getElement() == LWING
+                && resources.get(1).getElement() == ENGINE
+                && resources.get(2).getElement() == RWING
+                && resources.get(3).getElement() == EMPTY
+                && resources.get(4).getElement() == SPACESHIPBODY
+                && resources.get(5).getElement() == EMPTY
+                && resources.get(6).getElement() == EMPTY
+                && resources.get(7).getElement() == COCKPIT
+                && resources.get(8).getElement() == EMPTY) {
+            int amount = 1;
+
+            // create new item/s
+            Item item = new Item();
+            item.setElement(ROCKET);
+            item.setResource(true);
+            item.setAmount(amount);
+            item.setRemoveAmount(amount);
+            return item;
+        }
+        // return null if resources are not correct
+        return null;
+    }
+
 
     private static Item craftBucket(List<Item> resources) {
         // check slots for correct resources
@@ -971,6 +1014,63 @@ public class Crafting {
             item.setElement(COPPERWIRE);
             item.setAmount(amount);
             item.setRemoveAmount(amount / 2);
+            return item;
+        }
+        // return null if resources are not correct
+        return null;
+    }
+
+    private static Item craftSlimePudding(List<Item> resources) {
+        // check slots for correct resources
+        if (resources.get(0).getElement() == EMPTY
+                && resources.get(1).getElement() == GLASS
+                && resources.get(2).getElement() == EMPTY
+                && resources.get(3).getElement() == EMPTY
+                && resources.get(4).getElement() == SLIMEBALL
+                && resources.get(5).getElement() == EMPTY
+                && resources.get(6).getElement() == EMPTY
+                && resources.get(7).getElement() == EMPTY
+                && resources.get(8).getElement() == EMPTY) {
+            int amount = 32;
+
+            // create new item/s
+            Item item = new Item();
+            item.setElement(SLIMEPUDDING);
+            item.setFood(true);
+            item.setAmount(amount);
+            item.setRemoveAmount(amount);
+            return item;
+        }
+        // return null if resources are not correct
+        return null;
+    }
+
+    private static Item craftDowsingRod(List<Item> resources) {
+        // check slots for correct resources
+        if (resources.get(0).getElement() == STICK
+                && resources.get(1).getElement() == EMPTY
+                && resources.get(2).getElement() == STICK
+                && resources.get(3).getElement() == EMPTY
+                && resources.get(4).getElement() == STICK
+                && resources.get(5).getElement() == EMPTY
+                && resources.get(6).getElement() == EMPTY
+                && resources.get(7).getElement() == EMPTY
+                && resources.get(8).getElement() == EMPTY) {
+            int amount = 1;
+
+            for (Item slot : resources) {
+                if ((slot.getElement() == STICK) && amount > slot.getAmount()) {
+                    amount = slot.getAmount();
+                }
+            }
+
+            amount *= 1;
+            // create new item/s
+            Item item = new Item();
+            item.setElement(DOWSINGROD);
+            item.setWeapon(true);
+            item.setAmount(amount);
+            item.setRemoveAmount(amount);
             return item;
         }
         // return null if resources are not correct

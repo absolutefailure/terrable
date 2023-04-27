@@ -1,53 +1,51 @@
 package com.mygdx.game.mobs;
-
 import java.util.Random;
 
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.map.Block;
 import com.mygdx.game.map.Map;
 import com.mygdx.game.map.Element;
 import com.mygdx.game.player.Player;
+import static com.mygdx.game.map.Element.*;
 
-public class Bat extends Mob{
-    private Texture mobTexture;
+public class SandRat extends Mob {
+    private TextureRegion[][] mobTexture;
     private float mobPosX;
     private float mobPosY;
     private int mobSizeX;
     private int mobSizeY;
     private float gravity;
     private float acceleration;
-    private float soundTimer;
     private int mobHealth;
     private String type;
     private int element;
-    private String hit;
-
-    private Random rand;
-    private Sound batScreamSound;
-
+    private float moveTimer;
+    private int direction = 0;
     private float brightness = 1f;
-    
-    public Bat(float x, float y, Texture texture, Sound sound) {
+    private String hit;
+    private boolean onGround;
+    private int hide = 0;
+
+    public SandRat(float x, float y, TextureRegion[][] texture) {
         super();
         this.mobPosX = x;
         this.mobPosY = y;
 
         mobTexture = texture;
 
-        batScreamSound = sound;
+        mobSizeX = 25;
+        mobSizeY = 25;
 
-        mobSizeX = 20;
-        mobSizeY = 20;
-
+        moveTimer = 0;
         gravity = 0;
         mobHealth = 5;
-        type = "hostile";
-        element = Element.FEATHER;
+        type = "friendly";
         hit = "not";
-    
-        rand = new Random();
+        onGround = true;
+
+        element = Element.FEATHER;
+        
     }
 
     @Override
@@ -55,18 +53,19 @@ public class Bat extends Mob{
         float oldMobX = mobPosX;
         float oldMobY = mobPosY;
 
+        Random rand = new Random();
 
 
 
 
         //mob up down movement
-        gravity -= ((rand.nextFloat() * 0.2f) - 0.1f) * delta;
+        gravity -= 0.25 * delta;
 
         mobPosY += gravity * delta;
 
+
         int startBlockX = (int)(mobPosX / 25 - 200 / 25 / 2) +(mapSizeX/2);
         int endBlockX = (startBlockX + 400 / 25) ;
-
 
 
         Block[][] mapArray = map.getMapArray();
@@ -83,13 +82,21 @@ public class Bat extends Mob{
                         }else{
                             brightness -= 0.01f * delta;
                         }
-                        if(mapArray[x][y].isCollision() ){
+                        if(mapArray[x][y].isCollision()){
                             mobPosY = oldMobY;
-                            if (mapArray[x-1][y-1].isCollision() || mapArray[x+1][y-1].isCollision()) {
+                            onGround = true;
+                            if (Math.abs(acceleration) > 0.1f && mapArray[x-1][y-1].isCollision() || mapArray[x+1][y-1].isCollision() && hide == 0) {
                                 gravity = 4;
                             }else{
                                 gravity = 0;
                             }
+                        } else if(mapArray[x][y].getElement() == WATER1
+                        || mapArray[x][y].getElement() == WATER2
+                        || mapArray[x][y].getElement() == WATER3
+                        || mapArray[x][y].getElement() == WATER4
+                        || mapArray[x][y].getElement() == WATER5){
+                            gravity *= Math.pow(0.99f, delta);
+                            gravity += 0.1f * delta;
                         }
 
                     }
@@ -97,29 +104,33 @@ public class Bat extends Mob{
             }
         }
 
-        //mob left right movement
-        if(200 > Math.sqrt((player.getY() - mobPosY) * (player.getY() - mobPosY) + (player.getX() - mobPosX) * (player.getX() - mobPosX))){
-            if (mobPosX < player.getX()){
-                acceleration +=0.5f * delta;
-            }else if (mobPosX > player.getX()){
-                acceleration -= 0.5f * delta;
-            }
-        }
-        if(mobPosX + 10 > player.getX() 
-        && mobPosX - 10 < player.getX()
-        && mobPosY + 10 > player.getY()
-        && mobPosY - 10 < player.getY()) {
-            soundTimer += 1 * delta;
-            if(soundTimer >= 100) {
-                batScreamSound.play(volume/200f);
-                soundTimer = 0;
-            }
+        // hide in sand when player is close
+
+        if (200 > Math.sqrt((player.getY() - mobPosY) * (player.getY() - mobPosY)
+                + (player.getX() - mobPosX) * (player.getX() - mobPosX))) {
+                    
+            hide = 2;
         } else {
-            soundTimer = 99;
+            hide = 0;
         }
+
+        moveTimer -= 1 * delta;
+        if (moveTimer < 0){
+            moveTimer = rand.nextInt(100);
+            direction = rand.nextInt(2);
+        }
+
+        //mob left right movement
+        if(moveTimer >= 20){
+            if (direction == 0){
+                acceleration =0.5f;
+            }else{
+                acceleration = -0.5f;
+            }
+        } else{
+            acceleration = 0;
+        }      
         
-        
-        acceleration -= ((rand.nextFloat() * 0.6f) - 0.3f) * delta;
         mobPosX += acceleration * delta;
 
         for (int x = startBlockX; x < endBlockX; x++){
@@ -131,7 +142,6 @@ public class Bat extends Mob{
                     && mobPosY < mapArray[x][y].getPosY() + mapArray[x][y].getBLOCKSIZE()) {
                        
                         mobPosX = oldMobX;
-                        acceleration = 0;
                     }
                 }
             }
@@ -139,21 +149,28 @@ public class Bat extends Mob{
 
         //knockback
         if (hit == "left") {
-            if (gravity > 0) {
+            moveTimer = 100000;
+            if (!onGround) {
                 acceleration = 1f;
             } else {
                 hit = "not";
+                moveTimer = 20;
+                acceleration = 0;
             }
         } else if (hit == "right") {
-            if (gravity > 0) {
+            moveTimer = 100000;
+            if (!onGround) {
                 acceleration = -1f;
             } else {
                 hit = "not";
+                moveTimer = 20;
+                acceleration = 0;
             }
         }
 
+
         batch.setColor(brightness,brightness,brightness,1f);
-        batch.draw(mobTexture, mobPosX, mobPosY);
+        batch.draw(mobTexture[direction + hide][0], mobPosX, mobPosY);
         batch.setColor(1f,1f,1f,1f);
         
     }
@@ -209,5 +226,10 @@ public class Bat extends Mob{
     public void setHit(String hit) {
         this.hit = hit;
     }
-    
+
+    public void setOnGround(boolean onGround) {
+        this.onGround = onGround;
+    }
+
 }
+
