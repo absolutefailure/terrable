@@ -926,10 +926,7 @@ public class Inventory {
     public void reset() {
         items.clear();
         for (int i = 0; i < 46; i++) {
-            Item item = new Item();
-            item.setAmount(32);
-            item.setElement(56);
-            items.add(item);
+            items.add(new Item());
         }
         discoveredItems.clear();
         for (Achievement a: achievements.getAchievements2()){
