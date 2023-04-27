@@ -14,13 +14,13 @@ public class MobManager {
     public static void Update(ArrayList<Mob> mobs, Block[][] mapArray, Player player, int mapSizeX, int mapSizeY,
             int volume,
             Texture kivimiesTexture, Texture batTexture, TextureRegion[][] chickenTexture, Texture slimeTexture,
-            Sound mobSpawnSound, Sound mobScreamSound, Sound batScreamSound, Sound batSpawnSound, Sound slimeSound, TextureRegion[][] cowTexture) {
+            Sound mobSpawnSound, Sound mobScreamSound, Sound batScreamSound, Sound batSpawnSound, Sound slimeSound, TextureRegion[][] cowTexture, TextureRegion[][] sharkTexture, Sound sharkBiteSound) {
 
         // mob spawner
         Random rand = new Random();
         if (mobs.size() < 15 && rand.nextInt(500) < 2) {
 
-            int spawn = rand.nextInt(5)+1;
+            int spawn = rand.nextInt(6)+1;
             int startX = (int) (((player.getX()) - 1400) / 25) + (mapSizeX / 2);
             int startY = (int) (mapSizeY / 2 - ((player.getY() + 500) / 25));
             ArrayList<int[]> noCollisionList = new ArrayList<>();
@@ -125,6 +125,25 @@ public class MobManager {
                         int spawnX = mapArray[noCollisionList.get(randIndex)[0]][noCollisionList.get(randIndex)[1]].getPosX();
                         int spawnY = mapArray[noCollisionList.get(randIndex)[0]][noCollisionList.get(randIndex)[1]].getPosY();
                         mobs.add(new Cow(spawnX, spawnY, cowTexture));
+                    }
+
+                    break;
+                case 6:
+                    for (int x = startX; x < startX + 112; x++) {
+                        for (int y = startY; y < startY + 70; y++) {
+                            if (mapArray[x][y].getElement() == Element.WATER3 && mapArray[x+1][y+1].getElement() == Element.WATER3 && mapArray[x+1][y].getElement() == Element.WATER3 && mapArray[x][y+1].getElement() == Element.WATER3 &&
+                                (mapArray[x][y].getPosX() < player.getX() - 800 || mapArray[x][y].getPosX() > player.getX() + 800
+                                || mapArray[x][y].getPosY() < player.getY() - 300 || mapArray[x][y].getPosY() > player.getY() + 500)) {
+                                int[] pos = {x, y};
+                                noCollisionList.add(pos);
+                            }
+                        }
+                    }
+                    if (noCollisionList.size() > 0){
+                        int randIndex = rand.nextInt(noCollisionList.size());
+                        int spawnX = mapArray[noCollisionList.get(randIndex)[0]][noCollisionList.get(randIndex)[1]].getPosX();
+                        int spawnY = mapArray[noCollisionList.get(randIndex)[0]][noCollisionList.get(randIndex)[1]].getPosY();
+                        mobs.add(new Shark(spawnX, spawnY, sharkTexture, sharkBiteSound));
                     }
 
                     break;

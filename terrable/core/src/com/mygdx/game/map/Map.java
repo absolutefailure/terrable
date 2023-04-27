@@ -27,9 +27,11 @@ public class Map {
     private Texture chickenTexture;
     private Texture slimeTexture;
     private Texture cowTexture;
+    private Texture sharkTexture;
     private TextureRegion[][] cowTextureRegions;
     private TextureRegion[][] chickenTextureRegions;
     private TextureRegion[][] blockTextures;
+    private TextureRegion[][] sharkTextureRegions;
     public static ArrayList<Mob> mobs = new ArrayList<>();
     private Texture sunTexture;
     private Texture moonTexture;
@@ -41,6 +43,7 @@ public class Map {
     private Sound batScreamSound;
     private Sound slimeSound;
     private Sound mobScreamSound;
+    private Sound sharkBiteSound;
     
     
     private float clock = 2000;
@@ -67,6 +70,8 @@ public class Map {
         cowTexture = new Texture("cow.png");
         cowTextureRegions = TextureRegion.split(cowTexture, 50, 40);
         chickenTextureRegions = TextureRegion.split(chickenTexture, 16, 18);
+        sharkTexture = new Texture("shark.png");
+        sharkTextureRegions = TextureRegion.split(sharkTexture, 50, 30);
         moonTexture = new Texture("moon.png");
         mobSpawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/moaiSpawnSound.mp3"));
         batSpawnSound = Gdx.audio.newSound(Gdx.files.internal("sounds/batSpawnSound.mp3"));
@@ -74,6 +79,7 @@ public class Map {
         batScreamSound = Gdx.audio.newSound(Gdx.files.internal("sounds/batScreamSound.mp3"));
         slimeSound =  Gdx.audio.newSound(Gdx.files.internal("sounds/slimeSound.mp3"));
         mobScreamSound =  Gdx.audio.newSound(Gdx.files.internal("sounds/mobScreamSound.mp3"));
+        sharkBiteSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sharkBiteSound.mp3"));
         
         blockTextures = TextureRegion.split(textures, 25, 25); 
         
@@ -205,7 +211,7 @@ public class Map {
         //mob spawner/despawner
         MobManager.Update(mobs, mapArray, player, mapSizeX, mapSizeY, volume,
             kivimiesTexture, batTexture, chickenTextureRegions, slimeTexture,
-            mobSpawnSound, mobScreamSound, batScreamSound,batSpawnSound,slimeSound,cowTextureRegions);
+            mobSpawnSound, mobScreamSound, batScreamSound,batSpawnSound,slimeSound,cowTextureRegions, sharkTextureRegions, sharkBiteSound);
 
 
 
