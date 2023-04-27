@@ -49,7 +49,7 @@ public class GameScreen implements Screen {
 		
         map = new Map(MAP_SIZE_X, MAP_SIZE_Y);
 
-        resumeTexture = new Texture("menubuttons/resume.png");
+        resumeTexture = new Texture("menubuttons/Resume.png");
         achievementsTexture = new Texture("menubuttons/achievements.png");
         exitsaveTexture = new Texture("menubuttons/saveexit.png");
 
