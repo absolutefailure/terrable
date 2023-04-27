@@ -808,7 +808,7 @@ public class Inventory {
         }
     }
 
-    public void addItem(Item item) {
+    public boolean addItem(Item item) {
         for (int i = 0; i < 36; i++) {
             int slotIndex = -1;
             for (int o = 0; o < 36; o++) {
@@ -820,7 +820,7 @@ public class Inventory {
             }
             if (slotIndex > 0) {
                 items.get(slotIndex).setAmount(items.get(slotIndex).getAmount() + item.getAmount());
-                break;
+                return true;
             } else {
                 if (!item.isWeapon() && items.get(i).getElement() == item.getElement()
                         && items.get(i).getAmount() + item.getAmount() <= INVENTORY_SLOT_MAX) {
@@ -830,7 +830,7 @@ public class Inventory {
                     items.get(i).setResource(item.isResource());
                     items.get(i).setDamage(item.getDamage());
                     items.get(i).setHealth(item.getHealth());
-                    break;
+                    return true;
                 } else if (items.get(i).getAmount() == 0) {
                     items.get(i).setAmount(item.getAmount());
                     items.get(i).setElement(item.getElement());
@@ -839,11 +839,12 @@ public class Inventory {
                     items.get(i).setResource(item.isResource());
                     items.get(i).setDamage(item.getDamage());
                     items.get(i).setHealth(item.getHealth());
-                    break;
+                    return true;
                 }
             }
 
         }
+        return false;
     }
 
     public int getGrab() {

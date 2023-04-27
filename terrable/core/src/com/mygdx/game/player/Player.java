@@ -866,8 +866,10 @@ public class Player {
                     && item.getY() + 12 >= playerPosY
                     && item.getY() <= playerPosY + playerSizeY) {
 
-                inventory.addItem(item);
-                droppedItems.remove(item);
+                if(inventory.addItem(item)){
+                    droppedItems.remove(item);
+                }
+                
 
             }
 
@@ -904,7 +906,7 @@ public class Player {
         }
 
         // RESTORE HUNGER WITH FOOD
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT) && inventory.getSelectedItem().isFood()) {
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT) && inventory.getSelectedItem().isFood() && !inventory.isInventoryOpen()) {
             if (getPlayerHunger() + 5 > 10) {
                 setPlayerHunger(10);
             } else {
