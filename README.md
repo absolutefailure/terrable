@@ -20,3 +20,4 @@ Game version: *1.0*
 <br>![ssdesert](https://user-images.githubusercontent.com/103279302/234812395-37b0085a-6965-4c47-b185-316d01aa021b.jpg)
 <br>![sscave](https://user-images.githubusercontent.com/103279302/234812427-9d288319-1bc9-4b56-aebc-30fb0e9f76b9.jpg)
 <br>![ssnight](https://user-images.githubusercontent.com/103279302/234812455-c4ab00b1-761e-4393-90c7-d205392deab4.jpg)
+<br>![ssrocket](https://user-images.githubusercontent.com/103279302/234815310-7c55c328-61f3-41d5-b5a8-28710c956ebf.png)
