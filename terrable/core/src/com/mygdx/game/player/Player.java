@@ -505,7 +505,8 @@ public class Player {
                                                     if (mapArray[x][y].getElement() == STONE
                                                             || mapArray[x][y].getElement() == IRON
                                                             || mapArray[x][y].getElement() == COAL
-                                                            || mapArray[x][y].getElement() == DIAMOND) {
+                                                            || mapArray[x][y].getElement() == DIAMOND
+                                                            ||mapArray[x][y].getElement() == COPPER) {
                                                         damage *= 2;
                                                     }
                                                 }
@@ -515,8 +516,9 @@ public class Player {
                                                         (inventory.getSelectedItem()).getElement() == IRONAXE
                                                         || (inventory.getSelectedItem()).getElement() == DIAMONDAXE) {
                                                     if (mapArray[x][y].getElement() == WOOD
-                                                            || mapArray[x][y].getElement() == PLANKS) {
-                                                        damage *= 3;
+                                                            || mapArray[x][y].getElement() == PLANKS
+                                                            || mapArray[x][y].getElement() == LADDER) {
+                                                        damage *= 2;
                                                     }
                                                 }
 
@@ -532,11 +534,11 @@ public class Player {
                                                             .setBlockHealth(mapArray[x][y].getBlockHealth() - damage);
                                                 } else if (mapArray[x][y].getMaxhealth() > 221
                                                         && mapArray[x][y].getMaxhealth() < 251
-                                                        && inventory.getSelectedItem().getDamage() > 24) {
+                                                        && inventory.getSelectedItem().getDamage() > 8) {
                                                     mapArray[x][y]
                                                             .setBlockHealth(mapArray[x][y].getBlockHealth() - damage);
                                                 } else if (mapArray[x][y].getMaxhealth() > 252
-                                                        && inventory.getSelectedItem().getDamage() > 49) {
+                                                        && inventory.getSelectedItem().getDamage() > 11) {
                                                     mapArray[x][y]
                                                             .setBlockHealth(mapArray[x][y].getBlockHealth() - damage);
                                                 } else {
