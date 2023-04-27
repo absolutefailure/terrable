@@ -21,7 +21,7 @@ public class MobManager {
         Random rand = new Random();
         if (mobs.size() < 15 && rand.nextInt(500) < 2) {
 
-            int spawn = rand.nextInt(7)+1;
+            int spawn = rand.nextInt(8)+1;
             int startX = (int) (((player.getX()) - 1400) / 25) + (mapSizeX / 2);
             int startY = (int) (mapSizeY / 2 - ((player.getY() + 500) / 25));
             ArrayList<int[]> noCollisionList = new ArrayList<>();
@@ -169,7 +169,7 @@ public class MobManager {
                 case 8:
                 for (int x = startX; x < startX + 112; x++) {
                     for (int y = startY; y < startY + 70; y++) {
-                        if ((mapArray[x][y+1].isCollision() == true || mapArray[x+1][y+1].isCollision() == true) && mapArray[x][y].isCollision() == false && mapArray[x][y-1].isCollision() == false && mapArray[x+1][y].isCollision() == false && mapArray[x+1][y-1].isCollision() == false && mapArray[x][y].getPermanent() == 0 && mapArray[x][y].getBiome() == Biome.DESERT &&
+                        if (mapArray[x][y].getElement() == Element.WATER3 && mapArray[x+1][y].getElement() == Element.WATER3 && mapArray[x][y+1].getElement() == Element.WATER3 && mapArray[x+1][y+1].getElement() == Element.WATER3 &&
                             (mapArray[x][y].getPosX() < player.getX() - 800 || mapArray[x][y].getPosX() > player.getX() + 800
                             || mapArray[x][y].getPosY() < player.getY() - 300 || mapArray[x][y].getPosY() > player.getY() + 500)) {
                             int[] pos = {x, y};
@@ -181,7 +181,7 @@ public class MobManager {
                     int randIndex = rand.nextInt(noCollisionList.size());
                     int spawnX = mapArray[noCollisionList.get(randIndex)[0]][noCollisionList.get(randIndex)[1]].getPosX();
                     int spawnY = mapArray[noCollisionList.get(randIndex)[0]][noCollisionList.get(randIndex)[1]].getPosY();
-                    mobs.add(new Camel(spawnX, spawnY, camelTexture));
+                    mobs.add(new Shark(spawnX, spawnY, sharkTexture, sharkBiteSound));
                 } 
                     break;
         }

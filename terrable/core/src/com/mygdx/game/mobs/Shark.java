@@ -45,7 +45,7 @@ public class Shark extends Mob{
         gravity = 0;
         mobHealth = 10;
         type = "hostile";
-        element = Element.FEATHER;
+        element = Element.RAWFISH;
         hit = "not";
     
         rand = new Random();

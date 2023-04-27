@@ -72,7 +72,7 @@ public class Map {
         chickenTexture = new Texture("chicken.png");
         slimeTexture = new Texture("slime.png");
         sunTexture = new Texture("sun.png");
-
+        sharkTexture = new Texture("shark.png");
         sandratTexture = new Texture("sandrat.png");
         cowTexture = new Texture("cow.png");
         camelTexture = new Texture("camel.png");
