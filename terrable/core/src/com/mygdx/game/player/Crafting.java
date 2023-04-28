@@ -303,7 +303,7 @@ public class Crafting {
             item.setWeapon(true);
             item.setAmount(amount);
             item.setRemoveAmount(amount);
-            item.setDamage(25);
+            item.setDamage(9);
             item.setHealth(50);
             return item;
         }
@@ -337,7 +337,7 @@ public class Crafting {
             item.setWeapon(true);
             item.setAmount(amount);
             item.setRemoveAmount(amount);
-            item.setDamage(10);
+            item.setDamage(6);
             item.setHealth(25);
             return item;
         }
@@ -371,7 +371,7 @@ public class Crafting {
             item.setWeapon(true);
             item.setAmount(amount);
             item.setRemoveAmount(amount);
-            item.setDamage(50);
+            item.setDamage(12);
             item.setHealth(150);
             return item;
         }
@@ -405,7 +405,7 @@ public class Crafting {
             item.setWeapon(true);
             item.setAmount(amount);
             item.setRemoveAmount(amount);
-            item.setDamage(75);
+            item.setDamage(15);
             item.setHealth(300);
             return item;
         }
@@ -439,7 +439,7 @@ public class Crafting {
             item.setWeapon(true);
             item.setAmount(amount);
             item.setRemoveAmount(amount);
-            item.setDamage(25);
+            item.setDamage(6);
             item.setHealth(50);
             return item;
         }
@@ -473,7 +473,7 @@ public class Crafting {
             item.setWeapon(true);
             item.setAmount(amount);
             item.setRemoveAmount(amount);
-            item.setDamage(10);
+            item.setDamage(4);
             item.setHealth(25);
             return item;
         }
@@ -507,7 +507,7 @@ public class Crafting {
             item.setWeapon(true);
             item.setAmount(amount);
             item.setRemoveAmount(amount);
-            item.setDamage(50);
+            item.setDamage(8);
             item.setHealth(150);
             return item;
         }
@@ -541,7 +541,7 @@ public class Crafting {
             item.setWeapon(true);
             item.setAmount(amount);
             item.setRemoveAmount(amount);
-            item.setDamage(75);
+            item.setDamage(10);
             item.setHealth(300);
             return item;
         }
