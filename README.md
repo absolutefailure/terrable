@@ -9,7 +9,7 @@ At the start of the game, the player is left to their own devices with no clear 
 Players can explore and build in the vast world of Terrable. The biomes vary in their resources and challenges, making it necessary to adapt to each one. The player can dig underground to find rare minerals, build a house to keep safe from enemies, and craft tools to defend themselves. The game rewards players for exploring and discovering new things by opening new pages into the recipebook.
 
 ## Objective
-The current objective of the game is to build a rocketship and fly into space. To achieve this, the player must gather resources, craft necessary materials, and build the rocket. However, in future versions of the game, the objective will be expanded to reach other planets and explore new resources. Players will have to gather resources and craft new technologies to build spacecraft capable of interstellar travel. This new objective will add a whole new layer of depth to the game, making it more challenging and engaging.
+The current objective of the game is to build a rocketship and fly into space. To achieve this, the player must gather resources, craft necessary materials, and build the rocket. However, in future versions of the game (<a href=https://github.com/absolutefailure/terrable/issues>check issues page for further development ideas</a>), the objective will be expanded to reach other planets and explore new resources. Players will have to gather resources and craft new technologies to build spacecraft capable of interstellar travel. This new objective will add a whole new layer of depth to the game, making it more challenging and engaging.
 
 ## Version
 Game version: *1.0*
