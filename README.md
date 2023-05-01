@@ -17,7 +17,7 @@ The current objective of the game is to build a rocketship and fly into space. T
 Game version: *1.0*
 
 ## Download
->Java version 17 or newer is required in order for the game to run.
+>Java version 17 or newer is required
 
 1. Download the Terrable.zip file found under <a href=https://github.com/absolutefailure/terrable/releases/tag/terrable>releases</a>.
 2. Next, extract the package.
