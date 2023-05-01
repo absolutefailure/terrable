@@ -1,5 +1,7 @@
 ![terrablelogo](https://user-images.githubusercontent.com/103279302/218454351-f73efbc9-fb94-4352-9efa-ffeebb4a0180.png)
 # Terrable - A 2D Sandbox Game
+>Created using <a href=https://libgdx.com/dev/>libGDX</a> - a cross-platform Java game development framework based on OpenGL (ES).
+
 Terrable is a 2D game inspired by popular sandbox games like Minecraft and Terraria. It is an impressive indie game that manages to combine the best elements of sandbox games with its own unique twist. In this game, the player is thrown into a randomly generated world with four biomes - forest, sea, mountain, and desert - and given the ultimate goal of building a rocketship and flying into space. Its open-world and random generation features allow for endless hours of exploration and discovery. With the upcoming expansion of the game's objective, Terrable will continue to provide a unique and exciting experience for players.
 
 ## Gameplay
@@ -13,6 +15,20 @@ The current objective of the game is to build a rocketship and fly into space. T
 
 ## Version
 Game version: *1.0*
+
+## Download
+>Java version 17 or newer is required in order for the game to run.
+
+Download the Terrable.zip file found under <a href=https://github.com/absolutefailure/terrable/releases/tag/terrable>releases</a>.
+<br>Next, extract the package.
+<br>After extraction, run the .jar file.
+
+<br>If running the .jar file isn't an option, you can use the Windows powershell or command prompt (cmd) to run the file. To achieve this, navigate to the folder containing the Terrable.jar file using the following command:
+
+    cd [insert path to folder]
+Next, run the .jar file with the following command:
+
+    java -jar terrable.jar
 
 ## Screenshots
 ![ssmoutain](https://user-images.githubusercontent.com/103279302/234812325-391948e2-45fd-4e1b-8dd2-c5e3506d6b39.png)
