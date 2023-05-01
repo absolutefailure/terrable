@@ -19,11 +19,11 @@ Game version: *1.0*
 ## Download
 >Java version 17 or newer is required in order for the game to run.
 
-Download the Terrable.zip file found under <a href=https://github.com/absolutefailure/terrable/releases/tag/terrable>releases</a>.
-<br>Next, extract the package.
-<br>After extraction, run the .jar file.
+1. Download the Terrable.zip file found under <a href=https://github.com/absolutefailure/terrable/releases/tag/terrable>releases</a>.
+2. Next, extract the package.
+3. After extraction, run the .jar file.
 
-<br>If running the .jar file isn't an option, you can use the Windows powershell or command prompt (cmd) to run the file. To achieve this, navigate to the folder containing the Terrable.jar file using the following command:
+<br>NOTE: If running the .jar file isn't an option, you can use the Windows powershell or command prompt (cmd) to run the file. To achieve this, navigate to the folder containing the Terrable.jar file using the following command:
 
     cd [insert path to folder]
 Next, run the .jar file with the following command:
