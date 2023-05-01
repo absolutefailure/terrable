@@ -36,6 +36,7 @@ public class Player {
 
     private boolean onGround;
     private boolean onLadder;
+    private boolean inWater;
     private float onGroundTimer;
 
     private float soundTimer;
@@ -198,23 +199,34 @@ public class Player {
         // JUMP
         if (!isGamePaused && onGround && !inventory.isFurnaceOpen()) {
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-                gravity = -4.3f;
-                if(!onLadder){
+                if(!onLadder && !inWater){
                     acceleration *= 1.4f;
+                    gravity -= 4.3f;
+                }else{
+                    gravity -= 0.3f;
                 }
+                if(gravity < -4.3){gravity = -4.3f;}
                 onGroundTimer = 0;
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.S) && onLadder) {
+            if (Gdx.input.isKeyPressed(Input.Keys.S) && (onLadder || inWater)) {
 
-                
-                gravity = +4.3f;
+                if(!onLadder && !inWater){
+                    acceleration *= 1.4f;
+                    gravity += 4.3f;
+                }else{
+                    gravity += 0.3f;
+                }
+                if(gravity > 4.3){gravity = 4.3f;}
                 onGroundTimer = 0;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-                gravity = -5.3f;
-                if(!onLadder){
+                if(!onLadder && !inWater){
                     acceleration *= 1.4f;
+                    gravity -= 5.3f;
+                }else{
+                    gravity -= 0.5f;
                 }
+                if(gravity < -5.3){gravity = -5.3f;}
                 onGroundTimer = 0;
             }
         }
@@ -293,16 +305,16 @@ public class Player {
                             // playerPosY = oldY;
                             gravity = -gravity * PLAYER_BOUNCINESS * delta;
                         } else if (mapArray[x][y].getElement() == LADDER) {
-                            gravity *= Math.pow(0.8f, delta);
+                            gravity *= Math.pow(0.9f, delta);
                             onGround = true;
                             onLadder = true;
                             onGroundTimer = 5;
                         } else if (mapArray[x][y].getElement() == WATER1 || mapArray[x][y].getElement() == WATER2
                                 || mapArray[x][y].getElement() == WATER3 || mapArray[x][y].getElement() == WATER4
                                 || mapArray[x][y].getElement() == WATER5) {
-                            gravity *= Math.pow(0.9f, delta);
+                            gravity *= Math.pow(0.97f, delta);
                             onGround = true;
-                            onLadder = true;
+                            inWater = true;
                             onGroundTimer = 5;
                         }
                     }
@@ -854,6 +866,7 @@ public class Player {
         if (onGroundTimer <= 0) {
             onGround = false;
             onLadder = false;
+            inWater = false;
         } else {
             onGroundTimer -= 1 * delta;
         }

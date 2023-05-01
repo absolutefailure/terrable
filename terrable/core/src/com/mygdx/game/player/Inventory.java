@@ -534,71 +534,143 @@ public class Inventory {
                     Item furnaceSlot1 = mapArray[openFurnaceX][openFurnaceY].getFurnaceSlot1();
                     Item furnaceSlot2 = mapArray[openFurnaceX][openFurnaceY].getFurnaceSlot2();
                     Item furnaceSlot3 = mapArray[openFurnaceX][openFurnaceY].getFurnaceSlot3();
+                    if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
+                        if ((furnaceSlot1.getAmount() == 0) 
+                        && cam.getInputInGameWorld().x > 860 - (261 / 2) + (29 * 1)
+                        && cam.getInputInGameWorld().x < 860 - (261 / 2) + (29 * 1) + 25
+                        && cam.getInputInGameWorld().y > 363 - (88 / 2) + 2 + (2 * 29)
+                        && cam.getInputInGameWorld().y < 363 - (88 / 2) + 2 + (2 * 29) + 27 ) {
+                            furnaceSlot1.setAmount(items.get(45).getAmount());
+                            furnaceSlot1.setElement(items.get(45).getElement());
+                            furnaceSlot1.setWeapon(items.get(45).isWeapon());
+                            furnaceSlot1.setFood(items.get(45).isFood());
+                            furnaceSlot1.setResource(items.get(45).isResource());
+                            furnaceSlot1.setDamage(items.get(45).getDamage());
+                            furnaceSlot1.setHealth(items.get(45).getHealth());
+                            if (furnaceSlot1.getAmount() > 0 && furnaceSlot2.getAmount() > 0) {
+                                mapArray[openFurnaceX][openFurnaceY].setFurnaceStartTimer(new Date().getTime());
+                            }
 
-                    if ((furnaceSlot1.getAmount() == 0) && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)
+                            items.get(45).setAmount(0);
+                        }else if(furnaceSlot1.getElement() == items.get(45).getElement() 
+                            && furnaceSlot1.getAmount() + items.get(45).getAmount() <= 32
                             && cam.getInputInGameWorld().x > 860 - (261 / 2) + (29 * 1)
                             && cam.getInputInGameWorld().x < 860 - (261 / 2) + (29 * 1) + 25
                             && cam.getInputInGameWorld().y > 363 - (88 / 2) + 2 + (2 * 29)
-                            && cam.getInputInGameWorld().y < 363 - (88 / 2) + 2 + (2 * 29) + 27) {
-                        furnaceSlot1.setAmount(items.get(45).getAmount());
-                        furnaceSlot1.setElement(items.get(45).getElement());
-                        furnaceSlot1.setWeapon(items.get(45).isWeapon());
-                        furnaceSlot1.setFood(items.get(45).isFood());
-                        furnaceSlot1.setResource(items.get(45).isResource());
-                        furnaceSlot1.setDamage(items.get(45).getDamage());
-                        furnaceSlot1.setHealth(items.get(45).getHealth());
-                        if (furnaceSlot1.getAmount() > 0 && furnaceSlot2.getAmount() > 0) {
-                            mapArray[openFurnaceX][openFurnaceY].setFurnaceStartTimer(new Date().getTime());
+                            && cam.getInputInGameWorld().y < 363 - (88 / 2) + 2 + (2 * 29) + 27 ){
+                            furnaceSlot1.setAmount(furnaceSlot1.getAmount() + items.get(45).getAmount());
+                            items.get(45).setAmount(0);
+                        }else if (items.get(45).getAmount() == 0 
+                                && cam.getInputInGameWorld().x > 860 - (261 / 2) + (29 * 1)
+                                && cam.getInputInGameWorld().x < 860 - (261 / 2) + (29 * 1) + 25
+                                && cam.getInputInGameWorld().y > 363 - (88 / 2) + 2 + (2 * 29)
+                                && cam.getInputInGameWorld().y < 363 - (88 / 2) + 2 + (2 * 29) + 27) {
+                            items.get(45).setAmount(furnaceSlot1.getAmount());
+                            items.get(45).setElement(furnaceSlot1.getElement());
+                            items.get(45).setWeapon(furnaceSlot1.isWeapon());
+                            items.get(45).setFood(furnaceSlot1.isFood());
+                            items.get(45).setResource(furnaceSlot1.isResource());
+                            items.get(45).setDamage(furnaceSlot1.getDamage());
+                            items.get(45).setHealth(furnaceSlot1.getHealth());
+                            furnaceSlot1.setAmount(0);
+                            isGrabbed = true;
                         }
+                    }
+                    if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)
+                        && cam.getInputInGameWorld().x > 860 - (261 / 2) + (29 * 1)
+                        && cam.getInputInGameWorld().x < 860 - (261 / 2) + (29 * 1) + 25
+                        && cam.getInputInGameWorld().y > 363 - (88 / 2) + 2 + (2 * 29)
+                        && cam.getInputInGameWorld().y < 363 - (88 / 2) + 2 + (2 * 29) + 27 ){
+                            if(furnaceSlot1.getElement() == items.get(45).getElement() 
+                                && furnaceSlot1.getAmount() + items.get(45).getAmount() <= 32){
+                                furnaceSlot1.setAmount(furnaceSlot1.getAmount() + 1);
+                                items.get(45).setAmount(items.get(45).getAmount() - 1);
+                            } else if(furnaceSlot1.getAmount() == 0 && items.get(45).getAmount() > 0){
+                                furnaceSlot1.setAmount(1);
+                                furnaceSlot1.setElement(items.get(45).getElement());
+                                furnaceSlot1.setWeapon(items.get(45).isWeapon());
+                                furnaceSlot1.setFood(items.get(45).isFood());
+                                furnaceSlot1.setResource(items.get(45).isResource());
+                                furnaceSlot1.setDamage(items.get(45).getDamage());
+                                furnaceSlot1.setHealth(items.get(45).getHealth());
+                                items.get(45).setAmount(items.get(45).getAmount() - 1);
+                                if (furnaceSlot1.getAmount() > 0 && furnaceSlot2.getAmount() > 0) {
+                                    mapArray[openFurnaceX][openFurnaceY].setFurnaceStartTimer(new Date().getTime());
+                                }
+                            }
 
-                        items.get(45).setAmount(0);
-                    } else if (items.get(45).getAmount() == 0 && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)
+                    }
+
+
+
+                    if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
+                        if ((furnaceSlot2.getAmount() == 0) 
                             && cam.getInputInGameWorld().x > 860 - (261 / 2) + (29 * 1)
                             && cam.getInputInGameWorld().x < 860 - (261 / 2) + (29 * 1) + 25
-                            && cam.getInputInGameWorld().y > 363 - (88 / 2) + 2 + (2 * 29)
-                            && cam.getInputInGameWorld().y < 363 - (88 / 2) + 2 + (2 * 29) + 27) {
-                        items.get(45).setAmount(furnaceSlot1.getAmount());
-                        items.get(45).setElement(furnaceSlot1.getElement());
-                        items.get(45).setWeapon(furnaceSlot1.isWeapon());
-                        items.get(45).setFood(furnaceSlot1.isFood());
-                        items.get(45).setResource(furnaceSlot1.isResource());
-                        items.get(45).setDamage(furnaceSlot1.getDamage());
-                        items.get(45).setHealth(furnaceSlot1.getHealth());
-                        furnaceSlot1.setAmount(0);
-                        isGrabbed = true;
-                    }
-                    if ((furnaceSlot2.getAmount() == 0) && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)
+                            && cam.getInputInGameWorld().y > 363 - (88 / 2) + 2 + (0 * 29)
+                            && cam.getInputInGameWorld().y < 363 - (88 / 2) + 2 + (0 * 29) + 27 ) {
+                            furnaceSlot2.setAmount(items.get(45).getAmount());
+                            furnaceSlot2.setElement(items.get(45).getElement());
+                            furnaceSlot2.setWeapon(items.get(45).isWeapon());
+                            furnaceSlot2.setFood(items.get(45).isFood());
+                            furnaceSlot2.setResource(items.get(45).isResource());
+                            furnaceSlot2.setDamage(items.get(45).getDamage());
+                            furnaceSlot2.setHealth(items.get(45).getHealth());
+                            if (furnaceSlot1.getAmount() > 0 && furnaceSlot2.getAmount() > 0) {
+                                mapArray[openFurnaceX][openFurnaceY].setFurnaceStartTimer(new Date().getTime());
+                            }
+
+                            items.get(45).setAmount(0);
+                        }else if(furnaceSlot2.getElement() == items.get(45).getElement() 
+                            && furnaceSlot2.getAmount() + items.get(45).getAmount() <= 32
+                            && cam.getInputInGameWorld().x > 860 - (261 / 2) + (29 * 1)
+                            && cam.getInputInGameWorld().x < 860 - (261 / 2) + (29 * 1) + 25
+                            && cam.getInputInGameWorld().y > 363 - (88 / 2) + 2 + (0 * 29)
+                            && cam.getInputInGameWorld().y < 363 - (88 / 2) + 2 + (0 * 29) + 27){
+                            furnaceSlot2.setAmount(furnaceSlot2.getAmount() + items.get(45).getAmount());
+                            items.get(45).setAmount(0);
+                        }else if (items.get(45).getAmount() == 0 
                             && cam.getInputInGameWorld().x > 860 - (261 / 2) + (29 * 1)
                             && cam.getInputInGameWorld().x < 860 - (261 / 2) + (29 * 1) + 25
                             && cam.getInputInGameWorld().y > 363 - (88 / 2) + 2 + (0 * 29)
                             && cam.getInputInGameWorld().y < 363 - (88 / 2) + 2 + (0 * 29) + 27) {
-                        furnaceSlot2.setAmount(items.get(45).getAmount());
-                        furnaceSlot2.setElement(items.get(45).getElement());
-                        furnaceSlot2.setWeapon(items.get(45).isWeapon());
-                        furnaceSlot2.setFood(items.get(45).isFood());
-                        furnaceSlot2.setResource(items.get(45).isResource());
-                        furnaceSlot2.setDamage(items.get(45).getDamage());
-                        furnaceSlot2.setHealth(items.get(45).getHealth());
-                        if (furnaceSlot1.getAmount() > 0 && furnaceSlot2.getAmount() > 0) {
-                            mapArray[openFurnaceX][openFurnaceY].setFurnaceStartTimer(new Date().getTime());
+                            items.get(45).setAmount(furnaceSlot2.getAmount());
+                            items.get(45).setElement(furnaceSlot2.getElement());
+                            items.get(45).setWeapon(furnaceSlot2.isWeapon());
+                            items.get(45).setFood(furnaceSlot2.isFood());
+                            items.get(45).setResource(furnaceSlot2.isResource());
+                            items.get(45).setDamage(furnaceSlot2.getDamage());
+                            items.get(45).setHealth(furnaceSlot2.getHealth());
+                            furnaceSlot2.setAmount(0);
+                            isGrabbed = true;
+                        }
+                    }
+                    if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)
+                        && cam.getInputInGameWorld().x > 860 - (261 / 2) + (29 * 1)
+                        && cam.getInputInGameWorld().x < 860 - (261 / 2) + (29 * 1) + 25
+                        && cam.getInputInGameWorld().y > 363 - (88 / 2) + 2 + (0 * 29)
+                        && cam.getInputInGameWorld().y < 363 - (88 / 2) + 2 + (0 * 29) + 27){
+                        if(furnaceSlot2.getElement() == items.get(45).getElement() 
+                            && furnaceSlot2.getAmount() + items.get(45).getAmount() <= 32){
+                            furnaceSlot2.setAmount(furnaceSlot2.getAmount() + 1);
+                            items.get(45).setAmount(items.get(45).getAmount() - 1);
+                        } else if(furnaceSlot2.getAmount() == 0 && items.get(45).getAmount() > 0){
+                            furnaceSlot2.setAmount(1);
+                            furnaceSlot2.setElement(items.get(45).getElement());
+                            furnaceSlot2.setWeapon(items.get(45).isWeapon());
+                            furnaceSlot2.setFood(items.get(45).isFood());
+                            furnaceSlot2.setResource(items.get(45).isResource());
+                            furnaceSlot2.setDamage(items.get(45).getDamage());
+                            furnaceSlot2.setHealth(items.get(45).getHealth());
+                            items.get(45).setAmount(items.get(45).getAmount() - 1);
+                            if (furnaceSlot1.getAmount() > 0 && furnaceSlot2.getAmount() > 0) {
+                                mapArray[openFurnaceX][openFurnaceY].setFurnaceStartTimer(new Date().getTime());
+                            }
                         }
 
-                        items.get(45).setAmount(0);
-                    } else if (items.get(45).getAmount() == 0 && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)
-                            && cam.getInputInGameWorld().x > 860 - (261 / 2) + (29 * 1)
-                            && cam.getInputInGameWorld().x < 860 - (261 / 2) + (29 * 1) + 25
-                            && cam.getInputInGameWorld().y > 363 - (88 / 2) + 2 + (0 * 29)
-                            && cam.getInputInGameWorld().y < 363 - (88 / 2) + 2 + (0 * 29) + 27) {
-                        items.get(45).setAmount(furnaceSlot2.getAmount());
-                        items.get(45).setElement(furnaceSlot2.getElement());
-                        items.get(45).setWeapon(furnaceSlot2.isWeapon());
-                        items.get(45).setFood(furnaceSlot2.isFood());
-                        items.get(45).setResource(furnaceSlot2.isResource());
-                        items.get(45).setDamage(furnaceSlot2.getDamage());
-                        items.get(45).setHealth(furnaceSlot2.getHealth());
-                        furnaceSlot2.setAmount(0);
-                        isGrabbed = true;
                     }
+
+
                     if (items.get(45).getAmount() == 0 && Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)
                             && cam.getInputInGameWorld().x > 860 - (261 / 2) + (29 * 4)
                             && cam.getInputInGameWorld().x < 860 - (261 / 2) + (29 * 4) + 25
