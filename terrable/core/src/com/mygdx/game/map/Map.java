@@ -155,6 +155,10 @@ public class Map {
 
         int startBlockX = (int)(player.getX() / 25 - 1800 / 25 / 2) +(mapSizeX/2);
         int endBlockX = (startBlockX + 1800 / 25) ;
+        if (startBlockX > mapSizeX){ startBlockX = mapSizeX; } 
+        if (startBlockX < 0){ startBlockX = 0; }                  
+        if (endBlockX > mapSizeX){ endBlockX = mapSizeX; } 
+        if (endBlockX < 0){ endBlockX = 0; }
         for (int x = startBlockX; x < endBlockX; x++){ 
             
             for (int y = 0; y < mapArray[x].length; y++){
@@ -286,6 +290,10 @@ public class Map {
         dayBrightness = 800f/clock;
         int startBlockX = (int)(player.getX() / 25 - 2000 / 25 / 2) +(mapSizeX/2);
         int endBlockX = (startBlockX + 2000 / 25) ;
+        if (startBlockX > mapSizeX){ startBlockX = mapSizeX; } 
+        if (startBlockX < 0){ startBlockX = 0; }                 
+        if (endBlockX > mapSizeX){ endBlockX = mapSizeX; } 
+        if (endBlockX < 0){ endBlockX = 0; }
         batch.setColor(1,1,1,1);
         for (int x = startBlockX; x < endBlockX; x++){ 
             
@@ -405,8 +413,11 @@ public class Map {
     public void UpdateLighting(Player player){
 
         int startBlockX = (int)(player.getX() / 25 - 2000 / 25 / 2) +(mapSizeX/2);
-        int endBlockX = (startBlockX + 2000 / 25) ;
-
+        int endBlockX = (startBlockX + 2000 / 25) ;              
+        if (startBlockX > mapSizeX){ startBlockX = mapSizeX; } 
+        if (startBlockX < 0){ startBlockX = 0; }
+        if (endBlockX > mapSizeX){ endBlockX = mapSizeX; } 
+        if (endBlockX < 0){ endBlockX = 0; }
         for (int x = startBlockX; x < endBlockX; x++){
             if (mapArray[x][0].getPosX() > player.getX() - 1200 && mapArray[x][0].getPosX() < player.getX() + 1200 && x > 5 && x < mapSizeX - 5) {
                 for (int y = 0; y < mapArray[x].length; y++){
