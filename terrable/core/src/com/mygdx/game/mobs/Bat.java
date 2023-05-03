@@ -67,7 +67,10 @@ public class Bat extends Mob{
         int startBlockX = (int)(mobPosX / 25 - 200 / 25 / 2) +(mapSizeX/2);
         int endBlockX = (startBlockX + 400 / 25) ;
 
-
+        if (startBlockX > mapSizeX){ startBlockX = mapSizeX; } 
+        if (startBlockX < 0){ startBlockX = 0; }
+        if (endBlockX > mapSizeX){ endBlockX = mapSizeX; } 
+        if (endBlockX < 0){ endBlockX = 0; }
 
         Block[][] mapArray = map.getMapArray();
 

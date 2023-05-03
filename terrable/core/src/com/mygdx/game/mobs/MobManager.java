@@ -75,7 +75,7 @@ public class MobManager {
                 case 3:
                     for (int x = startX; x < startX + 112; x++) {
                         for (int y = startY; y < startY + 70; y++) {
-                            if (mapArray[x][y+1].isCollision() == true && mapArray[x][y].isCollision() == false && mapArray[x+1][y].isCollision() == false && mapArray[x][y].getPermanent() == 0 && mapArray[x][y].getBiome() == Biome.FOREST || mapArray[x][y].getBiome() == Biome.MOUNTAIN &&
+                            if (mapArray[x][y+1].isCollision() == true && mapArray[x][y].isCollision() == false && mapArray[x+1][y].isCollision() == false && mapArray[x][y].getPermanent() == 0 && (mapArray[x][y].getBiome() == Biome.FOREST || mapArray[x][y].getBiome() == Biome.MOUNTAIN) &&
                                 (mapArray[x][y].getPosX() < player.getX() - 800 || mapArray[x][y].getPosX() > player.getX() + 800
                                 || mapArray[x][y].getPosY() < player.getY() - 300 || mapArray[x][y].getPosY() > player.getY() + 500)) {
                                 int[] pos = {x, y};
@@ -113,7 +113,7 @@ public class MobManager {
                 case 5:
                     for (int x = startX; x < startX + 112; x++) {
                         for (int y = startY; y < startY + 70; y++) {
-                            if ((mapArray[x][y+1].isCollision() == true || mapArray[x+1][y+1].isCollision() == true) && mapArray[x][y].isCollision() == false && mapArray[x][y-1].isCollision() == false && mapArray[x+1][y].isCollision() == false && mapArray[x+1][y-1].isCollision() == false && mapArray[x][y].getPermanent() == 0 && mapArray[x][y].getBiome() == Biome.FOREST || mapArray[x][y].getBiome() == Biome.MOUNTAIN &&
+                            if ((mapArray[x][y+1].isCollision() == true || mapArray[x+1][y+1].isCollision() == true) && mapArray[x][y].isCollision() == false && mapArray[x][y-1].isCollision() == false && mapArray[x+1][y].isCollision() == false && mapArray[x+1][y-1].isCollision() == false && mapArray[x][y].getPermanent() == 0 && (mapArray[x][y].getBiome() == Biome.FOREST || mapArray[x][y].getBiome() == Biome.MOUNTAIN) &&
                                 (mapArray[x][y].getPosX() < player.getX() - 800 || mapArray[x][y].getPosX() > player.getX() + 800
                                 || mapArray[x][y].getPosY() < player.getY() - 300 || mapArray[x][y].getPosY() > player.getY() + 500)) {
                                 int[] pos = {x, y};
